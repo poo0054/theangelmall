@@ -5,20 +5,28 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.5.0</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <version>2.2.4.RELEASE</version>
+        <relativePath/>
     </parent>
-
-    <groupId>com.themall</groupId>
+    <groupId>com.theangel.themall</groupId>
     <artifactId>themall-product</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>themall-product</name>
-    <description>Demo project for Spring Boot</description>
+
+    <description>商品模块</description>
+
     <properties>
         <java.version>1.8</java.version>
-        <spring-cloud.version>2020.0.3-SNAPSHOT</spring-cloud.version>
+        <spring-cloud.version>Hoxton.SR11</spring-cloud.version>
     </properties>
     <dependencies>
+
+        <dependency>
+            <groupId>com.theangel.themall</groupId>
+            <artifactId>themall-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -39,6 +47,7 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
