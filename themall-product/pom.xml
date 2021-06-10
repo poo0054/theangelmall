@@ -3,28 +3,22 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.4.RELEASE</version>
-        <relativePath/>
+        <groupId>com.theangel.themall</groupId>
+        <artifactId>themall-theangelmall</artifactId>
+        <version>0.1</version>
     </parent>
-    <groupId>com.theangel.themall</groupId>
+
     <artifactId>themall-product</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+
     <name>themall-product</name>
 
     <description>商品模块</description>
-
-    <properties>
-        <java.version>1.8</java.version>
-        <spring-cloud.version>Hoxton.SR11</spring-cloud.version>
-    </properties>
+    <packaging>jar</packaging>
     <dependencies>
 
         <dependency>
             <groupId>com.theangel.themall</groupId>
             <artifactId>themall-common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>

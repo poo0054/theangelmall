@@ -5,18 +5,19 @@
 
     <groupId>com.theangel.themall</groupId>
     <artifactId>themall-theangelmall</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1</version>
 
     <name>theangel-mall</name>
     <packaging>pom</packaging>
     <description>聚合服务</description>
+
     <modules>
         <module>themall-coupon</module>
+        <module>themall-common</module>
         <module>themall-member</module>
         <module>themall-order</module>
         <module>themall-product</module>
         <module>themall-ware</module>
-        <module>themall-common</module>
         <module>renren-fast</module>
         <module>renren-generator</module>
     </modules>
@@ -25,11 +26,120 @@
     <properties>
         <java.version>1.8</java.version>
         <spring-cloud.version>Hoxton.SR11</spring-cloud.version>
-        <version>2.2.4.RELEASE</version>
+        <spring-boot.version>2.2.4.RELEASE</spring-boot.version>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+
+        <httpcore.version>4.4.14</httpcore.version>
+        <commons-lang.version>2.6</commons-lang.version>
+        <mysql-connector.version>8.0.25</mysql-connector.version>
+        <servlet-api.version>2.5</servlet-api.version>
+        <mybatis-plus.version>3.3.1</mybatis-plus.version>
+        <lombok.version>1.18.10</lombok.version>
+        <themall-common.version>0.1</themall-common.version>
     </properties>
 
     <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.11</version>
+                <scope>test</scope>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpcore -->
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpcore</artifactId>
+                <version>${httpcore.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-lang</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>${commons-lang.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql-connector.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>servlet-api</artifactId>
+                <version>${servlet-api.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <!-- mybatis-plus -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.theangel.themall</groupId>
+                <artifactId>themall-common</artifactId>
+                <version>${themall-common.version}</version>
+            </dependency>
+
+        </dependencies>
+
     </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <!-- 项目重新启动 -->
+                <configuration>
+                    <fork>true</fork>
+                    <includeSystemScope>true</includeSystemScope>
+                </configuration>
+                <!-- 解决java找不到主类的问题 -->
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+            </plugin>
+        </plugins>
+
+
+    </build>
 
 
 </project>

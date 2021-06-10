@@ -14,7 +14,7 @@ import java.util.Map;
  * @date 2021-06-09 20:52:38
  */
 public interface CouponHistoryService extends IService<CouponHistoryEntity> {
-
+    
     PageUtils queryPage(Map<String, Object> params);
 }
 
