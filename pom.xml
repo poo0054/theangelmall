@@ -25,8 +25,9 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <spring-cloud.version>Hoxton.SR11</spring-cloud.version>
-        <spring-boot.version>2.2.4.RELEASE</spring-boot.version>
+        <spring-boot-alibaba.version>2.2.1.RELEASE</spring-boot-alibaba.version>
+        <spring-cloud.version>Hoxton.SR3</spring-cloud.version>
+        <spring-boot.version>2.2.5.RELEASE</spring-boot.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
 
@@ -36,11 +37,19 @@
         <servlet-api.version>2.5</servlet-api.version>
         <mybatis-plus.version>3.3.1</mybatis-plus.version>
         <lombok.version>1.18.10</lombok.version>
+        <junit.version>4.11</junit.version>
         <themall-common.version>0.1</themall-common.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-boot-alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
 
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
@@ -61,7 +70,7 @@
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <version>4.11</version>
+                <version>${junit.version}</version>
                 <scope>test</scope>
             </dependency>
 

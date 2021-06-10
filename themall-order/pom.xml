@@ -9,7 +9,7 @@
     </parent>
 
     <artifactId>themall-order</artifactId>
-
+    <packaging>jar</packaging>
     <name>themall-order</name>
     <description>订单模块</description>
 
