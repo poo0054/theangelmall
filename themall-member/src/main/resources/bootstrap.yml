@@ -1,0 +1,7 @@
+server:
+  port: 8500
+spring:
+  cloud:
+    nacos:
+      config:
+        namespace: d7e3a403-6dba-4683-b356-2bd9afb743cb
