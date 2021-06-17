@@ -7,8 +7,9 @@ spring:
         extension-configs:
           - dataId: public.yml
             refresh: true
-          - dataId: themall-gatway.yml
+          - dataId: renren-fast.yml
             refresh: true
   application:
-    name: themall-gatway
-
+    name: renren-fast
+server:
+  port: 8080

@@ -4,3 +4,5 @@
 /*.js
 /test/unit/coverage/
 /src/icons/iconfont.js
+
+*.vue

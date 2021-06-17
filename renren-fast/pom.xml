@@ -10,10 +10,9 @@
     <description>renren-fast</description>
 
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.4.RELEASE</version>
-        <relativePath/>
+        <groupId>com.theangel.themall</groupId>
+        <artifactId>themall-theangelmall</artifactId>
+        <version>0.1</version>
     </parent>
 
     <properties>
@@ -53,6 +52,13 @@
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>com.theangel.themall</groupId>
+            <artifactId>themall-common</artifactId>
+        </dependency>
+
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
