@@ -9,6 +9,5 @@ spring:
             refresh: true
           - dataId: themall-gatway.yml
             refresh: true
-  application:
-    name: themall-gatway
+
 

@@ -9,7 +9,3 @@ spring:
             refresh: true
           - dataId: renren-fast.yml
             refresh: true
-  application:
-    name: renren-fast
-server:
-  port: 8080

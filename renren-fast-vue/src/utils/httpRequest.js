@@ -3,7 +3,8 @@ import axios from 'axios'
 import router from '@/router'
 import qs from 'qs'
 import merge from 'lodash/merge'
-import { clearLoginInfo } from '@/utils'
+import {clearLoginInfo} from '@/utils'
+import {Message} from 'element-ui'
 
 const http = axios.create({
   timeout: 1000 * 30,
@@ -29,8 +30,9 @@ http.interceptors.request.use(config => {
 http.interceptors.response.use(response => {
   if (response.data && response.data.code === 401) { // 401, token失效
     clearLoginInfo()
-    router.push({ name: 'login' })
+    router.push({name: 'login'})
   }
+
   return response
 }, error => {
   return Promise.reject(error)

@@ -1,23 +1,29 @@
-spring:
-  cloud:
-    gateway:
-      routes:
-        - id: themall-product
-          uri: lb://themall-product
-          predicates:
-            - Path=/api/product/**
-          filters:
-            - RewritePath=/api/?(?<the>.*), /$\{the}
-
-        - id: renren-fast
-          uri: lb://renren-fast
-          predicates:
-            - Path=/api/**
-          filters:
-            - RewritePath=/api/?(?<the>.*), /renren-fast/$\{the}
-
-server:
-  port: 88
-
-
-
+#server:
+#  port: 88
+#
+#spring:
+#  application:
+#    name: themall-gatway
+#
+#  cloud:
+#    gateway:
+#      routes:
+#        - id: themall-product
+#          uri: lb://themall-product
+#          predicates:
+#            - Path=/api/product/**
+#          filters:
+#            - RewritePath=/api/?(?<the>.*), /$\{the}
+#
+#        - id: renren-fast
+#          uri: lb://renren-fast
+#          predicates:
+#            - Path=/api/**
+#          filters:
+#            - RewritePath=/api/?(?<the>.*), /renren-fast/$\{the}
+#
+#
+##    nacos:
+##      discovery:
+##        server-addr: theangel.vip:8848
+#

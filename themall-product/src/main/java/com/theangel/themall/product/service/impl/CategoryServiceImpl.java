@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -34,11 +35,11 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
     @Override
     public List<CategoryEntity> listCategoryTree() {
-        List<CategoryEntity> categoryEntities = baseMapper.selectList(null);
+        CopyOnWriteArrayList<CategoryEntity> categoryEntities = new CopyOnWriteArrayList<>(baseMapper.selectList(null));
         List<CategoryEntity> collect = categoryEntities
-                .stream()
+                .parallelStream()
                 .filter(categoryEntity ->
-                        categoryEntity.getParentCid() == 0
+                        categoryEntity.getParentCid().equals(0L)
                 )
                 .map(categoryEntity -> {
                     categoryEntity.setChildren(getChildren(categoryEntity, categoryEntities));
@@ -50,8 +51,13 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
     }
 
     @Override
-    public void removeMenuById(List<Long> asList) {
-        baseMapper.deleteBatchIds(asList);
+    public Integer removeMenuById(List<Long> asList) {
+        return baseMapper.deleteBatchIds(asList);
+    }
+
+    @Override
+    public Integer addCategory(CategoryEntity categoryEntity) {
+        return baseMapper.insert(categoryEntity);
     }
 
     /**
@@ -64,7 +70,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
     private List<CategoryEntity> getChildren(CategoryEntity categoryEntity, List<CategoryEntity> categoryEntities) {
         return categoryEntities
                 .stream()
-                .filter(v -> categoryEntity.getCatId() == v.getParentCid())
+                .filter(v -> categoryEntity.getCatId().equals(v.getParentCid()))
                 .map(categoryentity -> {
                     categoryentity.setChildren(getChildren(categoryentity, categoryEntities));
                     return categoryentity;

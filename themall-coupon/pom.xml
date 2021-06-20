@@ -23,39 +23,20 @@
             <artifactId>themall-common</artifactId>
         </dependency>
 
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
 
     </dependencies>
 
-    <!-- <build>
-         <plugins>
-             <plugin>
-                 <groupId>org.springframework.boot</groupId>
-                 <artifactId>spring-boot-maven-plugin</artifactId>
-                 <configuration>
-                     <excludes>
-                         <exclude>
-                             <groupId>org.projectlombok</groupId>
-                             <artifactId>lombok</artifactId>
-                         </exclude>
-                     </excludes>
-                 </configuration>
-             </plugin>
-         </plugins>
-     </build>-->
 
 </project>

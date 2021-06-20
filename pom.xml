@@ -11,27 +11,12 @@
     <packaging>pom</packaging>
     <description>聚合服务</description>
 
-    <modules>
-        <module>themall-coupon</module>
-        <module>themall-common</module>
-        <module>themall-member</module>
-        <module>themall-order</module>
-        <module>themall-product</module>
-        <module>themall-ware</module>
-        <module>renren-fast</module>
-        <module>renren-generator</module>
-        <module>themall-gatway</module>
-    </modules>
-
 
     <properties>
         <java.version>1.8</java.version>
         <spring-boot-alibaba.version>2.2.1.RELEASE</spring-boot-alibaba.version>
         <spring-cloud.version>Hoxton.SR3</spring-cloud.version>
         <spring-boot.version>2.2.5.RELEASE</spring-boot.version>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-
         <httpcore.version>4.4.14</httpcore.version>
         <commons-lang.version>2.6</commons-lang.version>
         <mysql-connector.version>8.0.25</mysql-connector.version>
@@ -137,27 +122,32 @@
 
     </dependencyManagement>
 
+
+    <modules>
+        <module>themall-common</module>
+        <module>themall-gatway</module>
+        <module>themall-coupon</module>
+        <module>themall-member</module>
+        <module>themall-order</module>
+        <module>themall-product</module>
+        <module>themall-ware</module>
+        <module>renren-fast</module>
+        <module>renren-generator</module>
+    </modules>
+
     <build>
         <plugins>
             <plugin>
-
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <!-- 项目重新启动 -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
                 <configuration>
-                    <fork>true</fork>
-                    <includeSystemScope>true</includeSystemScope>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>UTF-8</encoding>
                 </configuration>
-                <!-- 解决java找不到主类的问题 -->
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-
             </plugin>
+
         </plugins>
 
 
