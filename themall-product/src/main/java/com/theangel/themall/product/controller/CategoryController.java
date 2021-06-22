@@ -68,7 +68,7 @@ public class CategoryController {
     }
 
     /**
-     * 批量
+     * 拖拽
      */
     @RequestMapping(value = "/update/list", method = RequestMethod.POST)
     //@RequiresPermissions("product:category:update")
@@ -87,5 +87,6 @@ public class CategoryController {
         categoryService.removeMenuById(Arrays.asList(catIds));
         return R.ok();
     }
+
 
 }

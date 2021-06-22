@@ -9,7 +9,9 @@
       @change="updateswitch">
     </el-switch>
     <el-button v-if="draggable" size="mini" @click="saveUpdateSolt">保存拖拽</el-button>
-    <el-tree :allow-drop="allowDrop" :data="data" :default-expanded-keys="treekeys" :draggable="draggable"
+    <el-button size="mini" type="danger" @click="batDel">批量删除</el-button>
+    <el-tree ref="menuTree" :allow-drop="allowDrop" :data="data" :default-expanded-keys="treekeys"
+             :draggable="draggable"
              :expand-on-click-node="false"
              :props="defaultProps"
              node-key="catId"
@@ -33,7 +35,6 @@
       :title="elDialog.title"
       :visible.sync="elDialog.dialogVisible"
       width="60%">
-
       <el-form :model="category" inline>
         <el-row>
           <el-col :span="12">
@@ -76,8 +77,6 @@
         </el-row>
 
       </el-form>
-
-
       <span slot="footer">
     <el-button @click="elDialog.dialogVisible = false">取 消</el-button>
     <el-button type="primary" @click="addcategory">确 定</el-button>
@@ -118,6 +117,34 @@ export default {
     }
   },
   methods: {
+    //批量删除
+    batDel() {
+      let checkedKeys = this.$refs.menuTree.getCheckedKeys()
+      console.log("被选中的元素", checkedKeys)
+      this.$confirm(`是否删除批量删除?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$http({
+          url: this.$http.adornUrl('/product/category/delete'),
+          method: 'post',
+          data: this.$http.adornData(checkedKeys, false)
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.$message.success(data.msg)
+            this.getMenus()
+          } else {
+            this.$message.error(data.msg)
+          }
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+    },
     //开启关闭拖拽
     updateswitch() {
       this.getMenus()
@@ -179,6 +206,7 @@ export default {
         }
       }
     },
+
     /**
      * 拖拽后子节点改变
      * @param node 拖拽后的兄弟节点
@@ -203,7 +231,7 @@ export default {
       console.log("allowDrop", draggingNode, dropNode, type)
       this.getcountNodelevel(draggingNode.data)
       console.log("当前节点最大深度", this.level)
-      this.level = this.level - draggingNode.data.catLevel + 1
+      this.level = this.level - draggingNode.level + 1
       console.log("当前节点要拖动的深度", this.level)
       if (type == "inner") {
         return (this.level + dropNode.level) <= 3

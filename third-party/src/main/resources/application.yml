@@ -1,0 +1,21 @@
+server:
+  port: 3333
+
+
+# 这些配置在腾讯云控制台都可查到（使用时替换为你自己的）
+# 腾讯云的SecretId（永久的，可在控制台开启或关闭）
+spring:
+  tencent:
+    secretId: AKIDIPHsCF3aqpdAQP7ZkeGdjY6NN6YicGdi
+    # 腾讯云的SecretKey（永久的，可在控制台开启或关闭）
+    SecretKey: qOffOq1uWrviFVVDetrYx5wWqtfAOKdg
+    # 腾讯云的bucket (存储桶)
+    bucket: theangel-1306086135
+    # 腾讯云的region(bucket所在地区)
+    region: ap-guangzhou
+    # 腾讯云的allowPrefix(允许上传的路径)
+    allowPrefix: '*'
+    # 腾讯云的临时密钥时长(单位秒)
+    durationSeconds: 1800
+    # 腾讯云的访问基础链接:
+    baseUrl: https://theangel-1306086135.cos.ap-guangzhou.myqcloud.com

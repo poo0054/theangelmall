@@ -48,7 +48,7 @@ public class BrandController {
     @RequestMapping("/info/{brandId}")
     //@RequiresPermissions("product:brand:info")
     public R info(@PathVariable("brandId") Long brandId) {
-            BrandEntity brand = brandService.getById(brandId);
+        BrandEntity brand = brandService.getById(brandId);
 
         return R.ok().put("brand", brand);
     }
@@ -59,7 +59,7 @@ public class BrandController {
     @RequestMapping("/save")
     //@RequiresPermissions("product:brand:save")
     public R save(@RequestBody BrandEntity brand) {
-            brandService.save(brand);
+        brandService.save(brand);
 
         return R.ok();
     }
@@ -70,7 +70,7 @@ public class BrandController {
     @RequestMapping("/update")
     //@RequiresPermissions("product:brand:update")
     public R update(@RequestBody BrandEntity brand) {
-            brandService.updateById(brand);
+        brandService.updateById(brand);
 
         return R.ok();
     }
@@ -81,7 +81,7 @@ public class BrandController {
     @RequestMapping("/delete")
     //@RequiresPermissions("product:brand:delete")
     public R delete(@RequestBody Long[] brandIds) {
-            brandService.removeByIds(Arrays.asList(brandIds));
+        brandService.removeByIds(Arrays.asList(brandIds));
 
         return R.ok();
     }

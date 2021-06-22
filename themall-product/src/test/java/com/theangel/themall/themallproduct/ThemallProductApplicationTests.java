@@ -1,19 +1,23 @@
 package com.theangel.themall.themallproduct;
 
+import com.theangel.themall.product.entity.CategoryEntity;
 import com.theangel.themall.product.service.BrandService;
+import com.theangel.themall.product.service.CategoryService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 @SpringBootTest
-class ThemallProductApplicationTests {
-    
+public class ThemallProductApplicationTests {
+
     @Autowired
-    private BrandService brandService;
-    
+    CategoryService categoryService;
+
     @Test
-    void contextLoads() {
-        System.out.println(brandService.list());
+    public void test() {
+        List<CategoryEntity> list = categoryService.list();
     }
-    
+
 }

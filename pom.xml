@@ -25,6 +25,8 @@
         <lombok.version>1.18.10</lombok.version>
         <junit.version>4.11</junit.version>
         <themall-common.version>0.1</themall-common.version>
+        <qcloud.version>5.6.38</qcloud.version>
+        <cos-sts.version>3.0.8</cos-sts.version>
     </properties>
 
     <dependencyManagement>
@@ -118,6 +120,20 @@
                 <version>${themall-common.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.qcloud</groupId>
+                <artifactId>cos_api</artifactId>
+                <version>${qcloud.version}</version>
+            </dependency>
+
+            <!--            生成秘钥-->
+            <dependency>
+                <groupId>com.tencent.cloud</groupId>
+                <artifactId>cos-sts-java</artifactId>
+                <version>${cos-sts.version}</version>
+            </dependency>
+
+
         </dependencies>
 
     </dependencyManagement>
@@ -133,6 +149,7 @@
         <module>themall-ware</module>
         <module>renren-fast</module>
         <module>renren-generator</module>
+        <module>third-party</module>
     </modules>
 
     <build>
@@ -153,5 +170,20 @@
 
     </build>
 
+    <!-- 1.添加腾讯云指定的仓库地址 -->
+    <repositories>
+        <repository>
+            <id>bintray-qcloud-maven-repo</id>
+            <name>qcloud-maven-repo</name>
+            <url>https://dl.bintray.com/qcloud/maven-repo/</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
 </project>
