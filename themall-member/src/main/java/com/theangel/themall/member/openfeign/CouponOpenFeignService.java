@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @FeignClient("themall-coupon")
 public interface CouponOpenFeignService {
-    
+
     @PostMapping("/coupon/coupon/member/list")
     public R memberList();
 }

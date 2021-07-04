@@ -8,6 +8,7 @@ spring:
   cloud:
     gateway:
       routes:
+
         - id: themall-product
           uri: lb://themall-product
           predicates:

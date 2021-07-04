@@ -1,15 +1,23 @@
 package com.theangel.themall.product.controller;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.theangel.themall.product.openfeign.ThirdPartyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.theangel.themall.product.entity.CategoryEntity;
 import com.theangel.themall.product.service.CategoryService;
 import com.theangel.common.utils.R;
+import org.springframework.web.multipart.MultipartFile;
 
 
 /**
@@ -24,6 +32,8 @@ import com.theangel.common.utils.R;
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private ThirdPartyService thirdPartyService;
 
     /**
      * 查出所有分类,以树形菜单展示
@@ -88,5 +98,22 @@ public class CategoryController {
         return R.ok();
     }
 
+    @RequestMapping(value = "/files", method = RequestMethod.POST)
+    public R files(@RequestParam("file") MultipartFile[] files) {
+        Map map = new HashMap<>();
+        boolean b = false;
+        for (MultipartFile file : files) {
+            R r = thirdPartyService.cosTenGoodsLogo(file);
+            System.out.println(r);
+        }
+        JSONObject json = new JSONObject();
+        json.putAll(map);
+        if (b) {
+            return R.ok(json);
+        } else {
+            return R.error(json.toJSONString());
+        }
+
+    }
 
 }

@@ -15,21 +15,19 @@
           ref="upload"
           :auto-upload="false"
           :before-remove="beforeRemove"
-          :data="uploaddata"
+          :before-upload="beforeAvatarUpload"
           :headers="header"
-          :limit="3"
+          :limit="10"
+          :on-change="handleChange"
           :on-exceed="handleExceed"
           :on-preview="handlePreview"
           :on-remove="handleRemove"
-          :on-success="handleSuccess"
-          action="https://theangel-1306086135.cos.ap-guangzhou.myqcloud.com"
+          action="http://localhost:88/api/product/category/files"
           multiple>
           <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-          <el-button size="small" style="margin-left: 10px;" type="success" @click="submitUpload">上传到服务器</el-button>
           <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-
         </el-upload>
-        <el-input v-model="dataForm.logo" placeholder="品牌logo地址"></el-input>
+
       </el-form-item>
 
       <el-form-item label="介绍" prop="descript">
@@ -54,7 +52,7 @@
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取消</el-button>
-      <el-button type="primary" @click="dataFormSubmit()">确定</el-button>
+      <el-button type="primary" @click="save">确定</el-button>
     </span>
   </el-dialog>
 </template>
@@ -63,7 +61,7 @@
 export default {
   data() {
     return {
-      uploaddata: {},
+      fileList: [],
       header: {},
       visible: false,
       dataForm: {
@@ -98,43 +96,89 @@ export default {
     }
   },
   methods: {
-    submitUpload() {
-      this.$http({
-        url: this.$http.adornUrl(`/third-party/ten/getTempKey`),
-        method: 'get',
-      }).then(({data}) => {
-        if (data && data.code === 0) {
-          let jsonstr = JSON.parse(data.data);
-          console.log(jsonstr)
-          this.header = {
-            sessionToken: jsonstr.credentials.sessionToken,
-            tmpSecretId: jsonstr.credentials.tmpSecretId,
-            tmpSecretKey: jsonstr.credentials.tmpSecretKey,
-            "Content-Type": "multipart/form-data"
-          };
-          this.uploaddata = {}
-          console.log(this.header)
-        } else {
-          this.$message.error(data.msg)
+    /**
+     *添加品牌信息
+     */
+    save() {
+      console.log(this.fileList)
+      if (this.fileList && this.fileList.length > 0) {
+        // 下面的代码将创建一个空的FormData对象:
+        const formData = new FormData();
+        // 你可以使用FormData.append来添加键/值对到表单里面；
+        this.fileList.forEach((file) => {
+          formData.append("file", file.raw)
+        })
+
+        this.$http({
+          url: this.$http.adornUrl(`/product/category/files`),
+          method: 'post',
+          data: formData
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            console.log(data)
+          }
+        })
+
+      }
+      // this.dataFormSubmit();
+    },
+    /**
+     * 选择文件时，往fileList里添加
+     */
+    handleChange(fileList) {
+      console.log("handleChange", fileList)
+      this.fileList.push(fileList);
+    },
+    /**
+     * 删除
+     * @param file
+     * @param fileList
+     */
+    handleRemove(file, fileList) {
+      const data = []
+      this.fileList.forEach(f => {
+        if (f.uid !== file.uid) {
+          data.push(f)
         }
       })
-
-      this.$refs.upload.submit();
+      this.fileList = data
     },
-    handleSuccess(response, file, fileList) {
-
-    },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
-    },
+    /**
+     * 点击文件列表中已上传的文件时的钩子
+     * @param file
+     */
     handlePreview(file) {
       console.log(file);
     },
+    /**
+     * 文件超出个数限制时的钩子
+     * @param files
+     * @param fileList
+     */
     handleExceed(files, fileList) {
-      this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+      this.$message.warning(`当前限制选择 10 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
     },
+    /**
+     * 删除文件之前的钩子，参数为上传的文件和文件列表，
+     * @param file
+     * @param fileList
+     * @returns {Promise<MessageBoxData>}
+     */
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`);
+    },
+
+    beforeAvatarUpload(file) {
+      console.log(file.type)
+      const isJPG = (file.type === 'image/jpeg' | file.type === 'image/png');
+      const isLt2M = file.size / 1024 / 1024 < 5;
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 或者 PNG 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!');
+      }
+      return isLt2M && isJPG;
     },
 
     init(id) {

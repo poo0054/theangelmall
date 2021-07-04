@@ -1,30 +1,32 @@
-#spring:
-#  datasource:
-#    username: root
-#    password: hjj0127..
-#    url: jdbc:mysql://theangel.vip:3306/themall_pms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#
-#  application:
-#    name: themall-product
-#
-##  cloud:
-##    nacos:
-##      discovery:
-##        server-addr: theangel.vip:8848
-#
-#mybatis-plus:
-#  mapper-locations: classpath*:/mapper/**/*.xml
-#  global-config:
-#    db-config:
-#      id-type: auto
-#
-#      logic-delete-field: show_status  # 全局逻辑删除的实体字段名(since 3.3.0,配置后可以忽略不配置步骤2)
-#      logic-delete-value: 1 # 逻辑已删除值(默认为 1)
-#      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
-#server:
-#  port: 9000
-#
+spring:
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 200MB
+  datasource:
+    username: root
+    password: hjj0127..
+    url: jdbc:mysql://theangel.vip:3306/themall_pms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  application:
+    name: themall-product
 
+#  cloud:
+#    nacos:
+#      discovery:
+#        server-addr: theangel.vip:8848
 
-
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: flag  # 全局逻辑删除的实体字段名(since 3.3.0,配置后可以忽略不配置步骤2)
+      logic-delete-value: 1 # 逻辑已删除值(默认为 1)
+      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+server:
+  port: 9000
+feign:
+  client:
+    default:
+      connectTimeout: 10000

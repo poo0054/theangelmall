@@ -2,9 +2,15 @@ server:
   port: 3333
 
 
-# 这些配置在腾讯云控制台都可查到（使用时替换为你自己的）
-# 腾讯云的SecretId（永久的，可在控制台开启或关闭）
 spring:
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 200MB
+  application:
+    name: third-party
+  # 这些配置在腾讯云控制台都可查到（使用时替换为你自己的）
+  # 腾讯云的SecretId（永久的，可在控制台开启或关闭）
   tencent:
     secretId: AKIDIPHsCF3aqpdAQP7ZkeGdjY6NN6YicGdi
     # 腾讯云的SecretKey（永久的，可在控制台开启或关闭）

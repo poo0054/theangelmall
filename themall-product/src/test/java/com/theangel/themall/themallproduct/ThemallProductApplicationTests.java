@@ -12,12 +12,9 @@ import java.util.List;
 @SpringBootTest
 public class ThemallProductApplicationTests {
 
-    @Autowired
-    CategoryService categoryService;
 
     @Test
     public void test() {
-        List<CategoryEntity> list = categoryService.list();
     }
 
 }

@@ -13,6 +13,7 @@ import com.qcloud.cos.region.Region;
 import com.tencent.cloud.CosStsClient;
 import com.theangel.themall.thirdparty.pojo.TencentUpload;
 import lombok.Data;
+import lombok.extern.log4j.Log4j;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -28,6 +29,7 @@ import java.util.TreeMap;
 
 @Configuration
 @AutoConfigureBefore(TencentUpload.class)
+@Log4j
 public class TencentUploadUtil {
 
     private final TencentUpload tencentUpload;
@@ -44,7 +46,6 @@ public class TencentUploadUtil {
      * @return 成功返回文件路径, 失败返回null
      */
     public String uploadFile(String path, File file) throws JSONException {
-
         //获取临时密钥
         JSONObject temp = getTempKey();
         // 用户基本信息:解析临时密钥中的相关信息
@@ -72,6 +73,7 @@ public class TencentUploadUtil {
             // 成功：putobjectResult 会返回文件的 etag
             String etag = putObjectResult.getETag();
             rtValue = tencentUpload.getBaseUrl() + path;
+            log.info("图片创建地址为==================>" + rtValue);
         } catch (CosServiceException e) {
             //失败，抛出 CosServiceException
             e.printStackTrace();
@@ -85,7 +87,6 @@ public class TencentUploadUtil {
             if (cosclient != null) {
                 cosclient.shutdown();
             }
-            //返回文件的网络访问url
         }
         return rtValue;
     }
