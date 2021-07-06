@@ -17,7 +17,7 @@
           :before-remove="beforeRemove"
           :before-upload="beforeAvatarUpload"
           :headers="header"
-          :limit="10"
+          :limit="1"
           :on-change="handleChange"
           :on-exceed="handleExceed"
           :on-preview="handlePreview"
@@ -58,6 +58,11 @@
 </template>
 
 <script>
+
+import COS from "cos-js-sdk-v5"
+
+import {generateUUID,cospush} from "@/utils/cosUtils"
+
 export default {
   data() {
     return {
@@ -100,27 +105,25 @@ export default {
      *添加品牌信息
      */
     save() {
-      console.log(this.fileList)
+
       if (this.fileList && this.fileList.length > 0) {
         // 下面的代码将创建一个空的FormData对象:
-        const formData = new FormData();
+        var filename=[]
         // 你可以使用FormData.append来添加键/值对到表单里面；
         this.fileList.forEach((file) => {
-          formData.append("file", file.raw)
+         let imgName= ("goods/"+generateUUID() )+ ( file.type === 'image/jpeg'?".jpg":".png")
+          this.dataForm.logo= "https://"+"theangel-1306086135.cos.ap-guangzhou.myqcloud.com/"+imgName
+          //上傳圖片
+          let data =  cospush(imgName,file.raw);
+          console.log(data)
+         if(data && data.statusCode==200){
+           filename=data.Location
+         }else{
+           this.$message.error('图片上传失败！');
+         }
         })
-
-        this.$http({
-          url: this.$http.adornUrl(`/product/category/files`),
-          method: 'post',
-          data: formData
-        }).then(({data}) => {
-          if (data && data.code === 0) {
-            console.log(data)
-          }
-        })
-
       }
-      // this.dataFormSubmit();
+       this.dataFormSubmit();
     },
     /**
      * 选择文件时，往fileList里添加

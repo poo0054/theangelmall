@@ -17,6 +17,8 @@
     "axios": "0.17.1",
     "babel-plugin-component": "0.10.1",
     "babel-polyfill": "6.26.0",
+    "cos-js-sdk-v5": "^1.2.15",
+    "cos-nodejs-sdk-v5": "^2.9.21",
     "element-ui": "2.8.2",
     "gulp": "4.0.2",
     "gulp-concat": "2.6.1",
@@ -85,7 +87,7 @@
     "vue-template-compiler": "2.5.16",
     "webpack": "3.6.0",
     "webpack-bundle-analyzer": "2.9.0",
-    "webpack-dev-server": "2.9.1",
+    "webpack-dev-server": "^2.9.1",
     "webpack-merge": "4.1.0"
   },
   "engines": {

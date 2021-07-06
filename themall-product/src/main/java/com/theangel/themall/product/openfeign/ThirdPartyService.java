@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-@FeignClient("third-party")
+import java.util.Map;
+
+//@FeignClient("third-party")
 public interface ThirdPartyService {
 
     @PostMapping(value = "/third-party/ten/cosGoodsLogo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public R cosTenGoodsLogo(MultipartFile files);
+    public Map<String, String> cosTenGoodsLogo(MultipartFile files);
 
 
     @Configuration

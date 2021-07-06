@@ -36,12 +36,20 @@
         label="品牌名"
         prop="name">
       </el-table-column>
+
       <el-table-column
         align="center"
         header-align="center"
         label="品牌logo地址"
-        prop="logo">
+      >
+        <template slot-scope="scope">
+          <img :src="scope.row.logo"
+               onerror="this.src='theangel-1306086135.cos.ap-guangzhou.myqcloud.com/%E9%A2%84%E5%8A%A0%E8%BD%BD%E5%9B%BE%E7%89%87.png'"
+               alt="图片加载失败" width="100%" height="100%"/>
+        </template>
+
       </el-table-column>
+
       <el-table-column
         align="center"
         header-align="center"

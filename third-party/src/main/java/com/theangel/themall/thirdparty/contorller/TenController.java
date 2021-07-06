@@ -15,6 +15,7 @@ import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("third-party/ten")
@@ -35,9 +36,9 @@ public class TenController {
         return R.ok(objectObjectHashMap);
     }
 
-    @PostMapping("/cosGoodsLogo")
-    public R cosTenGoodsLogo(MultipartFile file) {
-        HashMap<String, Object> map = new HashMap<>();
+//    @PostMapping("/cosGoodsLogo")
+    public Map<String, String> cosTenGoodsLogo(MultipartFile file) {
+        HashMap<String, String> map = new HashMap<>();
         try {
             File file1 = FileUtils.multipartFileToFile(file);
             if (null != file1) {
@@ -46,15 +47,15 @@ public class TenController {
                 String path = "/goodsLogo/" + suffix;
                 String s = uploadFileService.uploadFile(path, file1);
                 if (StringUtils.isNotEmpty(s)) {
-                    map.put(file.getName(), s);
+                    map.put("data", s);
                 }
                 FileUtils.delteTempFile(file1);
             }
         } catch (IOException e) {
             log.error(e.getClass().getSimpleName() + "类错误--------->" + e.toString());
-            return R.ok(map);
+            return map;
         }
-        return R.ok(map);
+        return map;
     }
 
 

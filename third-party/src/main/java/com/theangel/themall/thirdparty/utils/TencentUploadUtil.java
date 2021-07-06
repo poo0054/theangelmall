@@ -74,6 +74,7 @@ public class TencentUploadUtil {
             String etag = putObjectResult.getETag();
             rtValue = tencentUpload.getBaseUrl() + path;
             log.info("图片创建地址为==================>" + rtValue);
+            System.out.println("图片创建地址为==================>" + rtValue);
         } catch (CosServiceException e) {
             //失败，抛出 CosServiceException
             e.printStackTrace();
