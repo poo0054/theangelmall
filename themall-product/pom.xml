@@ -17,6 +17,13 @@
     <dependencies>
 
         <dependency>
+            <groupId>com.github.kuaidi100-api</groupId>
+            <artifactId>sdk</artifactId>
+            <version>1.0.4</version>
+        </dependency>
+
+
+        <dependency>
             <groupId>com.theangel.themall</groupId>
             <artifactId>themall-common</artifactId>
         </dependency>

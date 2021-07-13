@@ -5,12 +5,11 @@
     :visible.sync="visible">
     <el-form ref="dataForm" :model="dataForm" :rules="dataRule" label-width="80px"
              @keyup.enter.native="dataFormSubmit()">
-
       <el-form-item label="品牌名" prop="name">
         <el-input v-model="dataForm.name" placeholder="品牌名"></el-input>
       </el-form-item>
 
-      <el-form-item label="品牌logo地址" prop="logo">
+      <el-form-item label="logo" prop="logo">
         <el-upload
           ref="upload"
           :auto-upload="false"
@@ -47,21 +46,19 @@
         <el-input v-model="dataForm.firstLetter" placeholder="检索首字母"></el-input>
       </el-form-item>
       <el-form-item label="排序" prop="sort">
-        <el-input v-model="dataForm.sort" placeholder="排序"></el-input>
+        <el-input v-model.number="dataForm.sort" placeholder="排序"></el-input>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取消</el-button>
-      <el-button type="primary" @click="save">确定</el-button>
+      <el-button type="primary" @click="dataFormSubmit()">确定</el-button>
     </span>
   </el-dialog>
 </template>
 
 <script>
 
-import COS from "cos-js-sdk-v5"
-
-import {generateUUID,cospush} from "@/utils/cosUtils"
+import {generateUUID, cospush} from "../../../utils/cosUtils"
 
 export default {
   data() {
@@ -92,39 +89,35 @@ export default {
           {required: true, message: '显示状态[0-不显示；1-显示]不能为空', trigger: 'blur'}
         ],
         firstLetter: [
-          {required: true, message: '检索首字母不能为空', trigger: 'blur'}
+          {
+            validator: (rule, value, callback) => {
+              if ('' == value) {
+                callback(new Error('首字母不能为空！'));
+              } else if (!/^[a-zA-Z]$/.test(value)) {
+                callback(new Error('首字母必须为字母'));
+              } else {
+                callback();
+              }
+            }, trigger: 'blur'
+          }
         ],
         sort: [
-          {required: true, message: '排序不能为空', trigger: 'blur'}
+          {
+            validator: (rule, value, callback) => {
+              if ('' == value) {
+                callback(new Error('排序字段不能为空！'));
+              } else if (!Number.isInteger(value) && value >= 0) {
+                callback(new Error('排序字段必须为整数'));
+              } else {
+                callback();
+              }
+            }, trigger: 'blur'
+          }
         ]
       }
     }
   },
   methods: {
-    /**
-     *添加品牌信息
-     */
-    save() {
-
-      if (this.fileList && this.fileList.length > 0) {
-        // 下面的代码将创建一个空的FormData对象:
-        var filename=[]
-        // 你可以使用FormData.append来添加键/值对到表单里面；
-        this.fileList.forEach((file) => {
-         let imgName= ("goods/"+generateUUID() )+ ( file.type === 'image/jpeg'?".jpg":".png")
-          this.dataForm.logo= "https://"+"theangel-1306086135.cos.ap-guangzhou.myqcloud.com/"+imgName
-          //上傳圖片
-          let data =  cospush(imgName,file.raw);
-          console.log(data)
-         if(data && data.statusCode==200){
-           filename=data.Location
-         }else{
-           this.$message.error('图片上传失败！');
-         }
-        })
-      }
-       this.dataFormSubmit();
-    },
     /**
      * 选择文件时，往fileList里添加
      */
@@ -209,6 +202,16 @@ export default {
     },
     // 表单提交
     dataFormSubmit() {
+      console.log(this.fileList)
+      let imgName = null;
+      if (this.fileList && this.fileList.length > 0) {
+        this.fileList.forEach((file) => {
+          imgName = ("goods/" + generateUUID()) + (file.type === 'image/jpeg' ? ".jpg" : ".png")
+          //赋值给图片
+          this.dataForm.logo = "https://" + "theangel-1306086135.cos.ap-guangzhou.myqcloud.com/" + imgName
+        })
+      }
+
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           this.$http({
@@ -225,6 +228,13 @@ export default {
             })
           }).then(({data}) => {
             if (data && data.code === 0) {
+              if (this.fileList && this.fileList.length > 0) {
+                // 下面的代码将创建一个空的FormData对象:
+                // 你可以使用FormData.append来添加键/值对到表单里面；
+                this.fileList.forEach((file) => {
+                  cospush(imgName, file.raw);
+                })
+              }
               this.$message({
                 message: '操作成功',
                 type: 'success',
