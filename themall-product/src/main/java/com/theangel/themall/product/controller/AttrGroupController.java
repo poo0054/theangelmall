@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
+import com.theangel.themall.product.service.CategoryService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,11 +22,15 @@ import com.theangel.common.utils.R;
  * @email poo0054@outlook.com
  * @date 2021-06-09 20:47:30
  */
+@Slf4j
 @RestController
 @RequestMapping("product/attrgroup")
 public class AttrGroupController {
     @Autowired
     private AttrGroupService attrGroupService;
+
+    @Autowired
+    private CategoryService categoryService;
 
     /**
      * 列表
@@ -45,7 +51,7 @@ public class AttrGroupController {
     //@RequiresPermissions("product:attrgroup:info")
     public R info(@PathVariable("attrGroupId") Long attrGroupId) {
         AttrGroupEntity attrGroup = attrGroupService.getById(attrGroupId);
-
+        attrGroup.setCatelogIds(categoryService.getCateLogIds(attrGroup.getCatelogId()));
         return R.ok().put("attrGroup", attrGroup);
     }
 

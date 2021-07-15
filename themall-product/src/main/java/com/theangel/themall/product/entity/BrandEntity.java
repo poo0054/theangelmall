@@ -31,7 +31,7 @@ public class BrandEntity implements Serializable {
      * 品牌id
      */
     @TableId
-    @NotNull(message = "品牌id不能为空", groups = {addGro.class, updateGro.class})
+    @NotNull(message = "品牌id不能为空", groups = {updateGro.class})
     private Long brandId;
     /**
      * 品牌名
@@ -56,7 +56,7 @@ public class BrandEntity implements Serializable {
     /**
      * 检索首字母
      */
-    @Pattern(regexp = "/^[a-zA-Z]&", message = "检索首字母必须是一个字母", groups = {addGro.class, updateGro.class})
+    @Pattern(regexp = "^[a-zA-Z]$", message = "检索首字母必须是一个字母", groups = {addGro.class, updateGro.class})
     private String firstLetter;
     /**
      * 排序
