@@ -62,9 +62,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
     }
 
     @Override
-    public Long[] getCateLogIds(Long catelogId) {
+    public Long[] getCateLogPath(Long catelog) {
         List<Long> longs = new ArrayList<>();
-        List<Long> parentCateLogId = getParentCateLogId(catelogId, longs);
+        List<Long> parentCateLogId = getParentCateLogId(catelog, longs);
         Collections.reverse(parentCateLogId);
         return parentCateLogId.toArray(new Long[parentCateLogId.size()]);
     }

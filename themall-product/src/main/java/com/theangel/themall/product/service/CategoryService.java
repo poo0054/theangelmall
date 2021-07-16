@@ -25,6 +25,6 @@ public interface CategoryService extends IService<CategoryEntity> {
 
     Integer addCategory(CategoryEntity categoryEntity);
 
-    Long[] getCateLogIds(Long catelogId);
+    Long[] getCateLogPath(Long catelogId);
 }
 

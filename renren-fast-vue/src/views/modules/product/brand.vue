@@ -2,13 +2,22 @@
   <div class="mod-config">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input v-model="dataForm.key" clearable placeholder="参数名"></el-input>
+        <el-input v-model="dataForm.key" placeholder="参数名" clearable></el-input>
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-        <el-button v-if="isAuth('product:brand:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
-        <el-button v-if="isAuth('product:brand:delete')" :disabled="dataListSelections.length <= 0" type="danger"
-                   @click="deleteHandle()">批量删除
+        <el-button
+          v-if="isAuth('product:brand:save')"
+          type="primary"
+          @click="addOrUpdateHandle()"
+        >新增
+        </el-button>
+        <el-button
+          v-if="isAuth('product:brand:delete')"
+          type="danger"
+          @click="deleteHandle()"
+          :disabled="dataListSelections.length <= 0"
+        >批量删除
         </el-button>
       </el-form-item>
     </el-form>
@@ -24,11 +33,11 @@
       <el-table-column prop="name" header-align="center" align="center" label="品牌名"></el-table-column>
       <el-table-column prop="logo" header-align="center" align="center" label="品牌logo地址">
         <template slot-scope="scope">
-          <el-image
-            style="width: 100px; height: 80px"
-            :src="scope.row.logo"
-            fit="fill"></el-image>
-          <!--          <img :src="scope.row.logo" style="width: 100px; height: 80px"/>-->
+          <!-- <el-image
+              style="width: 100px; height: 80px"
+              :src="scope.row.logo"
+          fit="fill"></el-image>-->
+          <img :src="scope.row.logo" style="width: 100px; height: 80px"/>
         </template>
       </el-table-column>
       <el-table-column prop="descript" header-align="center" align="center" label="介绍"></el-table-column>
@@ -38,8 +47,8 @@
             v-model="scope.row.showStatus"
             active-color="#13ce66"
             inactive-color="#ff4949"
-            :active-value="0"
-            :inactive-value="1"
+            :active-value="1"
+            :inactive-value="0"
             @change="updateBrandStatus(scope.row)"
           ></el-switch>
         </template>
@@ -157,6 +166,7 @@ export default {
       this.cateRelationDialogVisible = true;
       this.brandId = brandId;
       this.getCateRelation();
+
     },
     getCateRelation() {
       this.$http({
@@ -166,7 +176,9 @@ export default {
           brandId: this.brandId
         })
       }).then(({data}) => {
+        console.log(data)
         this.cateRelationTableData = data.data;
+
       });
     },
     // 获取数据列表
@@ -196,19 +208,14 @@ export default {
       let {brandId, showStatus} = data;
       //发送请求修改状态
       this.$http({
-        url: this.$http.adornUrl("/product/brand/update"),
+        url: this.$http.adornUrl("/product/brand/update/status"),
         method: "post",
         data: this.$http.adornData({brandId, showStatus}, false)
       }).then(({data}) => {
-        if (data) {
-          this.$message({
-            type: "success",
-            message: "状态更新成功"
-          });
-          this.getDataList()
-        }
-
-
+        this.$message({
+          type: "success",
+          message: "状态更新成功"
+        });
       });
     },
     // 每页数
@@ -272,5 +279,3 @@ export default {
   }
 };
 </script>
-<style scoped>
-</style>

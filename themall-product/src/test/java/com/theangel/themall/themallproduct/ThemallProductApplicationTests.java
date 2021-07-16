@@ -17,7 +17,7 @@ public class ThemallProductApplicationTests {
 
     @Test
     public void test() {
-        Long[] cateLogIds = categoryService.getCateLogIds(250L);
+        Long[] cateLogIds = categoryService.getCateLogPath(250L);
         System.out.println(cateLogIds.length);
         System.out.println(cateLogIds[0]);
         System.out.println(cateLogIds[1]);

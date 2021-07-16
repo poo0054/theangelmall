@@ -19,10 +19,10 @@
       <el-form-item label="组图标" prop="icon">
         <el-input v-model="dataForm.icon" placeholder="组图标"></el-input>
       </el-form-item>
-      <el-form-item label="所属分类id" prop="catelogIds">
+      <el-form-item label="所属分类id" prop="catelogPath">
         <!--        <el-input v-model="dataForm.catelogId" placeholder="所属分类id"></el-input>-->
         <el-cascader
-          v-model="dataForm.catelogIds"
+          v-model="dataForm.catelogPath"
           :options="categorys"
           :props="props"
           filterable
@@ -59,7 +59,7 @@ export default {
         descript: '',
         icon: '',
         catelogId: '',
-        catelogIds: []
+        catelogPath: []
       },
       dataRule: {
         attrGroupName: [
@@ -85,7 +85,7 @@ export default {
   },
   methods: {
     dialogClosed() {
-      this.dataForm.catelogIds = []
+      this.dataForm.catelogPath = []
     },
     getCategory() {
       this.$http({
@@ -117,7 +117,7 @@ export default {
               this.dataForm.descript = data.attrGroup.descript
               this.dataForm.icon = data.attrGroup.icon
               this.dataForm.catelogId = data.attrGroup.catelogId
-              this.dataForm.catelogIds = data.attrGroup.catelogIds
+              this.dataForm.catelogPath = data.attrGroup.catelogPath
             }
           })
         }
@@ -136,7 +136,7 @@ export default {
               'sort': this.dataForm.sort,
               'descript': this.dataForm.descript,
               'icon': this.dataForm.icon,
-              'catelogId': this.dataForm.catelogIds[this.dataForm.catelogIds.length - 1]
+              'catelogId': this.dataForm.catelogPath[this.dataForm.catelogPath.length - 1]
             })
           }).then(({data}) => {
             if (data && data.code === 0) {

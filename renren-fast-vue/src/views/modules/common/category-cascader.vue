@@ -22,6 +22,7 @@
 <script>
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
+import PubSub from "pubsub-js";
 
 export default {
   //import引入的组件需要注入到对象中才能使用
@@ -49,8 +50,8 @@ export default {
   },
   watch: {
     catelogPath(v) {
+      console.log(v)
       this.paths = this.catelogPath;
-      console.log(this.paths)
     },
     paths(v) {
       this.$emit("update:catelogPath", v);
@@ -62,9 +63,10 @@ export default {
   methods: {
     getCategorys() {
       this.$http({
-        url: this.$http.adornUrl("/product/category/list/tree"),
+        url: this.$http.adornUrl("/product/category/tree"),
         method: "get"
       }).then(({data}) => {
+        console.log("-------------", data)
         this.categorys = data.data;
       });
     }
