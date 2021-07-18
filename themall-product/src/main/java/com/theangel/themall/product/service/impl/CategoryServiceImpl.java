@@ -1,6 +1,8 @@
 package com.theangel.themall.product.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.theangel.themall.product.service.CategoryBrandRelationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,11 +21,16 @@ import com.theangel.common.utils.Query;
 import com.theangel.themall.product.dao.CategoryDao;
 import com.theangel.themall.product.entity.CategoryEntity;
 import com.theangel.themall.product.service.CategoryService;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.util.comparator.ComparableComparator;
 
 
 @Service("categoryService")
 public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity> implements CategoryService {
+
+    @Autowired
+    private CategoryBrandRelationService categoryBrandRelationService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -67,6 +74,15 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         List<Long> parentCateLogId = getParentCateLogId(catelog, longs);
         Collections.reverse(parentCateLogId);
         return parentCateLogId.toArray(new Long[parentCateLogId.size()]);
+    }
+
+    @Override
+    @Transactional
+    public void updateDetail(CategoryEntity category) {
+        this.updateById(category);
+        if (!StringUtils.isEmpty(category.getName())) {
+            categoryBrandRelationService.updateCategoryIdAndName(category.getCatId(), category.getName());
+        }
     }
 
     private List<Long> getParentCateLogId(Long catelogId, List<Long> longs) {
