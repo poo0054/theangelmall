@@ -17,7 +17,6 @@
              node-key="catId"
              show-checkbox @node-drop="handleDrop">
         <span slot-scope="{ node, data }" class="custom-tree-node">
-
       <span>{{ node.label }}</span>
       <span>
           <el-button v-if="node.level < 3" size="mini" type="text" @click="append(data)"> 新增 </el-button>
@@ -231,12 +230,15 @@ export default {
       console.log("allowDrop", draggingNode, dropNode, type)
       this.getcountNodelevel(draggingNode.data)
       console.log("当前节点最大深度", this.level)
+      let deep = Math.abs(this.level - draggingNode.level) + 1;
       this.level = this.level - draggingNode.level + 1
       console.log("当前节点要拖动的深度", this.level)
       if (type == "inner") {
-        return (this.level + dropNode.level) <= 3
+        //  return (this.level + dropNode.level) <= 3
+        return deep + dropNode.level <= 3;
       } else {
-        return (this.level + dropNode.parent.level) <= 3
+        // return (this.level + dropNode.parent.level) <= 3
+        return deep + dropNode.parent.level <= 3;
       }
     },
     /**
@@ -244,18 +246,30 @@ export default {
      * @param node  当前拖动节点信息
      */
     getcountNodelevel(node) {
-      if (node.children != null && node.children.length > 0) {
-        for (let i = 0; i < node.children.length; i++) {
-          if (node.children[i].catLevel > this.level) {
-            this.level = node.children[i].catLevel
+      //找到所有子节点，求出最大深度
+      if (node.childNodes != null && node.childNodes.length > 0) {
+        for (let i = 0; i < node.childNodes.length; i++) {
+          if (node.childNodes[i].level > this.maxLevel) {
+            // 是赋值给了共享变量maxLevel
+            this.maxLevel = node.childNodes[i].level;
           }
-          this.getcountNodelevel(node.children[i])
-        }
-      } else {
-        if (node.catLevel > this.level) {
-          this.level = node.catLevel
+          // 递归子节点
+          this.getcountNodelevel(node.childNodes[i]);
         }
       }
+
+      /*  if (node.children != null && node.children.length > 0) {
+          for (let i = 0; i < node.children.length; i++) {
+            if (node.children[i].catLevel > this.level) {
+              this.level = node.children[i].catLevel
+            }
+            this.getcountNodelevel(node.children[i])
+          }
+        } else {
+          if (node.catLevel > this.level) {
+            this.level = node.catLevel
+          }
+        }*/
     },
     // 修改按钮
     edit(data) {

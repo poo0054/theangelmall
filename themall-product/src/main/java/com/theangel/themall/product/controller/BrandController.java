@@ -1,20 +1,28 @@
 package com.theangel.themall.product.controller;
 
 import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
+import com.netflix.client.http.HttpRequest;
+import com.netflix.ribbon.proxy.annotation.Http;
+import com.theangel.common.valid.addGro;
+import com.theangel.common.valid.updateGro;
+import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import com.theangel.themall.product.entity.BrandEntity;
 import com.theangel.themall.product.service.BrandService;
 import com.theangel.common.utils.PageUtils;
 import com.theangel.common.utils.R;
+
+import javax.validation.Valid;
 
 
 /**
@@ -56,12 +64,23 @@ public class BrandController {
     /**
      * 保存
      */
-    @RequestMapping("/save")
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
     //@RequiresPermissions("product:brand:save")
-    public R save(@RequestBody BrandEntity brand) {
+    public R save(@Validated({addGro.class}) @RequestBody BrandEntity brand/**, BindingResult result*/) {
+     /*   if (result.hasErrors()) {
+            LinkedHashMap<String, String> map = new LinkedHashMap<>();
+            List<FieldError> fieldErrors = result.getFieldErrors();
+            fieldErrors.forEach(k -> {
+                map.put(k.getField(), k.getDefaultMessage());
+            });
+            return R.error(HttpStatus.SC_BAD_REQUEST, "提交数据不合法").put("data", map);
+        } else {
+            brandService.save(brand);
+            return R.ok();
+        }*/
         brandService.save(brand);
-
         return R.ok();
+
     }
 
     /**
@@ -69,9 +88,9 @@ public class BrandController {
      */
     @RequestMapping("/update")
     //@RequiresPermissions("product:brand:update")
-    public R update(@RequestBody BrandEntity brand) {
-        brandService.updateById(brand);
-
+    public R update(@Validated({updateGro.class}) @RequestBody BrandEntity brand) {
+//        brandService.updateById(brand);
+        brandService.updateDetail(brand);
         return R.ok();
     }
 
@@ -82,7 +101,6 @@ public class BrandController {
     //@RequiresPermissions("product:brand:delete")
     public R delete(@RequestBody Long[] brandIds) {
         brandService.removeByIds(Arrays.asList(brandIds));
-
         return R.ok();
     }
 

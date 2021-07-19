@@ -32,9 +32,11 @@ import org.springframework.web.multipart.MultipartFile;
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;
+
   /*  @Autowired
     private ThirdPartyService thirdPartyService;
 */
+
     /**
      * 查出所有分类,以树形菜单展示
      */
@@ -73,7 +75,7 @@ public class CategoryController {
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     //@RequiresPermissions("product:category:update")
     public R update(@RequestBody CategoryEntity category) {
-        categoryService.updateById(category);
+        categoryService.updateDetail(category);
         return R.ok();
     }
 
@@ -98,7 +100,7 @@ public class CategoryController {
         return R.ok();
     }
 
-//    @RequestMapping(value = "/files", method = RequestMethod.POST)
+    //    @RequestMapping(value = "/files", method = RequestMethod.POST)
     public R files(@RequestParam("file") MultipartFile[] files) {
         Map map = new HashMap<>();
         boolean b = false;

@@ -2,6 +2,7 @@ package com.theangel.themall.product.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.theangel.common.utils.PageUtils;
+import com.theangel.themall.product.entity.BrandEntity;
 import com.theangel.themall.product.entity.CategoryBrandRelationEntity;
 
 import java.util.Map;
@@ -16,5 +17,14 @@ import java.util.Map;
 public interface CategoryBrandRelationService extends IService<CategoryBrandRelationEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    PageUtils brandIdPage(Long brandId);
+
+    void saveDatail(CategoryBrandRelationEntity categoryBrandRelation);
+
+
+    void updateBrand(Long brandId, String name);
+
+    void updateCategoryIdAndName(Long catId, String name);
 }
 
