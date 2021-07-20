@@ -3,13 +3,22 @@
 
 <mapper namespace="com.theangel.themall.product.dao.AttrAttrgroupRelationDao">
 
-	<!-- 可根据自己的需求，是否要使用 -->
+    <!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="com.theangel.themall.product.entity.AttrAttrgroupRelationEntity" id="attrAttrgroupRelationMap">
         <result property="id" column="id"/>
         <result property="attrId" column="attr_id"/>
         <result property="attrGroupId" column="attr_group_id"/>
         <result property="attrSort" column="attr_sort"/>
     </resultMap>
+
+    <delete id="deleteBatchRelation">
+        delete
+        from pms_attr_attrgroup_relation
+        where
+        <foreach collection="relation" item="i" separator=" OR ">
+            ( attr_id = #{i.attrId} and attr_group_id = #{i.attrGroupId} )
+        </foreach>
+    </delete>
 
 
 </mapper>

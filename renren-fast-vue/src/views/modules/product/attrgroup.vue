@@ -180,11 +180,9 @@ export default {
     },
     // 删除
     deleteHandle(id) {
-      var ids = id
-        ? [id]
-        : this.dataListSelections.map(item => {
-          return item.attrGroupId;
-        });
+      var ids = id ? [id] : this.dataListSelections.map(item => {
+        return item.attrGroupId;
+      });
       this.$confirm(
         `确定对[id=${ids.join(",")}]进行[${id ? "删除" : "批量删除"}]操作?`,
         "提示",

@@ -16,8 +16,8 @@
 <script>
 export default {
   watch: {
-    filterText(val) {
-      this.$refs.menuTree.filter(val);
+    filterText(newVal) {
+      this.$refs.menuTree.filter(newVal);
     }
   },
   data() {

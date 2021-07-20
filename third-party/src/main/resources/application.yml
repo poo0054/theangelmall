@@ -22,6 +22,6 @@ spring:
     # 腾讯云的allowPrefix(允许上传的路径)
     allowPrefix: '*'
     # 腾讯云的临时密钥时长(单位秒)
-    durationSeconds: 1800
+    durationSeconds: 10
     # 腾讯云的访问基础链接:
     baseUrl: https://theangel-1306086135.cos.ap-guangzhou.myqcloud.com

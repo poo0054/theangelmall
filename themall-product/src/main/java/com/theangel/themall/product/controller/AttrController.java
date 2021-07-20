@@ -31,6 +31,13 @@ public class AttrController {
     // product/attr/base/list/0?t=1626618562074&page=1&limit=10&key=
     //GET /product/attr/base/list/{catelogId}
     //GET /product/attr/sale/list/{catelogId}
+
+    /**
+     * @param params
+     * @param catelogId
+     * @param type
+     * @return
+     */
     @GetMapping("/{type}/list/{catelogId}")
     public R baseList(@RequestParam Map<String, Object> params, @PathVariable("catelogId") Long catelogId, @PathVariable("type") String type) {
         PageUtils pageUtils = attrService.queryBaseAttrPage(params, catelogId, type);

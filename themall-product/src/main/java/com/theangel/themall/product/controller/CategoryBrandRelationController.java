@@ -47,7 +47,6 @@ public class CategoryBrandRelationController {
     public R cateloglist(@RequestParam Long brandId) {
 //        PageUtils page = categoryBrandRelationService.queryPage(params);
         List<CategoryBrandRelationEntity> brand_id = categoryBrandRelationService.list(new QueryWrapper<CategoryBrandRelationEntity>().eq("brand_id", brandId));
-
         return R.ok().put("data", brand_id);
     }
 

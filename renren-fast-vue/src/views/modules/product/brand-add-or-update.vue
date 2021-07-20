@@ -202,7 +202,7 @@ export default {
     },
     // 表单提交
     dataFormSubmit() {
-      console.log(this.fileList)
+
       let imgName = null;
       if (this.fileList && this.fileList.length > 0) {
         this.fileList.forEach((file) => {

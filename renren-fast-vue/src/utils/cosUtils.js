@@ -21,13 +21,11 @@ export function cospush(name, file) {
   }).then(({data}) => {
     if (data && data.code === 0) {
       let d = JSON.parse(data.data)
-      console.log(d)
       let cos = new COS({
         SecretId: d.credentials.tmpSecretId,
         SecretKey: d.credentials.tmpSecretKey,
         SecurityToken: d.credentials.sessionToken
       })
-      console.log(cos)
       cos.putObject({
         Key: name,
         Bucket: "theangel-1306086135",
