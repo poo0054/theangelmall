@@ -55,7 +55,6 @@ export default {
       for (let i = 0; i < this.value.length; i++) {
         fileList.push({url: this.value[i]});
       }
-
       return fileList;
     }
   },

@@ -49,11 +49,11 @@
               </el-input-number>
             </el-form-item>
             <el-form-item label="商品介绍" prop="decript">
-              <multi-upload v-model="spu.decript"></multi-upload>
+              <multi-upload :titleName="'product'" v-model="spu.decript"></multi-upload>
             </el-form-item>
 
             <el-form-item label="商品图集" prop="images">
-              <multi-upload v-model="spu.images"></multi-upload>
+              <multi-upload :titleName="'product'" v-model="spu.images"></multi-upload>
             </el-form-item>
             <el-form-item>
               <el-button type="success" @click="collectSpuBaseInfo">下一步：设置基本参数</el-button>
@@ -205,6 +205,7 @@
                       style="float:left;margin-left:10px;"
                       :showFile="false"
                       :listType="'text'"
+                      :titleName="'product'"
                       v-model="uploadImages"
                     ></multi-upload>
                   </el-col>
@@ -522,6 +523,7 @@ export default {
     },
     collectSpuBaseInfo() {
       //spuBaseForm
+      console.log(this.spu)
       this.$refs.spuBaseForm.validate(valid => {
         if (valid) {
           this.step = 1;
@@ -640,6 +642,7 @@ export default {
       }
       return res;
     },
+
     getShowSaleAttr() {
       //获取当前分类可以使用的销售属性
       if (!this.dataResp.steped[1]) {

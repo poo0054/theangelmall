@@ -35,7 +35,6 @@ public class CategoryBrandRelationController {
     //@RequiresPermissions("product:categorybrandrelation:list")
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = categoryBrandRelationService.queryPage(params);
-
         return R.ok().put("page", page);
     }
 

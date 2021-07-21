@@ -2,6 +2,7 @@ import COS from "cos-js-sdk-v5";
 import httpRequest from '@/utils/httpRequest' // api: https://github.com/axios/axios
 import {Message} from 'element-ui';
 
+
 export function generateUUID() {
   var d = new Date().getTime();
   var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -11,7 +12,6 @@ export function generateUUID() {
   });
   return uuid;
 };
-
 
 export function cospush(name, file) {
   var da = null;
@@ -32,14 +32,14 @@ export function cospush(name, file) {
         Region: "ap-guangzhou",
         Body: file, // 上传文件对象
       }, function (err, data) {
-        da = err || data
-        console.log(err || data);
+        if (err != null) {
+          Message.error('图片上传失败！');
+          return da = err
+        }
+        return da = data
       })
     }
   })
-  if (!da || da.statusCode != 200) {
-    Message.error('图片上传失败！');
-  }
   return da;
 };
 

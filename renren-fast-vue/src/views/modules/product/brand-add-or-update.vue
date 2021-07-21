@@ -12,11 +12,10 @@
       <el-form-item label="logo" prop="logo">
         <el-upload
           ref="upload"
+          :limit="1"
           :auto-upload="false"
           :before-remove="beforeRemove"
           :before-upload="beforeAvatarUpload"
-          :headers="header"
-          :limit="1"
           :on-change="handleChange"
           :on-exceed="handleExceed"
           :on-preview="handlePreview"
@@ -122,7 +121,6 @@ export default {
      * 选择文件时，往fileList里添加
      */
     handleChange(fileList) {
-      console.log("handleChange", fileList)
       this.fileList.push(fileList);
     },
     /**
@@ -202,16 +200,14 @@ export default {
     },
     // 表单提交
     dataFormSubmit() {
-
       let imgName = null;
       if (this.fileList && this.fileList.length > 0) {
         this.fileList.forEach((file) => {
           imgName = ("goods/" + generateUUID()) + (file.type === 'image/jpeg' ? ".jpg" : ".png")
           //赋值给图片
-          this.dataForm.logo = "https://" + "theangel-1306086135.cos.ap-guangzhou.myqcloud.com/" + imgName
+          this.dataForm.logo = "https://theangel-1306086135.cos.ap-guangzhou.myqcloud.com/" + imgName
         })
       }
-
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           this.$http({

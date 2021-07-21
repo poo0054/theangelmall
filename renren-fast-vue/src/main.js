@@ -29,7 +29,7 @@ if (process.env.NODE_ENV !== 'production') {
 // 挂载全局
 Vue.prototype.$http = httpRequest // ajax请求方法
 Vue.prototype.isAuth = isAuth     // 权限方法
-
+Vue.prototype.$coshttp = 'https://theangel-1306086135.cos.ap-guangzhou.myqcloud.com/'  //腾讯云上传地址
 // 保存整站vuex本地储存初始状态
 window.SITE_CONFIG['storeState'] = cloneDeep(store.state)
 
