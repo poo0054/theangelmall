@@ -8,5 +8,6 @@ public class AttrResVo extends AttrVo {
               "groupName":"主体", //所属分组名字*/
     private String catelogName;
     private String groupName;
+
     private Long[] catelogPath;
 }

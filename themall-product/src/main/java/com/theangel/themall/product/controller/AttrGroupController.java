@@ -11,8 +11,10 @@ import com.theangel.themall.product.service.AttrAttrgroupRelationService;
 import com.theangel.themall.product.service.AttrService;
 import com.theangel.themall.product.service.CategoryService;
 import com.theangel.themall.product.vo.AttrGroupRelationVo;
+import com.theangel.themall.product.vo.AttrGroupWithAttrsVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.theangel.themall.product.entity.AttrGroupEntity;
@@ -42,6 +44,22 @@ public class AttrGroupController {
 
     @Autowired
     private AttrAttrgroupRelationService attrAttrgroupRelationService;
+
+
+    /**
+     * /product/attrgroup/{catelogId}/withattr
+     * 获取分类下所有分组&关联属性
+     *
+     * @param catelogId
+     * @return
+     */
+    @GetMapping("{catelogId}/withattr")
+    public R AttrGroupWithAttrsVo(@PathVariable("catelogId") Long catelogId) {
+
+        List<AttrGroupWithAttrsVo> attrGroupWithAttrsVos = attrGroupService.AttrGroupWithAttrsVoByCateLogId(catelogId);
+        return new R().put("data", attrGroupWithAttrsVos);
+    }
+
 
     /**
      * /product/attrgroup/attr/relation

@@ -28,8 +28,6 @@ spring:
           filters:
             - RewritePath=/api/?(?<the>.*), /$\{the}
 
-
-
         - id: renren-fast
           uri: lb://renren-fast
           predicates:

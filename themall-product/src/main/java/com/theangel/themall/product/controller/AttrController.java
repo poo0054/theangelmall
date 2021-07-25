@@ -59,6 +59,7 @@ public class AttrController {
     /**
      * 信息
      * /product/attrgroup/info/{attrGroupId}
+     * 获取属性分组详情
      *
      * @param attrId
      * @return

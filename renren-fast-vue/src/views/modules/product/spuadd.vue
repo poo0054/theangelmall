@@ -23,7 +23,9 @@
               <category-cascader></category-cascader>
             </el-form-item>
             <el-form-item label="选择品牌" prop="brandId">
+
               <brand-select></brand-select>
+
             </el-form-item>
             <el-form-item label="商品重量(Kg)" prop="weight">
               <el-input-number v-model.number="spu.weight" :min="0" :precision="3" :step="0.1"></el-input-number>
@@ -353,6 +355,7 @@
 import CategoryCascader from "../common/category-cascader";
 import BrandSelect from "../common/brand-select";
 import MultiUpload from "@/components/upload/multiUpload";
+import PubSub from "pubsub-js";
 
 export default {
   //import引入的组件需要注入到对象中才能使用
@@ -397,12 +400,12 @@ export default {
         brandId: [
           {required: true, message: "请选择一个品牌", trigger: "blur"}
         ],
-        decript: [
-          {required: true, message: "请上传商品详情图集", trigger: "blur"}
-        ],
-        images: [
-          {required: true, message: "请上传商品图片集", trigger: "blur"}
-        ],
+        /*    decript: [
+              {required: true, message: "请上传商品详情图集", trigger: "blur"}
+            ],
+            images: [
+              {required: true, message: "请上传商品图片集", trigger: "blur"}
+            ],*/
         weight: [
           {
             type: "number",
@@ -681,13 +684,15 @@ export default {
           //先对表单的baseAttrs进行初始化
           data.data.forEach(item => {
             let attrArray = [];
-            item.attrs.forEach(attr => {
-              attrArray.push({
-                attrId: attr.attrId,
-                attrValues: "",
-                showDesc: attr.showDesc
+            if (item.attrs) {
+              item.attrs.forEach(attr => {
+                attrArray.push({
+                  attrId: attr.attrId,
+                  attrValues: "",
+                  showDesc: attr.showDesc
+                });
               });
-            });
+            }
             this.dataResp.baseAttrs.push(attrArray);
           });
           this.dataResp.steped[0] = 0;
