@@ -91,7 +91,6 @@
 
 <script>
 import CategoryCascader from "../common/category-cascader";
-
 export default {
   data() {
     return {
@@ -113,7 +112,7 @@ export default {
       attrGroups: [],
       dataRule: {
         attrName: [
-          {required: true, message: "属性名不能为空", trigger: "blur"}
+          { required: true, message: "属性名不能为空", trigger: "blur" }
         ],
         searchType: [
           {
@@ -130,7 +129,7 @@ export default {
           }
         ],
         icon: [
-          {required: true, message: "属性图标不能为空", trigger: "blur"}
+          { required: true, message: "属性图标不能为空", trigger: "blur" }
         ],
         attrType: [
           {
@@ -163,8 +162,8 @@ export default {
       }
     };
   },
-  props: {
-    type: {
+  props:{
+    type:{
       type: Number,
       default: 1
     }
@@ -182,8 +181,8 @@ export default {
             `/product/attrgroup/list/${path[path.length - 1]}`
           ),
           method: "get",
-          params: this.$http.adornParams({page: 1, limit: 10000000})
-        }).then(({data}) => {
+          params: this.$http.adornParams({ page: 1, limit: 10000000 })
+        }).then(({ data }) => {
           if (data && data.code === 0) {
             this.attrGroups = data.page.list;
           } else {
@@ -198,7 +197,7 @@ export default {
       }
     }
   },
-  components: {CategoryCascader},
+  components: { CategoryCascader },
   methods: {
     init(id) {
       this.dataForm.attrId = id || 0;
@@ -213,7 +212,7 @@ export default {
             ),
             method: "get",
             params: this.$http.adornParams()
-          }).then(({data}) => {
+          }).then(({ data }) => {
             if (data && data.code === 0) {
               this.dataForm.attrName = data.attr.attrName;
               this.dataForm.searchType = data.attr.searchType;
@@ -257,7 +256,7 @@ export default {
               attrGroupId: this.dataForm.attrGroupId,
               showDesc: this.dataForm.showDesc
             })
-          }).then(({data}) => {
+          }).then(({ data }) => {
             if (data && data.code === 0) {
               this.$message({
                 message: "操作成功",

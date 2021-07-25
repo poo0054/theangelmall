@@ -3,9 +3,12 @@ package com.theangel.themall.product.controller;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.theangel.themall.product.entity.BrandEntity;
+import com.theangel.themall.product.vo.BrandVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +39,23 @@ public class CategoryBrandRelationController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = categoryBrandRelationService.queryPage(params);
         return R.ok().put("page", page);
+    }
+
+    /**
+     * /product/categorybrandrelation/brands/list
+     */
+    @GetMapping("/brands/list")
+    public R brandslist(@RequestParam(required = true, value = "catId") Long catId) {
+//        PageUtils page = categoryBrandRelationService.queryPage(params);
+        List<BrandEntity> brand_id = categoryBrandRelationService.getBrandslis(catId);
+
+        List<BrandVo> collect = brand_id.stream().map(brandEntity -> {
+            BrandVo brandVo = new BrandVo();
+            brandVo.setBrandID(brandEntity.getBrandId());
+            brandVo.setBrandName(brandEntity.getName());
+            return brandVo;
+        }).collect(Collectors.toList());
+        return R.ok().put("data", collect);
     }
 
     /**

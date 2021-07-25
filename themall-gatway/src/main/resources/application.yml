@@ -4,10 +4,15 @@ server:
 spring:
   application:
     name: themall-gatway
-
   cloud:
     gateway:
       routes:
+        - id: third-party
+          uri: lb://third-party
+          predicates:
+            - Path=/api/third-party/**
+          filters:
+            - RewritePath=/api/?(?<the>.*), /$\{the}
 
         - id: themall-product
           uri: lb://themall-product
@@ -16,12 +21,14 @@ spring:
           filters:
             - RewritePath=/api/?(?<the>.*), /$\{the}
 
-        - id: third-party
-          uri: lb://third-party
+        - id: themall-member
+          uri: lb://themall-member
           predicates:
-            - Path=/api/third-party/**
+            - Path=/api/member/**
           filters:
             - RewritePath=/api/?(?<the>.*), /$\{the}
+
+
 
         - id: renren-fast
           uri: lb://renren-fast
@@ -29,9 +36,7 @@ spring:
             - Path=/api/**
           filters:
             - RewritePath=/api/?(?<the>.*), /renren-fast/$\{the}
-
-
-#    nacos:
-#      discovery:
-#        server-addr: theangel.vip:8848
+    nacos:
+      discovery:
+        server-addr: theangel.vip:8848
 

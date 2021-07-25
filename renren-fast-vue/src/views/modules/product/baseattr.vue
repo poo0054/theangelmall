@@ -16,15 +16,13 @@
               v-if="isAuth('product:attr:save')"
               type="primary"
               @click="addOrUpdateHandle()"
-            >新增
-            </el-button>
+            >新增</el-button>
             <el-button
               v-if="isAuth('product:attr:delete')"
               type="danger"
               @click="deleteHandle()"
               :disabled="dataListSelections.length <= 0"
-            >批量删除
-            </el-button>
+            >批量删除</el-button>
           </el-form-item>
         </el-form>
         <el-table
@@ -60,9 +58,9 @@
             <template slot-scope="scope">
               <el-tooltip placement="top">
                 <div slot="content">
-                  <span v-for="(i,index) in scope.row.valueSelect.split(';')" :key="index">{{ i }}<br/></span>
+                  <span v-for="(i,index) in scope.row.valueSelect.split(';')" :key="index">{{i}}<br/></span>
                 </div>
-                <el-tag>{{ scope.row.valueSelect.split(";")[0] + " ..." }}</el-tag>
+                <el-tag>{{scope.row.valueSelect.split(";")[0]+" ..."}}</el-tag>
               </el-tooltip>
             </template>
           </el-table-column>
@@ -125,10 +123,9 @@
 //例如：import 《组件名称》 from '《组件路径》';
 import Category from "../common/category";
 import AddOrUpdate from "./attr-add-or-update";
-
 export default {
   //import引入的组件需要注入到对象中才能使用
-  components: {Category, AddOrUpdate},
+  components: { Category, AddOrUpdate },
   props: {
     attrtype: {
       type: Number,
@@ -162,7 +159,7 @@ export default {
         this.getDataList(); //重新查询
       }
     },
-    getAllDataList() {
+    getAllDataList(){
       this.catId = 0;
       this.getDataList();
     },
@@ -178,7 +175,7 @@ export default {
           limit: this.pageSize,
           key: this.dataForm.key
         })
-      }).then(({data}) => {
+      }).then(({ data }) => {
         if (data && data.code === 0) {
           this.dataList = data.page.list;
           this.totalPage = data.page.totalCount;
@@ -216,8 +213,8 @@ export default {
       var ids = id
         ? [id]
         : this.dataListSelections.map(item => {
-          return item.attrId;
-        });
+            return item.attrId;
+          });
       this.$confirm(
         `确定对[id=${ids.join(",")}]进行[${id ? "删除" : "批量删除"}]操作?`,
         "提示",
@@ -231,7 +228,7 @@ export default {
           url: this.$http.adornUrl("/product/attr/delete"),
           method: "post",
           data: this.$http.adornData(ids, false)
-        }).then(({data}) => {
+        }).then(({ data }) => {
           if (data && data.code === 0) {
             this.$message({
               message: "操作成功",

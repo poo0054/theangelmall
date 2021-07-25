@@ -25,3 +25,10 @@ spring:
     durationSeconds: 10
     # 腾讯云的访问基础链接:
     baseUrl: https://theangel-1306086135.cos.ap-guangzhou.myqcloud.com
+  cloud:
+    alicloud:
+      access-key: LTAI5t5Zw9QpcLrfdGCA4NZZ
+      secret-key: MEYjLvITV4G6hkv12N41mbrcqR3phk
+      oss:
+        endpoint: oss-cn-hangzhou.aliyuncs.com
+        bucket: theangel-mall

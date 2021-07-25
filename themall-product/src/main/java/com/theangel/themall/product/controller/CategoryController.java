@@ -40,7 +40,7 @@ public class CategoryController {
     /**
      * 查出所有分类,以树形菜单展示
      */
-    @RequestMapping(value = "/tree", method = RequestMethod.GET)
+    @GetMapping(value = "/list/tree")
     //@RequiresPermissions("product:category:list")
     public R list() {
         List<CategoryEntity> categoryEntityList = categoryService.listCategoryTree();
@@ -72,7 +72,7 @@ public class CategoryController {
     /**
      * 修改
      */
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @PostMapping(value = "/update/sort")
     //@RequiresPermissions("product:category:update")
     public R update(@RequestBody CategoryEntity category) {
         categoryService.updateDetail(category);

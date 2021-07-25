@@ -1,58 +1,41 @@
 <template>
   <div>
     <el-upload
-      action="https://theangel-1306086135.cos.ap-guangzhou.myqcloud.com"
-      :on-preview="handlePreview"
-      :list-type="listType"
-      :show-file="showFile"
-      :limit="maxCount"
-      :before-remove="beforeRemove"
-      :before-upload="beforeAvatarUpload"
-      :on-change="handleChange"
-      :on-exceed="handleExceed"
+      action="https://theangel-mall.oss-cn-hangzhou.aliyuncs.com"
+      :data="dataObj"
+      list-type="picture-card"
+      :file-list="fileList"
+      :before-upload="beforeUpload"
       :on-remove="handleRemove"
-      :http-request="httpRequest"
+      :on-success="handleUploadSuccess"
+      :on-preview="handlePreview"
+      :limit="maxCount"
+      :on-exceed="handleExceed"
     >
       <i class="el-icon-plus"></i>
     </el-upload>
-
     <el-dialog :visible.sync="dialogVisible">
       <img width="100%" :src="dialogImageUrl" alt/>
     </el-dialog>
   </div>
 </template>
 <script>
-
-import {getUUID} from "@/utils/index"
-import {cospush} from "@/utils/cosUtils.js"
-import {generateUUID} from "../../utils/cosUtils";
+import {policy} from "./policy";
+import {getUUID} from '@/utils'
 
 export default {
   name: "multiUpload",
   props: {
-    showFile: {
-      type: Boolean,
-      default: true
-    },
-    listType: {
-      type: String,
-      default: 'picture-card',
-    },
-    titleName: {
-      type: String,
-      default: 'static'
-    },
     //图片属性数组
     value: Array,
     //最大上传图片数量
     maxCount: {
       type: Number,
-      default: 20
+      default: 30
     }
   },
   data() {
     return {
-      fileList: [],
       dataObj: {
         policy: "",
         signature: "",
@@ -66,66 +49,72 @@ export default {
       dialogImageUrl: null
     };
   },
-  computed: {},
+  computed: {
+    fileList() {
+      let fileList = [];
+      for (let i = 0; i < this.value.length; i++) {
+        fileList.push({url: this.value[i]});
+      }
+
+      return fileList;
+    }
+  },
   mounted() {
   },
   methods: {
-    httpRequest() {
+    emitInput(fileList) {
       let value = [];
-      for (let i = 0; i < this.fileList.length; i++) {
-        value.push(this.fileList[i].imgName);
+      for (let i = 0; i < fileList.length; i++) {
+        value.push(fileList[i].url);
       }
-      this.emitInput(value)
-    },
-
-    emitInput(value) {
       this.$emit("input", value);
     },
-    /**
-     * 选择文件时，往fileList里添加
-     */
-    handleChange(fileList) {
-      let imgName = (`${this.titleName}/` + getUUID()) + (fileList.type === 'image/jpeg' ? ".jpg" : ".png")
-      let data = {
-        uid: fileList.uid,
-        imgName: this.$coshttp + imgName,
-        url: fileList.url,
-      }
-      cospush(imgName, fileList.raw)
-      console.log(data)
-      this.fileList.push(data);
-    },
-    beforeRemove(file, fileList) {
-      return this.$confirm(`确定移除 ${file.name}？`);
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = (file.type === 'image/jpeg' | file.type === 'image/png');
-      const isLt2M = file.size / 1024 / 1024 < 5;
-      if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 或者 PNG 格式!');
-      }
-      if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!');
-      }
-      return isLt2M && isJPG;
-    },
     handleRemove(file, fileList) {
-      this.fileList = this.fileList.filter(value => value.uid != file.uid);
-      this.httpRequest()
+      this.emitInput(fileList);
     },
     handlePreview(file) {
       this.dialogVisible = true;
       this.dialogImageUrl = file.url;
     },
+    beforeUpload(file) {
+      let _self = this;
+      return new Promise((resolve, reject) => {
+        policy()
+          .then(response => {
+            console.log("这是什么${filename}");
+            _self.dataObj.policy = response.data.policy;
+            _self.dataObj.signature = response.data.signature;
+            _self.dataObj.ossaccessKeyId = response.data.accessid;
+            _self.dataObj.key = response.data.dir + "/" + getUUID() + "_${filename}";
+            _self.dataObj.dir = response.data.dir;
+            _self.dataObj.host = response.data.host;
+            resolve(true);
+          })
+          .catch(err => {
+            console.log("出错了...", err)
+            reject(false);
+          });
+      });
+    },
+    handleUploadSuccess(res, file) {
+      this.fileList.push({
+        name: file.name,
+        // url: this.dataObj.host + "/" + this.dataObj.dir + "/" + file.name； 替换${filename}为真正的文件名
+        url: this.dataObj.host + "/" + this.dataObj.key.replace("${filename}", file.name)
+      });
+      this.emitInput(this.fileList);
+    },
     handleExceed(files, fileList) {
-      this.$message.warning(`当前限制选择 ${this.maxCount}个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+      this.$message({
+        message: "最多只能上传" + this.maxCount + "张图片",
+        type: "warning",
+        duration: 1000
+      });
     }
   }
 };
 </script>
-
 <style>
-
 </style>
 
 

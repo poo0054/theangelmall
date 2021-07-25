@@ -7,6 +7,5 @@ spring:
         extension-configs:
           - dataId: public.yml
             refresh: true
-
           - dataId: themall-product.yml
             refresh: true

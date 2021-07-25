@@ -7,7 +7,7 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     #MySQL配置
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://theangel.vip:3306/themall_pms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://theangel.vip:3306/themall_ums?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
     password: hjj0127..
     #oracle配置
@@ -25,8 +25,6 @@ spring:
   #    url: jdbc:postgresql://192.168.10.10:5432/renren_fast
   #    username: postgres
   #    password: 123456
-
-
 
   jackson:
     time-zone: GMT+8

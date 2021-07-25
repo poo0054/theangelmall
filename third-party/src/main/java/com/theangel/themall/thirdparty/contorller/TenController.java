@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("third-party/ten")
+@RequestMapping("/ten")
 @Slf4j
 public class TenController {
 

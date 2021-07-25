@@ -1,6 +1,7 @@
 import COS from "cos-js-sdk-v5";
 import httpRequest from '@/utils/httpRequest' // api: https://github.com/axios/axios
 import {Message} from 'element-ui';
+import log from "../views/modules/sys/log";
 
 
 export function generateUUID() {
@@ -33,13 +34,15 @@ export function cospush(name, file) {
         Body: file, // 上传文件对象
       }, function (err, data) {
         if (err != null) {
-          Message.error('图片上传失败！');
+
           return da = err
         }
         return da = data
       })
     }
   })
-  return da;
+  return new Promise((resolve, reject) => {
+    setTimeout(() => resolve(da), 1500);
+  })
 };
 

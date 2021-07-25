@@ -5,11 +5,15 @@ import com.theangel.themall.product.dao.BrandDao;
 import com.theangel.themall.product.dao.CategoryDao;
 import com.theangel.themall.product.entity.BrandEntity;
 import com.theangel.themall.product.entity.CategoryEntity;
+import com.theangel.themall.product.service.BrandService;
+import com.theangel.themall.product.vo.BrandVo;
 import org.aspectj.weaver.patterns.ThisOrTargetAnnotationPointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -32,6 +36,9 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
     @Autowired
     private CategoryDao categoryDao;
 
+    @Autowired
+    BrandService brandService;
+
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         IPage<CategoryBrandRelationEntity> page = this.page(
@@ -42,11 +49,6 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
         return new PageUtils(page);
     }
 
-    @Override
-    public PageUtils brandIdPage(Long brandId) {
-
-        return null;
-    }
 
     @Override
     public void saveDatail(CategoryBrandRelationEntity categoryBrandRelation) {
@@ -73,6 +75,16 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
         brandEntity.setCatelogId(catId);
         brandEntity.setCatelogName(name);
         boolean catelog_id = this.update(brandEntity, new UpdateWrapper<CategoryBrandRelationEntity>().eq("catelog_id", catId));
+    }
+
+    @Override
+    public List<BrandEntity> getBrandslis(Long catId) {
+        List<CategoryBrandRelationEntity> attr_id = this.list(new QueryWrapper<CategoryBrandRelationEntity>().eq("catelog_id", catId));
+        List<BrandEntity> collect = attr_id.stream().map(categoryBrandRelationEntity -> {
+            Long brandId = categoryBrandRelationEntity.getBrandId();
+            return brandService.getById(brandId);
+        }).collect(Collectors.toList());
+        return collect;
     }
 
 

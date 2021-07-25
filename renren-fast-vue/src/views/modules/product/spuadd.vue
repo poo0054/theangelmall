@@ -49,11 +49,11 @@
               </el-input-number>
             </el-form-item>
             <el-form-item label="商品介绍" prop="decript">
-              <multi-upload :titleName="'product'" v-model="spu.decript"></multi-upload>
+              <multi-upload v-model="spu.decript"></multi-upload>
             </el-form-item>
 
             <el-form-item label="商品图集" prop="images">
-              <multi-upload :titleName="'product'" v-model="spu.images"></multi-upload>
+              <multi-upload v-model="spu.images"></multi-upload>
             </el-form-item>
             <el-form-item>
               <el-button type="success" @click="collectSpuBaseInfo">下一步：设置基本参数</el-button>
@@ -205,7 +205,6 @@
                       style="float:left;margin-left:10px;"
                       :showFile="false"
                       :listType="'text'"
-                      :titleName="'product'"
                       v-model="uploadImages"
                     ></multi-upload>
                   </el-col>
@@ -434,7 +433,9 @@ export default {
     uploadImages(val) {
       //扩展每个skus里面的imgs选项
       let imgArr = Array.from(new Set(this.spu.images.concat(val)));
+
       //{imgUrl:"",defaultImg:0} 由于concat每次迭代上次，有很多重复。所以我们必须得到上次+这次的总长
+
       this.spu.skus.forEach((item, index) => {
         let len = imgArr.length - this.spu.skus[index].images.length; //还差这么多
         if (len > 0) {
@@ -523,7 +524,6 @@ export default {
     },
     collectSpuBaseInfo() {
       //spuBaseForm
-      console.log(this.spu)
       this.$refs.spuBaseForm.validate(valid => {
         if (valid) {
           this.step = 1;
@@ -642,7 +642,6 @@ export default {
       }
       return res;
     },
-
     getShowSaleAttr() {
       //获取当前分类可以使用的销售属性
       if (!this.dataResp.steped[1]) {
@@ -816,5 +815,5 @@ export default {
   } //如果页面有keep-alive缓存功能，这个函数会触发
 };
 </script>
-<style>
+<style scoped>
 </style>

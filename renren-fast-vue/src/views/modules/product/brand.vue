@@ -47,8 +47,8 @@
             v-model="scope.row.showStatus"
             active-color="#13ce66"
             inactive-color="#ff4949"
-            :active-value="0"
-            :inactive-value="1"
+            :active-value="1"
+            :inactive-value="0"
             @change="updateBrandStatus(scope.row)"
           ></el-switch>
         </template>
@@ -166,7 +166,6 @@ export default {
       this.cateRelationDialogVisible = true;
       this.brandId = brandId;
       this.getCateRelation();
-
     },
     getCateRelation() {
       this.$http({
@@ -206,7 +205,7 @@ export default {
       let {brandId, showStatus} = data;
       //发送请求修改状态
       this.$http({
-        url: this.$http.adornUrl("/product/brand/update"),
+        url: this.$http.adornUrl("/product/brand/update/status"),
         method: "post",
         data: this.$http.adornData({brandId, showStatus}, false)
       }).then(({data}) => {
