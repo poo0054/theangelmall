@@ -5,36 +5,45 @@ spring:
   application:
     name: themall-gatway
   cloud:
+    nacos:
+      discovery:
+        server-addr: theangel.vip:8848
     gateway:
       routes:
+        #          商品优惠服务
+        - id: themall-coupon
+          uri: lb://themall-coupon
+          predicates:
+            - Path=/api/coupon/**
+          filters:
+            - RewritePath=/api/?(?<the>.*), /$\{the}
+        #         第三方服务
         - id: third-party
           uri: lb://third-party
           predicates:
             - Path=/api/third-party/**
           filters:
             - RewritePath=/api/?(?<the>.*), /$\{the}
-
+        #         商品服务
         - id: themall-product
           uri: lb://themall-product
           predicates:
             - Path=/api/product/**
           filters:
             - RewritePath=/api/?(?<the>.*), /$\{the}
-
+        #         会员服务
         - id: themall-member
           uri: lb://themall-member
           predicates:
             - Path=/api/member/**
           filters:
             - RewritePath=/api/?(?<the>.*), /$\{the}
-
+        #
         - id: renren-fast
           uri: lb://renren-fast
           predicates:
             - Path=/api/**
           filters:
             - RewritePath=/api/?(?<the>.*), /renren-fast/$\{the}
-    nacos:
-      discovery:
-        server-addr: theangel.vip:8848
+
 

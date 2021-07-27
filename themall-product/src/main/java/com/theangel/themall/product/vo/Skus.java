@@ -16,7 +16,6 @@ import java.util.List;
  */
 @Data
 public class Skus {
-
     private List<Attr> attr;
     private String skuName;
     private BigDecimal price;
