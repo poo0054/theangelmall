@@ -20,8 +20,8 @@ public interface ThemallCouponFeign {
      * @return
      */
     @PostMapping("/coupon/spubounds/save")
-    R saveSpuBouds(@RequestBody SpuBoundTo spuBoundTo);
+    public R saveSpuBounds(@RequestBody SpuBoundTo spuBoundTo);
 
     @PostMapping("/coupon/skufullreduction/saveinfo")
-    R saveSkuReduction(@RequestBody SkuReductionTo skuReductionTo);
+    public R saveSkuReduction(@RequestBody SkuReductionTo skuReductionTo);
 }

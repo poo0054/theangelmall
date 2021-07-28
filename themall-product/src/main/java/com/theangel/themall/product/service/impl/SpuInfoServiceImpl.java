@@ -1,6 +1,5 @@
 package com.theangel.themall.product.service.impl;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.theangel.common.to.SkuReductionTo;
 import com.theangel.common.to.SpuBoundTo;
 import com.theangel.common.utils.R;
@@ -12,6 +11,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +26,7 @@ import com.theangel.common.utils.Query;
 import com.theangel.themall.product.dao.SpuInfoDao;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 
 @Service("spuInfoService")
@@ -58,6 +59,11 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
         return new PageUtils(page);
     }
 
+    /**
+     * TODO 剩余失败处理
+     *
+     * @param spuSaveVo
+     */
     @Transactional
     @Override
     public void saveSpuInfo(SpuSaveVo spuSaveVo) {
@@ -97,7 +103,7 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
         SpuBoundTo spuBoundTo = new SpuBoundTo();
         BeanUtils.copyProperties(bounds, spuBoundTo);
         spuBoundTo.setSpuId(spuInfoEntity.getId());
-        R r = themallCouponFeign.saveSpuBouds(spuBoundTo);
+        R r = themallCouponFeign.saveSpuBounds(spuBoundTo);
         if (r.getCode() != 0) {
             log.error("远程保存spu积分信息失败");
         }
@@ -138,8 +144,12 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
                     skuImagesEntity.setDefaultImg(img.getDefaultImg());
                     skuImagesEntity.setSkuId(skuId);
                     return skuImagesEntity;
-                }).collect(Collectors.toList());
+                })
+                        .filter(entity -> !StringUtils.isEmpty(entity))
+                        .collect(Collectors.toList());
+                //TODO 没有图片路径不保存
                 skuImagesService.saveBatch(imagesEntities);
+
 
                 //5.3  sku销售属性  pms_sku_sale_attr_value
                 List<Attr> attrs = item.getAttr();
@@ -156,9 +166,11 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
                 SkuReductionTo skuReductionTo = new SkuReductionTo();
                 BeanUtils.copyProperties(item, skuReductionTo);
                 skuReductionTo.setSkuId(skuId);
-                R r1 = themallCouponFeign.saveSkuReduction(skuReductionTo);
-                if (r1.getCode() != 0) {
-                    log.error("远程保存sku优惠信息失败");
+                if (skuReductionTo.getFullCount() > 0 || skuReductionTo.getFullPrice().compareTo(new BigDecimal(0)) == 1) {
+                    R r1 = themallCouponFeign.saveSkuReduction(skuReductionTo);
+                    if (r1.getCode() != 0) {
+                        log.error("远程保存sku优惠信息失败");
+                    }
                 }
             });
         }
@@ -169,5 +181,35 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
     @Override
     public void saveBaseSpuInfo(SpuInfoEntity spuInfoEntity) {
         this.save(spuInfoEntity);
+    }
+
+    @Override
+    public PageUtils queryPageByCondition(Map<String, Object> params) {
+        QueryWrapper<SpuInfoEntity> queryWrapper = new QueryWrapper<>();
+        String key = (String) params.get("key");
+        if (!ObjectUtils.isEmpty(key)) {
+            queryWrapper.and((wrapper) -> {
+                wrapper.like("id", key).or().like("spu_name", key);
+            });
+        }
+        String status = (String) params.get("status");
+        if (!ObjectUtils.isEmpty(status)) {
+            queryWrapper.eq("publish_status", status);
+        }
+        String brandId = (String) params.get("brandId");
+        if (!ObjectUtils.isEmpty(brandId) & !brandId.equals("0")) {
+            queryWrapper.eq("brand_id", brandId);
+        }
+        String catelogId = (String) params.get("catelogId");
+        if (!ObjectUtils.isEmpty(catelogId) & !catelogId.equals("0")) {
+            queryWrapper.eq("catalog_id", catelogId);
+        }
+
+        IPage<SpuInfoEntity> page = this.page(
+                new Query<SpuInfoEntity>().getPage(params),
+                queryWrapper
+        );
+
+        return new PageUtils(page);
     }
 }

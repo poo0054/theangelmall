@@ -5,9 +5,6 @@ spring:
   application:
     name: themall-gatway
   cloud:
-    nacos:
-      discovery:
-        server-addr: theangel.vip:8848
     gateway:
       routes:
         #          商品优惠服务

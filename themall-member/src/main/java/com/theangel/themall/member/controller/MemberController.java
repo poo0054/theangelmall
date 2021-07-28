@@ -26,18 +26,17 @@ import com.theangel.common.utils.R;
 public class MemberController {
     @Autowired
     private MemberService memberService;
-    
-    
+
     @Autowired
     private CouponOpenFeignService couponOpenFeignService;
-    
+
     @RequestMapping(path = "/membercoupon", method = RequestMethod.GET)
     public R getMemberCoupon() {
         MemberEntity memberEntity = new MemberEntity();
         memberEntity.setNickname("张三");
         return R.ok().put("member", memberEntity).put("coupon", couponOpenFeignService.memberList().get("coupons"));
     }
-    
+
     /**
      * 列表
      */
@@ -45,11 +44,11 @@ public class MemberController {
     //@RequiresPermissions("member:member:list")
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = memberService.queryPage(params);
-        
+
         return R.ok().put("page", page);
     }
-    
-    
+
+
     /**
      * 信息
      */
@@ -57,10 +56,10 @@ public class MemberController {
     //@RequiresPermissions("member:member:info")
     public R info(@PathVariable("id") Long id) {
         MemberEntity member = memberService.getById(id);
-        
+
         return R.ok().put("member", member);
     }
-    
+
     /**
      * 保存
      */
@@ -68,10 +67,10 @@ public class MemberController {
     //@RequiresPermissions("member:member:save")
     public R save(@RequestBody MemberEntity member) {
         memberService.save(member);
-        
+
         return R.ok();
     }
-    
+
     /**
      * 修改
      */
@@ -79,10 +78,10 @@ public class MemberController {
     //@RequiresPermissions("member:member:update")
     public R update(@RequestBody MemberEntity member) {
         memberService.updateById(member);
-        
+
         return R.ok();
     }
-    
+
     /**
      * 删除
      */
@@ -90,8 +89,8 @@ public class MemberController {
     //@RequiresPermissions("member:member:delete")
     public R delete(@RequestBody Long[] ids) {
         memberService.removeByIds(Arrays.asList(ids));
-        
+
         return R.ok();
     }
-    
+
 }

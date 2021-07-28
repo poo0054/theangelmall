@@ -16,11 +16,11 @@ import java.util.Map;
 //@FeignClient("third-party")
 public interface ThirdPartyService {
 
-    @PostMapping(value = "/third-party/ten/cosGoodsLogo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    @PostMapping(value = "/third-party/ten/cosGoodsLogo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Map<String, String> cosTenGoodsLogo(MultipartFile files);
 
 
-    @Configuration
+  /*  @Configuration
     class FeignConfig {
         @Bean
         public Encoder multipartFormEncoder() {
@@ -31,6 +31,6 @@ public interface ThirdPartyService {
         public feign.Logger.Level multipartLoggerLevel() {
             return feign.Logger.Level.FULL;
         }
-    }
+    }*/
 
 }

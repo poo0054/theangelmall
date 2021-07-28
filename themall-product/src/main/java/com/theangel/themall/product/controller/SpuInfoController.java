@@ -6,11 +6,7 @@ import java.util.Map;
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
 import com.theangel.themall.product.vo.SpuSaveVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.theangel.themall.product.entity.SpuInfoEntity;
 import com.theangel.themall.product.service.SpuInfoService;
@@ -38,7 +34,8 @@ public class SpuInfoController {
     @RequestMapping("/list")
     //@RequiresPermissions("product:spuinfo:list")
     public R list(@RequestParam Map<String, Object> params) {
-        PageUtils page = spuInfoService.queryPage(params);
+//        PageUtils page = spuInfoService.queryPage(params);
+         PageUtils page = spuInfoService.queryPageByCondition(params);
 
         return R.ok().put("page", page);
     }
@@ -56,13 +53,13 @@ public class SpuInfoController {
     }
 
     /**
-     * //  /product/spuinfo/save
+     * /product/spuinfo/save
      * 新增商品
      *
      * @param spuInfo
      * @return
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     //@RequiresPermissions("product:spuinfo:save")
     public R save(@RequestBody SpuSaveVo spuInfo) {
 //        spuInfoService.save(spuInfo);

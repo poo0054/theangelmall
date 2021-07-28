@@ -8,9 +8,10 @@ spring:
     password: hjj0127..
     url: jdbc:mysql://theangel.vip:3306/themall_pms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.cj.jdbc.Driver
-
   application:
     name: themall-product
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
 
 #  cloud:
 #    nacos:
