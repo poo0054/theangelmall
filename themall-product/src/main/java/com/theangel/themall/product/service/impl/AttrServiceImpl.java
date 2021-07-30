@@ -1,14 +1,13 @@
 package com.theangel.themall.product.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.theangel.common.constant.productConstant;
+import com.theangel.common.constant.ProductConstant;
 import com.theangel.themall.product.dao.AttrAttrgroupRelationDao;
 import com.theangel.themall.product.dao.AttrGroupDao;
 import com.theangel.themall.product.dao.CategoryDao;
 import com.theangel.themall.product.entity.AttrAttrgroupRelationEntity;
 import com.theangel.themall.product.entity.AttrGroupEntity;
 import com.theangel.themall.product.entity.CategoryEntity;
-import com.theangel.themall.product.service.AttrAttrgroupRelationService;
 import com.theangel.themall.product.service.CategoryService;
 import com.theangel.themall.product.vo.AttrGroupRelationVo;
 import com.theangel.themall.product.vo.AttrResVo;
@@ -17,12 +16,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -70,7 +66,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         //保存商品
         this.save(attrEntity);
         //保存分组属性
-        if (attrVo.getAttrType() == productConstant.AttrEnum.ATTR_TYPE_ABSE.getCode() && !ObjectUtils.isEmpty(attrVo.getAttrGroupId())) {
+        if (attrVo.getAttrType() == ProductConstant.AttrEnum.ATTR_TYPE_ABSE.getCode() && !ObjectUtils.isEmpty(attrVo.getAttrGroupId())) {
             AttrAttrgroupRelationEntity relationEntity = new AttrAttrgroupRelationEntity();
             relationEntity.setAttrGroupId(attrVo.getAttrGroupId());
             relationEntity.setAttrId(attrEntity.getAttrId());
@@ -81,7 +77,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
 
     @Override
     public PageUtils queryBaseAttrPage(Map<String, Object> params, Long catelogId, String type) {
-        QueryWrapper<AttrEntity> queryWrapper = new QueryWrapper<AttrEntity>().eq("attr_type", "base".equalsIgnoreCase(type) ? productConstant.AttrEnum.ATTR_TYPE_ABSE.getCode() : productConstant.AttrEnum.ATTR_TYPE_SALE.getCode());
+        QueryWrapper<AttrEntity> queryWrapper = new QueryWrapper<AttrEntity>().eq("attr_type", "base".equalsIgnoreCase(type) ? ProductConstant.AttrEnum.ATTR_TYPE_ABSE.getCode() : ProductConstant.AttrEnum.ATTR_TYPE_SALE.getCode());
         String key = (String) params.get("key");
         if (0 != catelogId) {
             queryWrapper.eq("catelog_id", catelogId);
@@ -128,7 +124,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         AttrResVo attrResVo = new AttrResVo();
         AttrEntity byId = this.getById(attrId);
         BeanUtils.copyProperties(byId, attrResVo);
-        if (byId.getAttrType() == productConstant.AttrEnum.ATTR_TYPE_ABSE.getCode()) {
+        if (byId.getAttrType() == ProductConstant.AttrEnum.ATTR_TYPE_ABSE.getCode()) {
             //查询分组信息
             AttrAttrgroupRelationEntity relationEntity = attrAttrgroupRelationDao.selectOne(new QueryWrapper<AttrAttrgroupRelationEntity>().eq("attr_id", byId.getAttrId()));
             if (!ObjectUtils.isEmpty(relationEntity)) {
@@ -158,7 +154,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         AttrEntity attrEntity = new AttrEntity();
         BeanUtils.copyProperties(attr, attrEntity);
         this.updateById(attrEntity);
-        if (attrEntity.getAttrType() == productConstant.AttrEnum.ATTR_TYPE_ABSE.getCode()) {
+        if (attrEntity.getAttrType() == ProductConstant.AttrEnum.ATTR_TYPE_ABSE.getCode()) {
             //修改分组关系
             AttrAttrgroupRelationEntity attrAttrgroupRelationEntity = new AttrAttrgroupRelationEntity();
             attrAttrgroupRelationEntity.setAttrGroupId(attr.getAttrGroupId());
@@ -225,7 +221,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         List<Long> longStream = attr_group_id.stream().map(item -> item.getAttrId()).collect(Collectors.toList());
 
         // 当前分类下 没有绑定分组的所有属性
-        QueryWrapper<AttrEntity> queryWrapper = new QueryWrapper<AttrEntity>().eq("catelog_id", catelogId).eq("attr_type", productConstant.AttrEnum.ATTR_TYPE_ABSE.getCode());
+        QueryWrapper<AttrEntity> queryWrapper = new QueryWrapper<AttrEntity>().eq("catelog_id", catelogId).eq("attr_type", ProductConstant.AttrEnum.ATTR_TYPE_ABSE.getCode());
 
         if (!ObjectUtils.isEmpty(longStream)) {
             queryWrapper.notIn("attr_id", longStream);

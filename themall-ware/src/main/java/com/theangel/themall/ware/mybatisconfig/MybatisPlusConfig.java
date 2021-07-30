@@ -1,14 +1,16 @@
-package com.theangel.themall.product.mybatisconfig;
+package com.theangel.themall.ware.mybatisconfig;
 
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.pagination.optimize.JsqlParserCountOptimize;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 //Spring boot方式
 @Configuration
-@MapperScan("com.theangel.themall.product.dao")
+@MapperScan("com.theangel.themall.ware.dao")
+@EnableTransactionManagement
 public class MybatisPlusConfig {
     // 旧版
     @Bean

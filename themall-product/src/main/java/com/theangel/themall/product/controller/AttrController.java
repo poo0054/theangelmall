@@ -1,9 +1,12 @@
 package com.theangel.themall.product.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
+import com.theangel.themall.product.entity.ProductAttrValueEntity;
+import com.theangel.themall.product.service.ProductAttrValueService;
 import com.theangel.themall.product.vo.AttrResVo;
 import com.theangel.themall.product.vo.AttrVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +30,21 @@ import com.theangel.common.utils.R;
 public class AttrController {
     @Autowired
     private AttrService attrService;
+    @Autowired
+    private ProductAttrValueService productAttrValueService;
 
-    // product/attr/base/list/0?t=1626618562074&page=1&limit=10&key=
-    //GET /product/attr/base/list/{catelogId}
-    //GET /product/attr/sale/list/{catelogId}
+
+    /**
+     * /product/attr/base/listforspu/{spuId}
+     *
+     * @param spuId
+     * @return
+     */
+    @GetMapping("/base/listforspu/{spuId}")
+    public R baseListForSpu(@PathVariable("spuId") Long spuId) {
+        List<ProductAttrValueEntity> pageUtils = productAttrValueService.baseListForSpu(spuId);
+        return R.ok().put("data", pageUtils);
+    }
 
     /**
      * @param params
@@ -51,7 +65,6 @@ public class AttrController {
     //@RequiresPermissions("product:attr:list")
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = attrService.queryPage(params);
-
         return R.ok().put("page", page);
     }
 
@@ -92,6 +105,18 @@ public class AttrController {
 //        attrService.updateById(attr);
         attrService.updateAttr(attr);
 
+        return R.ok();
+    }
+
+    /**
+     * /product/attr/update/{spuId}
+     * 修改
+     */
+    @RequestMapping("/update/{spuId}")
+    //@RequiresPermissions("product:attr:update")
+    public R updateAttr(@PathVariable("spuId") Long spuId, @RequestBody List<ProductAttrValueEntity> attr) {
+//        attrService.updateById(attr);
+        productAttrValueService.updateAttr(spuId, attr);
         return R.ok();
     }
 

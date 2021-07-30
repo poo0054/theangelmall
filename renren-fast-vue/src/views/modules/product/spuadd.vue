@@ -778,7 +778,6 @@ export default {
             if (pIndex == null) {
               return result;
             }
-
             //赋值parent进行再次检查
             index = pIndex;
           } else {
@@ -791,6 +790,7 @@ export default {
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {
+
   },
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {

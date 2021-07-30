@@ -7,6 +7,13 @@ spring:
   cloud:
     gateway:
       routes:
+        #          库存服务
+        - id: themall-ware
+          uri: lb://themall-ware
+          predicates:
+            - Path=/api/ware/**
+          filters:
+            - RewritePath=/api/?(?<the>.*), /$\{the}
         #          商品优惠服务
         - id: themall-coupon
           uri: lb://themall-coupon

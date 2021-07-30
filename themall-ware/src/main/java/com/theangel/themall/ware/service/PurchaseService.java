@@ -3,7 +3,10 @@ package com.theangel.themall.ware.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.theangel.common.utils.PageUtils;
 import com.theangel.themall.ware.entity.PurchaseEntity;
+import com.theangel.themall.ware.vo.MergeVo;
+import com.theangel.themall.ware.vo.PurchaseDoneVo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,5 +19,13 @@ import java.util.Map;
 public interface PurchaseService extends IService<PurchaseEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    PageUtils queryPageUnreceive(Map<String, Object> params);
+
+    void saveMerge(MergeVo merge);
+
+    void saveReceived(List<Long> id);
+
+    void saveDone(PurchaseDoneVo doneVo);
 }
 

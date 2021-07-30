@@ -9,5 +9,3 @@ spring:
           - dataId: themall-ware.yml
             refresh: true
         server-addr: theangel.vip:8848
-  application:
-    name: themall-ware

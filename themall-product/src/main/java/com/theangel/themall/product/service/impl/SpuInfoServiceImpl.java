@@ -31,7 +31,6 @@ import org.springframework.util.StringUtils;
 
 @Service("spuInfoService")
 public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> implements SpuInfoService {
-
     @Autowired
     SpuInfoDescService spuInfoDescService;
     @Autowired
@@ -53,7 +52,7 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
     public PageUtils queryPage(Map<String, Object> params) {
         IPage<SpuInfoEntity> page = this.page(
                 new Query<SpuInfoEntity>().getPage(params),
-                new QueryWrapper<SpuInfoEntity>()
+                new QueryWrapper<>()
         );
 
         return new PageUtils(page);
@@ -197,11 +196,11 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
             queryWrapper.eq("publish_status", status);
         }
         String brandId = (String) params.get("brandId");
-        if (!ObjectUtils.isEmpty(brandId) & !brandId.equals("0")) {
+        if (!ObjectUtils.isEmpty(brandId) && !brandId.equals("0")) {
             queryWrapper.eq("brand_id", brandId);
         }
         String catelogId = (String) params.get("catelogId");
-        if (!ObjectUtils.isEmpty(catelogId) & !catelogId.equals("0")) {
+        if (!ObjectUtils.isEmpty(catelogId) && !catelogId.equals("0")) {
             queryWrapper.eq("catalog_id", catelogId);
         }
 

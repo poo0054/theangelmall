@@ -24,7 +24,8 @@
           v-if="isAuth('ware:purchasedetail:save')"
           type="primary"
           @click="addOrUpdateHandle()"
-        >新增</el-button>
+        >新增
+        </el-button>
         <el-dropdown @command="handleBatchCommand" :disabled="dataListSelections.length <= 0">
           <el-button type="danger">
             批量操作
@@ -90,7 +91,7 @@
           <span style="float: left">{{ item.id }}</span>
           <span
             style="float: right; color: #8492a6; font-size: 13px"
-          >{{ item.assigneeName }}：{{item.phone}}</span>
+          >{{ item.assigneeName }}：{{ item.phone }}</span>
         </el-option>
       </el-select>
       <span slot="footer" class="dialog-footer">
@@ -103,6 +104,7 @@
 
 <script>
 import AddOrUpdate from "./purchasedetail-add-or-update";
+
 export default {
   data() {
     return {
@@ -150,21 +152,22 @@ export default {
             this.$http({
               url: this.$http.adornUrl("/ware/purchase/merge"),
               method: "post",
-              data: this.$http.adornData({ items: items }, false)
-            }).then(({ data }) => {
+              data: this.$http.adornData({items: items}, false)
+            }).then(({data}) => {
               this.getDataList();
             });
           })
-          .catch(() => {});
+          .catch(() => {
+          });
       } else {
         this.$http({
           url: this.$http.adornUrl("/ware/purchase/merge"),
           method: "post",
           data: this.$http.adornData(
-            { purchaseId: this.purchaseId, items: items },
+            {purchaseId: this.purchaseId, items: items},
             false
           )
-        }).then(({ data }) => {
+        }).then(({data}) => {
           this.getDataList();
         });
       }
@@ -175,7 +178,7 @@ export default {
         url: this.$http.adornUrl("/ware/purchase/unreceive/list"),
         method: "get",
         params: this.$http.adornParams({})
-      }).then(({ data }) => {
+      }).then(({data}) => {
         this.purchasetableData = data.page.list;
       });
     },
@@ -190,7 +193,8 @@ export default {
         } else {
           this.$alert("请先选择需要合并的需求", "提示", {
             confirmButtonText: "确定",
-            callback: action => {}
+            callback: action => {
+            }
           });
         }
       }
@@ -203,7 +207,7 @@ export default {
           page: 1,
           limit: 500
         })
-      }).then(({ data }) => {
+      }).then(({data}) => {
         this.wareList = data.page.list;
       });
     },
@@ -220,7 +224,7 @@ export default {
           status: this.dataForm.status,
           wareId: this.dataForm.wareId
         })
-      }).then(({ data }) => {
+      }).then(({data}) => {
         if (data && data.code === 0) {
           this.dataList = data.page.list;
           this.totalPage = data.page.totalCount;
@@ -258,8 +262,8 @@ export default {
       var ids = id
         ? [id]
         : this.dataListSelections.map(item => {
-            return item.id;
-          });
+          return item.id;
+        });
       this.$confirm(
         `确定对[id=${ids.join(",")}]进行[${id ? "删除" : "批量删除"}]操作?`,
         "提示",
@@ -273,7 +277,7 @@ export default {
           url: this.$http.adornUrl("/ware/purchasedetail/delete"),
           method: "post",
           data: this.$http.adornData(ids, false)
-        }).then(({ data }) => {
+        }).then(({data}) => {
           if (data && data.code === 0) {
             this.$message({
               message: "操作成功",

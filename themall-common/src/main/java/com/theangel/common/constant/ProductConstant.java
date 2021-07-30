@@ -2,7 +2,7 @@ package com.theangel.common.constant;
 
 import lombok.Data;
 
-public class productConstant {
+public class ProductConstant {
 
     public enum AttrEnum {
 
