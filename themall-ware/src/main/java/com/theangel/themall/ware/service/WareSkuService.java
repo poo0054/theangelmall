@@ -3,7 +3,9 @@ package com.theangel.themall.ware.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.theangel.common.utils.PageUtils;
 import com.theangel.themall.ware.entity.WareSkuEntity;
+import com.theangel.common.to.SkuHasStockVo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,5 +20,7 @@ public interface WareSkuService extends IService<WareSkuEntity> {
     PageUtils queryPage(Map<String, Object> params);
 
     void addStack(Long skuId, Long wareId, Integer skuNum);
+
+    List<SkuHasStockVo> getHasStock(List<Long> skuIds);
 }
 

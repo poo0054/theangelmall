@@ -30,10 +30,35 @@
         <cos-sts.version>3.0.8</cos-sts.version>
         <valedatetion.version>2.0.1.Final</valedatetion.version>
         <alicloud-oss.version>2.1.1.RELEASE</alicloud-oss.version>
+        <elasticsearch.version>7.4.2</elasticsearch.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+
+            <!-- https://mvnrepository.com/artifact/org.elasticsearch.client/elasticsearch-rest-high-level-client -->
+            <dependency>
+                <groupId>org.elasticsearch.client</groupId>
+                <artifactId>elasticsearch-rest-client</artifactId>
+                <version>${elasticsearch.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.elasticsearch.client/elasticsearch-rest-high-level-client -->
+
+
+
+            <!-- https://mvnrepository.com/artifact/org.elasticsearch/elasticsearch -->
+            <dependency>
+                <groupId>org.elasticsearch</groupId>
+                <artifactId>elasticsearch</artifactId>
+                <version>${elasticsearch.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.elasticsearch.client</groupId>
+                <artifactId>elasticsearch-rest-high-level-client</artifactId>
+                <version>${elasticsearch.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
@@ -54,6 +79,7 @@
                 <artifactId>fastjson</artifactId>
                 <version>${json.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
@@ -65,13 +91,11 @@
                         <groupId>com.alibaba.nacos</groupId>
                         <artifactId>nacos-client</artifactId>
                     </exclusion>
+                    <exclusion>
+                        <groupId>org.elasticsearch.client</groupId>
+                        <artifactId>elasticsearch-rest-client</artifactId>
+                    </exclusion>
                 </exclusions>
-            </dependency>
-
-            <dependency>
-                <groupId>com.alibaba.nacos</groupId>
-                <artifactId>nacos-client</artifactId>
-                <version>1.4.2</version>
             </dependency>
 
             <dependency>
@@ -80,7 +104,19 @@
                 <version>${spring-boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.elasticsearch</groupId>
+                        <artifactId>elasticsearch</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
+
+            <!--   <dependency>
+                   <groupId>com.alibaba.nacos</groupId>
+                   <artifactId>nacos-client</artifactId>
+                   <version>1.4.2</version>
+               </dependency>-->
 
 
             <!-- https://mvnrepository.com/artifact/junit/junit -->
@@ -173,6 +209,7 @@
         <module>renren-fast</module>
         <module>renren-generator</module>
         <module>third-party</module>
+        <module>themall-search</module>
     </modules>
 
     <build>

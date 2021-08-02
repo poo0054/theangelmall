@@ -2,11 +2,13 @@ package com.theangel.themall.ware.service.impl;
 
 import com.theangel.common.utils.R;
 import com.theangel.themall.ware.openfeign.ProductFeignService;
+import com.theangel.common.to.SkuHasStockVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -78,5 +80,29 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
             skuNum += stock;
             this.baseMapper.addStack(skuId, wareId, skuNum);
         }
+    }
+
+    /**
+     * 是否有库存
+     *
+     * @param skuIds
+     * @return
+     */
+    @Override
+    public List<SkuHasStockVo> getHasStock(List<Long> skuIds) {
+        List<SkuHasStockVo> collect = skuIds.stream().map(skuId -> {
+            SkuHasStockVo skuHasStockVo = new SkuHasStockVo();
+            Long aLong = baseMapper.getHasStock(skuId);
+            skuHasStockVo.setSkuId(skuId);
+            if (!ObjectUtils.isEmpty(aLong)) {
+                skuHasStockVo.setHasStock(aLong > 0);
+            } else {
+                skuHasStockVo.setHasStock(false);
+            }
+            return skuHasStockVo;
+        }).filter(item -> {
+            return !ObjectUtils.isEmpty(item);
+        }).collect(Collectors.toList());
+        return collect;
     }
 }

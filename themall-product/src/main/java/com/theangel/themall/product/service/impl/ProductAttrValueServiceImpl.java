@@ -32,6 +32,12 @@ public class ProductAttrValueServiceImpl extends ServiceImpl<ProductAttrValueDao
         return new PageUtils(page);
     }
 
+    /**
+     * 根据spu获取所有spu的属性
+     *
+     * @param spuId
+     * @return
+     */
     @Override
     public List<ProductAttrValueEntity> baseListForSpu(Long spuId) {
         List<ProductAttrValueEntity> spu_id = this.list(new QueryWrapper<ProductAttrValueEntity>().eq("spu_id", spuId));

@@ -12,6 +12,11 @@ spring:
     name: themall-product
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
+  #开发期间 关闭缓存
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
 
 #  cloud:
 #    nacos:

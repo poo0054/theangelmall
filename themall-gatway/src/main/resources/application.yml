@@ -7,6 +7,13 @@ spring:
   cloud:
     gateway:
       routes:
+        #         检索服务
+        - id: themall-search
+          uri: lb://themall-search
+          predicates:
+            - Path=/api/search/**
+          filters:
+            - RewritePath=/api/?(?<the>.*), /$\{the}
         #          库存服务
         - id: themall-ware
           uri: lb://themall-ware

@@ -3,6 +3,7 @@ package com.theangel.themall.product.service.impl;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -75,4 +76,16 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
         return new PageUtils(page);
     }
 
+
+    /**
+     * 根据spu  查出sku对应的所有信息  品牌名称
+     *
+     * @param spuId
+     * @return
+     */
+    @Override
+    public List<SkuInfoEntity> getSkuInfoBySpuId(Long spuId) {
+        List<SkuInfoEntity> spu_id = this.list(new QueryWrapper<SkuInfoEntity>().eq("spu_id", spuId));
+        return spu_id;
+    }
 }

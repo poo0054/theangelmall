@@ -29,9 +29,8 @@
 
 #### 商品模块
 
-SPU：standard product unit(标准化产品单元)：是商品信息聚合的最小单位，是一组可复用、易检索的标准化信息的集合，该集合描述了一个产品的特性。
+SPU：standard product unit(标准化产品单元)：是商品信息聚合的最小单位，是一组可复用、易检索的标准化信息的集合，该集合描述了一个产品的特性。如iphoneX是SPU
 
-如iphoneX是SPU
 SKU：stock keeping unit(库存量单位)：库存进出计量的基本单元，可以是件/盒/托盘等单位。SKU是对于大型连锁超市DC配送中心物流管理的一个必要的方法。现在已经被引申为产品统一编号的简称，每种产品对应有唯一的SKU号。
 
 如iphoneX 64G 黑色 是SKU
@@ -48,3 +47,58 @@ SKU：stock keeping unit(库存量单位)：库存进出计量的基本单元，
 规格参数也是基本属性，他们具有自己的分组
 属性的分组也是以三级分类组织起来的
 属性名确定的，但是值是每一个商品不同来决定的
+
+
+
+# elasticSearch
+
+创建商品索引映射
+
+```json
+PUT product
+{
+    "mappings":{
+        "properties": {
+            "skuId":{ "type": "long" },
+            "spuId":{ "type": "keyword" },   ## 不可分词
+            "skuTitle": {
+                "type": "text",
+                "analyzer": "ik_smart"  # 中文分词器
+            },
+            "skuPrice": { "type": "keyword" },  # 保证精度问题
+            "skuImg"  : {
+       		 "type": "keyword",
+        	 "index":false,
+        	 "doc_values":false
+    		},  
+            "saleCount":{ "type":"long" },
+            "hasStock": { "type": "boolean" },
+            "hotScore": { "type": "long"  },
+            "brandId":  { "type": "long" },
+            "catalogId": { "type": "long"  },
+            "brandName": {
+                "type": "keyword"
+            },  
+            "brandImg":{
+                "type": "keyword",
+                "index": false,  # 不可被检索，不生成index，只用做页面使用
+                "doc_values": false # 不可被聚合，默认为true
+            },
+            "catalogName": {"type": "keyword" }, # 视频里有false
+            "attrs": {
+                "type": "nested",
+                "properties": {
+                    "attrId": {"type": "long"  },
+                    "attrName": {
+                        "type": "keyword",
+                        "index": false,
+                        "doc_values": false
+                    },
+                    "attrValue": {"type": "keyword" }
+                }
+            }
+        }
+    }
+}
+```
+

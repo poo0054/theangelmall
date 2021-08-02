@@ -5,10 +5,7 @@ import com.theangel.themall.product.service.CategoryBrandRelationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
@@ -109,9 +106,15 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
                     categoryentity.setChildren(getChildren(categoryentity, categoryEntities));
                     return categoryentity;
                 })
-                .sorted((v1, v2) -> (v1.getSort() == null ? 0 : v1.getSort()) - (v2.getSort() == null ? 0 : v2.getSort()))
+                .sorted(Comparator.comparingInt(v -> (v.getSort() == null ? 0 : v.getSort())))
+//                .sorted((v1, v2) -> (v1.getSort() == null ? 0 : v1.getSort()) - (v2.getSort() == null ? 0 : v2.getSort()))
                 .collect(Collectors.toList());
     }
 
 
+    @Override
+    public List<CategoryEntity> getLevel1Categorys() {
+        List<CategoryEntity> parent_cid = this.list(new QueryWrapper<CategoryEntity>().eq("parent_cid", 0));
+        return parent_cid;
+    }
 }

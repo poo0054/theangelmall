@@ -1,0 +1,11 @@
+spring:
+  cloud:
+    nacos:
+      config:
+        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b
+        extension-configs:
+          - dataId: public.yml
+            refresh: true
+          - dataId: themall-search.yml
+            refresh: true
+        server-addr: theangel.vip:8848

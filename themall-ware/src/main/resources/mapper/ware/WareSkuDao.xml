@@ -10,4 +10,9 @@
         where sku_id = #{skuId}
           and ware_id = #{wareId}
     </update>
+    <select id="getHasStock" resultType="java.lang.Long">
+        select sum(stock - stock_locked)
+        from wms_ware_sku
+        where sku_id = #{skuId}
+    </select>
 </mapper>

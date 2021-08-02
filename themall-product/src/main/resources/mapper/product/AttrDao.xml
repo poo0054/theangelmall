@@ -3,7 +3,7 @@
 
 <mapper namespace="com.theangel.themall.product.dao.AttrDao">
 
-	<!-- 可根据自己的需求，是否要使用 -->
+    <!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="com.theangel.themall.product.entity.AttrEntity" id="attrMap">
         <result property="attrId" column="attr_id"/>
         <result property="attrName" column="attr_name"/>
@@ -15,6 +15,16 @@
         <result property="catelogId" column="catelog_id"/>
         <result property="showDesc" column="show_desc"/>
     </resultMap>
+
+    <select id="listSearchAttrIds" resultType="long">
+        select attr_id
+        from pms_attr
+        where attr_id in
+        <foreach collection="attrIds" item="attrId" index="id" separator="," open="(" close=")">
+            #{attrId}
+        </foreach>
+        and search_type = 1
+    </select>
 
 
 </mapper>
