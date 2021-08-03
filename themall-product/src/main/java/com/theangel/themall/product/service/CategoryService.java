@@ -3,6 +3,7 @@ package com.theangel.themall.product.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.theangel.common.utils.PageUtils;
 import com.theangel.themall.product.entity.CategoryEntity;
+import com.theangel.themall.product.vo.Catelog2Vo;
 
 import java.util.List;
 import java.util.Map;
@@ -30,5 +31,7 @@ public interface CategoryService extends IService<CategoryEntity> {
     void updateDetail(CategoryEntity category);
 
     List<CategoryEntity> getLevel1Categorys();
+
+    Map<String, List<Catelog2Vo>> indexCatalog();
 }
 

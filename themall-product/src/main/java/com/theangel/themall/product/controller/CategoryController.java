@@ -72,7 +72,7 @@ public class CategoryController {
     /**
      * 修改
      */
-    @PostMapping(value = "/update/sort")
+    @PostMapping(value = "/update")
     //@RequiresPermissions("product:category:update")
     public R update(@RequestBody CategoryEntity category) {
         categoryService.updateDetail(category);

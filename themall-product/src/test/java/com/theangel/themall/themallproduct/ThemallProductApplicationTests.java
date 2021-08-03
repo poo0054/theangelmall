@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ThemallProductApplication.class)
 public class ThemallProductApplicationTests {
+
     @Autowired
     private CategoryService categoryService;
 

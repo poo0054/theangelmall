@@ -23,14 +23,16 @@
             type="text"
             size="mini"
             @click="() => append(data)"
-          >Append</el-button>
-          <el-button type="text" size="mini" @click="edit(data)">edit</el-button>
+          >添加</el-button>
+          <el-button type="text" size="mini" @click="edit(data)">
+            修改
+          </el-button>
           <el-button
             v-if="node.childNodes.length==0"
             type="text"
             size="mini"
             @click="() => remove(node, data)"
-          >Delete</el-button>
+          >删除</el-button>
         </span>
       </span>
     </el-tree>
@@ -62,7 +64,7 @@
 
 <script>
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
-//例如：import 《组件名称》 from '《组件路径》';
+//例如：import 《组件名称》 from '《组件路径》';
 
 export default {
   //import引入的组件需要注入到对象中才能使用
@@ -96,7 +98,7 @@ export default {
     };
   },
 
-  //计算属性 类似于data概念
+  //计算属性 类似于data概念
   computed: {},
   //监控data中的数据变化
   watch: {},
@@ -106,7 +108,7 @@ export default {
       this.$http({
         url: this.$http.adornUrl("/product/category/list/tree"),
         method: "get"
-      }).then(({ data }) => {
+      }).then(({data}) => {
         console.log("成功获取到菜单数据...", data.data);
         this.menus = data.data;
       });
@@ -128,7 +130,7 @@ export default {
             url: this.$http.adornUrl("/product/category/delete"),
             method: "post",
             data: this.$http.adornData(catIds, false)
-          }).then(({ data }) => {
+          }).then(({data}) => {
             this.$message({
               message: "菜单批量删除成功",
               type: "success"
@@ -136,14 +138,15 @@ export default {
             this.getMenus();
           });
         })
-        .catch(() => {});
+        .catch(() => {
+        });
     },
     batchSave() {
       this.$http({
         url: this.$http.adornUrl("/product/category/update/sort"),
         method: "post",
         data: this.$http.adornData(this.updateNodes, false)
-      }).then(({ data }) => {
+      }).then(({data}) => {
         this.$message({
           message: "菜单顺序等修改成功",
           type: "success"
@@ -192,7 +195,7 @@ export default {
             catLevel: catLevel
           });
         } else {
-          this.updateNodes.push({ catId: siblings[i].data.catId, sort: i });
+          this.updateNodes.push({catId: siblings[i].data.catId, sort: i});
         }
       }
 
@@ -253,7 +256,7 @@ export default {
       this.$http({
         url: this.$http.adornUrl(`/product/category/info/${data.catId}`),
         method: "get"
-      }).then(({ data }) => {
+      }).then(({data}) => {
         //请求成功
         console.log("要回显的数据", data);
         this.category.name = data.data.name;
@@ -266,9 +269,9 @@ export default {
         this.category.showStatus = data.data.showStatus;
         /**
          *         parentCid: 0,
-        catLevel: 0,
-        showStatus: 1,
-        sort: 0,
+         catLevel: 0,
+         showStatus: 1,
+         sort: 0,
          */
       });
     },
@@ -297,12 +300,12 @@ export default {
     },
     //修改三级分类数据
     editCategory() {
-      var { catId, name, icon, productUnit } = this.category;
+      var {catId, name, icon, productUnit} = this.category;
       this.$http({
         url: this.$http.adornUrl("/product/category/update"),
         method: "post",
-        data: this.$http.adornData({ catId, name, icon, productUnit }, false)
-      }).then(({ data }) => {
+        data: this.$http.adornData({catId, name, icon, productUnit}, false)
+      }).then(({data}) => {
         this.$message({
           message: "菜单修改成功",
           type: "success"
@@ -322,7 +325,7 @@ export default {
         url: this.$http.adornUrl("/product/category/save"),
         method: "post",
         data: this.$http.adornData(this.category, false)
-      }).then(({ data }) => {
+      }).then(({data}) => {
         this.$message({
           message: "菜单保存成功",
           type: "success"
@@ -348,7 +351,7 @@ export default {
             url: this.$http.adornUrl("/product/category/delete"),
             method: "post",
             data: this.$http.adornData(ids, false)
-          }).then(({ data }) => {
+          }).then(({data}) => {
             this.$message({
               message: "菜单删除成功",
               type: "success"
@@ -359,25 +362,34 @@ export default {
             this.expandedKey = [node.parent.data.catId];
           });
         })
-        .catch(() => {});
+        .catch(() => {
+        });
 
       console.log("remove", node, data);
     }
   },
-  //生命周期 - 创建完成（可以访问当前this实例）
+  //生命周期 - 创建完成（可以访问当前this实例）
   created() {
     this.getMenus();
   },
-  //生命周期 - 挂载完成（可以访问DOM元素）
-  mounted() {},
-  beforeCreate() {}, //生命周期 - 创建之前
-  beforeMount() {}, //生命周期 - 挂载之前
-  beforeUpdate() {}, //生命周期 - 更新之前
-  updated() {}, //生命周期 - 更新之后
-  beforeDestroy() {}, //生命周期 - 销毁之前
-  destroyed() {}, //生命周期 - 销毁完成
-  activated() {} //如果页面有keep-alive缓存功能，这个函数会触发
+  //生命周期 - 挂载完成（可以访问DOM元素）
+  mounted() {
+  },
+  beforeCreate() {
+  }, //生命周期 - 创建之前
+  beforeMount() {
+  }, //生命周期 - 挂载之前
+  beforeUpdate() {
+  }, //生命周期 - 更新之前
+  updated() {
+  }, //生命周期 - 更新之后
+  beforeDestroy() {
+  }, //生命周期 - 销毁之前
+  destroyed() {
+  }, //生命周期 - 销毁完成
+  activated() {
+  } //如果页面有keep-alive缓存功能，这个函数会触发
 };
 </script>
-<style scoped>
+<style scoped>
 </style>

@@ -57,4 +57,10 @@ spring:
           filters:
             - RewritePath=/api/?(?<the>.*), /renren-fast/$\{the}
 
+        - id: themall-host
+          uri: lb://themall-product
+          predicates:
+            - Host=**.localhost
+
+
 

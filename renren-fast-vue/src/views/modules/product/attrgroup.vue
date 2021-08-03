@@ -16,13 +16,15 @@
               v-if="isAuth('product:attrgroup:save')"
               type="primary"
               @click="addOrUpdateHandle()"
-            >新增</el-button>
+            >新增
+            </el-button>
             <el-button
               v-if="isAuth('product:attrgroup:delete')"
               type="danger"
               @click="deleteHandle()"
               :disabled="dataListSelections.length <= 0"
-            >批量删除</el-button>
+            >批量删除
+            </el-button>
           </el-form-item>
         </el-form>
         <el-table
@@ -52,7 +54,8 @@
                 type="text"
                 size="small"
                 @click="addOrUpdateHandle(scope.row.attrGroupId)"
-              >修改</el-button>
+              >修改
+              </el-button>
               <el-button type="text" size="small" @click="deleteHandle(scope.row.attrGroupId)">删除</el-button>
             </template>
           </el-table-column>
@@ -88,9 +91,10 @@
 import Category from "../common/category";
 import AddOrUpdate from "./attrgroup-add-or-update";
 import RelationUpdate from "./attr-group-relation";
+
 export default {
   //import引入的组件需要注入到对象中才能使用
-  components: { Category, AddOrUpdate, RelationUpdate },
+  components: {Category, AddOrUpdate, RelationUpdate},
   props: {},
   data() {
     return {
@@ -126,7 +130,7 @@ export default {
         this.getDataList(); //重新查询
       }
     },
-    getAllDataList(){
+    getAllDataList() {
       this.catId = 0;
       this.getDataList();
     },
@@ -141,7 +145,7 @@ export default {
           limit: this.pageSize,
           key: this.dataForm.key
         })
-      }).then(({ data }) => {
+      }).then(({data}) => {
         if (data && data.code === 0) {
           this.dataList = data.page.list;
           this.totalPage = data.page.totalCount;
@@ -179,8 +183,8 @@ export default {
       var ids = id
         ? [id]
         : this.dataListSelections.map(item => {
-            return item.attrGroupId;
-          });
+          return item.attrGroupId;
+        });
       this.$confirm(
         `确定对[id=${ids.join(",")}]进行[${id ? "删除" : "批量删除"}]操作?`,
         "提示",
@@ -194,7 +198,7 @@ export default {
           url: this.$http.adornUrl("/product/attrgroup/delete"),
           method: "post",
           data: this.$http.adornData(ids, false)
-        }).then(({ data }) => {
+        }).then(({data}) => {
           if (data && data.code === 0) {
             this.$message({
               message: "操作成功",
