@@ -56,7 +56,7 @@ spring:
             - Path=/api/**
           filters:
             - RewritePath=/api/?(?<the>.*), /renren-fast/$\{the}
-
+        # 首页
         - id: themall-host
           uri: lb://themall-product
           predicates:

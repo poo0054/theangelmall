@@ -17,3 +17,5 @@ buildNumber.properties
 **/target/
 .mve
 .idea
+
+*.log

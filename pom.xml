@@ -31,10 +31,34 @@
         <valedatetion.version>2.0.1.Final</valedatetion.version>
         <alicloud-oss.version>2.1.1.RELEASE</alicloud-oss.version>
         <elasticsearch.version>7.4.2</elasticsearch.version>
+        <hutool-all.version>4.1.1</hutool-all.version>
+        <redisson.version>3.15.6</redisson.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+
+            <!-- https://mvnrepository.com/artifact/org.redisson/redisson -->
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson</artifactId>
+                <version>${redisson.version}</version>
+            </dependency>
+
+
+            <!-- https://mvnrepository.com/artifact/org.redisson/redisson-spring-boot-starter -->
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-boot-starter</artifactId>
+                <version>${redisson.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool-all.version}</version>
+            </dependency>
 
             <!-- https://mvnrepository.com/artifact/org.elasticsearch.client/elasticsearch-rest-high-level-client -->
             <dependency>
@@ -42,9 +66,6 @@
                 <artifactId>elasticsearch-rest-client</artifactId>
                 <version>${elasticsearch.version}</version>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/org.elasticsearch.client/elasticsearch-rest-high-level-client -->
-
-
 
             <!-- https://mvnrepository.com/artifact/org.elasticsearch/elasticsearch -->
             <dependency>

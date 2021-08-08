@@ -9,3 +9,5 @@ spring:
             refresh: true
           - dataId: themall-product.yml
             refresh: true
+server:
+  port: 9000
