@@ -49,18 +49,21 @@ spring:
             - Path=/api/member/**
           filters:
             - RewritePath=/api/?(?<the>.*), /$\{the}
+
         #
         - id: renren-fast
           uri: lb://renren-fast
           predicates:
-            - Path=/api/**
+            - Path=/api/**,/renren-fast/**
+
           filters:
             - RewritePath=/api/?(?<the>.*), /renren-fast/$\{the}
+
         # 首页
         - id: themall-host
           uri: lb://themall-product
           predicates:
-            - Host=**.localhost
-
-
-
+            #            - Host=**.localhost,127.0.0.1:80,**.theangel.vip:8888,localhost:80
+            - Path=/**
+#          filters:
+#            - RewritePath=/index/?(?<the>.*), /index/$\{the}

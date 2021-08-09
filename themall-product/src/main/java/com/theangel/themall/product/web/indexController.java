@@ -28,7 +28,7 @@ public class indexController {
     StringRedisTemplate stringRedisTemplate;
 
 
-    @GetMapping({"/", "/index.html"})
+    @GetMapping({"/", "/index.html", "/index"})
     public String indexPage(Model model) {
         List<CategoryEntity> categoryEntities = categoryService.getLevel1Categorys();
         model.addAttribute("categorys", categoryEntities);
@@ -36,7 +36,7 @@ public class indexController {
     }
 
     @ResponseBody
-    @GetMapping("index/catalog.json")
+    @GetMapping("/index/catalog.json")
     public Map<String, List<Catelog2Vo>> indexCatalog(Model model) {
         Map<String, List<Catelog2Vo>> categoryEntities = categoryService.getCatalogJson();
         model.addAttribute("categorys", categoryEntities);

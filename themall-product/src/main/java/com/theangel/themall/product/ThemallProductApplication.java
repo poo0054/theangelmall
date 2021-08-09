@@ -16,7 +16,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * @EnableCaching： 开启缓存注解，只要使用注解就可以完成缓存操作
  */
 
-@EnableCaching
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients(basePackages = "com.theangel.themall.product.openfeign")

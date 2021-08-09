@@ -9,7 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
@@ -90,6 +92,18 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         return parentCateLogId.toArray(new Long[parentCateLogId.size()]);
     }
 
+    /**
+     * CacheEvict: 清除缓存
+     * Caching:多个组合操作
+     * CacheEvict->allEntries：为true，删除该分区所有缓存  ，批量删除缓存
+     *
+     * @param category
+     */
+//    @Caching(evict = {
+//            @CacheEvict(value = "category", key = "'getLevel1Categorys'"),
+//            @CacheEvict(value = "category", key = "'getCatalogJson'")
+//    })
+    @CacheEvict(value = "category", allEntries = true)
     @Override
     @Transactional
     public void updateDetail(CategoryEntity category) {
@@ -135,13 +149,56 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
      * @return
      * @Cacheable： 表示当前方法结果需要缓存 执行过程：缓存中有，方法不需要调用    如果没有，调用方法，最后将方法结果放入缓存
      * 每一个需要缓存的数据，指定缓存的名字（缓存的分区） 如：商品有关的 product
+     * SpEL表达式：https://docs.spring.io/spring-framework/docs/5.3.10-SNAPSHOT/reference/html/integration.html#cache-annotations-cacheable-synchronized
+     * 指定key ：需要''
+     * 存活时间：time-to-live
+     * 保存为json格式，默认为jdk序列化的格式
+     * sync:本地锁
      */
-    @Cacheable({"category"})
+    @Cacheable(value = {"category"}, key = "#root.method.name", sync = true)
     @Override
     public List<CategoryEntity> getLevel1Categorys() {
         System.out.println("我是查询所有一级分类");
         List<CategoryEntity> parent_cid = this.list(new QueryWrapper<CategoryEntity>().eq("parent_cid", 0));
         return parent_cid;
+    }
+
+    /**
+     * 使用cache作为缓存
+     *
+     * @return
+     */
+    @Cacheable(value = "category", key = "#root.method.name")
+    @Override
+    public Map<String, List<Catelog2Vo>> getCatalogJson() {
+        System.out.println("去数据库查询了数据");
+        //所有分类
+        List<CategoryEntity> list = this.list();
+        //查询所有1级分类实体类
+        List<CategoryEntity> level1Categorys = this.getParentCid(list, 0L);
+        Map<String, List<Catelog2Vo>> listMap = level1Categorys.stream().collect(Collectors.toMap(k -> k.getCatId().toString(), v1 -> {
+            //二级分类实体类
+            List<CategoryEntity> categoryEntities = this.getParentCid(list, v1.getCatId());
+            List<Catelog2Vo> catelog2Vos = null;
+            if (!ObjectUtils.isEmpty(categoryEntities)) {
+                catelog2Vos = categoryEntities.stream().map(v2 -> {
+                    //查询所有一级分类的二级分类
+                    Catelog2Vo catelog2Vo = new Catelog2Vo(v2.getParentCid() + "", v2.getCatId() + "", null, v2.getName());
+                    //查询二级分类下上级分类
+                    List<CategoryEntity> parent_cid2 = this.getParentCid(list, v2.getCatId());
+                    if (!ObjectUtils.isEmpty(parent_cid2)) {
+                        List<Catelog2Vo.Catalog3Vo> catalog3Vos = parent_cid2.stream().map(categoryEntity -> {
+                            Catelog2Vo.Catalog3Vo catalog3Vo = new Catelog2Vo.Catalog3Vo(categoryEntity.getParentCid() + "", categoryEntity.getCatId() + "", categoryEntity.getName());
+                            return catalog3Vo;
+                        }).collect(Collectors.toList());
+                        catelog2Vo.setCatalog3List(catalog3Vos);
+                    }
+                    return catelog2Vo;
+                }).collect(Collectors.toList());
+            }
+            return catelog2Vos;
+        }));
+        return listMap;
     }
 
     /**
@@ -159,12 +216,11 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
      *
      * @return
      */
-    @Override
-    public Map<String, List<Catelog2Vo>> getCatalogJson() {
+    public Map<String, List<Catelog2Vo>> getCatalogJsonRedis() {
         String catalogJson = redisTemplate.opsForValue().get("catalogJson");
         if (StringUtils.isEmpty(catalogJson)) {
             System.out.println("方法getCatalogJson缓存不命中，准备查询数据库......");
-            Map<String, List<Catelog2Vo>> catalogJsonDb = getCatalogJsonDbRedisLock();
+            Map<String, List<Catelog2Vo>> catalogJsonDb = getCatalogJsonDb();
             /*
             //加入缓存同时设置过期时间
             redisTemplate.opsForValue().set("catalogJson", JSON.toJSONString(catalogJsonDb), 1, TimeUnit.DAYS);
@@ -208,7 +264,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
      *
      * @return
      */
-    public Map<String, List<Catelog2Vo>> getCatalogJsonDbRedisLock() {
+    public Map<String, List<Catelog2Vo>> getCatalogJsonDb() {
         /**
          * TODO 缓存穿透 缓存雪崩 缓存击穿
          * 缓存穿透：加入null结果缓存 解决缓存穿透
@@ -245,7 +301,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
             }
             return catalogDb;
         } else {
-            return getCatalogJsonDbRedisLock();
+            return getCatalogJsonDb();
         }
 
 
