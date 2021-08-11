@@ -22,7 +22,6 @@ public class SearchController {
     public String getSearch(SearchParam searchParam, Model model) {
         SearchResult search = searchService.search(searchParam);
         model.addAttribute("result", search);
-
         return "list";
     }
 }

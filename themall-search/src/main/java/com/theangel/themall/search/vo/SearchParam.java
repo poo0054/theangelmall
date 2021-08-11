@@ -36,12 +36,13 @@ public class SearchParam {
      */
 
     /**
-     * 是否有货
+     * 是否有货  0-无货  1-有货
      */
     private Integer hasStock;
 
     /**
      * 价格区间
+     * skuPrice=  1_500 -> 0到500    _500->500以内- 500_ ->500以上
      */
     private String skuPrice;
 
@@ -55,7 +56,7 @@ public class SearchParam {
      * 属性id ，可能有多个
      * attrs=1_其他:安卓&attrs=2_5寸:6寸
      */
-    private List<Long> attrs;
+    private List<String> attrs;
 
     /**
      * 页码
