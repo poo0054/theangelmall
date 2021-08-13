@@ -1,114 +1,100 @@
+//PUT themall_product
 {
-  "themall_product": {
-    "aliases": {},
-    "mappings": {
-      "properties": {
-        "attrs": {
-          "type": "nested",
-          "properties": {
-            "attrId": {
-              "type": "long"
-            },
-            "attrName": {
-              "type": "keyword"
-            },
-            "attrValue": {
-              "type": "keyword"
-            }
+  "mappings": {
+    "properties": {
+      "attrs": {
+        "type": "nested",
+        "properties": {
+          "attrId": {
+            "type": "long"
+          },
+          "attrName": {
+            "type": "keyword"
+          },
+          "attrValue": {
+            "type": "keyword"
           }
-        },
-        "brandId": {
-          "type": "long"
-        },
-        "brandImg": {
-          "type": "keyword"
-        },
-        "brandName": {
-          "type": "keyword"
-        },
-        "catalogId": {
-          "type": "long"
-        },
-        "catalogName": {
-          "type": "keyword"
-        },
-        "description": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          }
-        },
-        "hasStock": {
-          "type": "boolean"
-        },
-        "hotScore": {
-          "type": "long"
-        },
-        "parentTask": {
-          "properties": {
-            "id": {
-              "type": "long"
-            },
-            "nodeId": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 256
-                }
-              }
-            },
-            "set": {
-              "type": "boolean"
-            }
-          }
-        },
-        "refreshPolicy": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          }
-        },
-        "saleCount": {
-          "type": "long"
-        },
-        "shouldStoreResult": {
-          "type": "boolean"
-        },
-        "skuId": {
-          "type": "long"
-        },
-        "skuImg": {
-          "type": "keyword"
-        },
-        "skuPrice": {
-          "type": "keyword"
-        },
-        "skuTitle": {
-          "type": "text",
-          "analyzer": "ik_smart"
-        },
-        "spuId": {
-          "type": "keyword"
         }
-      }
-    },
-    "settings": {
-      "index": {
-        "creation_date": "1628694490867",
-        "number_of_shards": "1",
-        "number_of_replicas": "1",
-        "uuid": "utuwzaRSRi6HDeKSPrJ-Cw",
-        "version": {
-          "created": "7040299"
-        },
-        "provided_name": "themall_product"
+      },
+      "brandId": {
+        "type": "long"
+      },
+      "brandImg": {
+        "type": "keyword"
+      },
+      "brandName": {
+        "type": "keyword"
+      },
+      "catalogId": {
+        "type": "long"
+      },
+      "catalogName": {
+        "type": "keyword"
+      },
+      "description": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "hasStock": {
+        "type": "boolean"
+      },
+      "hotScore": {
+        "type": "long"
+      },
+      "parentTask": {
+        "properties": {
+          "id": {
+            "type": "long"
+          },
+          "nodeId": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "set": {
+            "type": "boolean"
+          }
+        }
+      },
+      "refreshPolicy": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "saleCount": {
+        "type": "long"
+      },
+      "shouldStoreResult": {
+        "type": "boolean"
+      },
+      "skuId": {
+        "type": "long"
+      },
+      "skuImg": {
+        "type": "keyword"
+      },
+      "skuPrice": {
+        "type": "keyword"
+      },
+      "skuTitle": {
+        "type": "text",
+        "analyzer": "ik_smart"
+      },
+      "spuId": {
+        "type": "keyword"
       }
     }
   }
