@@ -3,6 +3,7 @@ package com.theangel.themall.search.vo;
 import com.theangel.common.to.es.SkuEsModel;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,6 +28,11 @@ public class SearchResult {
      */
     private Integer totalPages;
     /**
+     * 导航页码
+     */
+    private List<Integer> pageNavs;
+
+    /**
      * 查询到的结果，所有涉及到的品牌
      */
     private List<BrandVo> brands;
@@ -38,6 +44,23 @@ public class SearchResult {
      * 涉及到的所有分类
      */
     private List<CatalogVo> catalogs;
+    /**
+     * 哪些属性id被筛选了
+     */
+    private List<Long> attrIds = new ArrayList<>();
+
+
+    /**
+     * 面包屑导航
+     */
+    private List<NavVo> navs = new ArrayList<>();
+
+    @Data
+    public static class NavVo {
+        private String navName;
+        private String navValue;
+        private String link;
+    }
 
     /**
      * 品牌信息

@@ -24,7 +24,7 @@ public class SearchParam {
      * 排序条件 选择一个
      * 价格  sort=skuPrice_desc/asc  降序或者升序
      * 销量 sort=saleCont_desc/asc
-     * 热度评分 sort=HostScore_desc/asc
+     * 热度评分 sort=hostScore_desc/asc
      */
     private String sort;
 
@@ -62,4 +62,8 @@ public class SearchParam {
      * 页码
      */
     private Integer pageNum = 1;
+    /**
+     * 页码
+     */
+    private String _queryString;
 }

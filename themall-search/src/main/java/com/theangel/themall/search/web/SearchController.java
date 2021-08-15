@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 public class SearchController {
 
@@ -19,7 +21,9 @@ public class SearchController {
      * @return 返回给页面的所有结果
      */
     @GetMapping("/list.html")
-    public String getSearch(SearchParam searchParam, Model model) {
+    public String getSearch(SearchParam searchParam, Model model, HttpServletRequest httpServletRequest) {
+        //获取当前url地址
+        searchParam.set_queryString(httpServletRequest.getQueryString());
         SearchResult search = searchService.search(searchParam);
         model.addAttribute("result", search);
         return "list";

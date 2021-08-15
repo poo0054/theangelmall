@@ -1,10 +1,15 @@
 package com.theangel.themall.search.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.theangel.common.to.es.SkuEsModel;
+import com.theangel.common.utils.R;
 import com.theangel.themall.search.config.ElasticSearchConfig;
 import com.theangel.themall.search.constant.EsConstant;
+import com.theangel.themall.search.openfeign.ThemallProduct;
 import com.theangel.themall.search.service.MallSearchService;
+import com.theangel.themall.search.vo.AttrResponseVo;
+import com.theangel.themall.search.vo.BrandVo;
 import com.theangel.themall.search.vo.SearchParam;
 import com.theangel.themall.search.vo.SearchResult;
 import org.apache.lucene.search.join.ScoreMode;
@@ -14,7 +19,6 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.nested.NestedAggregationBuilder;
@@ -33,15 +37,22 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class MallSearchServiceImpl implements MallSearchService {
 
     @Autowired
     RestHighLevelClient restHighLevelClient;
+
+    @Autowired
+    ThemallProduct themallProduct;
 
     @Override
     public SearchResult search(SearchParam searchParam) {
@@ -67,7 +78,7 @@ public class MallSearchServiceImpl implements MallSearchService {
      * @return
      */
     private SearchResult buildSearchResult(SearchResponse searchResponse, SearchParam searchParam) {
-        SearchResult searchRequest = new SearchResult();
+        SearchResult searchResult = new SearchResult();
         Aggregations aggregations = searchResponse.getAggregations();
 
 //        ============= 聚合信息
@@ -77,12 +88,12 @@ public class MallSearchServiceImpl implements MallSearchService {
         ParsedLongTerms attr_id_agg = attr_agg.getAggregations().get("attr_id_agg");
         for (Terms.Bucket bucket : attr_id_agg.getBuckets()) {
             SearchResult.AttrVo attrVo = new SearchResult.AttrVo();
-            String keyAsString = bucket.getKeyAsString();
             //属性id
-            attrVo.setAttrId(Long.valueOf(keyAsString));
+            long l = bucket.getKeyAsNumber().longValue();
+            attrVo.setAttrId(l);
+            //属性名字
             ParsedStringTerms attr_name_agg = bucket.getAggregations().get("attr_name_agg");
             String keyAsString1 = attr_name_agg.getBuckets().get(0).getKeyAsString();
-            //属性名字
             attrVo.setAttrName(keyAsString1);
             //属性值有多个 需要循环
             ParsedStringTerms attr_value_agg = bucket.getAggregations().get("attr_value_agg");
@@ -95,7 +106,8 @@ public class MallSearchServiceImpl implements MallSearchService {
             attrVo.setAttrValue(attrValue);
             attrs.add(attrVo);
         }
-        searchRequest.setAttrs(attrs);
+        searchResult.setAttrs(attrs);
+
 
         //所有品牌信息
         List<SearchResult.BrandVo> brands = new ArrayList<>();
@@ -117,7 +129,7 @@ public class MallSearchServiceImpl implements MallSearchService {
             brands.add(brandVo);
         }
 
-        searchRequest.setBrands(brands);
+        searchResult.setBrands(brands);
 
         //所有分类信息
         List<SearchResult.CatalogVo> catalogs = new ArrayList<>();
@@ -135,7 +147,7 @@ public class MallSearchServiceImpl implements MallSearchService {
             catalogs.add(catalogVo);
         }
 
-        searchRequest.setCatalogs(catalogs);
+        searchResult.setCatalogs(catalogs);
 
         //hits
         SearchHits hits = searchResponse.getHits();
@@ -155,19 +167,88 @@ public class MallSearchServiceImpl implements MallSearchService {
                 products.add(skuEsModel);
             }
             //添加商品
-            searchRequest.setProducts(products);
+            searchResult.setProducts(products);
         }
 
         //页码
-        searchRequest.setPageNum(searchParam.getPageNum());
+        searchResult.setPageNum(searchParam.getPageNum());
         //总页数
         long total = hits.getTotalHits().value;
-        searchRequest.setTotal(total);
+        searchResult.setTotal(total);
         //总页码数
         int totalPages = (int) total % EsConstant.PRODUCT_PAGESIZE == 0 ? (int) total / EsConstant.PRODUCT_PAGESIZE : (int) total / EsConstant.PRODUCT_PAGESIZE + 1;
-        searchRequest.setTotalPages(totalPages);
+        searchResult.setTotalPages(totalPages);
+        List<Integer> PageNavs = new ArrayList<>();
+        for (int i = 1; i < totalPages + 1; i++) {
+            PageNavs.add(i);
+        }
+        searchResult.setPageNavs(PageNavs);
+        //商品属性面包屑
+        if (!ObjectUtils.isEmpty(searchParam.getAttrs())) {
+            //构建面包屑导航功能
+            List<SearchResult.NavVo> collect = searchParam.getAttrs().stream().map(attr -> {
+                SearchResult.NavVo navVo = new SearchResult.NavVo();
+                //分析每个attr的值  attrs=1_其他:安卓&attrs=2_5寸:6寸
+                String[] s = attr.split("_");
+                navVo.setNavValue(s[1]);
+                searchResult.getAttrIds().add(Long.valueOf(s[0]));
+                R r = themallProduct.attrInfo(Long.parseLong(s[0]));
+                if (r.getCode() == 0) {
+                    AttrResponseVo attr1 = r.getData("attr", new TypeReference<AttrResponseVo>() {
+                    });
+                    navVo.setNavName(attr1.getAttrName());
+                }
+                String replace = encodeToString(searchParam, attr, "attrs");
+                navVo.setLink(replace);
+                return navVo;
+            }).collect(Collectors.toList());
+            searchResult.setNavs(collect);
+        }
 
-        return searchRequest;
+        //品牌面包屑
+        if (!ObjectUtils.isEmpty(searchParam.getBrandId())) {
+            List<SearchResult.NavVo> navs = searchResult.getNavs();
+            SearchResult.NavVo navVo = new SearchResult.NavVo();
+            navVo.setNavName("品牌");
+
+            R r = themallProduct.brandsByIds(searchParam.getBrandId());
+            if (r.getCode() == 0) {
+                List<BrandVo> data = r.getData(new TypeReference<List<BrandVo>>() {
+                });
+                String replace = null;
+                StringBuffer stringBuffer = new StringBuffer();
+                for (BrandVo datum : data) {
+                    stringBuffer.append(datum.getName());
+                    replace = encodeToString(searchParam, datum.getBrandId() + "", "brandId");
+                }
+                navVo.setNavValue(stringBuffer.toString());
+                navVo.setLink(replace);
+            }
+
+            navs.add(navVo);
+        }
+        //TODO 分类品牌屑
+        if (!ObjectUtils.isEmpty(searchParam.getCatalog3Id())) {
+
+        }
+
+
+        return searchResult;
+    }
+
+    private String encodeToString(SearchParam searchParam, String attr, String key) {
+        String encode = null;
+        try {
+            encode = URLEncoder.encode(attr, "UTF-8");
+            //
+            encode = encode.replace("+", "20%");
+            encode = encode.replace("%28", "(");
+            encode = encode.replace("%29", ")");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        String replace = searchParam.get_queryString().replace(key + "=" + encode, "").replace("&&", "&");
+        return "http://localhost/list.html?" + replace;
     }
 
     /**
@@ -206,10 +287,17 @@ public class MallSearchServiceImpl implements MallSearchService {
         if (!ObjectUtils.isEmpty(searchParam.getSkuPrice())) {
             //1_500 -> 0到500    _500->500以内- 500_ ->500以上
             RangeQueryBuilder skuPrice = QueryBuilders.rangeQuery("skuPrice");
-            String[] s = searchParam.getSkuPrice().split("_");
-            if (2 == s.length) {
+            String skuPrice1 = searchParam.getSkuPrice();
+            String[] s = skuPrice1.split("_", 5);
+            List<String> collect = Arrays.stream(s).map(item -> {
+                if (ObjectUtils.isEmpty(item)) {
+                    return null;
+                }
+                return item;
+            }).collect(Collectors.toList());
+            if (2 == collect.size()) {
                 //区间
-                skuPrice.gte(s[0]).lte(s[1]);
+                skuPrice.gte(collect.get(0)).lte(collect.get(1));
             } else if (1 == s.length) {
                 if (searchParam.getSkuPrice().startsWith("_")) {
                     skuPrice.lte(s[0]);

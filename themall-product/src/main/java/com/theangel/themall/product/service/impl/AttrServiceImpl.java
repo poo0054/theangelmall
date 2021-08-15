@@ -14,6 +14,7 @@ import com.theangel.themall.product.vo.AttrResVo;
 import com.theangel.themall.product.vo.AttrVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -119,6 +120,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         return pageUtils;
     }
 
+    @Cacheable(value = "attr", key = "'getAttrInfo:'+#root.args[0]")
     @Override
     public AttrResVo getAttrInfo(Long attrId) {
         AttrResVo attrResVo = new AttrResVo();
@@ -247,6 +249,6 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
      */
     @Override
     public List<Long> listSearchAttrIds(List<Long> attrIds) {
-        return  this.baseMapper.listSearchAttrIds(attrIds);
+        return this.baseMapper.listSearchAttrIds(attrIds);
     }
 }

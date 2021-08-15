@@ -39,13 +39,24 @@ public class BrandController {
     private BrandService brandService;
 
     /**
+     * 根据品牌id查询所有品牌信息
+     *
+     * @param brandIds
+     * @return
+     */
+    @GetMapping("/infos")
+    public R infos(@RequestParam("brandIds") List<Long> brandIds) {
+        List<BrandEntity> brandEntities = brandService.getBrandsById(brandIds);
+        return R.ok().setData(brandEntities);
+    }
+
+    /**
      * 列表
      */
     @RequestMapping("/list")
     //@RequiresPermissions("product:brand:list")
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = brandService.queryPage(params);
-
         return R.ok().put("page", page);
     }
 

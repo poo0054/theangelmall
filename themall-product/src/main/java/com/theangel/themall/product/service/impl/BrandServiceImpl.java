@@ -3,8 +3,11 @@ package com.theangel.themall.product.service.impl;
 import com.theangel.themall.product.service.CategoryBrandRelationService;
 import com.theangel.themall.product.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -47,9 +50,12 @@ public class BrandServiceImpl extends ServiceImpl<BrandDao, BrandEntity> impleme
         if (!StringUtils.isEmpty(brand.getName())) {
             categoryBrandRelationService.updateBrand(brand.getBrandId(), brand.getName());
         }
+    }
 
-        //TODO
-
+    @Cacheable(value = "brand", key = "#root.methodName")
+    @Override
+    public List<BrandEntity> getBrandsById(List<Long> brandIds) {
+        return this.listByIds(brandIds);
     }
 
 }

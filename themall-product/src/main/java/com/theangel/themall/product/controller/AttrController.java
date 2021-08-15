@@ -72,12 +72,12 @@ public class AttrController {
     /**
      * 信息
      * /product/attrgroup/info/{attrGroupId}
-     * 获取属性分组详情
+     * 根据属性Id获取详情
      *
      * @param attrId
      * @return
      */
-    @RequestMapping("/info/{attrId}")
+    @GetMapping("/info/{attrId}")
     //@RequiresPermissions("product:attr:info")
     public R info(@PathVariable("attrId") Long attrId) {
 //        AttrEntity attr = attrService.getById(attrId);
