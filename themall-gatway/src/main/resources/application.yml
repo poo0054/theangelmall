@@ -58,7 +58,14 @@ spring:
           filters:
             - RewritePath=/api/?(?<the>.*), /renren-fast/$\{the}
 
-        # 搜索前端
+
+        # 首页
+        - id: themall-host
+          uri: lb://themall-product
+          predicates:
+            - Path=/itme/*.html
+
+        # 商品详情页
         - id: search
           uri: lb://themall-search
           predicates:
@@ -68,7 +75,5 @@ spring:
         - id: themall-host
           uri: lb://themall-product
           predicates:
-            #            - Host=**.localhost,127.0.0.1:80,**.theangel.vip:8888,localhost:80
             - Path=/**
-#          filters:
-#            - RewritePath=/index/?(?<the>.*), /index/$\{the}
+
