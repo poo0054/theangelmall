@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.theangel.common.utils.PageUtils;
 import com.theangel.themall.product.entity.AttrGroupEntity;
 import com.theangel.themall.product.vo.AttrGroupWithAttrsVo;
+import com.theangel.themall.product.vo.SkuItemVo;
+import com.theangel.themall.product.vo.SpuItemAttrGroupVo;
 
 import java.util.List;
 import java.util.Map;
@@ -22,5 +24,15 @@ public interface AttrGroupService extends IService<AttrGroupEntity> {
     PageUtils queryPage(Map<String, Object> params, Long cateLogId);
 
     List<AttrGroupWithAttrsVo> AttrGroupWithAttrsVoByCateLogId(Long catelogId);
+
+    /**
+     * 根据spuid查询所有属性分组及属性信息
+     *
+     * @param
+     * @param spuId
+     * @return
+     */
+    List<SpuItemAttrGroupVo> AttrGroupWithAttrBySpuId(Long spuId);
+
 }
 

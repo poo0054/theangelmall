@@ -2,7 +2,10 @@ package com.theangel.themall.themallproduct;
 
 import com.theangel.common.utils.fileutils.UUIDUtils;
 import com.theangel.themall.product.ThemallProductApplication;
+import com.theangel.themall.product.dao.AttrGroupDao;
 import com.theangel.themall.product.service.CategoryService;
+import com.theangel.themall.product.vo.SkuItemVo;
+import com.theangel.themall.product.vo.SpuItemAttrGroupVo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.redisson.api.RedissonClient;
@@ -12,6 +15,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 
@@ -25,9 +29,14 @@ public class ThemallProductApplicationTests {
     private StringRedisTemplate stringRedisTemplate;
     @Autowired
     private RedissonClient singRedissonClient;
+    @Autowired
+    private AttrGroupDao attrGroupDao;
 
     @Test
     public void redissonTest() {
+//        CompletableFuture<Object> objectCompletableFuture = CompletableFuture.supplyAsync();
+        List<SpuItemAttrGroupVo> spuItemAttrGroupVos = attrGroupDao.attrGroupWithAttrBySpuId(16L);
+        System.out.println(spuItemAttrGroupVos);
     }
 
     @Test

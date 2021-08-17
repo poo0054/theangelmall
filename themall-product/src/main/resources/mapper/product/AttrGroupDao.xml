@@ -3,7 +3,7 @@
 
 <mapper namespace="com.theangel.themall.product.dao.AttrGroupDao">
 
-	<!-- 可根据自己的需求，是否要使用 -->
+    <!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="com.theangel.themall.product.entity.AttrGroupEntity" id="attrGroupMap">
         <result property="attrGroupId" column="attr_group_id"/>
         <result property="attrGroupName" column="attr_group_name"/>
@@ -12,6 +12,23 @@
         <result property="icon" column="icon"/>
         <result property="catelogId" column="catelog_id"/>
     </resultMap>
+
+    <resultMap id="SpuItemAttrGroupVo" type="com.theangel.themall.product.vo.SpuItemAttrGroupVo">
+        <result column="attr_group_name" property="groupName"/>
+        <collection property="attrs" ofType="com.theangel.themall.product.vo.SpuBaseAttrVo">
+            <result column="attr_name" property="attrName"/>
+            <result column="attr_value" property="values"/>
+        </collection>
+    </resultMap>
+
+    <select id="attrGroupWithAttrBySpuId"
+            resultMap="SpuItemAttrGroupVo">
+        select pav.attr_name, pav.attr_value, pag.attr_group_name
+        from pms_product_attr_value pav
+                 left join pms_attr_attrgroup_relation par on pav.attr_id = par.attr_id
+                 left join pms_attr_group pag on pag.attr_group_id = par.attr_group_id
+        where pav.spu_id = #{spuId}
+    </select>
 
 
 </mapper>

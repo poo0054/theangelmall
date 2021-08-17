@@ -3,6 +3,8 @@ package com.theangel.themall.product.service.impl;
 import com.theangel.themall.product.entity.AttrEntity;
 import com.theangel.themall.product.service.AttrService;
 import com.theangel.themall.product.vo.AttrGroupWithAttrsVo;
+import com.theangel.themall.product.vo.SkuItemVo;
+import com.theangel.themall.product.vo.SpuItemAttrGroupVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,8 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
 
     @Autowired
     private AttrService attrService;
+    @Autowired
+    private AttrGroupService attrGroupService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -80,5 +84,19 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
             return attrGroupWithAttrsVo;
         }).collect(Collectors.toList());
         return collect;
+    }
+
+    /**
+     * 根据spuid查询所有属性分组及属性信息
+     *
+     * @param
+     * @param spuId
+     * @return
+     */
+    @Override
+    public List<SpuItemAttrGroupVo> AttrGroupWithAttrBySpuId(Long spuId) {
+        //spu 所有属性分组 分组下所有属性信息
+        List<SpuItemAttrGroupVo> spuItemAttrGroupVos = this.baseMapper.attrGroupWithAttrBySpuId(spuId);
+        return spuItemAttrGroupVos;
     }
 }

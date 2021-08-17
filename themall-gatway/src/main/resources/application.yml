@@ -14,6 +14,7 @@ spring:
             - Path=/api/search/**
           filters:
             - RewritePath=/api/?(?<the>.*), /$\{the}
+
         #          库存服务
         - id: themall-ware
           uri: lb://themall-ware
@@ -21,6 +22,7 @@ spring:
             - Path=/api/ware/**
           filters:
             - RewritePath=/api/?(?<the>.*), /$\{the}
+
         #          商品优惠服务
         - id: themall-coupon
           uri: lb://themall-coupon
@@ -28,6 +30,7 @@ spring:
             - Path=/api/coupon/**
           filters:
             - RewritePath=/api/?(?<the>.*), /$\{the}
+
         #         第三方服务
         - id: third-party
           uri: lb://third-party
@@ -35,6 +38,7 @@ spring:
             - Path=/api/third-party/**
           filters:
             - RewritePath=/api/?(?<the>.*), /$\{the}
+
         #         商品服务
         - id: themall-product
           uri: lb://themall-product
@@ -42,6 +46,7 @@ spring:
             - Path=/api/product/**
           filters:
             - RewritePath=/api/?(?<the>.*), /$\{the}
+
         #         会员服务
         - id: themall-member
           uri: lb://themall-member
@@ -59,11 +64,11 @@ spring:
             - RewritePath=/api/?(?<the>.*), /renren-fast/$\{the}
 
 
-        # 首页
-        - id: themall-host
+        # 商品详情页
+        - id: item
           uri: lb://themall-product
           predicates:
-            - Path=/itme/*.html
+            - Path=/item/*.html
 
         # 商品详情页
         - id: search
@@ -72,8 +77,8 @@ spring:
             - Path=/list.html
 
         # 首页
-        - id: themall-host
+        - id: host
           uri: lb://themall-product
           predicates:
-            - Path=/**
+            - Path=/
 
