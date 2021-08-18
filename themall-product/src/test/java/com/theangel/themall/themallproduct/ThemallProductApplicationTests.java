@@ -4,6 +4,8 @@ import com.theangel.common.utils.fileutils.UUIDUtils;
 import com.theangel.themall.product.ThemallProductApplication;
 import com.theangel.themall.product.dao.AttrGroupDao;
 import com.theangel.themall.product.service.CategoryService;
+import com.theangel.themall.product.service.SkuSaleAttrValueService;
+import com.theangel.themall.product.vo.SkuItemAttrVo;
 import com.theangel.themall.product.vo.SkuItemVo;
 import com.theangel.themall.product.vo.SpuItemAttrGroupVo;
 import org.junit.Test;
@@ -31,6 +33,14 @@ public class ThemallProductApplicationTests {
     private RedissonClient singRedissonClient;
     @Autowired
     private AttrGroupDao attrGroupDao;
+    @Autowired
+    private SkuSaleAttrValueService skuSaleAttrValueService;
+
+    @Test
+    public void skuSaleAttrValueServiceTest() {
+        List<SkuItemAttrVo> saleAttrBySpuId = skuSaleAttrValueService.getSaleAttrBySpuId(15L);
+        System.out.println(saleAttrBySpuId);
+    }
 
     @Test
     public void redissonTest() {

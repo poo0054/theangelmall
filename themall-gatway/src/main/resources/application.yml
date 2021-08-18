@@ -80,5 +80,5 @@ spring:
         - id: host
           uri: lb://themall-product
           predicates:
-            - Path=/
+            - Path=/,/index/**
 

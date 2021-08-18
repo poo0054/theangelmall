@@ -19,22 +19,6 @@ public class SkuItemVo {
     private SpuInfoDescEntity spuInfoDesc;
     //5 属性组-》属性值
     private List<SpuItemAttrGroupVo> groupAttrs;
-
-    @Data
-    public static class SkuItemAttrVo {
-        /**
-         * 属性id
-         */
-        private Long attrId;
-        /**
-         * 属性名
-         */
-        private String attrName;
-        /**
-         * 属性值
-         */
-        private List<String> values;
-
-    }
-
+    //是否有货
+    boolean hasStock = true;
 }

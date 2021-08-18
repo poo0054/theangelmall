@@ -3,6 +3,7 @@ package com.theangel.themall.product.service.impl;
 import com.theangel.themall.product.entity.SkuImagesEntity;
 import com.theangel.themall.product.entity.SpuInfoDescEntity;
 import com.theangel.themall.product.service.*;
+import com.theangel.themall.product.vo.SkuItemAttrVo;
 import com.theangel.themall.product.vo.SkuItemVo;
 import com.theangel.themall.product.vo.SpuItemAttrGroupVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -126,15 +127,17 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
             //5 属性组-》属性值
             List<SpuItemAttrGroupVo> groupAttrs = attrGroupService.AttrGroupWithAttrBySpuId(spuId);
             skuItemVo.setGroupAttrs(groupAttrs);
-        }
 
+
+            //3 销售属性组合
+
+            List<SkuItemAttrVo> skuItemAttrVos = skuSaleAttrValueService.getSaleAttrBySpuId(spuId);
+
+            skuItemVo.setSkuItemAttrVos(skuItemAttrVos);
+        }
         //2 sku图片信息
         List<SkuImagesEntity> skuImagesEntities = skuImagesService.list(new QueryWrapper<SkuImagesEntity>().eq("sku_id", skyId));
         skuItemVo.setSkuImages(skuImagesEntities);
-
-        //3 销售属性组合
-
-
-        return null;
+        return skuItemVo;
     }
 }
