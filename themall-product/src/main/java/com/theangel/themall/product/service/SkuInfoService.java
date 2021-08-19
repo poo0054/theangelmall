@@ -7,6 +7,7 @@ import com.theangel.themall.product.vo.SkuItemVo;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 /**
  * sku信息
@@ -29,6 +30,6 @@ public interface SkuInfoService extends IService<SkuInfoEntity> {
      * @param skyId
      * @return
      */
-    SkuItemVo itemBySkuId(Long skyId);
+    SkuItemVo itemBySkuId(Long skyId) throws ExecutionException, InterruptedException;
 }
 

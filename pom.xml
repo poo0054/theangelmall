@@ -231,6 +231,7 @@
         <module>renren-generator</module>
         <module>third-party</module>
         <module>themall-search</module>
+        <module>themall-auth-server</module>
     </modules>
 
     <build>

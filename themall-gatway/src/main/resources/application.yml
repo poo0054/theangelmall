@@ -76,9 +76,17 @@ spring:
           predicates:
             - Path=/list.html
 
+        # 认证
+        - id: themall-auth-server
+          uri: lb://themall-auth-server
+          predicates:
+            - Path=/auth/**
+
         # 首页
         - id: host
           uri: lb://themall-product
           predicates:
             - Path=/,/index/**
+
+
 

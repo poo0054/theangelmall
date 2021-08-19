@@ -18,7 +18,7 @@ buildNumber.properties
 .idea
 *.log
 *.imi
-**/*.imi
+**/*.iml
 
 *.log
 

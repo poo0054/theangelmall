@@ -1,0 +1,10 @@
+spring:
+  #开发期间 关闭缓存
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+
+logging:
+  level:
+    com.theangel.themall: error

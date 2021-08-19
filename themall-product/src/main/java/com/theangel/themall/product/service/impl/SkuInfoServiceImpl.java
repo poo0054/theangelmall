@@ -7,11 +7,15 @@ import com.theangel.themall.product.vo.SkuItemAttrVo;
 import com.theangel.themall.product.vo.SkuItemVo;
 import com.theangel.themall.product.vo.SpuItemAttrGroupVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -36,6 +40,8 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
     AttrGroupService attrGroupService;
     @Autowired
     SkuSaleAttrValueService skuSaleAttrValueService;
+    @Autowired
+    ThreadPoolExecutor poolExecutor;
 
 
     @Override
@@ -112,32 +118,41 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
      * @return
      */
     @Override
-    public SkuItemVo itemBySkuId(Long skyId) {
+    @Cacheable(value = {"product"}, key = "#root.methodName+':'+#root.args[0]")
+    public SkuItemVo itemBySkuId(Long skyId) throws ExecutionException, InterruptedException {
         SkuItemVo skuItemVo = new SkuItemVo();
-        //1 sku基本信息
-        SkuInfoEntity skuInfo = getById(skyId);
-        if (!ObjectUtils.isEmpty(skuInfo)) {
-            skuItemVo.setSkuInfo(skuInfo);
-            Long spuId = skuInfo.getSpuId();
+        //sku基本属性
+        CompletableFuture<SkuInfoEntity> supplyAsync = CompletableFuture.supplyAsync(() -> {
+            //1 sku基本信息
+            SkuInfoEntity byId = getById(skyId);
+            skuItemVo.setSkuInfo(byId);
+            return byId;
+        }, poolExecutor);
 
-            //4 spu属性
-            SpuInfoDescEntity spuInfoDesc = spuInfoDescService.getById(spuId);
-            skuItemVo.setSpuInfoDesc(spuInfoDesc);
-
-            //5 属性组-》属性值
-            List<SpuItemAttrGroupVo> groupAttrs = attrGroupService.AttrGroupWithAttrBySpuId(spuId);
-            skuItemVo.setGroupAttrs(groupAttrs);
-
-
+        CompletableFuture<Void> attr = supplyAsync.thenAcceptAsync((res) -> {
             //3 销售属性组合
-
-            List<SkuItemAttrVo> skuItemAttrVos = skuSaleAttrValueService.getSaleAttrBySpuId(spuId);
-
+            List<SkuItemAttrVo> skuItemAttrVos = skuSaleAttrValueService.getSaleAttrBySpuId(res.getSpuId());
             skuItemVo.setSkuItemAttrVos(skuItemAttrVos);
-        }
-        //2 sku图片信息
-        List<SkuImagesEntity> skuImagesEntities = skuImagesService.list(new QueryWrapper<SkuImagesEntity>().eq("sku_id", skyId));
-        skuItemVo.setSkuImages(skuImagesEntities);
+        }, poolExecutor);
+
+        CompletableFuture<Void> spuInfo = supplyAsync.thenAcceptAsync((res) -> {
+            //4 spu属性
+            SpuInfoDescEntity spuInfoDesc = spuInfoDescService.getById(res.getSpuId());
+            skuItemVo.setSpuInfoDesc(spuInfoDesc);
+        }, poolExecutor);
+
+        //5 属性组-》属性值
+        CompletableFuture<Void> group = supplyAsync.thenAcceptAsync((res) -> {
+            List<SpuItemAttrGroupVo> groupAttrs = attrGroupService.AttrGroupWithAttrBySpuId(res.getSpuId());
+            skuItemVo.setGroupAttrs(groupAttrs);
+        }, poolExecutor);
+
+        CompletableFuture<Void> imge = CompletableFuture.runAsync(() -> {
+            //2 sku图片信息
+            List<SkuImagesEntity> skuImagesEntities = skuImagesService.list(new QueryWrapper<SkuImagesEntity>().eq("sku_id", skyId));
+            skuItemVo.setSkuImages(skuImagesEntities);
+        }, poolExecutor);
+        CompletableFuture.allOf(imge, group, spuInfo, attr).get();
         return skuItemVo;
     }
 }
