@@ -19,7 +19,7 @@ public enum BizCodeEnum {
     VAILD_EXCEPTION(10001, "参数格式错误"),
     SMS_CODE_EXCEPTION(10002, "验证码获取频率过高"),
     PRODUCT_UP_EXCEPTION(11000, "商品上架异常"),
-    USER_EXCEPTION(15001, "用户注册异常");
+    USER_EXCEPTION(15001, "用户注册异常（异常信息从message中获取）");
 
 
     private int code;
