@@ -13,7 +13,7 @@
 <body>
 
 <div class="laoda">
-<div class="zong">
+    <div class="zong">
         <div class="tou">
             <p><b>谷粒商城用户注册协议和隐私政策</b></p>
             <a href="/static/reg/https://www.jd.com/" class="cuo"><span class="glyphicon glyphicon-remove"></span></a>
@@ -5939,8 +5939,7 @@ Cookie</span>是由网页服务器存放在您的访问设备上的文本文件�
 
 
 <header>
-    <a href="/"
-       class="logo"><img src="/static/reg/" alt=""></a>
+    <a href="/" class="logo"><img src="/static/reg/" alt=""></a>
     <div class="desc">欢迎注册</div>
     <div class="dfg">
         <span>已有账号？</span>
@@ -5948,47 +5947,46 @@ Cookie</span>是由网页服务器存放在您的访问设备上的文本文件�
     </div>
 </header>
 <section>
-    <form action="" class="one">
+    <form action="/auth/regist" method="post" class="one">
         <div class="register-box">
-            <label for="username" class="username_label">用 户 名
-                <input maxlength="20" type="text" placeholder="您的用户名和登录名">
+            <label class="username_label">用 户 名
+                <input name="userName" maxlength="20" type="text" placeholder="您的用户名和登录名">
             </label>
-            <div class="tips">
+            <div class="tips" th:text="${errors!=null?(#maps.containsKey(errors,'userName')?errors.userName:''):''}">
+            </div>
+        </div>
+        <div class="register-box">
+            <label class="other_label">设 置 密 码
+                <input name="passWord" maxlength="20" type="password" placeholder="建议至少使用两种字符组合">
+            </label>
+            <div class="tips" style="color: red"
+                 th:text="${errors!=null?(#maps.containsKey(errors,'passWord')?errors.passWord:''):''}">
 
             </div>
         </div>
         <div class="register-box">
-            <label for="username" class="other_label">设 置 密 码
-                <input maxlength="20" type="password" placeholder="建议至少使用两种字符组合">
-            </label>
-            <div class="tips">
-
-            </div>
-        </div>
-        <div class="register-box">
-            <label for="username" class="other_label">确 认 密 码
+            <label class="other_label">确 认 密 码
                 <input maxlength="20" type="password" placeholder="请再次输入密码">
             </label>
             <div class="tips">
-
             </div>
         </div>
         <div class="register-box">
-            <label for="username" class="other_label">
+            <label class="other_label">
                 <span>中国 0086∨</span>
-                <input class="phone" maxlength="20" type="text" placeholder="建议使用常用手机">
+                <input name="phone" class="phone" id="phoneNum" maxlength="20" type="text" placeholder="建议使用常用手机">
             </label>
-            <div class="tips">
-
+            <div class="tips" style="color: red"
+                 th:text="${errors!=null?(#maps.containsKey(errors,'phone')?errors.phone:''):''}">
             </div>
         </div>
         <div class="register-box">
-            <label for="username" class="other_label">验 证 码
-                <input maxlength="20" type="text" placeholder="请输入验证码" class="caa">
+            <label class="other_label">验 证 码
+                <input name="code" maxlength="20" type="text" placeholder="请输入验证码" class="caa">
             </label>
-            <span id="code"></span>
-            <div class="tips">
-
+            <a id="sendCode">发送验证码</a>
+            <div class="tips" style="color: red"
+                 th:text="${errors!=null?(#maps.containsKey(errors,'code')?errors.code:''):''}">
             </div>
         </div>
         <div class="arguement">
@@ -5996,14 +5994,12 @@ Cookie</span>是由网页服务器存放在您的访问设备上的文本文件�
             <a href="/static/reg/#">《谷粒商城用户注册协议》</a>
             <a href="/static/reg/#">《隐私政策》</a>
             <div class="tips">
-
             </div>
             <br/>
             <div class="submit_btn">
-                <button type="submit" id="submit_btn">立 即 注 册</button>
+                <button type="submit">立 即 注 册</button>
             </div>
         </div>
-
     </form>
     <div class="two">
         <div class="right_r">
@@ -6072,7 +6068,6 @@ Cookie</span>是由网页服务器存放在您的访问设备上的文本文件�
 <script type="text/javascript" charset="utf-8">
     $(function () {
         var stuList = getStuList(); //设置传送信息：学生的集合
-
         //聚焦失焦input
         $('input').eq(0).focus(function () {
             if ($(this).val().length == 0) {
@@ -6243,6 +6238,38 @@ Cookie</span>是由网页服务器存放在您的访问设备上的文本文件�
     $(".cuo").click(function () {
         $(".zong").hide();
     });
+
+    var num = 60
+    $(function () {
+        $("#sendCode").click(function () {
+            //给指定手机发送验证码
+            //倒计时
+            if (num == 60) {
+                $.get("/auth/sms/sendcode?phone=" + $("#phoneNum").val(), function (data) {
+                    if (data.code != 0) {
+                        alert(data.msg)
+                    }
+                })
+                timechangStyle();
+            } else {
+
+            }
+        })
+    })
+
+
+    function timechangStyle() {
+        if (num == 0) {
+            $("#sendCode").text("发送验证码");
+            num = 60
+        } else {
+            var str = num + "s 后再次发送"
+            $("#sendCode").text(str);
+            setTimeout("timechangStyle()", 1000)
+            num--;
+        }
+
+    }
 </script>
 </body>
 

@@ -3,6 +3,7 @@ package com.theangel.themall.member.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.theangel.common.utils.PageUtils;
 import com.theangel.themall.member.entity.MemberEntity;
+import com.theangel.themall.member.vo.MemberRegistVo;
 
 import java.util.Map;
 
@@ -16,5 +17,11 @@ import java.util.Map;
 public interface MemberService extends IService<MemberEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    /**
+     * 注册
+     * @param memberRegistVo
+     */
+    void regist(MemberRegistVo memberRegistVo);
 }
 

@@ -4,7 +4,10 @@ import java.util.Arrays;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
+import com.theangel.common.exception.BizCodeEnum;
+import com.theangel.themall.member.exception.MemberExection;
 import com.theangel.themall.member.openfeign.CouponOpenFeignService;
+import com.theangel.themall.member.vo.MemberRegistVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +32,22 @@ public class MemberController {
 
     @Autowired
     private CouponOpenFeignService couponOpenFeignService;
+
+    /**
+     * 注册会员
+     *
+     * @return
+     */
+    @PostMapping(path = "/regist")
+    public R regist(@RequestBody MemberRegistVo memberRegistVo) {
+        try {
+            memberService.regist(memberRegistVo);
+        } catch (MemberExection e) {
+            return R.error(BizCodeEnum.USER_EXCEPTION.getCode(), e.getMessage());
+        }
+        return R.ok();
+    }
+
 
     @RequestMapping(path = "/membercoupon", method = RequestMethod.GET)
     public R getMemberCoupon() {

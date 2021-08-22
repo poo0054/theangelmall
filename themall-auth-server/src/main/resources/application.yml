@@ -4,6 +4,9 @@ spring:
     cache: false
     prefix: classpath:/templates/
     suffix: .html
+  redis:
+    host: localhost
+    port: 6379
 
 logging:
   level:
