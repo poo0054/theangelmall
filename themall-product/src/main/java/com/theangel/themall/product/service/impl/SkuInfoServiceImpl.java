@@ -25,6 +25,7 @@ import com.theangel.common.utils.Query;
 
 import com.theangel.themall.product.dao.SkuInfoDao;
 import com.theangel.themall.product.entity.SkuInfoEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 

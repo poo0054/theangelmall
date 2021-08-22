@@ -3,6 +3,7 @@ package com.theangel.themall.member.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.theangel.common.utils.PageUtils;
 import com.theangel.themall.member.entity.MemberEntity;
+import com.theangel.themall.member.vo.LoginUserVo;
 import com.theangel.themall.member.vo.MemberRegistVo;
 
 import java.util.Map;
@@ -23,5 +24,7 @@ public interface MemberService extends IService<MemberEntity> {
      * @param memberRegistVo
      */
     void regist(MemberRegistVo memberRegistVo);
+
+    boolean login(LoginUserVo loginUserVo);
 }
 

@@ -7,6 +7,7 @@ import java.util.Map;
 import com.theangel.common.exception.BizCodeEnum;
 import com.theangel.themall.member.exception.MemberExection;
 import com.theangel.themall.member.openfeign.CouponOpenFeignService;
+import com.theangel.themall.member.vo.LoginUserVo;
 import com.theangel.themall.member.vo.MemberRegistVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,22 @@ public class MemberController {
 
     @Autowired
     private CouponOpenFeignService couponOpenFeignService;
+
+
+    /**
+     * 登录会员
+     *
+     * @return
+     */
+    @PostMapping(path = "/login")
+    public R login(@RequestBody LoginUserVo loginUserVo) {
+        boolean login = memberService.login(loginUserVo);
+        if (login) {
+            return R.ok();
+        } else {
+            return R.error(BizCodeEnum.USER_PASSWORD_EXCEPTION.getCode(), BizCodeEnum.USER_PASSWORD_EXCEPTION.getMsg());
+        }
+    }
 
     /**
      * 注册会员
@@ -63,7 +80,6 @@ public class MemberController {
     //@RequiresPermissions("member:member:list")
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = memberService.queryPage(params);
-
         return R.ok().put("page", page);
     }
 
@@ -75,7 +91,6 @@ public class MemberController {
     //@RequiresPermissions("member:member:info")
     public R info(@PathVariable("id") Long id) {
         MemberEntity member = memberService.getById(id);
-
         return R.ok().put("member", member);
     }
 
@@ -86,7 +101,6 @@ public class MemberController {
     //@RequiresPermissions("member:member:save")
     public R save(@RequestBody MemberEntity member) {
         memberService.save(member);
-
         return R.ok();
     }
 
