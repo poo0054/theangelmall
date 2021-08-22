@@ -5,6 +5,7 @@ import com.theangel.themall.member.dao.MemberLevelDao;
 import com.theangel.themall.member.entity.MemberLevelEntity;
 import com.theangel.themall.member.exception.MemberExection;
 import com.theangel.themall.member.service.MemberLevelService;
+import com.theangel.themall.member.vo.LoginUserVo;
 import com.theangel.themall.member.vo.MemberRegistVo;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.codec.digest.Md5Crypt;
@@ -24,6 +25,7 @@ import com.theangel.common.utils.Query;
 import com.theangel.themall.member.dao.MemberDao;
 import com.theangel.themall.member.entity.MemberEntity;
 import com.theangel.themall.member.service.MemberService;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import sun.security.util.Password;
 
@@ -46,6 +48,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberDao, MemberEntity> impl
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void regist(MemberRegistVo memberRegistVo) {
         MemberEntity memberEntity = new MemberEntity();
         MemberLevelEntity default_status = memberLevelDao.getOne(new QueryWrapper<MemberLevelEntity>().eq("default_status", 1));
@@ -72,6 +75,20 @@ public class MemberServiceImpl extends ServiceImpl<MemberDao, MemberEntity> impl
         //TODO  会员其余信息
 
         this.getBaseMapper().insert(memberEntity);
+    }
+
+    @Override
+    public boolean login(LoginUserVo loginUserVo) {
+        String loginName = loginUserVo.getLoginName();
+        MemberEntity username = this.getOne(new QueryWrapper<MemberEntity>().eq("username", loginName).or().eq("mobile", loginName));
+        if (ObjectUtils.isEmpty(username)) {
+            return false;
+        }
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
+        boolean matches = bCryptPasswordEncoder.matches(loginUserVo.getPassWord(), username.getPassword());
+
+        return matches;
     }
 
 }
