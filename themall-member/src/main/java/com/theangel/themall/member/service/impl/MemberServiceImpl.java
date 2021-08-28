@@ -1,6 +1,7 @@
 package com.theangel.themall.member.service.impl;
 
 import com.alibaba.nacos.common.utils.Md5Utils;
+import com.theangel.common.exception.RRException;
 import com.theangel.themall.member.dao.MemberLevelDao;
 import com.theangel.themall.member.entity.MemberLevelEntity;
 import com.theangel.themall.member.exception.MemberExection;
@@ -78,17 +79,23 @@ public class MemberServiceImpl extends ServiceImpl<MemberDao, MemberEntity> impl
     }
 
     @Override
-    public boolean login(LoginUserVo loginUserVo) {
+    public MemberEntity login(LoginUserVo loginUserVo) throws RRException {
         String loginName = loginUserVo.getLoginName();
         MemberEntity username = this.getOne(new QueryWrapper<MemberEntity>().eq("username", loginName).or().eq("mobile", loginName));
         if (ObjectUtils.isEmpty(username)) {
-            return false;
+            throw new RRException("用户账号或密码错误");
         }
+
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
-        boolean matches = bCryptPasswordEncoder.matches(loginUserVo.getPassWord(), username.getPassword());
+        boolean b = bCryptPasswordEncoder.matches(loginUserVo.getPassWord(), username.getPassword());
 
-        return matches;
+        if (b) {
+            return username;
+        } else {
+            throw new RRException("用户账号或密码错误");
+        }
     }
+
 
 }

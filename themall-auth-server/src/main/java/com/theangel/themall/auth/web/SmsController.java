@@ -29,7 +29,6 @@ import java.util.concurrent.TimeUnit;
 public class SmsController {
     @Autowired
     ThemallPartyFeign themallPartyFeign;
-
     @Autowired
     StringRedisTemplate stringRedisTemplate;
     @Autowired
@@ -64,7 +63,6 @@ public class SmsController {
                 return R.ok();
             }
         }
-
         return R.error(BizCodeEnum.SMS_CODE_EXCEPTION.getCode(), BizCodeEnum.SMS_CODE_EXCEPTION.getMsg());
     }
 
@@ -87,7 +85,7 @@ public class SmsController {
                 map.put(field, defaultMessage);
             }
             attributes.addFlashAttribute("errors", map);
-            return "redirect:http://localhost/auth/reg.html";
+            return "redirect:http://auth.theangel.com/auth/reg.html";
         }
         //效验验证码
         String code = userRegistVo.getCode();
@@ -102,7 +100,7 @@ public class SmsController {
                 //调用远程接口注册会员
                 R regist = themallmemberFerign.regist(userRegistVo);
                 if (regist.getCode() == 0) {
-                    return "redirect:http://localhost/auth/login.html";
+                    return "redirect:http://auth.theangel.com/auth/login.html";
                 } else {
                     String data = regist.getData("msg", new TypeReference<String>() {
                     });
@@ -113,7 +111,7 @@ public class SmsController {
             //调用远程接口注册会员
             R regist = themallmemberFerign.regist(userRegistVo);
             if (regist.getCode() == 0) {
-                return "redirect:http://localhost/auth/login.html";
+                return "redirect:http://auth.theangel.com/auth/login.html";
             } else {
                 String data = regist.getData(new TypeReference<String>() {
                 });
@@ -122,6 +120,6 @@ public class SmsController {
         }
         map.put("phone", "验证码错误");
         attributes.addFlashAttribute("errors", map);
-        return "redirect:http://localhost/auth/reg.html";
+        return "redirect:http://auth.theangel.com/auth/reg.html";
     }
 }

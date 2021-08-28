@@ -1,5 +1,3 @@
 spring:
-  application:
-    name: themall-search
   thymeleaf:
     cache: false

@@ -10,7 +10,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         //不用添加空的controller
-        registry.addViewController("/auth/login.html").setViewName("login");
+//        registry.addViewController("/auth/login.html").setViewName("login");
         registry.addViewController("/auth/reg.html").setViewName("reg");
         //        WebMvcConfigurer.super.addViewControllers(registry);
     }

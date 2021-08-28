@@ -92,10 +92,13 @@
             </b>
             <ul>
                 <li>
-                    <a href="/auth/login.html">你好，请登录</a>
+                    <a href="http://auth.theangel.com/auth/login.html" class="aa"
+                       th:if="${session.loginUser==null}">你好，请登录</a>
+                    <a th:unless="${session.loginUser==null}" class="aa">[[${session.loginUser.username}]]</a>
                 </li>
                 <li>
-                    <a href="/auth/reg.html" class="li_2">免费注册</a>
+                    <a href=" http://auth.theangel.com/auth/reg.html" th:if="${session.loginUser==null}"
+                       class="li_2">免费注册</a>
                 </li>
                 <span>|</span>
                 <li>
@@ -200,7 +203,7 @@
             <div class="header_main_left">
                 <ul th:each="category:${categorys}">
                     <li>
-                        <a href="http://localhost/list.html" class="header_main_left_a"
+                        <a href="http://search.theangel.com/list.html" class="header_main_left_a"
                            th:attr="ctg-data=${category.getCatId()}"
                            ctg-data="3">
                             <b th:text="${category.name}">家用电器</b>
@@ -609,9 +612,10 @@
 
 </body>
 <script type="text/javascript">
+
     function search() {
         var keyword = $("#searchText").val()
-        window.location.href = "http://localhost/list.html?keyword=" + keyword;
+        window.location.href = "http://search.theangel.com/list.html?keyword=" + keyword;
     }
 
 </script>

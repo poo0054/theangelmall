@@ -5,6 +5,7 @@ import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
 import com.theangel.common.exception.BizCodeEnum;
+import com.theangel.common.exception.RRException;
 import com.theangel.themall.member.exception.MemberExection;
 import com.theangel.themall.member.openfeign.CouponOpenFeignService;
 import com.theangel.themall.member.vo.LoginUserVo;
@@ -34,7 +35,6 @@ public class MemberController {
     @Autowired
     private CouponOpenFeignService couponOpenFeignService;
 
-
     /**
      * 登录会员
      *
@@ -42,10 +42,10 @@ public class MemberController {
      */
     @PostMapping(path = "/login")
     public R login(@RequestBody LoginUserVo loginUserVo) {
-        boolean login = memberService.login(loginUserVo);
-        if (login) {
-            return R.ok();
-        } else {
+        try {
+            MemberEntity login = memberService.login(loginUserVo);
+            return R.ok().setData(login);
+        } catch (RRException e) {
             return R.error(BizCodeEnum.USER_PASSWORD_EXCEPTION.getCode(), BizCodeEnum.USER_PASSWORD_EXCEPTION.getMsg());
         }
     }

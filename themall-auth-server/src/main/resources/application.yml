@@ -4,10 +4,14 @@ spring:
     cache: false
     prefix: classpath:/templates/
     suffix: .html
-  redis:
-    host: localhost
-    port: 6379
 
 logging:
   level:
     com.theangel.themall: error
+
+server:
+  servlet:
+    session:
+      #session超时时间
+      timeout: 30m
+

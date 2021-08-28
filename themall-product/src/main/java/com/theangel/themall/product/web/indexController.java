@@ -1,7 +1,5 @@
 package com.theangel.themall.product.web;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
 import com.theangel.common.utils.fileutils.UUIDUtils;
 import com.theangel.themall.product.entity.CategoryEntity;
 import com.theangel.themall.product.service.CategoryService;
@@ -38,7 +36,7 @@ public class indexController {
     }
 
     @ResponseBody
-    @GetMapping("/index/catalog.json")
+    @GetMapping("/index/json/catalog.json")
     public Map<String, List<Catelog2Vo>> indexCatalog(Model model) {
         Map<String, List<Catelog2Vo>> categoryEntities = categoryService.getCatalogJson();
         model.addAttribute("categorys", categoryEntities);
