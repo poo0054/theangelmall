@@ -1,4 +1,4 @@
-package com.theangel.themall.product.config;
+package com.theangel.themall.search.config;
 
 
 import com.alibaba.fastjson.support.spring.GenericFastJsonRedisSerializer;

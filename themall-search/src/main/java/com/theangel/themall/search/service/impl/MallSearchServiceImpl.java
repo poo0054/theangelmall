@@ -248,7 +248,7 @@ public class MallSearchServiceImpl implements MallSearchService {
             e.printStackTrace();
         }
         String replace = searchParam.get_queryString().replace(key + "=" + encode, "").replace("&&", "&");
-        return "http://localhost/list.html?" + replace;
+        return "http://search.theangel.com/list.html?" + replace;
     }
 
     /**
@@ -374,7 +374,6 @@ public class MallSearchServiceImpl implements MallSearchService {
 
         attr_agg.subAggregation(attr_id_agg);
         searchSourceBuilder.aggregation(attr_agg);
-
 
         //3.聚合
         System.out.println(searchSourceBuilder.toString());

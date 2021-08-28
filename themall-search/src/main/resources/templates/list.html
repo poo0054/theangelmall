@@ -64,10 +64,12 @@
         </b>
         <ul>
             <li>
-                <a href="/auth/login.html" class="li_2">你好，请登录</a>
+                <a href="http://auth.theangel.com/auth/login.html" class="aa"
+                   th:if="${session.loginUser==null}">你好，请登录</a>
+                <a th:unless="${session.loginUser==null}" class="aa">[[${session.loginUser.username}]]</a>
             </li>
             <li>
-                <a href="/auth/reg.html">免费注册</a>
+                <a href="http://auth.theangel.com/auth/reg.html" th:if="${session.loginUser==null}">免费注册</a>
             </li>
             <span>|</span>
             <li>
@@ -1217,7 +1219,7 @@
                                 <a href="/static/search/#">关注</a>
                             </div>
                             <p class="da">
-                                <a th:href="|http://localhost/item/${product.getSkuId()}.html|"
+                                <a th:href="|http://item.theangel.com/item/${product.getSkuId()}.html|"
                                    title="购买AppleCare+，获得原厂2年整机保修(含电池)，和多达2次意外损坏的保修服务。购买勾选：保障服务、原厂保2年。">
                                     <img th:src="${product.getSkuImg()}" class="dim"/>
                                 </a>
@@ -1998,13 +2000,6 @@
 
     function searchProduct(name, value) {
         location.href = replaceAddOrParamVal(location.href, name, value, true)
-
-        // let href = location.href + "";
-        // if (href.indexOf("?") != -1) {
-        //     location.href = href + "&" + name + "=" + value;
-        // } else {
-        //     location.href = href + "?" + name + "=" + value;
-        // }
 
     }
 

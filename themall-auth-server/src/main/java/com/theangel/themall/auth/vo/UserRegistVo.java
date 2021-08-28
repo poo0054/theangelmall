@@ -6,6 +6,9 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
+/**
+ * 注册的vo
+ */
 @Data
 public class UserRegistVo {
     @NotEmpty(message = "用户名必须提交")

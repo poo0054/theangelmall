@@ -58,8 +58,14 @@
                 </li>
             </ul>
             <ul class="header_ul_right">
-                <li style="border: 0;"><a href="/auth/login.html" class="aa">你好，请登录</a></li>
-                <li><a href="/auth/reg.html" style="color: red;">免费注册</a> |</li>
+                <li style="border: 0;">
+                    <a href="http://auth.theangel.com/auth/login.html" class="aa"
+                       th:if="${session.loginUser==null}">你好，请登录</a>
+                    <a th:unless="${session.loginUser==null}" class="aa">[[${session.loginUser.username}]]</a>
+                </li>
+                <li><a href="http://auth.theangel.com/auth/reg.html" th:if="${session.loginUser==null}"
+                       style="color: red;">免费注册</a> |
+                </li>
                 <li><a href="/static/item/javascript:;" class="aa">我的订单</a> |</li>
                 <li class="jingdong"><a href="/static/item/javascript:;">我的京东</a><span
                         class="glyphicon glyphicon-menu-down">|</span>
@@ -1315,7 +1321,7 @@
             skuinit = $(skuinit).filter(skus[i])
         }
         //跳转
-        location.href = 'http://localhost/item/' + skuinit[0] + '.html'
+        location.href = 'http://item.theangel.com/item/' + skuinit[0] + '.html'
 
 
     })

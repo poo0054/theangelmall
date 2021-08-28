@@ -11,3 +11,6 @@ spring:
         server-addr: theangel.vip:8848
   application:
     name: themall-member
+
+server:
+  port: 10000

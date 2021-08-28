@@ -1,4 +1,4 @@
-package com.theangel.themall.product.config;
+package com.theangel.themall.auth.comfig;
 
 
 import com.alibaba.fastjson.support.spring.GenericFastJsonRedisSerializer;

@@ -15,7 +15,6 @@ public class ThreadConfig {
     @Autowired
     ThreadPoolConfig threadPoolConfig;
 
-
     @Bean
     public ThreadPoolExecutor poolExecutor() {
         return new ThreadPoolExecutor(threadPoolConfig.getCoreSize(), threadPoolConfig.getMaxSize(),

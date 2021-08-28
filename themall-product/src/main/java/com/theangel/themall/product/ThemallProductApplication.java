@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 
 /**
@@ -15,15 +16,13 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * @CacheConfig： 在类级别共享一些与缓存相关的常见设置。  在类级别共享相同的缓存
  * @EnableCaching： 开启缓存注解，只要使用注解就可以完成缓存操作
  */
-
+@EnableCaching
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients(basePackages = "com.theangel.themall.product.openfeign")
+@EnableRedisHttpSession
 public class ThemallProductApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(ThemallProductApplication.class, args);
     }
-
-
 }

@@ -1,9 +1,5 @@
-server:
-  port: 88
 
 spring:
-  application:
-    name: themall-gatway
   cloud:
     gateway:
       routes:
@@ -68,25 +64,28 @@ spring:
         - id: item
           uri: lb://themall-product
           predicates:
-            - Path=/item/*.html
+            - Host=item.theangel.com
+        #            - Path=/item/*.html
 
-        # 商品详情页
+        # 商品搜索
         - id: search
           uri: lb://themall-search
           predicates:
-            - Path=/list.html
+            - Host=search.theangel.com
+        #            - Path=/list.html
 
         # 认证
-        - id: themall-auth-server
+        - id: auth-server
           uri: lb://themall-auth-server
           predicates:
-            - Path=/auth/**
+            - Host=auth.theangel.com
+        #            - Path=/auth/**
 
         # 首页
         - id: host
           uri: lb://themall-product
           predicates:
-            - Path=/,/index/**
+            - Host=theangel.com
 
 
 

@@ -25,6 +25,6 @@ public interface MemberService extends IService<MemberEntity> {
      */
     void regist(MemberRegistVo memberRegistVo);
 
-    boolean login(LoginUserVo loginUserVo);
+    MemberEntity login(LoginUserVo loginUserVo);
 }
 
