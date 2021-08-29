@@ -232,6 +232,7 @@
         <module>third-party</module>
         <module>themall-search</module>
         <module>themall-auth-server</module>
+        <module>themall-cart</module>
     </modules>
 
     <build>

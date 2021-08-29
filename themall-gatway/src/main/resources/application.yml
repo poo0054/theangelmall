@@ -1,4 +1,3 @@
-
 spring:
   cloud:
     gateway:
@@ -80,6 +79,12 @@ spring:
           predicates:
             - Host=auth.theangel.com
         #            - Path=/auth/**
+
+        # 购物车
+        - id: themall-cart
+          uri: lb://themall-cart
+          predicates:
+            - Host=cart.theangel.com
 
         # 首页
         - id: host
