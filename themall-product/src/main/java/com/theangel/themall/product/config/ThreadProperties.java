@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "themall.thread")
 @Component
 @Data
-public class ThreadPoolConfig {
+public class ThreadProperties {
     /**
      * 核心线程池
      */

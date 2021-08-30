@@ -9,9 +9,12 @@
 package com.theangel.common.utils;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
+import com.alibaba.fastjson.parser.Feature;
 import org.apache.http.HttpStatus;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,7 +25,6 @@ import java.util.Map;
  */
 public class R extends HashMap<String, Object> {
     private static final long serialVersionUID = 1L;
-
 
     public <T> T getData(TypeReference<T> tTypeReference) {
         Object data = this.get("data");

@@ -625,7 +625,7 @@
                 </div>
                 <div class="box-btns clear">
                     <div class="box-btns-one">
-                        <input type="text" name="" id="" value="1"/>
+                        <input type="text" name="" id="numInput" value="1"/>
                         <div class="box-btns-one1">
                             <div>
                                 <button id="jia">
@@ -641,7 +641,7 @@
                         </div>
                     </div>
                     <div class="box-btns-two">
-                        <a href="http://cart.theangel.com/cart.html">
+                        <a id="addToCart" th:attr="skuId=${skuItem.skuInfo.skuId}">
                             加入购物车
                         </a>
                     </div>
@@ -1292,7 +1292,6 @@
 <script src="/static/item/js/jquery1.9.js" type="text/javascript" charset="utf-8"></script>
 <script src="/static/item/js/js.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
-
     $(function () {
         $("a[class='sku_attr_value']").parent().css({"border": "solid 1px #CCC"})
         $(".sku_attr_value.checked").css({"border": "solid 1px red"})
@@ -1322,8 +1321,14 @@
         }
         //跳转
         location.href = 'http://item.theangel.com/item/' + skuinit[0] + '.html'
+    })
 
 
+    $("#addToCart").click(function () {
+        let num = $("#numInput").val();
+        let skuId = $(this).attr("skuId")
+        location.href = `http://cart.theangel.com/addtocart?skuId=${skuId}&num=${num}`
+        return false
     })
 </script>
 

@@ -5,6 +5,7 @@ import com.theangel.themall.product.entity.SkuInfoEntity;
 import com.theangel.themall.product.entity.SpuInfoDescEntity;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data

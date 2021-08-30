@@ -154,6 +154,8 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
             skuItemVo.setSkuImages(skuImagesEntities);
         }, poolExecutor);
         CompletableFuture.allOf(imge, group, spuInfo, attr).get();
+
+
         return skuItemVo;
     }
 }

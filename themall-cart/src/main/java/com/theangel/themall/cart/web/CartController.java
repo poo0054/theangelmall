@@ -2,13 +2,18 @@ package com.theangel.themall.cart.web;
 
 import com.theangel.common.constant.AuthServerConstant;
 import com.theangel.themall.cart.interceptor.CartInterceptor;
+import com.theangel.themall.cart.service.CartService;
 import com.theangel.themall.cart.to.CartUserTo;
+import com.theangel.themall.cart.vo.CartItem;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @ProjectName: theangelmall
@@ -19,6 +24,9 @@ import javax.servlet.http.HttpSession;
  */
 @Controller
 public class CartController {
+
+    @Autowired
+    CartService cartService;
 
     /**
      * 购物车，列表页
@@ -45,4 +53,19 @@ public class CartController {
     public String success() {
         return "success";
     }
+
+    /**
+     * 添加商品到购物车
+     *
+     * @return
+     */
+    @GetMapping("/addtocart")
+    public String addToCart(@RequestParam("skuId") Long skuId, @RequestParam("num") Integer num, Model model) throws ExecutionException, InterruptedException {
+
+        CartItem cartItem = cartService.addToCart(skuId, num);
+        model.addAttribute("item",cartItem);
+        return "success";
+    }
+
+
 }
