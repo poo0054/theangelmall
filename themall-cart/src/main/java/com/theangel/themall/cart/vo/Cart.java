@@ -22,7 +22,6 @@ public class Cart {
     private Integer countNum;
     //商品类型数量
     private Integer countType;
-
     //总价
     private BigDecimal totalAmount;
     /**
@@ -44,7 +43,10 @@ public class Cart {
             }
         }
         //减去优惠总价
-        bigDecimal.subtract(reduce);
+        if (!ObjectUtils.isEmpty(reduce)) {
+            bigDecimal.subtract(reduce);
+        }
+
         this.totalAmount = bigDecimal;
         return bigDecimal;
     }

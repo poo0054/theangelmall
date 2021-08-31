@@ -19,6 +19,7 @@ import org.springframework.session.web.http.DefaultCookieSerializer;
 
 @Configuration
 public class SessionConfig {
+
     @Bean
     public CookieSerializer cookieSerializer() {
         DefaultCookieSerializer cookieSerializer = new DefaultCookieSerializer();
@@ -27,7 +28,7 @@ public class SessionConfig {
     }
 
     /**
-     * 必须使用这个名称
+     * 必须使用这个名称 -> springSessionDefaultRedisSerializer
      * session存放redis的序列化
      *
      * @return

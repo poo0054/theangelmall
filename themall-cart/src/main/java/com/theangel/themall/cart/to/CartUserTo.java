@@ -13,7 +13,9 @@ import lombok.Data;
  */
 @Data
 public class CartUserTo {
+    //登录用户
     private Long userId;
+    //临时用户
     private String userKey;
 
     private Boolean tempUser = false;

@@ -1,5 +1,6 @@
 package com.theangel.themall.cart.service;
 
+import com.theangel.themall.cart.vo.Cart;
 import com.theangel.themall.cart.vo.CartItem;
 
 import java.util.concurrent.ExecutionException;
@@ -23,4 +24,23 @@ public interface CartService {
      * @return
      */
     CartItem addToCart(Long skuId, Integer num) throws ExecutionException, InterruptedException;
+
+    CartItem getCartItem(Long skuId);
+
+    Cart getcartList() throws ExecutionException, InterruptedException;
+
+    /**
+     * 清空购物车
+     *
+     * @param name
+     */
+    void clearCartById(String name);
+
+    /**
+     * 改变选中状态
+     *
+     * @param skuId
+     * @return
+     */
+    void checkItem(Long skuId);
 }
