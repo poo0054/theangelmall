@@ -43,4 +43,18 @@ public interface CartService {
      * @return
      */
     void checkItem(Long skuId);
+
+    /**
+     * 改变商品数量
+     *
+     * @param skuId
+     * @param num
+     */
+    void countItem(Long skuId, Integer num);
+
+    /**
+     * 删除
+     * @param skuId
+     */
+    void deleteItem(Long skuId);
 }

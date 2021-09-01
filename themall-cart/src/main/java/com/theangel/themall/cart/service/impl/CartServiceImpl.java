@@ -43,6 +43,26 @@ public class CartServiceImpl implements CartService {
     @Autowired
     ThreadPoolExecutor poolExecutor;
 
+    /**
+     * 改变商品数量
+     *
+     * @param skuId
+     * @param num
+     */
+    @Override
+    public void countItem(Long skuId, Integer num) {
+        CartItem cartItem = getCartItem(skuId);
+        cartItem.setCount(num);
+        BoundHashOperations<String, Object, Object> cartOps = getCartOps();
+        cartOps.put(skuId.toString(), JSON.toJSONString(cartItem));
+    }
+
+    @Override
+    public void deleteItem(Long skuId) {
+        BoundHashOperations<String, Object, Object> cartOps = getCartOps();
+        cartOps.delete(skuId.toString());
+    }
+
     @Override
     public CartItem addToCart(Long skuId, Integer num) throws ExecutionException, InterruptedException {
         BoundHashOperations<String, Object, Object> cartOps = getCartOps();
@@ -155,6 +175,7 @@ public class CartServiceImpl implements CartService {
         BoundHashOperations<String, Object, Object> cartOps = getCartOps();
         cartOps.put(skuId.toString(), JSON.toJSONString(cartItem));
     }
+
 
     /**
      * 获取当前线程用户的购物车项

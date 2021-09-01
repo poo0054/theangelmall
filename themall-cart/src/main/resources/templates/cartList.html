@@ -108,10 +108,10 @@
                                 <p class="dj" th:text="${'￥'+ #numbers.formatDecimal(item.price,3,2)}">￥4599.00</p>
                             </li>
                             <li>
-                                <p>
-                                    <span>-</span>
-                                    <span th:text="${item.count}">5</span>
-                                    <span>+</span>
+                                <p th:attr="skuId=${item.skuId}">
+                                    <span class="countOpsBut">-</span>
+                                    <span class="countOpsNum" th:text="${item.count}">5</span>
+                                    <span class="countOpsBut">+</span>
                                 </p>
                             </li>
                             <li style="font-weight:bold">
@@ -120,7 +120,7 @@
                                     ￥22995.00</p>
                             </li>
                             <li>
-                                <p>删除</p>
+                                <p class="deleteItemBtn" th:attr="skuId=${item.skuId}">删除</p>
                             </li>
                         </ol>
                     </div>
@@ -175,7 +175,7 @@
         </dl>
     </div>
     <div>
-        <button type="button">删除</button>
+        <button type="button" onclick="deleteItem()">删除</button>
 
     </div>
 </div>
@@ -774,6 +774,26 @@
     $(".itemCheck").click(function () {
         let skuId = $(this).attr("skuId")
         location.href = "http://cart.theangel.com/checkitem?skuId=" + skuId;
+    })
+    //加减商品
+    $(".countOpsBut").click(function () {
+        let skuId = $(this).parent().attr("skuId");
+        let num = $(this).parent().find(".countOpsNum").text();
+
+        location.href = `http://cart.theangel.com/countitem?skuId=${skuId}&num=${num}`;
+    })
+
+    var deleteId = 0;
+
+    //删除购物
+    function deleteItem() {
+        console.log(deleteId)
+        location.href = `http://cart.theangel.com/deleteitem?skuId=${deleteId} `;
+    }
+
+    $(".deleteItemBtn").click(function () {
+        deleteId = $(this).attr("skuId");
+        console.log(deleteId)
     })
 </script>
 </html>

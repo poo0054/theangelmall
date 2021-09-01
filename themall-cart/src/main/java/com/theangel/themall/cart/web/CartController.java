@@ -15,10 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
+ * 购物车
+ *
  * @ProjectName: theangelmall
  * @Package: com.theangel.themall.cart.web
  * @ClassName: CartController
@@ -31,6 +32,37 @@ public class CartController {
     @Autowired
     CartService cartService;
 
+    /**
+     * 改变商品数量
+     *
+     * @param skuId
+     * @return
+     */
+    @GetMapping("/deleteitem")
+    public String deleteItem(@RequestParam("skuId") Long skuId) {
+        cartService.deleteItem(skuId);
+        return "redirect:http://cart.theangel.com/cart.html";
+    }
+
+    /**
+     * 改变商品数量
+     *
+     * @param skuId
+     * @param num
+     * @return
+     */
+    @GetMapping("/countitem")
+    public String countItem(@RequestParam("skuId") Long skuId, @RequestParam("num") Integer num) {
+        cartService.countItem(skuId, num);
+        return "redirect:http://cart.theangel.com/cart.html";
+    }
+
+    /**
+     * 改变选中状态
+     *
+     * @param skuId
+     * @return
+     */
     @GetMapping("/checkitem")
     public String checkItem(@RequestParam("skuId") Long skuId) {
         cartService.checkItem(skuId);

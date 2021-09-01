@@ -1,3 +1,4 @@
+//升级版， index和doc_values都不要
 //PUT themall_product
 {
   "mappings": {
