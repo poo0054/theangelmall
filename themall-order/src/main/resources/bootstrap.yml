@@ -11,5 +11,8 @@ spring:
           - dataId: themall-order.yml
             refresh: true
         server-addr: theangel.vip:8848
+
+
+
   application:
     name: themall-order

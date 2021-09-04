@@ -6,7 +6,6 @@ import com.theangel.themall.product.dao.AttrGroupDao;
 import com.theangel.themall.product.service.CategoryService;
 import com.theangel.themall.product.service.SkuSaleAttrValueService;
 import com.theangel.themall.product.vo.SkuItemAttrVo;
-import com.theangel.themall.product.vo.SkuItemVo;
 import com.theangel.themall.product.vo.SpuItemAttrGroupVo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +17,6 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 
 @RunWith(SpringRunner.class)
