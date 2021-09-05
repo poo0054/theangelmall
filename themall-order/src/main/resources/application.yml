@@ -17,5 +17,13 @@ spring:
     #    只要抵达队列，以异步发送优先回调我们这个returns
     template:
       mandatory: true
+    listener:
+      simple:
+        #        auto:自动回复    manual:手动确认
+        acknowledge-mode: manual
+
+  thymeleaf:
+    cache: false
+
 
 

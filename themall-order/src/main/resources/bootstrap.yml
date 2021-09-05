@@ -13,6 +13,5 @@ spring:
         server-addr: theangel.vip:8848
 
 
-
   application:
     name: themall-order

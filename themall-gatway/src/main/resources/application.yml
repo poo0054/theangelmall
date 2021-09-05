@@ -86,6 +86,12 @@ spring:
           predicates:
             - Host=cart.theangel.com
 
+        # 订单
+        - id: themall-order
+          uri: lb://themall-order
+          predicates:
+            - Host=order.theangel.com
+
         # 首页
         - id: host
           uri: lb://themall-product

@@ -22,7 +22,7 @@ public class RedissonConfig {
         Config config = new Config();
         config.useSingleServer()
                 //Redis url should start with redis:// or rediss:// (for SSL connection)
-                .setAddress("redis://127.0.0.1:6379");
+                .setAddress("redis://192.168.56.10:6379");
         return Redisson.create(config);
     }
 

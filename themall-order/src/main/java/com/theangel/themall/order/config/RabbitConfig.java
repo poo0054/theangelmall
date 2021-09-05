@@ -1,5 +1,6 @@
 package com.theangel.themall.order.config;
 
+import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -36,6 +37,7 @@ public class RabbitConfig {
 
     /**
      * 定制rabbtimq
+     * 发送端确认
      *
      * @PostConstruct 在对象RabbitConfig创建完成以后，执行这个方法
      */
@@ -54,6 +56,23 @@ public class RabbitConfig {
             }
         };
         rabbitTemplate.setConfirmCallback(confirmCallback);
+
+
+        rabbitTemplate.setReturnCallback(new RabbitTemplate.ReturnCallback() {
+            /**
+             * 消息抵达的确认回调
+             * 只要消息没有投递，才会触发
+             * @param message 投递失败的消息详细信息
+             * @param replyCode 回复的状态码
+             * @param replyText 回复的文本内容
+             * @param exchange  当时这个消息是发送给哪个交换机
+             * @param routingKey 路由key
+             */
+            @Override
+            public void returnedMessage(Message message, int replyCode, String replyText, String exchange, String routingKey) {
+                System.out.println("message===" + message + "=====replyCode===" + replyCode + "=====replyText===" + replyText + "=====exchange===" + exchange + "=====routingKey===" + routingKey);
+            }
+        });
     }
 
 

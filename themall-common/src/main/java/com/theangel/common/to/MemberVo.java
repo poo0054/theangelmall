@@ -7,6 +7,7 @@ import java.util.Date;
 
 /**
  * 登录成功返回的数据
+ * 登录存在session中数据
  *
  * @author theangel
  * @email poo0054@outlook.com

@@ -18,7 +18,6 @@ spring:
     suffix: .html
 
 mybatis-plus:
-  mapper-locations: classpath*:/mapper/**/*.xml
   global-config:
     db-config:
       id-type: auto
