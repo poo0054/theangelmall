@@ -154,8 +154,12 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
             skuItemVo.setSkuImages(skuImagesEntities);
         }, poolExecutor);
         CompletableFuture.allOf(imge, group, spuInfo, attr).get();
-
-
         return skuItemVo;
+    }
+
+    @Override
+    public BigDecimal getPrice(Long skuid) {
+        SkuInfoEntity byId = this.getById(skuid);
+        return byId.getPrice();
     }
 }

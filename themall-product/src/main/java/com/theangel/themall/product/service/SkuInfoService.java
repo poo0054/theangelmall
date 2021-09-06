@@ -5,6 +5,7 @@ import com.theangel.common.utils.PageUtils;
 import com.theangel.themall.product.entity.SkuInfoEntity;
 import com.theangel.themall.product.vo.SkuItemVo;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -31,5 +32,13 @@ public interface SkuInfoService extends IService<SkuInfoEntity> {
      * @return
      */
     SkuItemVo itemBySkuId(Long skyId) throws ExecutionException, InterruptedException;
+
+    /**
+     * 查询当前skuid的价格
+     *
+     * @param skuid
+     * @return
+     */
+    BigDecimal getPrice(Long skuid);
 }
 

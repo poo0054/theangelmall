@@ -32,7 +32,6 @@ public class LoginInterceptor implements HandlerInterceptor {
         //登录成功
         if (!ObjectUtils.isEmpty(attribute)) {
             threadLocal.set(attribute);
-
             return true;
         }
         //未登录，去登录页面

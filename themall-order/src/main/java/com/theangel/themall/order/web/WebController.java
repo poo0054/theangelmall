@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import javax.jws.WebParam;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @ProjectName: theangelmall
@@ -34,7 +34,7 @@ public class WebController {
      * @return
      */
     @GetMapping("/totrade")
-    public String toTrade(Model model) {
+    public String toTrade(Model model) throws ExecutionException, InterruptedException {
         OrderConfirmVo orderConfirmVo = orderService.confirmOrder();
         model.addAttribute("confirmVo", orderConfirmVo);
         return "confirm";

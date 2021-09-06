@@ -1,15 +1,12 @@
 package com.theangel.themall.product.controller;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.theangel.themall.product.entity.SkuInfoEntity;
 import com.theangel.themall.product.service.SkuInfoService;
@@ -29,6 +26,18 @@ import com.theangel.common.utils.R;
 public class SkuInfoController {
     @Autowired
     private SkuInfoService skuInfoService;
+
+    /**
+     * 查询当前skuid的价格
+     *
+     * @param skuid
+     * @return
+     */
+    @GetMapping("/{skuid}/price")
+    public R getPrice(@PathVariable("skuid") Long skuid) {
+        BigDecimal bigDecimal = skuInfoService.getPrice(skuid);
+        return R.ok().setData(bigDecimal);
+    }
 
     /**
      * 列表

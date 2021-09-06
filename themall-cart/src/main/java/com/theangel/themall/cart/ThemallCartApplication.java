@@ -16,7 +16,6 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
  */
 @EnableDiscoveryClient
 @EnableRedisHttpSession
-@EnableFeignClients("com.theangel.themall.cart.openfeign")
 @SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
 public class ThemallCartApplication {
     public static void main(String[] args) {

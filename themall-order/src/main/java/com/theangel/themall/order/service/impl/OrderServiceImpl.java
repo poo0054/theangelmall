@@ -1,18 +1,30 @@
 package com.theangel.themall.order.service.impl;
 
+import com.alibaba.fastjson.TypeReference;
 import com.rabbitmq.client.Channel;
+import com.theangel.common.to.MemberVo;
+import com.theangel.common.utils.R;
 import com.theangel.themall.order.entity.MqMessageEntity;
 import com.theangel.themall.order.entity.OrderReturnApplyEntity;
-import com.theangel.themall.order.service.OrderReturnReasonService;
+import com.theangel.themall.order.interceptor.LoginInterceptor;
+import com.theangel.themall.order.openfeign.CartService;
+import com.theangel.themall.order.openfeign.MemberService;
+import com.theangel.themall.order.vo.MemberAddressVo;
 import com.theangel.themall.order.vo.OrderConfirmVo;
+import com.theangel.themall.order.vo.OrderItemVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -23,11 +35,19 @@ import com.theangel.common.utils.Query;
 import com.theangel.themall.order.dao.OrderDao;
 import com.theangel.themall.order.entity.OrderEntity;
 import com.theangel.themall.order.service.OrderService;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
 @Slf4j
 @Service("orderService")
 @RabbitListener(queues = "hello-query")
 public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> implements OrderService {
+    @Autowired
+    MemberService memberService;
+    @Autowired
+    ThreadPoolExecutor poolExecutor;
+    @Autowired
+    CartService cartService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -45,8 +65,41 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
      * @return
      */
     @Override
-    public OrderConfirmVo confirmOrder() {
+    public OrderConfirmVo confirmOrder() throws ExecutionException, InterruptedException {
+        MemberVo memberVo = LoginInterceptor.threadLocal.get();
+
+        //获取request上下，放入每个线程中
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+
         OrderConfirmVo orderConfirmVo = new OrderConfirmVo();
+        //远程查询收货地址
+        CompletableFuture<Void> future1 = CompletableFuture.runAsync(() -> {
+            RequestContextHolder.setRequestAttributes(requestAttributes);
+            R address = memberService.getAddress(memberVo.getId());
+            if (address.getCode() == 0) {
+                List<MemberAddressVo> data = address.getData(new TypeReference<List<MemberAddressVo>>() {
+                });
+                orderConfirmVo.setAddress(data);
+            }
+        }, poolExecutor);
+
+        //远程查询购物项
+        CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+            RequestContextHolder.setRequestAttributes(requestAttributes);
+            R address = cartService.getCartItem();
+            if (address.getCode() == 0) {
+                List<OrderItemVo> data = address.getData(new TypeReference<List<OrderItemVo>>() {
+                });
+                orderConfirmVo.setItem(data);
+            }
+        }, poolExecutor);
+
+        //用户积分信息
+        orderConfirmVo.setIntegration(memberVo.getIntegration());
+
+        CompletableFuture.allOf(future1, future).get();
+
+        //TODO  防重令牌
 
 
         return orderConfirmVo;

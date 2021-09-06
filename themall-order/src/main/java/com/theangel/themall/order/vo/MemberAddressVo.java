@@ -14,7 +14,6 @@ import java.io.Serializable;
 @Data
 public class MemberAddressVo implements Serializable {
     private static final long serialVersionUID = 1L;
-
     /**
      * id
      */

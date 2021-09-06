@@ -3,6 +3,7 @@ package com.theangel.themall.cart.service;
 import com.theangel.themall.cart.vo.Cart;
 import com.theangel.themall.cart.vo.CartItem;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -54,7 +55,15 @@ public interface CartService {
 
     /**
      * 删除
+     *
      * @param skuId
      */
     void deleteItem(Long skuId);
+
+    /**
+     * 根据id查询购物项
+     *
+     * @return
+     */
+    List<CartItem> getCartItemBy();
 }

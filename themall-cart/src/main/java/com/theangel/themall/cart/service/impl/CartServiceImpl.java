@@ -4,9 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.theangel.common.constant.CartConstant;
 import com.theangel.common.utils.R;
-import com.theangel.themall.cart.config.ThreadConfig;
 import com.theangel.themall.cart.interceptor.CartInterceptor;
-import com.theangel.themall.cart.openfeign.ThemallProduct;
+import com.theangel.themall.cart.openfeign.ProductService;
 import com.theangel.themall.cart.service.CartService;
 import com.theangel.themall.cart.to.CartUserTo;
 import com.theangel.themall.cart.to.SkuInfoTo;
@@ -20,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -39,9 +39,11 @@ public class CartServiceImpl implements CartService {
     @Autowired
     StringRedisTemplate redisTemplate;
     @Autowired
-    ThemallProduct themallProduct;
+    ProductService themallProduct;
     @Autowired
     ThreadPoolExecutor poolExecutor;
+    @Autowired
+    ProductService getThemallProduct;
 
     /**
      * 改变商品数量
@@ -62,6 +64,26 @@ public class CartServiceImpl implements CartService {
         BoundHashOperations<String, Object, Object> cartOps = getCartOps();
         cartOps.delete(skuId.toString());
     }
+
+    /**
+     * 根据id查询购物项
+     * 并更新最新价格
+     *
+     * @return
+     */
+    @Override
+    public List<CartItem> getCartItemBy() {
+        List<CartItem> cartItem = getCartItem();
+        List<CartItem> collect = cartItem.stream().filter(item -> item.getCheck()).map(item -> {
+            //更新最新价格
+            R price1 = getThemallProduct.getPrice(item.getSkuId());
+            item.setPrice(price1.getData(new TypeReference<BigDecimal>() {
+            }));
+            return item;
+        }).collect(Collectors.toList());
+        return collect;
+    }
+
 
     @Override
     public CartItem addToCart(Long skuId, Integer num) throws ExecutionException, InterruptedException {
@@ -185,6 +207,15 @@ public class CartServiceImpl implements CartService {
      */
     private List<CartItem> getCartItem() {
         return getCartItemById(null);
+    }
+
+    /**
+     * 获取指定用户的购物项
+     *
+     * @return
+     */
+    private List<CartItem> getCartItem(String s) {
+        return getCartItemById(s);
     }
 
 

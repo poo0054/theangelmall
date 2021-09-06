@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @Date: 2021/8/30 22:15
  */
 @FeignClient("themall-product")
-public interface ThemallProduct {
+public interface ProductService {
 
     /**
      * 根据skuid获取商品详细信息
@@ -30,4 +30,14 @@ public interface ThemallProduct {
      */
     @GetMapping("product/skusaleattrvalue/attrstrbyskuid/{skuid}")
     public R getAttrStrBySkuId(@PathVariable("skuid") Long skuId);
+
+
+    /**
+     * 查询当前skuid的价格
+     *
+     * @param skuid
+     * @return
+     */
+    @GetMapping("product/skuinfo/{skuid}/price")
+    public R getPrice(@PathVariable("skuid") Long skuid);
 }
