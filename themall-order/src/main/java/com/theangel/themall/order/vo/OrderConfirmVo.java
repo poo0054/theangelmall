@@ -5,6 +5,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 订单确认页展示的数据
@@ -45,6 +46,12 @@ public class OrderConfirmVo {
 
     //总件数
     private Integer count;
+
+
+    /**
+     * sku库存信息
+     */
+    Map<Long, Boolean> stocks;
 
 
     public Integer getCount() {

@@ -27,8 +27,8 @@ public class OrderItemVo {
     //商品总价
     private BigDecimal totalPrice;
 
-    //TODO  是否有货待查询
-    private boolean hasStock;
+/*    //TODO  是否有货待查询
+    private boolean hasStock;*/
 
     //TODO  商品重量
     private BigDecimal width;

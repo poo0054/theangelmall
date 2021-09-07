@@ -3,12 +3,14 @@ package com.theangel.themall.order.service.impl;
 import com.alibaba.fastjson.TypeReference;
 import com.rabbitmq.client.Channel;
 import com.theangel.common.to.MemberVo;
+import com.theangel.common.to.SkuHasStockVo;
 import com.theangel.common.utils.R;
 import com.theangel.themall.order.entity.MqMessageEntity;
 import com.theangel.themall.order.entity.OrderReturnApplyEntity;
 import com.theangel.themall.order.interceptor.LoginInterceptor;
 import com.theangel.themall.order.openfeign.CartService;
 import com.theangel.themall.order.openfeign.MemberService;
+import com.theangel.themall.order.openfeign.WareService;
 import com.theangel.themall.order.vo.MemberAddressVo;
 import com.theangel.themall.order.vo.OrderConfirmVo;
 import com.theangel.themall.order.vo.OrderItemVo;
@@ -25,6 +27,7 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -48,6 +51,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     ThreadPoolExecutor poolExecutor;
     @Autowired
     CartService cartService;
+    @Autowired
+    WareService wareService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -72,6 +77,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
 
         OrderConfirmVo orderConfirmVo = new OrderConfirmVo();
+
         //远程查询收货地址
         CompletableFuture<Void> future1 = CompletableFuture.runAsync(() -> {
             RequestContextHolder.setRequestAttributes(requestAttributes);
@@ -92,6 +98,19 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
                 });
                 orderConfirmVo.setItem(data);
             }
+        }, poolExecutor).thenRunAsync(() -> {
+            List<OrderItemVo> itemVos = orderConfirmVo.getItem();
+            List<Long> collect = itemVos.stream().map(item -> {
+                return item.getSkuId();
+            }).collect(Collectors.toList());
+            R hasStock = wareService.getHasStock(collect);
+            if (hasStock.getCode() == 0) {
+                List<SkuHasStockVo> data = hasStock.getData(new TypeReference<List<SkuHasStockVo>>() {
+                });
+                Map<Long, Boolean> collect1 = data.stream().collect(Collectors.toMap((SkuHasStockVo::getSkuId), (SkuHasStockVo::getHasStock)));
+                orderConfirmVo.setStocks(collect1);
+            }
+
         }, poolExecutor);
 
         //用户积分信息

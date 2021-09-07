@@ -9,3 +9,8 @@ spring:
             refresh: true
           - dataId: third-party.yml
             refresh: true
+  application:
+    name: third-party
+
+server:
+  port: 3333

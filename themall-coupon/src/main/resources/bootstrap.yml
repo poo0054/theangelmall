@@ -9,3 +9,7 @@ spring:
             refresh: true
           - dataId: themall-coupon.yml
             refresh: true
+  application:
+    name: themall-coupon
+server:
+  port: 8002

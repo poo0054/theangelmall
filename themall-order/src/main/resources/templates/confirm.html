@@ -678,7 +678,7 @@
                 <p>[[${item.title}]]
                     <span style="color: red;" th:text="${item.price}"> ￥ 149.00</span>
                     <span th:text="${item.count}"> x1 </span>
-                    <span th:text="${item.hasStock==true?'有货':'无货'}">有货</span>
+                    <span th:text="${confirmVo.stocks[item.skuId]?'有货':'无货'}"></span>
                 </p>
                 <p><span>0.095kg</span></p>
                 <p class="tui-1"><img src="/static/order/confirm/img/i_07.png"/>支持7天无理由退货</p>

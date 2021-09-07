@@ -14,4 +14,6 @@ public interface MemberService {
     @GetMapping("/member/memberreceiveaddress/{memberid}/address")
     //@RequiresPermissions("member:memberreceiveaddress:list")
     public R getAddress(@PathVariable("memberid") Long memnerId);
+
+
 }

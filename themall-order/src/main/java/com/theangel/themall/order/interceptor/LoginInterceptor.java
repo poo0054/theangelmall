@@ -35,7 +35,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             return true;
         }
         //未登录，去登录页面
-        response.sendRedirect("http://auth.theangel.com/login.html");
+        response.sendRedirect("http://auth.theangel.com/auth/login.html");
         return false;
 
     }
