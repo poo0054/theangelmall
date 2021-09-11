@@ -13,4 +13,4 @@ spring:
     name: themall-ware
 
 server:
-  port: 10001
+  port: 12000

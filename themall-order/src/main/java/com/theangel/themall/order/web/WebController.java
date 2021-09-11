@@ -2,11 +2,14 @@ package com.theangel.themall.order.web;
 
 import com.theangel.themall.order.service.OrderService;
 import com.theangel.themall.order.vo.OrderConfirmVo;
+import com.theangel.themall.order.vo.OrderSubmitVo;
+import com.theangel.themall.order.vo.SubmitResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.concurrent.ExecutionException;
 
@@ -40,5 +43,24 @@ public class WebController {
         return "confirm";
     }
 
+    /**
+     * 下单成功，去支付页
+     * 下单失败，去确认页，重新下单
+     *
+     * @param vo
+     * @return
+     */
+    @PostMapping("/submitOrder")
+    public String submitOrder(OrderSubmitVo vo) {
+        SubmitResultVo submitResultVo = orderService.submitOrder(vo);
+        if (submitResultVo.getCode() == 0) {
+            //成功
+
+            return "pay";
+        } else {
+            return "redirect:order.theangel.com/totrade";
+        }
+
+    }
 
 }

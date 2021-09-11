@@ -28,7 +28,7 @@ public class MemberReceiveAddressController {
     private MemberReceiveAddressService memberReceiveAddressService;
 
     /**
-     * 根据id查询收货地址
+     * 根据用户id查询收货地址
      */
     @GetMapping("/{memberid}/address")
     //@RequiresPermissions("member:memberreceiveaddress:list")
@@ -51,6 +51,7 @@ public class MemberReceiveAddressController {
 
 
     /**
+     * 根据地址id查询地址信息
      * 信息
      */
     @RequestMapping("/info/{id}")

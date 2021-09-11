@@ -2,31 +2,35 @@ package com.theangel.themall.order.service.impl;
 
 import com.alibaba.fastjson.TypeReference;
 import com.rabbitmq.client.Channel;
+import com.theangel.common.constant.OrderConstant;
 import com.theangel.common.to.MemberVo;
 import com.theangel.common.to.SkuHasStockVo;
 import com.theangel.common.utils.R;
+import com.theangel.common.utils.fileutils.UUIDUtils;
 import com.theangel.themall.order.entity.MqMessageEntity;
 import com.theangel.themall.order.entity.OrderReturnApplyEntity;
 import com.theangel.themall.order.interceptor.LoginInterceptor;
 import com.theangel.themall.order.openfeign.CartService;
 import com.theangel.themall.order.openfeign.MemberService;
 import com.theangel.themall.order.openfeign.WareService;
-import com.theangel.themall.order.vo.MemberAddressVo;
-import com.theangel.themall.order.vo.OrderConfirmVo;
-import com.theangel.themall.order.vo.OrderItemVo;
+import com.theangel.themall.order.vo.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -38,6 +42,7 @@ import com.theangel.common.utils.Query;
 import com.theangel.themall.order.dao.OrderDao;
 import com.theangel.themall.order.entity.OrderEntity;
 import com.theangel.themall.order.service.OrderService;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
@@ -53,6 +58,42 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     CartService cartService;
     @Autowired
     WareService wareService;
+    @Autowired
+    StringRedisTemplate redisTemplate;
+
+    /**
+     * 下单
+     *
+     * @param vo
+     */
+    @Override
+    public SubmitResultVo submitOrder(OrderSubmitVo vo) {
+        SubmitResultVo submitResultVo = new SubmitResultVo();
+        MemberVo memberVo = LoginInterceptor.threadLocal.get();
+        //创建订单  锁库存  验证防重复
+        // 验证防重复
+        String orderToken = vo.getOrderToken();
+
+        //验证防重复通过  应该是一个原子操作，这样会有误差
+//         String s = redisTemplate.opsForValue().get(OrderConstant.USER_ORDER_TOKEN_PREFIX + memberVo.getId());
+      /*  if (!ObjectUtils.isEmpty(s) && orderToken.equals(s)) {
+            //删除令牌
+            redisTemplate.delete(OrderConstant.USER_ORDER_TOKEN_PREFIX + memberVo.getId());
+        }*/
+        //应该是一个脚本  原子操作   原子验证和删除
+        String script = "if redis.call('get',KEYS[1]) == ARGV[1] then return redis.call('del',KEYS[1]) else return 0 end";
+        Long execute = redisTemplate.execute(new DefaultRedisScript<Long>(script, Long.class),
+                Arrays.asList(OrderConstant.USER_ORDER_TOKEN_PREFIX + memberVo.getId()),
+                orderToken);
+        if (0 == execute) {
+            //令牌验证失败
+            submitResultVo.setCode(1);
+            return submitResultVo;
+        }
+
+
+        return submitResultVo;
+    }
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -60,7 +101,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
                 new Query<OrderEntity>().getPage(params),
                 new QueryWrapper<OrderEntity>()
         );
-
         return new PageUtils(page);
     }
 
@@ -72,12 +112,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     @Override
     public OrderConfirmVo confirmOrder() throws ExecutionException, InterruptedException {
         MemberVo memberVo = LoginInterceptor.threadLocal.get();
-
         //获取request上下，放入每个线程中
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
-
         OrderConfirmVo orderConfirmVo = new OrderConfirmVo();
-
         //远程查询收货地址
         CompletableFuture<Void> future1 = CompletableFuture.runAsync(() -> {
             RequestContextHolder.setRequestAttributes(requestAttributes);
@@ -110,28 +147,25 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
                 Map<Long, Boolean> collect1 = data.stream().collect(Collectors.toMap((SkuHasStockVo::getSkuId), (SkuHasStockVo::getHasStock)));
                 orderConfirmVo.setStocks(collect1);
             }
-
         }, poolExecutor);
-
+        // 防重令牌
+        CompletableFuture<Void> future2 = CompletableFuture.runAsync(() -> {
+            String uuid = UUIDUtils.getUUID().replace("-", "future2");
+            redisTemplate.opsForValue().set(OrderConstant.USER_ORDER_TOKEN_PREFIX + memberVo.getId(), uuid, 30, TimeUnit.MINUTES);
+            orderConfirmVo.setOrderToken(uuid);
+        });
         //用户积分信息
         orderConfirmVo.setIntegration(memberVo.getIntegration());
-
-        CompletableFuture.allOf(future1, future).get();
-
-        //TODO  防重令牌
-
+        CompletableFuture.allOf(future1, future, future2).get();
 
         return orderConfirmVo;
     }
 
     /**
-     * @param message         可以用Message：原生消息详细信息
-     *                        object：和上类似
-     * @param mqMessageEntity 发送的是什么类型，接收用什么类型就可以
-     * @param channel         当前传输数据的通道
+     * @param message
+     * @param mqMessageEntity
+     * @param channel
      * @RabbitListener 监听消息
-     * <p>
-     * <p>
      * 场景一：
      * message         可以用Message：原生消息详细信息
      * mqMessageEntity 发送的是什么类型，接收用什么类型就可以
@@ -141,6 +175,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
      * RabbitHandler 只能标注在方法上
      * 在类上使用RabbitListener监听多个队列
      * RabbitHandler方法重载，接收不同的对象（实体类）  ，每个类上标注注解  重载，获取不同的对象
+     * <p>
+     * <p>
+     * <p>
      * <p>
      * 以后使用：
      * RabbitListener监听不同的队列
