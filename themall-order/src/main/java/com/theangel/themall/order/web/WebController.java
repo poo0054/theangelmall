@@ -1,5 +1,6 @@
 package com.theangel.themall.order.web;
 
+import com.theangel.themall.order.openfeign.ProductFeignService;
 import com.theangel.themall.order.service.OrderService;
 import com.theangel.themall.order.vo.OrderConfirmVo;
 import com.theangel.themall.order.vo.OrderSubmitVo;
@@ -25,6 +26,7 @@ public class WebController {
 
     @Autowired
     OrderService orderService;
+
 
     @GetMapping("/{page}")
     public String confirm(@PathVariable("page") String s) {

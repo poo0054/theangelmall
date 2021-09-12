@@ -13,7 +13,6 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 @SpringBootApplication
 @MapperScan("com/theangel/themall/member/dao")
 @EnableDiscoveryClient
-@EnableCaching
 @EnableFeignClients(basePackages = "com.theangel.themall.member.openfeign")
 public class ThemallMemberApplication {
 

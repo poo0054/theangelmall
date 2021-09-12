@@ -6,11 +6,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @FeignClient("themall-cart")
-public interface CartService {
+public interface CartFeignService {
 
 
     /**
-     * 根据id查询所有购物项
+     * 查询当前用户所有购物项
      */
     @GetMapping("cart/cartitem/cartitem")
     public R getCartItem();

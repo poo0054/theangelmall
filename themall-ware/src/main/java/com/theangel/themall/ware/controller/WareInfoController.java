@@ -29,7 +29,7 @@ public class WareInfoController {
     private WareInfoService wareInfoService;
 
     /**
-     * 根据用户地址信息，获取运费金额
+     * 根据用户地址信息，获取运费金额，收货人信息
      */
     @GetMapping("/fare/{addrId}")
     public R getFare(@PathVariable("addrId") Long addrId) {

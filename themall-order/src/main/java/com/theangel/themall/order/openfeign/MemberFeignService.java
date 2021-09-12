@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @FeignClient("themall-member")
-public interface MemberService {
+public interface MemberFeignService {
 
     /**
      * 根据id查询收货地址

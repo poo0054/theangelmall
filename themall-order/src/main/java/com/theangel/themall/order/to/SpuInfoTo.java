@@ -1,13 +1,12 @@
-package com.theangel.themall.product.entity;
+package com.theangel.themall.order.to;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-
-import java.math.BigDecimal;
-import java.io.Serializable;
-import java.util.Date;
-
 import lombok.Data;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * spu信息
@@ -17,14 +16,12 @@ import lombok.Data;
  * @date 2021-06-09 20:47:30
  */
 @Data
-@TableName("pms_spu_info")
-public class SpuInfoEntity implements Serializable {
+public class SpuInfoTo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
      * 商品id
      */
-    @TableId
     private Long id;
     /**
      * 商品名称
