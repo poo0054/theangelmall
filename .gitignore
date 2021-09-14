@@ -20,5 +20,7 @@ buildNumber.properties
 *.imi
 **/*.iml
 
+LICENSE
+
 *.log
 

@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.theangel.common.utils.PageUtils;
 import com.theangel.themall.ware.entity.WareSkuEntity;
 import com.theangel.common.to.SkuHasStockVo;
+import com.theangel.themall.ware.to.LockStockResult;
+import com.theangel.themall.ware.to.WareSkuLockTo;
 
 import java.util.List;
 import java.util.Map;
@@ -22,5 +24,12 @@ public interface WareSkuService extends IService<WareSkuEntity> {
     void addStack(Long skuId, Long wareId, Integer skuNum);
 
     List<SkuHasStockVo> getHasStock(List<Long> skuIds);
+
+    /**
+     * 锁定库存
+     *
+     * @param skuLockTo
+     */
+    boolean OrderLock(WareSkuLockTo skuLockTo);
 }
 

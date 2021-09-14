@@ -6,12 +6,11 @@ import com.theangel.common.exception.BizCodeEnum;
 import com.theangel.common.utils.R;
 import com.theangel.common.utils.fileutils.UUIDUtils;
 import com.theangel.themall.auth.openfeign.ThemallPartyFeign;
-import com.theangel.themall.auth.openfeign.ThemallmemberFerign;
+import com.theangel.themall.auth.openfeign.memberFerignService;
 import com.theangel.themall.auth.vo.UserRegistVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
@@ -32,7 +31,7 @@ public class SmsController {
     @Autowired
     StringRedisTemplate stringRedisTemplate;
     @Autowired
-    ThemallmemberFerign themallmemberFerign;
+    memberFerignService themallmemberFerign;
 
     @ResponseBody
     @GetMapping("/sms/sendcode")

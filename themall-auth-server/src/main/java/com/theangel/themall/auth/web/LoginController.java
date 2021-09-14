@@ -4,9 +4,8 @@ import com.alibaba.fastjson.TypeReference;
 import com.theangel.common.constant.AuthServerConstant;
 import com.theangel.common.to.MemberVo;
 import com.theangel.common.utils.R;
-import com.theangel.themall.auth.openfeign.ThemallmemberFerign;
+import com.theangel.themall.auth.openfeign.memberFerignService;
 import com.theangel.themall.auth.vo.LoginUserVo;
-import org.apache.http.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
@@ -15,9 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,9 +23,15 @@ import java.util.Map;
 public class LoginController {
 
     @Autowired
-    ThemallmemberFerign themallmemberFerign;
+    memberFerignService themallmemberFerign;
 
 
+    /**
+     * 跳转登录页面，如果session中存在，则跳到首页，不存在 就跳转登录页面
+     *
+     * @param session
+     * @return
+     */
     @GetMapping("/login.html")
     public String webLogin(HttpSession session) {
         Object attribute = session.getAttribute(AuthServerConstant.LOGIN_USER);

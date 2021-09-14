@@ -12,6 +12,8 @@ package com.theangel.common.exception;
  * 13：购物车
  * 14：物流
  * 15:用户
+ * <p>
+ * 21:库存
  */
 
 public enum BizCodeEnum {
@@ -20,7 +22,8 @@ public enum BizCodeEnum {
     SMS_CODE_EXCEPTION(10002, "验证码获取频率过高"),
     PRODUCT_UP_EXCEPTION(11000, "商品上架异常"),
     USER_EXCEPTION(15001, "用户注册异常（异常信息从message中获取）"),
-    USER_PASSWORD_EXCEPTION(15002, "用户账号或密码错误");
+    USER_PASSWORD_EXCEPTION(15002, "用户账号或密码错误"),
+    NO_STOCK_EXCEPTION(21000, "商品库存不足");
 
 
     private int code;

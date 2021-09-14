@@ -13,7 +13,7 @@ import lombok.Data;
  * @Date: 2021/9/12 0:06
  */
 @Data
-public class SubmitResultVo {
+public class SubmitResponseVo {
     /**
      * 状态码  0是成功
      * 其余都是失败

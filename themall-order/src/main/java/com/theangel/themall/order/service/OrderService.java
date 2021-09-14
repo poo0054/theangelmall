@@ -5,7 +5,7 @@ import com.theangel.common.utils.PageUtils;
 import com.theangel.themall.order.entity.OrderEntity;
 import com.theangel.themall.order.vo.OrderConfirmVo;
 import com.theangel.themall.order.vo.OrderSubmitVo;
-import com.theangel.themall.order.vo.SubmitResultVo;
+import com.theangel.themall.order.vo.SubmitResponseVo;
 
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -24,7 +24,7 @@ public interface OrderService extends IService<OrderEntity> {
      *
      * @param vo
      */
-    SubmitResultVo submitOrder(OrderSubmitVo vo);
+    SubmitResponseVo submitOrder(OrderSubmitVo vo);
 
     PageUtils queryPage(Map<String, Object> params);
 
