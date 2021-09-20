@@ -4,6 +4,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.rabbitmq.client.Channel;
 import com.theangel.common.constant.OrderConstant;
+import com.theangel.common.exception.NoStockException;
 import com.theangel.common.to.MemberVo;
 import com.theangel.common.to.SkuHasStockVo;
 import com.theangel.common.utils.R;
@@ -20,6 +21,7 @@ import com.theangel.themall.order.openfeign.WareFeignService;
 import com.theangel.themall.order.service.OrderItemService;
 import com.theangel.themall.order.to.*;
 import com.theangel.themall.order.vo.*;
+import io.seata.spring.annotation.GlobalTransactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
@@ -77,11 +79,14 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
 
     /**
      * 下单
+     * 使用分布式事务： 最大原因 -》网络问题
      *
      * @param vo
+     * @Transactional:是一个本地事务
      */
+    @GlobalTransactional
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public SubmitResponseVo submitOrder(OrderSubmitVo vo) {
         SubmitResponseVo responseVo = new SubmitResponseVo();
         MemberVo memberVo = LoginInterceptor.threadLocal.get();
@@ -106,17 +111,17 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         }
         //创建订单和订单项 信息
         OrderCreateTo orderCreateTo = orderCreateTo(vo);
+        //自己生成的价格
         BigDecimal payAmount = orderCreateTo.getOrder().getPayAmount();
+        //页面提交的价格
         BigDecimal payPrice = vo.getPayPrice();
         //只要价格不超过0.01  超过0.01就是无效的
         if (Math.abs(payPrice.subtract(payAmount).doubleValue()) > 0.01) {
             responseVo.setCode(2);
             return responseVo;
         }
-
         //存入数据库
         saveOrder(orderCreateTo);
-
         //锁定库存
         // 需要订单号  skuid  skuname  多少库存
         WareSkuLockTo wareSkuLockTo = new WareSkuLockTo();
@@ -136,10 +141,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
             responseVo.setCode(3);
             return responseVo;
         }
+//        int i = 0 / 0;
         responseVo.setOrderEntity(orderCreateTo.getOrder());
         responseVo.setCode(0);
         return responseVo;
-
     }
 
     /**
@@ -147,8 +152,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
      *
      * @param orderCreateTo
      */
-
-    private void saveOrder(OrderCreateTo orderCreateTo) {
+    @Transactional(rollbackFor = Exception.class)
+    public void saveOrder(OrderCreateTo orderCreateTo) {
         OrderEntity order = orderCreateTo.getOrder();
         order.setModifyTime(new Date());
 
@@ -170,6 +175,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
      */
     private OrderCreateTo orderCreateTo(OrderSubmitVo vo) {
         OrderCreateTo orderCreateTo = new OrderCreateTo();
+
         //构建订单基本信息，收货人  邮费
         OrderEntity orderEntity = buildOrder(vo);
         orderCreateTo.setOrder(orderEntity);
@@ -386,9 +392,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
             }
         }, poolExecutor).thenRunAsync(() -> {
             List<OrderItemVo> itemVos = orderConfirmVo.getItem();
-            List<Long> collect = itemVos.stream().map(item -> {
-                return item.getSkuId();
-            }).collect(Collectors.toList());
+            List<Long> collect = itemVos.stream().map(item -> item.getSkuId()).collect(Collectors.toList());
             R hasStock = wareFeignService.getHasStock(collect);
             if (hasStock.getCode() == 0) {
                 List<SkuHasStockVo> data = hasStock.getData(new TypeReference<List<SkuHasStockVo>>() {
@@ -397,12 +401,14 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
                 orderConfirmVo.setStocks(collect1);
             }
         }, poolExecutor);
+
         // 防重令牌
         CompletableFuture<Void> future2 = CompletableFuture.runAsync(() -> {
             String uuid = UUIDUtils.getUUID().replace("-", "future2");
             redisTemplate.opsForValue().set(OrderConstant.USER_ORDER_TOKEN_PREFIX + memberVo.getId(), uuid, 30, TimeUnit.MINUTES);
             orderConfirmVo.setOrderToken(uuid);
         });
+
         //用户积分信息
         orderConfirmVo.setIntegration(memberVo.getIntegration());
         CompletableFuture.allOf(future1, future, future2).get();

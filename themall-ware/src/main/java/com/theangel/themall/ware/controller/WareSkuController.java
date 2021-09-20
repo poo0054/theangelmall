@@ -6,9 +6,8 @@ import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
 import com.theangel.common.exception.BizCodeEnum;
+import com.theangel.common.exception.NoStockException;
 import com.theangel.common.to.SkuHasStockVo;
-import com.theangel.themall.ware.exception.NoStockException;
-import com.theangel.themall.ware.to.LockStockResult;
 import com.theangel.themall.ware.to.WareSkuLockTo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

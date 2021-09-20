@@ -1,4 +1,4 @@
-package com.theangel.themall.ware.exception;
+package com.theangel.common.exception;
 
 /**
  * @ProjectName: theangelmall
@@ -13,6 +13,10 @@ public class NoStockException extends RuntimeException {
 
     public NoStockException(Long skuId) {
         super("商品id：" + skuId + "没有足够的库存了");
+    }
+
+    public NoStockException() {
+        super("库存不足");
     }
 
     public Integer getSkuId() {

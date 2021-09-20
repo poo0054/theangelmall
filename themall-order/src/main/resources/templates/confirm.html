@@ -444,7 +444,8 @@
     <img src="/static/order/confirm/img/08.png" class="img2"/>
 </div>
 
-<p class="p1">填写并核对订单信息</p>
+<p class="p1">填写并核对订单信息 </p>
+<p class="p1" style="color: red" th:if="${msg!=null}" th:text="${msg}"></p>
 <div class="section">
     <!--收货人信息-->
     <div class="top-2">

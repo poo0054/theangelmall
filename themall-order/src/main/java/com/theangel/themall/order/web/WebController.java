@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.concurrent.ExecutionException;
 
@@ -59,14 +60,29 @@ public class WebController {
      * @return
      */
     @PostMapping("/submitOrder")
-    public String submitOrder(OrderSubmitVo vo, Model model) {
+    public String submitOrder(OrderSubmitVo vo, Model model, RedirectAttributes redirectAttributes) {
         SubmitResponseVo submitResultVo = orderService.submitOrder(vo);
         if (submitResultVo.getCode() == 0) {
             //成功
-            model.addAttribute("submitResultVo", submitResultVo.getOrderEntity());
+            model.addAttribute("submitResultVo", submitResultVo);
             return "pay";
         } else {
-            return "redirect:order.theangel.com/totrade";
+            String msg = null;
+            switch (submitResultVo.getCode()) {
+                case 1:
+                    msg = "订单信息过期，请刷新再次提交";
+                    break;
+                case 2:
+                    msg = "订单商品价格发送变化，请确认后再次提交";
+                    break;
+                case 3:
+                    msg = "库存锁定失败，商品库存不足";
+                    break;
+                default:
+                    break;
+            }
+            redirectAttributes.addFlashAttribute("msg", msg);
+            return "redirect:http://order.theangel.com/totrade";
         }
 
     }

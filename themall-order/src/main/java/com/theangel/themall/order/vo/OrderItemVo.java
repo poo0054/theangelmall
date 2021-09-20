@@ -1,6 +1,7 @@
 package com.theangel.themall.order.vo;
 
 import lombok.Data;
+import org.springframework.util.ObjectUtils;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -22,7 +23,9 @@ public class OrderItemVo {
     //商品默认图片
     private String image;
     private List<String> skuAttr;
+    //单价
     private BigDecimal price;
+    //数量
     private Integer count;
     //商品总价
     private BigDecimal totalPrice;
@@ -39,10 +42,21 @@ public class OrderItemVo {
      * @return
      */
     public BigDecimal getTotalPrice() {
-        //总价是单价乘数量
-        BigDecimal multiply = this.price.multiply(new BigDecimal(this.count));
-        this.totalPrice = multiply;
-        return totalPrice;
+        //单价不为空
+        if (!ObjectUtils.isEmpty(this.price)) {
+            //数量不为空
+            if (ObjectUtils.isEmpty(this.count)) {
+                //总价是单价乘数量
+                BigDecimal multiply = this.price.multiply(new BigDecimal(this.count));
+                this.totalPrice = multiply;
+                return totalPrice;
+            }
+            //数量为空，返回单价
+            this.totalPrice = this.price;
+            return totalPrice;
+        }
+        //都为空 返回0
+        return new BigDecimal(0);
     }
 
 

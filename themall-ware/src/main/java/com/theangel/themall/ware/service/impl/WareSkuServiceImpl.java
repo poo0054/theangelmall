@@ -1,10 +1,9 @@
 package com.theangel.themall.ware.service.impl;
 
+import com.theangel.common.exception.NoStockException;
 import com.theangel.common.utils.R;
-import com.theangel.themall.ware.exception.NoStockException;
 import com.theangel.themall.ware.openfeign.ProductFeignService;
 import com.theangel.common.to.SkuHasStockVo;
-import com.theangel.themall.ware.to.LockStockResult;
 import com.theangel.themall.ware.to.OrderItemTo;
 import com.theangel.themall.ware.to.WareSkuLockTo;
 import lombok.Data;
@@ -157,13 +156,13 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
                 }
             }
             //都没有锁住
-            if (skuIdLock) {
+            if (!skuIdLock) {
                 //当前商品所有仓库没有锁住，就直接抛出
                 throw new NoStockException(skuId);
             }
 
         }
-//所有锁定成功
+        //所有锁定成功
 
         return true;
 
