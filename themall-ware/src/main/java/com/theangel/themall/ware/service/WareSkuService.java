@@ -1,6 +1,7 @@
 package com.theangel.themall.ware.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.theangel.common.to.mq.StockLockedTo;
 import com.theangel.common.utils.PageUtils;
 import com.theangel.themall.ware.entity.WareSkuEntity;
 import com.theangel.common.to.SkuHasStockVo;
@@ -31,5 +32,12 @@ public interface WareSkuService extends IService<WareSkuEntity> {
      * @param skuLockTo
      */
     boolean OrderLock(WareSkuLockTo skuLockTo);
+
+    /**
+     * 解锁库存
+     *
+     * @param to
+     */
+    void unLockStock(StockLockedTo to);
 }
 

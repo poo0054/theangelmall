@@ -72,11 +72,11 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
     }
 
     /**
-     * TODO 剩余失败处理
+     * TODO 剩余失败处理  使用seata的at模式
      *
      * @param spuSaveVo
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void saveSpuInfo(SpuSaveVo spuSaveVo) {
         //1 保存spu基本信息  pms_spu_info

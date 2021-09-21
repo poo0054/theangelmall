@@ -60,7 +60,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 
 @Slf4j
 @Service("orderService")
-@RabbitListener(queues = "hello-query")
+//@RabbitListener(queues = "hello-query")
 public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> implements OrderService {
     @Autowired
     MemberFeignService memberService;
@@ -78,13 +78,28 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     OrderItemService orderItemService;
 
     /**
+     * 根据订单id，查询订单
+     *
+     * @param orderSn
+     * @return
+     */
+    @Override
+    public OrderEntity getOrderStockByOrderSn(String orderSn) {
+        return this.getOne(new QueryWrapper<OrderEntity>().eq("order_sn", orderSn));
+    }
+
+    /**
      * 下单
      * 使用分布式事务： 最大原因 -》网络问题
+     * 使用seata的at模式不适合这种大并发  at类似于pc2
+     * tcc：最终一致性，可能某个节点在一段时间不一致，只要最后一致 不推荐
+     * 柔性事务： 最大努力通知，如果失败了，一直给自己编写的失败回滚方法发送通知，到达指定的通知量或者自己写的方法回调了，通知我接收到了就不发送了  例如支付宝的充值，一直发送充值成功，等你回调后，就不发送   使用mq
+     * 柔性事务：可靠消息加最终一致性。。。业务向消息服务发送通知，不做任何处理，等待mq来做处理，反应快。  类似数据库中加一个处理中     使用mq  推荐
      *
      * @param vo
      * @Transactional:是一个本地事务
      */
-    @GlobalTransactional
+//    @GlobalTransactional
     @Override
     @Transactional(rollbackFor = Exception.class)
     public SubmitResponseVo submitOrder(OrderSubmitVo vo) {
@@ -135,13 +150,17 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         }).collect(Collectors.toList());
         wareSkuLockTo.setLocks(collect);
         //远程锁库存
+        /**
+         * TODO 为了保证高并发，库存自己回滚   给mq发送消息，让mq去把刚刚锁定的库存解锁
+         * 也可以让库存自动解锁，
+         */
         R r = wareFeignService.OrderLock(wareSkuLockTo);
         if (0 != r.getCode()) {
             //锁定失败
             responseVo.setCode(3);
             return responseVo;
         }
-//        int i = 0 / 0;
+        int i = 0 / 0;
         responseVo.setOrderEntity(orderCreateTo.getOrder());
         responseVo.setCode(0);
         return responseVo;
@@ -416,6 +435,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         return orderConfirmVo;
     }
 
+
     /**
      * @param message
      * @param mqMessageEntity
@@ -431,21 +451,16 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
      * 在类上使用RabbitListener监听多个队列
      * RabbitHandler方法重载，接收不同的对象（实体类）  ，每个类上标注注解  重载，获取不同的对象
      * <p>
-     * <p>
-     * <p>
-     * <p>
      * 以后使用：
      * RabbitListener监听不同的队列
      * RabbitHandler重载区分不同的方法
-     * <p>
-     * <p>
      * <p>
      * 场景二：
      * Queue:很多人监听，只能有一个人接收到消息，接收到就删除
      * 以上是自动确认
      * 问题：收到很多消息，都自动回复，只有一个消息处理成功。所有消息都会确认（消息丢失）
      * 手动确认：ack
-     * 开启listener.simple.acknowledge-mode=manual  手动确认
+     * 开启yml配置中开启listener.simple.acknowledge-mode=manual  手动确认
      */
     @RabbitHandler
     public void RabbitListener(Message message, MqMessageEntity mqMessageEntity, Channel channel) {

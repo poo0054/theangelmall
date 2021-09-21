@@ -1,17 +1,19 @@
 package com.theangel.themall.order.web;
 
+import com.theangel.common.utils.fileutils.UUIDUtils;
+import com.theangel.themall.order.entity.OrderEntity;
 import com.theangel.themall.order.service.OrderService;
 import com.theangel.themall.order.vo.OrderConfirmVo;
 import com.theangel.themall.order.vo.OrderSubmitVo;
 import com.theangel.themall.order.vo.SubmitResponseVo;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -23,6 +25,19 @@ import java.util.concurrent.ExecutionException;
  */
 @Controller
 public class WebController {
+    @Autowired
+    RabbitTemplate rabbitTemplate;
+
+    @ResponseBody
+    @GetMapping("test/creatOrder")
+    public String createOrderTest() {
+        OrderEntity orderEntity = new OrderEntity();
+        orderEntity.setReceiverName(UUIDUtils.getUUID());
+        orderEntity.setModifyTime(new Date());
+        rabbitTemplate.convertAndSend("order-event-exchange", "order.create.order", orderEntity);
+        return "ok";
+    }
+
 
     @Autowired
     OrderService orderService;

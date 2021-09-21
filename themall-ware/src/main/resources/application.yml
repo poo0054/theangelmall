@@ -27,6 +27,22 @@ spring:
 
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
-
+  rabbitmq:
+    host: 192.168.56.10
+    username: guest
+    password: guest
+    virtual-host: /themall
+    port: 5672
+    #开启发送端确认，到达rabbitmq
+    publisher-confirms: true
+    #发送端确认，有没有路由到指定的key  集群是一个副本模式，所有确认才能够确认
+    publisher-returns: true
+    #    只要抵达队列，以异步发送优先回调我们这个returns
+    template:
+      mandatory: true
+    listener:
+      simple:
+        #        auto:自动回复    manual:手动确认
+        acknowledge-mode: manual
 
 #spring.cloud.alibaba.seata.tx-service-group修改后缀，但是必须和file.conf中的配置保持一致

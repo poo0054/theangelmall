@@ -24,11 +24,12 @@ spring:
     password: hjj0127..
     url: jdbc:mysql://theangel.vip:3306/themall_oms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.cj.jdbc.Driver
+
   rabbitmq:
     host: 192.168.56.10
     username: guest
     password: guest
-    virtual-host: /
+    virtual-host: /themall
     port: 5672
     #开启发送端确认，到达rabbitmq
     publisher-confirms: true

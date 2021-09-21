@@ -34,5 +34,13 @@ public interface OrderService extends IService<OrderEntity> {
      * @return
      */
     OrderConfirmVo confirmOrder() throws ExecutionException, InterruptedException;
+
+    /**
+     * 根据订单id，查询订单
+     *
+     * @param orderSn
+     * @return
+     */
+    OrderEntity getOrderStockByOrderSn(String orderSn);
 }
 

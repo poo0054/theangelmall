@@ -48,6 +48,14 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
  * 7.给分布式事务，入口 标注全局事务，每一个小事务，使用@Transactional就可以了
  * 注意点
  * vgroupMapping.themall-order-seata-service-group = "default"
+ * <p>
+ * <p>
+ * <p>
+ * 使用分布式事务： 最大原因 -》网络问题
+ * 使用seata的at模式不适合这种大并发  at类似于pc2
+ * tcc：最终一致性，可能某个节点在一段时间不一致，只要最后一致 不推荐
+ * 柔性事务： 最大努力通知，如果失败了，一直给自己编写的失败回滚方法发送通知，到达指定的通知量或者自己写的方法回调了，通知我接收到了就不发送了  例如支付宝的充值，一直发送充值成功，等你回调后，就不发送   使用mq
+ * 柔性事务：可靠消息加最终一致性。。。业务向消息服务发送通知，不做任何处理，等待mq来做处理，反应快。  类似数据库中加一个处理中     使用mq  推荐
  */
 @EnableAspectJAutoProxy(exposeProxy = true)
 @SpringBootApplication

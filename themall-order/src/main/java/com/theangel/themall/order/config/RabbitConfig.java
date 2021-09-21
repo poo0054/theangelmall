@@ -1,7 +1,10 @@
 package com.theangel.themall.order.config;
 
-import org.springframework.amqp.core.Message;
+import com.rabbitmq.client.Channel;
+import com.theangel.themall.order.entity.OrderEntity;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
@@ -11,7 +14,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
-import javax.xml.ws.soap.Addressing;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * RabbitListener  监听消息必须加上EnableRabbit注解
@@ -57,7 +62,6 @@ public class RabbitConfig {
         };
         rabbitTemplate.setConfirmCallback(confirmCallback);
 
-
         rabbitTemplate.setReturnCallback(new RabbitTemplate.ReturnCallback() {
             /**
              * 消息抵达的确认回调
@@ -75,5 +79,72 @@ public class RabbitConfig {
         });
     }
 
+    /**
+     * 创建死信队列
+     *
+     * @return
+     */
+    @Bean
+    public Queue orderDelayQueue() {
+        //String name, boolean durable, boolean exclusive, boolean autoDelete,
+        //			@Nullable Map<String, Object> arguments
+        Map<String, Object> map = new HashMap<>();
+        //死信交换机
+        map.put("x-dead-letter-exchange", "order-event-exchange");
+        //死信路由
+        map.put("x-dead-letter-routing-key", "order.release.order");
+        map.put("x-message-ttl", 60000);
+        return new Queue("order.delay.queue", true, false, false, map);
+    }
+
+    /**
+     * 接收过期数据
+     *
+     * @return
+     */
+    @Bean
+    public Queue orderReleaseOrderQueue() {
+        return new Queue("order.release.order.queue", true, false, false);
+    }
+
+    /**
+     * 每个微服务对应一个交换机
+     *
+     * @return
+     */
+    @Bean
+    public Exchange orderEventExchange() {
+        //String name, boolean durable, boolean autoDelete, Map<String, Object> arguments
+        return new TopicExchange("order-event-exchange", true, false);
+    }
+
+    /**
+     * 绑定
+     *
+     * @return
+     */
+    @Bean
+    public Binding orderCreateOrder() {
+        //String destination, DestinationType destinationType, String exchange, String routingKey,
+        //			@Nullable Map<String, Object> arguments
+        return new Binding("order.delay.queue", Binding.DestinationType.QUEUE, "order-event-exchange", "order.create.order", null);
+    }
+
+    /**
+     * 绑定死信队列
+     *
+     * @return
+     */
+    @Bean
+    public Binding orderReleaseOrder() {
+        return new Binding("order.release.order.queue", Binding.DestinationType.QUEUE, "order-event-exchange", "order.release.order", null);
+    }
+
+
+    @RabbitListener(queues = "order.release.order.queue")
+    public void listener(OrderEntity orderEntity, Channel channel, Message message) throws IOException {
+        System.out.println("收到过期的订单，准备关闭订单===========" + orderEntity.toString());
+        channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+    }
 
 }
