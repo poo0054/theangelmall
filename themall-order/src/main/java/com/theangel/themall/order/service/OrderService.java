@@ -3,9 +3,7 @@ package com.theangel.themall.order.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.theangel.common.utils.PageUtils;
 import com.theangel.themall.order.entity.OrderEntity;
-import com.theangel.themall.order.vo.OrderConfirmVo;
-import com.theangel.themall.order.vo.OrderSubmitVo;
-import com.theangel.themall.order.vo.SubmitResponseVo;
+import com.theangel.themall.order.vo.*;
 
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -42,5 +40,36 @@ public interface OrderService extends IService<OrderEntity> {
      * @return
      */
     OrderEntity getOrderStockByOrderSn(String orderSn);
+
+    /**
+     * 关闭订单
+     *
+     * @param orderEntity
+     */
+    void orderClose(OrderEntity orderEntity);
+
+    /**
+     * 获取支付信息
+     *
+     * @param orderSn
+     * @return
+     */
+    PayVo payOrder(String orderSn);
+
+
+    /**
+     * 查询用户订单列表
+     *
+     * @param params
+     * @return
+     */
+    PageUtils listWithItem(Map<String, Object> params);
+
+    /**
+     * 支付宝回调
+     *
+     * @param payAsyncVo
+     */
+    String handleAliPay(PayAsyncVo payAsyncVo);
 }
 

@@ -59,7 +59,6 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
  */
 @EnableAspectJAutoProxy(exposeProxy = true)
 @SpringBootApplication
-@MapperScan("com/theangel/themall/order/dao")
 @EnableDiscoveryClient
 public class ThemallOrderApplication {
 

@@ -70,7 +70,7 @@ public class RabbitConfig {
         map.put("x-dead-letter-exchange", "stock-event-exchange");
         //死信路由
         map.put("x-dead-letter-routing-key", "stock.release");
-        map.put("x-message-ttl", 60000);
+        map.put("x-message-ttl", 120000);
         return new Queue("stock.delay.queue", true, false, false, map);
     }
 

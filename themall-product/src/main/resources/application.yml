@@ -62,5 +62,5 @@ feign:
 
 logging:
   level:
-    com.theangel.themall: error
+    com.theangel.themall: info
 

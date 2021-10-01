@@ -1,15 +1,10 @@
-package com.theangel.themall.order.entity;
-
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-
-import java.math.BigDecimal;
-import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
+package com.theangel.common.to.mq;
 
 import lombok.Data;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * 订单
@@ -19,13 +14,11 @@ import lombok.Data;
  * @date 2021-06-10 19:36:04
  */
 @Data
-@TableName("oms_order")
-public class OrderEntity implements Serializable {
+public class OrderTo implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
      * id
      */
-    @TableId
     private Long id;
     /**
      * member_id
@@ -192,9 +185,4 @@ public class OrderEntity implements Serializable {
      */
     private Date modifyTime;
 
-    /**
-     * 很多的订单项
-     */
-    @TableField(exist = false)
-    private List<OrderItemEntity> itemEntities;
 }

@@ -13,6 +13,9 @@ import lombok.Data;
  */
 @Data
 public class StockDetailTo {
+    /**
+     * 工作单详情
+     */
     private Long id;
     /**
      * sku_id

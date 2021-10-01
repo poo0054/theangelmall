@@ -7,7 +7,7 @@ import java.util.Map;
 import com.theangel.common.exception.BizCodeEnum;
 import com.theangel.common.exception.RRException;
 import com.theangel.themall.member.exception.MemberExection;
-import com.theangel.themall.member.openfeign.CouponOpenFeignService;
+import com.theangel.themall.member.openfeign.CouponFeignService;
 import com.theangel.themall.member.vo.LoginUserVo;
 import com.theangel.themall.member.vo.MemberRegistVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class MemberController {
     private MemberService memberService;
 
     @Autowired
-    private CouponOpenFeignService couponOpenFeignService;
+    private CouponFeignService couponOpenFeignService;
 
     /**
      * 登录会员

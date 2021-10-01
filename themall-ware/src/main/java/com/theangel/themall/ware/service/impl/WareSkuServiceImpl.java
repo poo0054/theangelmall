@@ -1,8 +1,10 @@
 package com.theangel.themall.ware.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.TypeReference;
 import com.rabbitmq.client.Channel;
 import com.theangel.common.exception.NoStockException;
+import com.theangel.common.to.mq.OrderTo;
 import com.theangel.common.to.mq.StockDetailTo;
 import com.theangel.common.to.mq.StockLockedTo;
 import com.theangel.common.utils.R;
@@ -58,8 +60,8 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
     @Autowired
     OrderFeignService orderFeignService;
 
-
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void unLockStock(StockLockedTo to) {
         //库存工作单的id    wms_ware_order_task的id
         Long id = to.getId();
@@ -82,7 +84,10 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
                 });
                 //订单不存在或者订单已经被取消，都应该取消库存
                 if (ObjectUtils.isEmpty(orderVo) || 4 == orderVo.getStatus()) {
-                    unLockWare(detailTo.getSkuId(), detailTo.getWareId(), detailTo.getSkuNum(), detailTo.getId());
+                    //必须为已锁定才能解锁
+                    if (1 == byId.getLockStatus()) {
+                        unLockWare(detailTo.getSkuId(), detailTo.getWareId(), detailTo.getSkuNum(), detailTo.getId());
+                    }
                 }
             } else {
                 throw new RuntimeException("远程服务调用失败");
@@ -100,7 +105,14 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
      * @param taskDetailId 工作单id
      */
     public void unLockWare(Long skuId, Long wareId, Integer num, Long taskDetailId) {
+        System.out.println("解锁库存：" + skuId);
         this.baseMapper.unLockStock(skuId, wareId, num);
+        //更新工作单
+        WareOrderTaskDetailEntity wareOrderTaskDetailEntity = new WareOrderTaskDetailEntity();
+        wareOrderTaskDetailEntity.setId(taskDetailId);
+        wareOrderTaskDetailEntity.setLockStatus(2);
+        System.out.println("当前工作单详情：" + taskDetailId);
+        wareOrderTaskDetailService.updateById(wareOrderTaskDetailEntity);
     }
 
 
@@ -266,6 +278,28 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
 
     }
 
+
+    /**
+     * 解锁订单释放的库存
+     *
+     * @param to
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void unLockStock(OrderTo to) {
+        WareOrderTaskEntity order_sn = wareOrderTaskService.getOne(new QueryWrapper<WareOrderTaskEntity>().eq("order_sn", to.getOrderSn()));
+        //库存工作单的id
+        Long id = order_sn.getId();
+        List<WareOrderTaskDetailEntity> list = wareOrderTaskDetailService.list(new QueryWrapper<WareOrderTaskDetailEntity>().eq("task_id", id).eq("lock_status", 1));
+        if (!ObjectUtils.isEmpty(list)) {
+            for (WareOrderTaskDetailEntity entity : list) {
+//                unLockWare(Long skuId, Long wareId, Integer num, Long taskDetailId)
+                unLockWare(entity.getSkuId(), entity.getWareId(), entity.getSkuNum(), entity.getId());
+            }
+        }
+
+
+    }
 
     @Data
     class SkuWareHasStock {

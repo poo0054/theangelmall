@@ -5,8 +5,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @FeignClient("themall-coupon")
-public interface CouponOpenFeignService {
+public interface CouponFeignService {
 
     @PostMapping("/coupon/coupon/member/list")
-    public R memberList();
+    R memberList();
 }

@@ -1,4 +1,4 @@
-package com.theangel.themall.order.interceptor;
+package com.theangel.themall.member.interceptor;
 
 import com.theangel.common.constant.AuthServerConstant;
 import com.theangel.common.to.MemberVo;
@@ -28,12 +28,13 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String requestURI = request.getRequestURI();
-        //order/order/status/{orderSn}
-        AntPathMatcher antPathMatcher = new AntPathMatcher();
+        //member/member/login
+        /**
+         * member/memberreceiveaddress/info/{id}
+         */
         //这个是远程调用之间的接口，可以不用登录
-        boolean match = antPathMatcher.match("/order/order/status/**", requestURI);
-        boolean match1 = antPathMatcher.match("/pay/notify/**", requestURI);
-        if (match | match1) {
+        boolean match = new AntPathMatcher().match("/member/**", requestURI);
+        if (match) {
             System.out.println("地址" + requestURI + "不用登录！！！！！！！！！！");
             return true;
         }

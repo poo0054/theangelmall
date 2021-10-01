@@ -98,5 +98,10 @@ spring:
           predicates:
             - Host=theangel.com
 
+        # 用户订单
+        - id: member
+          uri: lb://themall-member
+          predicates:
+            - Host=member.theangel.com
 
 

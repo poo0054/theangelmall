@@ -58,6 +58,8 @@ public class LoginController {
             });
             //登录成功，redis存入返回的数据
             httpResponse.setAttribute(AuthServerConstant.LOGIN_USER, data);
+            httpResponse.getAttributeNames();
+            System.out.println(httpResponse.getId());
             return "redirect:http://theangel.com";
         } else {
             Map<String, String> map = new HashMap();

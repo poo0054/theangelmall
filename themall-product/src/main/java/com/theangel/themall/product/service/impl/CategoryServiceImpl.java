@@ -99,11 +99,11 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
      * CacheEvict->allEntries：为true，删除该分区所有缓存  ，批量删除缓存
      *
      * @param category
+     * @Caching(evict = {
+     * @CacheEvict(value = "category", key = "'getLevel1Categorys'"),
+     * @CacheEvict(value = "category", key = "'getCatalogJson'")
+     * })
      */
-//    @Caching(evict = {
-//            @CacheEvict(value = "category", key = "'getLevel1Categorys'"),
-//            @CacheEvict(value = "category", key = "'getCatalogJson'")
-//    })
     @CacheEvict(value = "category", allEntries = true)
     @Override
     @Transactional

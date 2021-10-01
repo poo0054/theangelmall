@@ -5,6 +5,8 @@ spring:
   redis:
     host: 192.168.56.10
     port: 6379
+
+
   #配置redis缓存管理器
   cache:
     type: redis
@@ -24,3 +26,5 @@ spring:
     password: hjj0127..
     url: jdbc:mysql://theangel.vip:3306/themall_ums?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.cj.jdbc.Driver
+  thymeleaf:
+    cache: false

@@ -1,17 +1,16 @@
 package com.theangel.themall.order.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.rabbitmq.client.Channel;
 import com.theangel.common.constant.OrderConstant;
-import com.theangel.common.exception.NoStockException;
 import com.theangel.common.to.MemberVo;
 import com.theangel.common.to.SkuHasStockVo;
+import com.theangel.common.to.mq.OrderTo;
 import com.theangel.common.utils.R;
 import com.theangel.common.utils.fileutils.UUIDUtils;
-import com.theangel.themall.order.entity.MqMessageEntity;
-import com.theangel.themall.order.entity.OrderItemEntity;
-import com.theangel.themall.order.entity.OrderReturnApplyEntity;
+import com.theangel.themall.order.entity.*;
 import com.theangel.themall.order.enume.OrderStatusEnum;
 import com.theangel.themall.order.interceptor.LoginInterceptor;
 import com.theangel.themall.order.openfeign.CartFeignService;
@@ -19,13 +18,15 @@ import com.theangel.themall.order.openfeign.MemberFeignService;
 import com.theangel.themall.order.openfeign.ProductFeignService;
 import com.theangel.themall.order.openfeign.WareFeignService;
 import com.theangel.themall.order.service.OrderItemService;
+import com.theangel.themall.order.service.PaymentInfoService;
 import com.theangel.themall.order.to.*;
 import com.theangel.themall.order.vo.*;
-import io.seata.spring.annotation.GlobalTransactional;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
@@ -33,6 +34,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -50,7 +52,6 @@ import com.theangel.common.utils.PageUtils;
 import com.theangel.common.utils.Query;
 
 import com.theangel.themall.order.dao.OrderDao;
-import com.theangel.themall.order.entity.OrderEntity;
 import com.theangel.themall.order.service.OrderService;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
@@ -76,6 +77,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     ProductFeignService productFeignService;
     @Autowired
     OrderItemService orderItemService;
+    @Autowired
+    RabbitTemplate rabbitTemplate;
+    @Autowired
+    PaymentInfoService paymentInfoService;
 
     /**
      * 根据订单id，查询订单
@@ -87,6 +92,77 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     public OrderEntity getOrderStockByOrderSn(String orderSn) {
         return this.getOne(new QueryWrapper<OrderEntity>().eq("order_sn", orderSn));
     }
+
+    /**
+     * 关闭订单
+     *
+     * @param orderEntity
+     */
+    @Override
+    public void orderClose(OrderEntity orderEntity) {
+        Long id = orderEntity.getId();
+        //查询当前订单状态
+        OrderEntity byId = this.getById(id);
+        if (OrderStatusEnum.CREATE_NEW.getCode().equals(byId.getStatus())) {
+            OrderEntity orderEntity1 = new OrderEntity();
+            orderEntity1.setId(id);
+            orderEntity1.setStatus(OrderStatusEnum.CANCLED.getCode());
+            this.updateById(orderEntity1);
+            OrderTo orderTo = new OrderTo();
+            BeanUtils.copyProperties(orderEntity, orderTo);
+            //订单解锁成功，发送给库存
+            try {
+                //保证消息一定发送,每一个消息，都做好日志记录
+                rabbitTemplate.convertAndSend("order-event-exchange", "order.release.other", orderTo);
+            } catch (AmqpException e) {
+                e.printStackTrace();
+                //重试，定时扫描mq中失败的日志，重新发送
+            }
+        }
+    }
+
+    /**
+     * 获取支付信息
+     *
+     * @param orderSn
+     * @return
+     */
+    @Override
+    public PayVo payOrder(String orderSn) {
+        OrderEntity orderStockByOrderSn = this.getOrderStockByOrderSn(orderSn);
+        BigDecimal bigDecimal = orderStockByOrderSn.getPayAmount().setScale(2, RoundingMode.UP);
+        PayVo payVo = new PayVo();
+        payVo.setBody("theangel支付信息");
+        payVo.setOut_trade_no(orderSn);
+        payVo.setSubject("备注");
+        payVo.setTotal_amount(bigDecimal.toString());
+        return payVo;
+    }
+
+    /**
+     * 查询当前登录的所有订单
+     *
+     * @param params
+     * @return
+     */
+    @Override
+    public PageUtils listWithItem(Map<String, Object> params) {
+        MemberVo memberVo = LoginInterceptor.threadLocal.get();
+
+        IPage<OrderEntity> page = this.page(
+                new Query<OrderEntity>().getPage(params),
+                new QueryWrapper<OrderEntity>().eq("member_id", memberVo.getId()).orderByDesc("id"));
+
+        List<OrderEntity> collect = page.getRecords().stream().map(item -> {
+            List<OrderItemEntity> order_sn = orderItemService.list(new QueryWrapper<OrderItemEntity>().eq("order_sn", item.getOrderSn()));
+            item.setItemEntities(order_sn);
+            return item;
+        }).collect(Collectors.toList());
+
+        page.setRecords(collect);
+        return new PageUtils(page);
+    }
+
 
     /**
      * 下单
@@ -151,7 +227,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         wareSkuLockTo.setLocks(collect);
         //远程锁库存
         /**
-         * TODO 为了保证高并发，库存自己回滚   给mq发送消息，让mq去把刚刚锁定的库存解锁
+         *  为了保证高并发，库存自己回滚   给mq发送消息，让mq去把刚刚锁定的库存解锁
          * 也可以让库存自动解锁，
          */
         R r = wareFeignService.OrderLock(wareSkuLockTo);
@@ -160,9 +236,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
             responseVo.setCode(3);
             return responseVo;
         }
-        int i = 0 / 0;
+
         responseVo.setOrderEntity(orderCreateTo.getOrder());
         responseVo.setCode(0);
+        //订单创建成功，发送消息给mq
+        rabbitTemplate.convertAndSend("order-event-exchange", "order.create.order", orderCreateTo.getOrder());
         return responseVo;
     }
 
@@ -482,6 +560,36 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     public void RabbitListener1(OrderReturnApplyEntity mqMessageEntity, Channel channel) {
         //获取消息体
         log.info("内容==========》" + mqMessageEntity);
+    }
+
+    /**
+     * 支付宝回调
+     *
+     * @param payAsyncVo
+     */
+    @Override
+    @Transactional
+    public String handleAliPay(PayAsyncVo payAsyncVo) {
+        //保存交易流水 oms_payment_info
+        PaymentInfoEntity paymentInfoEntity = buildPayInfo(payAsyncVo);
+        paymentInfoService.save(paymentInfoEntity);
+
+
+        return "success";
+    }
+
+    private PaymentInfoEntity buildPayInfo(PayAsyncVo payAsyncVo) {
+        PaymentInfoEntity paymentInfoEntity = new PaymentInfoEntity();
+        paymentInfoEntity.setOrderSn(payAsyncVo.getOut_trade_no());
+        paymentInfoEntity.setTotalAmount(new BigDecimal(payAsyncVo.getTotal_amount()));
+        paymentInfoEntity.setAlipayTradeNo(payAsyncVo.getTrade_no());
+
+        paymentInfoEntity.setPaymentStatus(OrderStatusEnum.PAYED.getMsg());
+        paymentInfoEntity.setCreateTime(new Date());
+        paymentInfoEntity.setConfirmTime(new Date());
+        paymentInfoEntity.setCallbackTime(new Date());
+        paymentInfoEntity.setCallbackContent(JSON.toJSONString(payAsyncVo));
+        return paymentInfoEntity;
     }
 
 

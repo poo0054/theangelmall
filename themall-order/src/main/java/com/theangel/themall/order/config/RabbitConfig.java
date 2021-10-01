@@ -34,14 +34,18 @@ public class RabbitConfig {
     @Autowired
     RabbitTemplate rabbitTemplate;
 
+    /**
+     * 系列化mq
+     *
+     * @return
+     */
     @Bean
     public MessageConverter messageConverter() {
         return new Jackson2JsonMessageConverter();
     }
 
-
     /**
-     * 定制rabbtimq
+     * 定制rabbitmq
      * 发送端确认
      *
      * @PostConstruct 在对象RabbitConfig创建完成以后，执行这个方法
@@ -80,6 +84,7 @@ public class RabbitConfig {
     }
 
     /**
+     * 队列
      * 创建死信队列
      *
      * @return
@@ -98,6 +103,7 @@ public class RabbitConfig {
     }
 
     /**
+     * 队列
      * 接收过期数据
      *
      * @return
@@ -108,6 +114,7 @@ public class RabbitConfig {
     }
 
     /**
+     * 交换机
      * 每个微服务对应一个交换机
      *
      * @return
@@ -131,7 +138,7 @@ public class RabbitConfig {
     }
 
     /**
-     * 绑定死信队列
+     * 绑定
      *
      * @return
      */
@@ -141,10 +148,14 @@ public class RabbitConfig {
     }
 
 
-    @RabbitListener(queues = "order.release.order.queue")
-    public void listener(OrderEntity orderEntity, Channel channel, Message message) throws IOException {
-        System.out.println("收到过期的订单，准备关闭订单===========" + orderEntity.toString());
-        channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+    /**
+     * 订单释放，绑定库存释放
+     *
+     * @return
+     */
+    @Bean
+    public Binding orderReleaseOtherBinding() {
+        return new Binding("stock.release.stock.queue", Binding.DestinationType.QUEUE, "order-event-exchange", "order.release.other.#", null);
     }
 
 }

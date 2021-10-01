@@ -45,7 +45,10 @@ public class CartInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         CartUserTo cartUserTo = new CartUserTo();
         HttpSession session = request.getSession();
+        System.out.println(session.getId());
+
         MemberVo attribute = (MemberVo) session.getAttribute(AuthServerConstant.LOGIN_USER);
+
         if (!ObjectUtils.isEmpty(attribute)) {
             cartUserTo.setUserId(attribute.getId());
         }
