@@ -33,8 +33,10 @@ public class OrderCloseListener {
     public void listener(OrderEntity orderEntity, Channel channel, Message message) throws IOException {
         try {
             log.info("收到过期的订单，准备关闭订单===========" + orderEntity.toString());
+            //TODO 订单过期，手动调用支付宝的关单功能
             orderService.orderClose(orderEntity);
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+
         } catch (Exception e) {
             e.printStackTrace();
             channel.basicReject(message.getMessageProperties().getDeliveryTag(), true);

@@ -39,6 +39,10 @@ public class AlipayTemplate {
 
     // 支付宝网关； https://openapi.alipaydev.com/gateway.do
     private String gatewayUrl = "https://openapi.alipaydev.com/gateway.do";
+    /**
+     * 订单超时时间
+     */
+    private String timeout_express = "15m";
 
     /**
      * 付款
@@ -69,6 +73,7 @@ public class AlipayTemplate {
         String body = vo.getBody();
         alipayRequest.setBizContent("{\"out_trade_no\":\"" + out_trade_no + "\","
                 + "\"total_amount\":\"" + total_amount + "\","
+                + "\"timeout_express\":\"" + timeout_express + "\","
                 + "\"subject\":\"" + subject + "\","
                 + "\"body\":\"" + body + "\","
                 + "\"product_code\":\"FAST_INSTANT_TRADE_PAY\"}");

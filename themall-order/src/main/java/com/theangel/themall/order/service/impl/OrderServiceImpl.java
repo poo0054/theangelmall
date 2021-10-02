@@ -2,6 +2,8 @@ package com.theangel.themall.order.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.alipay.api.AlipayApiException;
+import com.alipay.api.internal.util.AlipaySignature;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.rabbitmq.client.Channel;
 import com.theangel.common.constant.OrderConstant;
@@ -10,6 +12,7 @@ import com.theangel.common.to.SkuHasStockVo;
 import com.theangel.common.to.mq.OrderTo;
 import com.theangel.common.utils.R;
 import com.theangel.common.utils.fileutils.UUIDUtils;
+import com.theangel.themall.order.config.AlipayTemplate;
 import com.theangel.themall.order.entity.*;
 import com.theangel.themall.order.enume.OrderStatusEnum;
 import com.theangel.themall.order.interceptor.LoginInterceptor;
@@ -33,12 +36,11 @@ import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -81,6 +83,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     RabbitTemplate rabbitTemplate;
     @Autowired
     PaymentInfoService paymentInfoService;
+
 
     /**
      * 根据订单id，查询订单
@@ -569,27 +572,43 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
      */
     @Override
     @Transactional
-    public String handleAliPay(PayAsyncVo payAsyncVo) {
+    public String handleAliPay(PayAsyncVo payAsyncVo) throws AlipayApiException, UnsupportedEncodingException {
+        //查询的订单状态已经修改了就无须修改
         //保存交易流水 oms_payment_info
-        PaymentInfoEntity paymentInfoEntity = buildPayInfo(payAsyncVo);
-        paymentInfoService.save(paymentInfoEntity);
-
-
+        buildPayInfo(payAsyncVo);
+        //修改订单状态
+        String tradeStatus = payAsyncVo.getTrade_status();
+        if (StringUtils.isEmpty(tradeStatus)) {
+            String tradeNo = payAsyncVo.getOut_trade_no();
+            System.out.println("当前需要修改的订单为：" + tradeNo);
+            this.baseMapper.updateOrderStatus(tradeNo, OrderStatusEnum.PAYED.getCode());
+        } else {
+            if (tradeStatus.equals("TRADE_SUCCESS") || ("TRADE_SUCCESS").equals(tradeStatus)) {
+                String tradeNo = payAsyncVo.getTrade_no();
+                System.out.println("当前需要修改的订单为：" + tradeNo);
+                this.baseMapper.updateOrderStatus(tradeNo, OrderStatusEnum.PAYED.getCode());
+            }
+        }
         return "success";
     }
 
-    private PaymentInfoEntity buildPayInfo(PayAsyncVo payAsyncVo) {
-        PaymentInfoEntity paymentInfoEntity = new PaymentInfoEntity();
-        paymentInfoEntity.setOrderSn(payAsyncVo.getOut_trade_no());
-        paymentInfoEntity.setTotalAmount(new BigDecimal(payAsyncVo.getTotal_amount()));
-        paymentInfoEntity.setAlipayTradeNo(payAsyncVo.getTrade_no());
 
-        paymentInfoEntity.setPaymentStatus(OrderStatusEnum.PAYED.getMsg());
-        paymentInfoEntity.setCreateTime(new Date());
-        paymentInfoEntity.setConfirmTime(new Date());
-        paymentInfoEntity.setCallbackTime(new Date());
-        paymentInfoEntity.setCallbackContent(JSON.toJSONString(payAsyncVo));
-        return paymentInfoEntity;
+    public void buildPayInfo(PayAsyncVo payAsyncVo) {
+
+        PaymentInfoEntity order_sn = paymentInfoService.getOne(new QueryWrapper<PaymentInfoEntity>().eq("order_sn", payAsyncVo.getOut_trade_no()));
+        if (ObjectUtils.isEmpty(order_sn)) {
+            PaymentInfoEntity paymentInfoEntity = new PaymentInfoEntity();
+            paymentInfoEntity.setOrderSn(payAsyncVo.getOut_trade_no());
+            paymentInfoEntity.setTotalAmount(new BigDecimal(payAsyncVo.getTotal_amount()));
+            paymentInfoEntity.setAlipayTradeNo(payAsyncVo.getTrade_no());
+            paymentInfoEntity.setPaymentStatus(OrderStatusEnum.PAYED.getMsg());
+            paymentInfoEntity.setCreateTime(new Date());
+            paymentInfoEntity.setConfirmTime(new Date());
+            paymentInfoEntity.setCallbackTime(new Date());
+            paymentInfoEntity.setCallbackContent(JSON.toJSONString(payAsyncVo));
+            paymentInfoService.save(paymentInfoEntity);
+        }
+
     }
 
 

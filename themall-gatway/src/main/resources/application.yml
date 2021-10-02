@@ -42,6 +42,14 @@ spring:
           filters:
             - RewritePath=/api/?(?<the>.*), /$\{the}
 
+        #         外网穿透的地址
+        - id: themall
+          uri: lb://themall-product
+          predicates:
+            - Path=/themall/**
+          filters:
+            - RewritePath=/themall/?(?<the>.*), /$\{the}
+
         #         会员服务
         - id: themall-member
           uri: lb://themall-member
@@ -96,7 +104,7 @@ spring:
         - id: host
           uri: lb://themall-product
           predicates:
-            - Host=theangel.com
+            - Host=theangel.com,theangel.vip:8888,127.0.0.1:88,159.75.26.150:8888
 
         # 用户订单
         - id: member

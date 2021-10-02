@@ -31,5 +31,5 @@ public interface OrderFeignService {
      * @return
      */
     @PostMapping("/pay/notify")
-    String handleAliPay(@RequestBody PayAsyncVo payAsyncVo);
+    String handleAliPay(@RequestBody Map payAsyncVo);
 }

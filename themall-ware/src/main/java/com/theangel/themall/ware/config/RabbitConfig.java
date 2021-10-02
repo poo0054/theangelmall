@@ -68,9 +68,10 @@ public class RabbitConfig {
         Map<String, Object> map = new HashMap<>();
         //死信交换机
         map.put("x-dead-letter-exchange", "stock-event-exchange");
-        //死信路由
+        //死信路由  路由到超时未消费 到哪个队列  指定路由key
         map.put("x-dead-letter-routing-key", "stock.release");
-        map.put("x-message-ttl", 120000);
+        //检查库存  多久解锁库存的锁定
+        map.put("x-message-ttl", 60000 * 20);
         return new Queue("stock.delay.queue", true, false, false, map);
     }
 

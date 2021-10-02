@@ -98,7 +98,8 @@ public class RabbitConfig {
         map.put("x-dead-letter-exchange", "order-event-exchange");
         //死信路由
         map.put("x-dead-letter-routing-key", "order.release.order");
-        map.put("x-message-ttl", 60000);
+        //订单过多久关闭
+        map.put("x-message-ttl", 60000 * 10);
         return new Queue("order.delay.queue", true, false, false, map);
     }
 

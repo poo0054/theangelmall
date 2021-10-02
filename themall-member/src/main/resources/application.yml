@@ -6,7 +6,6 @@ spring:
     host: 192.168.56.10
     port: 6379
 
-
   #配置redis缓存管理器
   cache:
     type: redis
@@ -28,3 +27,5 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   thymeleaf:
     cache: false
+  mvc:
+    date-format: yyyy-MM-dd HH:mm:ss

@@ -45,6 +45,7 @@ spring:
 
   thymeleaf:
     cache: false
-
+  mvc:
+    date-format: yyyy-MM-dd HH:mm:ss
 
 #spring.cloud.alibaba.seata.tx-service-group修改后缀，但是必须和file.conf中的配置保持一致

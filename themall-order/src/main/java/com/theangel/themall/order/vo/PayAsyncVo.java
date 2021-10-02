@@ -3,6 +3,8 @@ package com.theangel.themall.order.vo;
 import lombok.Data;
 import lombok.ToString;
 
+import java.util.Date;
+
 @ToString
 @Data
 public class PayAsyncVo {
@@ -31,5 +33,5 @@ public class PayAsyncVo {
     private String buyer_pay_amount;//最终支付的金额
     private String sign_type;//签名类型
     private String seller_id;//商家的id
-
+    private String timestamp;
 }

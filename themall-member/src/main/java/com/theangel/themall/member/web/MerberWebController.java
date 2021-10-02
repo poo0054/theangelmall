@@ -52,17 +52,16 @@ public class MerberWebController {
             threadPoolExecutor.execute(() -> {
                 String s = JSON.toJSONString(map);
                 System.out.println("themall-member支付宝通知信息为:" + s);
-                PayAsyncVo payAsyncVo = JSON.parseObject(s, PayAsyncVo.class);
                 String s1 = null;
                 try {
-                    s1 = orderFeignService.handleAliPay(payAsyncVo);
+                    s1 = orderFeignService.handleAliPay(map);
                 } catch (Exception e) {
                     System.out.println("支付宝回调推送失败");
                     //推送失败，重新推送3次
                     int i = 0;
                     do {
                         try {
-                            s1 = orderFeignService.handleAliPay(payAsyncVo);
+                            s1 = orderFeignService.handleAliPay(map);
                         } catch (Exception ex) {
                             System.out.println("支付宝回调推送失败，重试3次，当前第" + i + "次！");
                             i++;
