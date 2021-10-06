@@ -572,12 +572,13 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
      */
     @Override
     @Transactional
-    public String handleAliPay(PayAsyncVo payAsyncVo) throws AlipayApiException, UnsupportedEncodingException {
+    public String handleAliPay(PayAsyncVo payAsyncVo) {
         //查询的订单状态已经修改了就无须修改
         //保存交易流水 oms_payment_info
         buildPayInfo(payAsyncVo);
         //修改订单状态
         String tradeStatus = payAsyncVo.getTrade_status();
+        //TODO 把锁定的库存 减去真实库存，该订单完成
         if (StringUtils.isEmpty(tradeStatus)) {
             String tradeNo = payAsyncVo.getOut_trade_no();
             System.out.println("当前需要修改的订单为：" + tradeNo);

@@ -1,4 +1,4 @@
-package com.theangel.themall.product.config;
+package com.theangel.themall.seckill.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +19,7 @@ import org.springframework.session.web.http.DefaultCookieSerializer;
 
 @Configuration
 public class SessionConfig {
-
+    
     @Bean
     public CookieSerializer cookieSerializer() {
         DefaultCookieSerializer cookieSerializer = new DefaultCookieSerializer();

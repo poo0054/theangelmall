@@ -1,15 +1,17 @@
 package com.theangel.themall.coupon.controller;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.theangel.themall.coupon.entity.SeckillSessionEntity;
 import com.theangel.themall.coupon.service.SeckillSessionService;
@@ -30,6 +32,16 @@ public class SeckillSessionController {
     @Autowired
     private SeckillSessionService seckillSessionService;
 
+
+    /**
+     * 获取3天的活动
+     */
+    @GetMapping("/lates3DaySession")
+    public R getLates3DaySession() {
+        List<SeckillSessionEntity> list = seckillSessionService.getLates3DaySession();
+        return R.ok().setData(list);
+    }
+
     /**
      * 列表
      */
@@ -48,7 +60,7 @@ public class SeckillSessionController {
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("coupon:seckillsession:info")
     public R info(@PathVariable("id") Long id) {
-            SeckillSessionEntity seckillSession = seckillSessionService.getById(id);
+        SeckillSessionEntity seckillSession = seckillSessionService.getById(id);
 
         return R.ok().put("seckillSession", seckillSession);
     }
@@ -59,7 +71,7 @@ public class SeckillSessionController {
     @RequestMapping("/save")
     //@RequiresPermissions("coupon:seckillsession:save")
     public R save(@RequestBody SeckillSessionEntity seckillSession) {
-            seckillSessionService.save(seckillSession);
+        seckillSessionService.save(seckillSession);
 
         return R.ok();
     }
@@ -70,7 +82,7 @@ public class SeckillSessionController {
     @RequestMapping("/update")
     //@RequiresPermissions("coupon:seckillsession:update")
     public R update(@RequestBody SeckillSessionEntity seckillSession) {
-            seckillSessionService.updateById(seckillSession);
+        seckillSessionService.updateById(seckillSession);
 
         return R.ok();
     }
@@ -81,7 +93,7 @@ public class SeckillSessionController {
     @RequestMapping("/delete")
     //@RequiresPermissions("coupon:seckillsession:delete")
     public R delete(@RequestBody Long[] ids) {
-            seckillSessionService.removeByIds(Arrays.asList(ids));
+        seckillSessionService.removeByIds(Arrays.asList(ids));
 
         return R.ok();
     }

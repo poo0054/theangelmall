@@ -9,9 +9,9 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @MapperScan("com/theangel/themall/coupon/dao")
 @EnableDiscoveryClient
 public class ThemallCouponApplication {
-    
+
     public static void main(String[] args) {
         SpringApplication.run(ThemallCouponApplication.class, args);
     }
-    
+
 }

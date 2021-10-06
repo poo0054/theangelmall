@@ -45,7 +45,6 @@ public class SkuInfoController {
     @RequestMapping("/list")
     //@RequiresPermissions("product:skuinfo:list")
     public R list(@RequestParam Map<String, Object> params) {
-//        PageUtils page = skuInfoService.queryPage(params);
         PageUtils page = skuInfoService.queryPageByCondition(params);
 
         return R.ok().put("page", page);
@@ -56,7 +55,6 @@ public class SkuInfoController {
      * 信息
      */
     @RequestMapping("/info/{skuId}")
-    //@RequiresPermissions("product:skuinfo:info")
     public R info(@PathVariable("skuId") Long skuId) {
         SkuInfoEntity skuInfo = skuInfoService.getById(skuId);
         return R.ok().put("skuInfo", skuInfo);
