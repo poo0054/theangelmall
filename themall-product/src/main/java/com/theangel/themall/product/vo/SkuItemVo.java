@@ -3,6 +3,7 @@ package com.theangel.themall.product.vo;
 import com.theangel.themall.product.entity.SkuImagesEntity;
 import com.theangel.themall.product.entity.SkuInfoEntity;
 import com.theangel.themall.product.entity.SpuInfoDescEntity;
+import com.theangel.themall.product.to.SeckillSkuRedisTo;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -22,4 +23,6 @@ public class SkuItemVo {
     private List<SpuItemAttrGroupVo> groupAttrs;
     //是否有货
     boolean hasStock = true;
+
+    private SeckillSkuRedisTo seckillSkuRedisTo;
 }

@@ -3,8 +3,10 @@ package com.theangel.themall.seckill.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.theangel.common.constant.SeckillConstant;
+import com.theangel.common.to.MemberVo;
 import com.theangel.common.utils.R;
 import com.theangel.common.utils.fileutils.UUIDUtils;
+import com.theangel.themall.seckill.interceptor.LoginInterceptor;
 import com.theangel.themall.seckill.openfeign.CouponFeignService;
 import com.theangel.themall.seckill.openfeign.ProductFeignService;
 import com.theangel.themall.seckill.service.SeckillService;
@@ -20,10 +22,13 @@ import org.springframework.data.redis.core.BoundHashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
-import java.util.Collections;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -148,6 +153,81 @@ public class SeckillServiceImpl implements SeckillService {
                 }
             }
         }
+        return null;
+    }
+
+    /**
+     * 获取skuid
+     *
+     * @param skuId
+     * @return
+     */
+    @Override
+    public SeckillSkuRedisTo getSkuSeckillInfo(Long skuId) {
+        BoundHashOperations<String, String, String> hashOps = redisTemplate.boundHashOps(SeckillConstant.SKU_CACHE_PREFIX);
+        Set<String> keys = hashOps.keys();
+        if (!ObjectUtils.isEmpty(keys)) {
+            String regx = "\\d_" + skuId;
+            for (String key : keys) {
+                //有
+                if (Pattern.matches(regx, key)) {
+                    String s = hashOps.get(key);
+                    SeckillSkuRedisTo seckillSkuRedisTo = JSON.parseObject(s, SeckillSkuRedisTo.class);
+                    //随机码
+                    long timeMillis = System.currentTimeMillis();
+                    if (timeMillis >= seckillSkuRedisTo.getStartTime() && timeMillis <= seckillSkuRedisTo.getEndTime()) {
+
+                    } else {
+                        seckillSkuRedisTo.setRandomCode(null);
+                    }
+                    return seckillSkuRedisTo;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 抢购-》登录判断-》验证合法（秒杀时间，随机码保证安全，幂等性） -》信号量
+     * -》成功（成功添加入mq，监控mq创建订单. 前端返回秒杀成功，正在准备订单。 收货地址确认 -》支付）  -》结束
+     *
+     * @param id
+     * @param code
+     * @param num
+     * @return
+     */
+    @Override
+    public String seckill(String id, String code, Integer num) {
+        MemberVo memberVo = LoginInterceptor.threadLocal.get();
+        //检验数据合法性  获取秒杀山沟详细信息
+        BoundHashOperations<String, String, String> hashOps = redisTemplate.boundHashOps(SeckillConstant.SKU_CACHE_PREFIX);
+        String s = hashOps.get(id);
+        if (!StringUtils.isEmpty(s)) {
+            SeckillSkuRedisTo to = JSON.parseObject(s, SeckillSkuRedisTo.class);
+            //1  校验时间
+            long timeMillis = System.currentTimeMillis();
+            Long endTime = to.getEndTime();
+            long ttl = endTime - timeMillis;
+            if (timeMillis >= to.getStartTime() && timeMillis <= endTime) {
+                //2 校验随机码和商品id
+                String randomCode = to.getRandomCode();
+                String skuId = to.getPromotionSessionId() + "_" + to.getSkuId();
+                if (code.equals(randomCode) && skuId.equals(id)) {
+                    //3 校验数量
+                    if (num <= to.getSeckillLimit().intValue()) {
+                        //检验是否已经购买过了  user_id  session_id  sku_id  组合成key
+                        String redisKey = memberVo.getId() + "_" + skuId;
+                        Boolean aBoolean = redisTemplate.opsForValue().setIfAbsent(redisKey, num.toString(), ttl, TimeUnit.MICROSECONDS);
+                        //setnx   说明没有买过
+                        if (aBoolean) {
+
+                        }
+                    }
+
+                }
+            }
+        }
+
         return null;
     }
 

@@ -1,8 +1,12 @@
 package com.theangel.themall.product.service.impl;
 
+import com.alibaba.fastjson.TypeReference;
+import com.theangel.common.utils.R;
 import com.theangel.themall.product.entity.SkuImagesEntity;
 import com.theangel.themall.product.entity.SpuInfoDescEntity;
+import com.theangel.themall.product.openfeign.SeckillFeignService;
 import com.theangel.themall.product.service.*;
+import com.theangel.themall.product.to.SeckillSkuRedisTo;
 import com.theangel.themall.product.vo.SkuItemAttrVo;
 import com.theangel.themall.product.vo.SkuItemVo;
 import com.theangel.themall.product.vo.SpuItemAttrGroupVo;
@@ -43,6 +47,8 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
     SkuSaleAttrValueService skuSaleAttrValueService;
     @Autowired
     ThreadPoolExecutor poolExecutor;
+    @Autowired
+    SeckillFeignService seckillFeignService;
 
 
     @Override
@@ -122,12 +128,13 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
     @Cacheable(value = {"product"}, key = "#root.methodName+':'+#root.args[0]")
     public SkuItemVo itemBySkuId(Long skyId) throws ExecutionException, InterruptedException {
         SkuItemVo skuItemVo = new SkuItemVo();
+
         //sku基本属性
         CompletableFuture<SkuInfoEntity> supplyAsync = CompletableFuture.supplyAsync(() -> {
             //1 sku基本信息
-            SkuInfoEntity byId = getById(skyId);
-            skuItemVo.setSkuInfo(byId);
-            return byId;
+            SkuInfoEntity skuInfoEntity = getById(skyId);
+            skuItemVo.setSkuInfo(skuInfoEntity);
+            return skuInfoEntity;
         }, poolExecutor);
 
         CompletableFuture<Void> attr = supplyAsync.thenAcceptAsync((res) -> {
@@ -153,7 +160,20 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
             List<SkuImagesEntity> skuImagesEntities = skuImagesService.list(new QueryWrapper<SkuImagesEntity>().eq("sku_id", skyId));
             skuItemVo.setSkuImages(skuImagesEntities);
         }, poolExecutor);
-        CompletableFuture.allOf(imge, group, spuInfo, attr).get();
+
+        CompletableFuture<Void> future = supplyAsync.thenRunAsync(() -> {
+            R r = seckillFeignService.getSkuSeckillInfo(skuItemVo.getSkuInfo().getSkuId());
+            if (0 == r.getCode()) {
+                SeckillSkuRedisTo data = r.getData(new TypeReference<SeckillSkuRedisTo>() {
+                });
+                //不为空才是有
+                if (!ObjectUtils.isEmpty(data)) {
+                    skuItemVo.setSeckillSkuRedisTo(data);
+                }
+            }
+        }, poolExecutor);
+
+        CompletableFuture.allOf(imge, group, spuInfo, attr, future).get();
         return skuItemVo;
     }
 

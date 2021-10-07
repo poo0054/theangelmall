@@ -522,8 +522,15 @@
                             <span>￥</span>
                             <span th:text="${#numbers.formatDecimal(skuItem.getSkuInfo().getPrice(),3,2)}">4499.00</span>
                         </li>
-                        <li>
-                            预约享资格
+                        <li style="color: red" th:if="${skuItem.seckillSkuRedisTo!=null}">
+                            <span th:if="${#dates.createNow().getTime() < skuItem.seckillSkuRedisTo.startTime}">
+                                 商品将在 [[${#dates.format(new java.util.Date(skuItem.seckillSkuRedisTo.startTime),'yyyy-MM-dd HH:mm:ss')}]] 开始
+                            </span>
+                            <span th:if="${#dates.createNow().getTime() >= skuItem.seckillSkuRedisTo.startTime  && #dates.createNow().getTime() <= skuItem.seckillSkuRedisTo.endTime}"
+                                  th:text="${'秒杀价'+#numbers.formatDecimal(skuItem.seckillSkuRedisTo.seckillPrice,1,2)}">
+                            </span>
+                            <span>
+                            </span>
                         </li>
                         <li>
                             <a href="/static/item/">
@@ -640,11 +647,21 @@
 
                         </div>
                     </div>
-                    <div class="box-btns-two">
+                    <div class="box-btns-two"
+                         th:if="${skuItem.seckillSkuRedisTo!=null &&  #dates.createNow().getTime() >= skuItem.seckillSkuRedisTo.startTime  && #dates.createNow().getTime() <= skuItem.seckillSkuRedisTo.endTime}">
+                        <a id="seckillTToCart"
+                           th:attr="skuId=${skuItem.skuInfo.skuId},sessionId=${skuItem.seckillSkuRedisTo.promotionSessionId},code=${skuItem.seckillSkuRedisTo.randomCode}">
+                            立即抢购
+                        </a>
+                    </div>
+
+                    <div class="box-btns-two"
+                         th:if="${skuItem.seckillSkuRedisTo==null  || #dates.createNow().getTime() < skuItem.seckillSkuRedisTo.startTime  ||  #dates.createNow().getTime() > skuItem.seckillSkuRedisTo.endTime}">
                         <a id="addToCart" th:attr="skuId=${skuItem.skuInfo.skuId}">
                             加入购物车
                         </a>
                     </div>
+
                     <div class="box-btns-three">
                         <img src="/static/item/img/e4ed3606843f664591ff1f68f7fda12d.png" alt=""/> 分享
                     </div>
@@ -1329,6 +1346,21 @@
         let skuId = $(this).attr("skuId")
         location.href = `http://cart.theangel.com/addtocart?skuId=${skuId}&num=${num}`
         return false
+    })
+
+    $("#seckillTToCart").click(function () {
+        var isLogin = [[${session.loginUser!=null}]]
+
+        if (isLogin) {
+            var id = $(this).attr("sessionid") + "_" + $(this).attr("skuid")
+            var code = $(this).attr("code");
+            var num = $("#numInput").val();
+            location.href = `http://seckill.theangel.com/seckill?id=${id}&code=${code}&num=${num}`
+        } else {
+            alert("请先登录！")
+        }
+
+        return false;
     })
 </script>
 

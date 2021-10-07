@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Map;
 
 //@FeignClient("third-party")
-public interface ThemallPartyFeign {
+public interface PartyFeignService {
 
 //    @PostMapping(value = "/third-party/ten/cosGoodsLogo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Map<String, String> cosTenGoodsLogo(MultipartFile files);

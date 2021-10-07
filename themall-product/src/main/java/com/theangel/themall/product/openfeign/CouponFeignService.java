@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient("themall-coupon")
-public interface ThemallCouponFeign {
+public interface CouponFeignService {
 
     /**
      * 将这个对象转换为JSON

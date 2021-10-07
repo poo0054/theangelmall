@@ -9,9 +9,9 @@ import com.theangel.common.to.es.AttrsEsModel;
 import com.theangel.common.to.es.SkuEsModel;
 import com.theangel.common.utils.R;
 import com.theangel.themall.product.entity.*;
-import com.theangel.themall.product.openfeign.TheamallWareFeign;
-import com.theangel.themall.product.openfeign.ThemallCouponFeign;
-import com.theangel.themall.product.openfeign.ThemallSearchFeign;
+import com.theangel.themall.product.openfeign.WareFeignService;
+import com.theangel.themall.product.openfeign.CouponFeignService;
+import com.theangel.themall.product.openfeign.SearchFeignService;
 import com.theangel.themall.product.service.*;
 import com.theangel.themall.product.vo.*;
 import org.springframework.beans.BeanUtils;
@@ -51,15 +51,15 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
     @Autowired
     SkuSaleAttrValueService skuSaleAttrValueService;
     @Autowired
-    ThemallCouponFeign themallCouponFeign;
+    CouponFeignService themallCouponFeign;
     @Autowired
     BrandService brandService;
     @Autowired
     CategoryService categoryService;
     @Autowired
-    TheamallWareFeign theamgelWareFeign;
+    WareFeignService theamgelWareFeign;
     @Autowired
-    ThemallSearchFeign themallSearchFeign;
+    SearchFeignService themallSearchFeign;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {

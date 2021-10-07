@@ -113,3 +113,10 @@ spring:
             - Host=member.theangel.com
 
 
+        # 秒杀
+        - id: themall-seckill
+          uri: lb://themall-seckill
+          predicates:
+            - Host=seckill.theangel.com
+
+
