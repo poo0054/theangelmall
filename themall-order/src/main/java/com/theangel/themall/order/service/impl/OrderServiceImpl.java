@@ -10,6 +10,7 @@ import com.theangel.common.constant.OrderConstant;
 import com.theangel.common.to.MemberVo;
 import com.theangel.common.to.SkuHasStockVo;
 import com.theangel.common.to.mq.OrderTo;
+import com.theangel.common.to.mq.SeckillOrderTo;
 import com.theangel.common.utils.R;
 import com.theangel.common.utils.fileutils.UUIDUtils;
 import com.theangel.themall.order.config.AlipayTemplate;
@@ -613,4 +614,26 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     }
 
 
+    @Override
+    public void createSeckillOrder(SeckillOrderTo seckillOrderTo) {
+        //报错订单
+        OrderEntity orderEntity = new OrderEntity();
+        orderEntity.setOrderSn(seckillOrderTo.getOrderSn());
+        orderEntity.setMemberId(seckillOrderTo.getMemberId());
+        orderEntity.setStatus(OrderStatusEnum.CREATE_NEW.getCode());
+        BigDecimal multiply = seckillOrderTo.getSeckillPrice().multiply(new BigDecimal(seckillOrderTo.getNum()));
+        orderEntity.setPayAmount(multiply);
+        save(orderEntity);
+
+        //报错订单项
+        OrderItemEntity orderItemEntity = new OrderItemEntity();
+        orderItemEntity.setOrderSn(seckillOrderTo.getOrderSn());
+        orderItemEntity.setRealAmount(multiply);
+        orderItemEntity.setSkuQuantity(seckillOrderTo.getNum());
+        orderItemEntity.setSkuId(seckillOrderTo.getSkuId());
+        //TODO 获取sku信息
+
+        orderItemService.save(orderItemEntity);
+
+    }
 }

@@ -1,12 +1,12 @@
 package com.theangel.themall.seckill.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.theangel.common.utils.R;
 import com.theangel.themall.seckill.service.SeckillService;
 import com.theangel.themall.seckill.to.SeckillSkuRedisTo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -32,6 +32,7 @@ public class SeckillController {
     @GetMapping("/currentSeckillSkus")
     public R getCurrentSeckillSkus() {
         List<SeckillSkuRedisTo> list = seckillService.getCurrentSeckillSkus();
+        System.out.println("当前时间可以参与秒杀的商品:" + JSON.toJSONString(list));
         return R.ok().setData(list);
     }
 
@@ -46,19 +47,5 @@ public class SeckillController {
         return R.ok().setData(seckillSkuRedisTo);
     }
 
-    /**
-     * 抢购-》登录判断-》验证合法（秒杀时间，随机码保证安全，幂等性） -》信号量
-     * -》成功（成功添加入mq，监控mq创建订单. 前端返回秒杀成功，正在准备订单。 收货地址确认 -》支付）  -》结束
-     *
-     * @param id
-     * @param code
-     * @param num
-     * @return
-     */
-    @GetMapping("/seckill")
-    public R seckill(@RequestParam("id") String id, @RequestParam("code") String code, @RequestParam("num") Integer num) {
-        String orderNo = seckillService.seckill(id, code, num);
-        return null;
-    }
 
 }

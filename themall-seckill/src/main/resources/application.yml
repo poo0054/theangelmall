@@ -1,4 +1,21 @@
 spring:
+  thymeleaf:
+    cache: false
+
+  rabbitmq:
+    port: 5672
+    host: 192.168.56.10
+    username: guest
+    password: guest
+    virtual-host: /themall
+    template:
+      mandatory: true
+    listener:
+      simple:
+        acknowledge-mode: manual
+    publisher-returns: true
+
+
   #session保存redis
   session:
     store-type: redis

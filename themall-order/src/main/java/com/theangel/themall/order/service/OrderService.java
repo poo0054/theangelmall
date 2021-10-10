@@ -2,6 +2,7 @@ package com.theangel.themall.order.service;
 
 import com.alipay.api.AlipayApiException;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.theangel.common.to.mq.SeckillOrderTo;
 import com.theangel.common.utils.PageUtils;
 import com.theangel.themall.order.entity.OrderEntity;
 import com.theangel.themall.order.vo.*;
@@ -73,5 +74,10 @@ public interface OrderService extends IService<OrderEntity> {
      * @param payAsyncVo
      */
     String handleAliPay(PayAsyncVo payAsyncVo) throws AlipayApiException, UnsupportedEncodingException;
+
+    /**
+     * @param seckillOrderTo
+     */
+    void createSeckillOrder(SeckillOrderTo seckillOrderTo);
 }
 

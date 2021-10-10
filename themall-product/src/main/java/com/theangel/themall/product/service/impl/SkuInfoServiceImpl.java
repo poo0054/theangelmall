@@ -1,5 +1,6 @@
 package com.theangel.themall.product.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.theangel.common.utils.R;
 import com.theangel.themall.product.entity.SkuImagesEntity;
@@ -163,6 +164,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
 
         CompletableFuture<Void> future = supplyAsync.thenRunAsync(() -> {
             R r = seckillFeignService.getSkuSeckillInfo(skuItemVo.getSkuInfo().getSkuId());
+            System.out.println(JSON.toJSONString(r));
             if (0 == r.getCode()) {
                 SeckillSkuRedisTo data = r.getData(new TypeReference<SeckillSkuRedisTo>() {
                 });

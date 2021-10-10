@@ -1,4 +1,4 @@
-package com.theangel.themall.order.listener;
+package com.theangel.themall.order.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alipay.api.AlipayApiException;
@@ -25,7 +25,7 @@ import java.util.*;
  * @Date: 2021/10/2 0:56
  */
 @RestController
-public class OrderPayListener {
+public class AliPayController {
     @Autowired
     OrderService orderService;
     @Autowired

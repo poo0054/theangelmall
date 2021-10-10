@@ -1,6 +1,5 @@
 package com.theangel.themall.product.web;
 
-import com.theangel.themall.product.entity.SkuInfoEntity;
 import com.theangel.themall.product.service.SkuInfoService;
 import com.theangel.themall.product.vo.SkuItemVo;
 import org.springframework.beans.factory.annotation.Autowired;

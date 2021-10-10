@@ -84,6 +84,18 @@ public class RabbitConfig {
     }
 
     /**
+     * 交换机
+     * 每个微服务对应一个交换机
+     *
+     * @return
+     */
+    @Bean
+    public Exchange orderEventExchange() {
+        //String name, boolean durable, boolean autoDelete, Map<String, Object> arguments
+        return new TopicExchange("order-event-exchange", true, false);
+    }
+
+    /**
      * 队列
      * 创建死信队列
      *
@@ -99,7 +111,7 @@ public class RabbitConfig {
         //死信路由
         map.put("x-dead-letter-routing-key", "order.release.order");
         //订单过多久关闭
-        map.put("x-message-ttl", 60000 * 10);
+        map.put("x-message-ttl", 600000);
         return new Queue("order.delay.queue", true, false, false, map);
     }
 
@@ -114,17 +126,6 @@ public class RabbitConfig {
         return new Queue("order.release.order.queue", true, false, false);
     }
 
-    /**
-     * 交换机
-     * 每个微服务对应一个交换机
-     *
-     * @return
-     */
-    @Bean
-    public Exchange orderEventExchange() {
-        //String name, boolean durable, boolean autoDelete, Map<String, Object> arguments
-        return new TopicExchange("order-event-exchange", true, false);
-    }
 
     /**
      * 绑定
@@ -159,4 +160,28 @@ public class RabbitConfig {
         return new Binding("stock.release.stock.queue", Binding.DestinationType.QUEUE, "order-event-exchange", "order.release.other.#", null);
     }
 
+
+    /**
+     * 普通队列，创建秒杀订单的队列
+     *
+     * @return
+     */
+    @Bean
+    public Queue seckillOrderQueue() {
+        return new Queue("order.seckill.order.queue", true, false, false);
+    }
+
+    /**
+     * 交换机绑定创建秒杀订单的队列
+     *
+     * @return
+     */
+    @Bean
+    public Binding seckillOrderQueueBinding() {
+        return new Binding("order.seckill.order.queue",
+                Binding.DestinationType.QUEUE,
+                "order-event-exchange",
+                "order.seckill.order",
+                null);
+    }
 }

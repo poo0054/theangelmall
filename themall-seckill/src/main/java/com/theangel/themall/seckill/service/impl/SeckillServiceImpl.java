@@ -2,8 +2,10 @@ package com.theangel.themall.seckill.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.theangel.common.constant.SeckillConstant;
 import com.theangel.common.to.MemberVo;
+import com.theangel.common.to.mq.SeckillOrderTo;
 import com.theangel.common.utils.R;
 import com.theangel.common.utils.fileutils.UUIDUtils;
 import com.theangel.themall.seckill.interceptor.LoginInterceptor;
@@ -16,6 +18,7 @@ import com.theangel.themall.seckill.to.SeckillSkuRelationTo;
 import com.theangel.themall.seckill.to.SkuInfoTo;
 import org.redisson.api.RSemaphore;
 import org.redisson.api.RedissonClient;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundHashOperations;
@@ -48,6 +51,8 @@ public class SeckillServiceImpl implements SeckillService {
     ProductFeignService productFeignService;
     @Autowired
     RedissonClient redissonClient;
+    @Autowired
+    RabbitTemplate rabbitTemplate;
 
 
     @Override
@@ -192,8 +197,8 @@ public class SeckillServiceImpl implements SeckillService {
      * -》成功（成功添加入mq，监控mq创建订单. 前端返回秒杀成功，正在准备订单。 收货地址确认 -》支付）  -》结束
      *
      * @param id
-     * @param code
-     * @param num
+     * @param code 随机码
+     * @param num  多少件
      * @return
      */
     @Override
@@ -215,19 +220,36 @@ public class SeckillServiceImpl implements SeckillService {
                 if (code.equals(randomCode) && skuId.equals(id)) {
                     //3 校验数量
                     if (num <= to.getSeckillLimit().intValue()) {
-                        //检验是否已经购买过了  user_id  session_id  sku_id  组合成key
+                        //检验是否已经购买过了 占位 格式： user_id  session_id  sku_id  组合成key
                         String redisKey = memberVo.getId() + "_" + skuId;
-                        Boolean aBoolean = redisTemplate.opsForValue().setIfAbsent(redisKey, num.toString(), ttl, TimeUnit.MICROSECONDS);
+                        Boolean aBoolean = redisTemplate.opsForValue().setIfAbsent(redisKey, num.toString(), ttl, TimeUnit.MILLISECONDS);
                         //setnx   说明没有买过
                         if (aBoolean) {
-
+                            //分布式信号量
+                            String s1 = SeckillConstant.SKU_STOCK_SEMAPHORE + code;
+                            RSemaphore semaphore = redissonClient.getSemaphore(s1);
+                            boolean b = semaphore.tryAcquire(num);
+                            //信号量减成功 才能购买
+                            if (b) {
+                                String timeId = IdWorker.getTimeId();
+                                SeckillOrderTo seckillOrderTo = new SeckillOrderTo();
+                                seckillOrderTo.setOrderSn(timeId);
+                                seckillOrderTo.setMemberId(memberVo.getId());
+                                seckillOrderTo.setNum(num);
+                                seckillOrderTo.setSkuId(to.getSkuId());
+                                seckillOrderTo.setPromotionSessionId(to.getPromotionSessionId());
+                                seckillOrderTo.setSeckillPrice(to.getSeckillPrice());
+                                rabbitTemplate.convertAndSend("order-event-exchange", "order.seckill.order", seckillOrderTo);
+                                return timeId;
+                            }
+                            System.out.println("信号量获取报错");
+                            //信号量报错 获取减信号量失败 都要把刚刚创建出来的锁删除
+                            redisTemplate.delete(redisKey);
                         }
                     }
-
                 }
             }
         }
-
         return null;
     }
 

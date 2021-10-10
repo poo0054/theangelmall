@@ -58,12 +58,24 @@ public class SeckillSessionServiceImpl extends ServiceImpl<SeckillSessionDao, Se
         return startTime;
     }
 
+
+    /**
+     * 获取当前天数的凌晨
+     *
+     * @return
+     */
     private String getStartTime() {
         LocalDate now = LocalDate.now();
         LocalDateTime start = LocalDateTime.of(now, LocalTime.MIN);
         return start.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
+
+    /**
+     * 获取三天后的11.59.59
+     *
+     * @return
+     */
     private String getEndTime() {
         LocalDate now = LocalDate.now();
         LocalDate localDate = now.plusDays(2);
