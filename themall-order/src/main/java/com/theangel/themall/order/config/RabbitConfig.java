@@ -34,15 +34,6 @@ public class RabbitConfig {
     @Autowired
     RabbitTemplate rabbitTemplate;
 
-    /**
-     * 系列化mq
-     *
-     * @return
-     */
-    @Bean
-    public MessageConverter messageConverter() {
-        return new Jackson2JsonMessageConverter();
-    }
 
     /**
      * 定制rabbitmq

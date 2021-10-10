@@ -29,11 +29,6 @@ public class RabbitConfig {
     @Autowired
     RabbitTemplate rabbitTemplate;
 
-    @Bean
-    public MessageConverter messageConverter() {
-        return new Jackson2JsonMessageConverter();
-    }
-
     /**
      * 每个微服务对应一个交换机
      *

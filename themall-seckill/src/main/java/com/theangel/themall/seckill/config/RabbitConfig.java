@@ -1,5 +1,6 @@
 package com.theangel.themall.seckill.config;
 
+import io.netty.util.internal.UnstableApi;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
@@ -25,19 +26,8 @@ import java.util.Map;
  */
 @Configuration
 public class RabbitConfig {
-
     @Autowired
     RabbitTemplate rabbitTemplate;
-
-    /**
-     * 系列化mq
-     *
-     * @return
-     */
-    @Bean
-    public MessageConverter messageConverter() {
-        return new Jackson2JsonMessageConverter();
-    }
 
     /**
      * 定制rabbitmq
@@ -77,6 +67,5 @@ public class RabbitConfig {
             }
         });
     }
-
 
 }
