@@ -1,5 +1,7 @@
 package com.theangel.themall.seckill.service.impl;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
@@ -16,6 +18,7 @@ import com.theangel.themall.seckill.to.SeckillSessionTo;
 import com.theangel.themall.seckill.to.SeckillSkuRedisTo;
 import com.theangel.themall.seckill.to.SeckillSkuRelationTo;
 import com.theangel.themall.seckill.to.SkuInfoTo;
+import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RSemaphore;
 import org.redisson.api.RedissonClient;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -27,7 +30,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -41,6 +43,7 @@ import java.util.stream.Collectors;
  * @Author: theangel
  * @Date: 2021/10/3 20:28
  */
+@Slf4j
 @Service
 public class SeckillServiceImpl implements SeckillService {
     @Autowired
@@ -127,11 +130,17 @@ public class SeckillServiceImpl implements SeckillService {
         }
     }
 
+    public List<SeckillSkuRedisTo> blockHandler(BlockException blockException) {
+        log.error("当前getCurrentSeckillSkus被降级了，异常信息：{}", blockException.getMessage());
+        return null;
+    }
+
     /**
      * 返回当前时间可以参与秒杀的商品
      *
      * @return
      */
+    @SentinelResource(value = "currentSeckillSkus", blockHandler = "blockHandler")
     @Override
     public List<SeckillSkuRedisTo> getCurrentSeckillSkus() {
         //确定当前时间 属于哪个秒杀场次

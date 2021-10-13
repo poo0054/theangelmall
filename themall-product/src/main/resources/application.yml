@@ -15,7 +15,7 @@ spring:
       time-to-live: 3600000
       #前缀
       #      key-prefix: AUTO-CACHE_
-      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字
+      #是否使用前缀 不使用前缀但开启前缀 会把分区名放前面  分区::名字
       use-key-prefix: true
       #是否缓存空值，解决缓存穿透
       cache-null-values: true
@@ -53,14 +53,6 @@ themall:
     maxSize: 200
     keepAliveTime: 10
 
-feign:
-  client:
-    config:
-      default:
-        connectTimeout: 10000
-        readTimeout: 10000
-
 logging:
   level:
-    com.theangel.themall: info
-
+    com.theangel.themall.product: info

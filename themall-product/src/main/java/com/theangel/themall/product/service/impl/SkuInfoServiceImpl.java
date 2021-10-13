@@ -126,7 +126,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
      * @return
      */
     @Override
-    @Cacheable(value = {"product"}, key = "#root.methodName+':'+#root.args[0]")
+//    @Cacheable(value = {"product"}, key = "#root.methodName+':'+#root.args[0]")
     public SkuItemVo itemBySkuId(Long skyId) throws ExecutionException, InterruptedException {
         SkuItemVo skuItemVo = new SkuItemVo();
 

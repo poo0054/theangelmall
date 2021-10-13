@@ -16,6 +16,12 @@
         <dependency>
             <groupId>com.theangel.themall</groupId>
             <artifactId>themall-common</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-data-redis</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
 
