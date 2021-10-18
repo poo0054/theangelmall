@@ -31,7 +31,6 @@ public class MemberReceiveAddressController {
      * 根据用户id查询收货地址
      */
     @GetMapping("/{memberid}/address")
-    //@RequiresPermissions("member:memberreceiveaddress:list")
     public R getAddress(@PathVariable("memberid") Long memnerId) {
         List<MemberReceiveAddressEntity> address = memberReceiveAddressService.getAddress(memnerId);
         return R.ok().setData(address);

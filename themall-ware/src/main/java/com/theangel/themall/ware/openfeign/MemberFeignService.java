@@ -19,12 +19,12 @@ public interface MemberFeignService {
      * 根据用戶id查询收货地址
      */
     @GetMapping("member/memberreceiveaddress/{memberid}/address")
-      R getAddress(@PathVariable("memberid") Long memnerId);
+    R getAddress(@PathVariable("memberid") Long memnerId);
 
     /**
      * 根据地址id查询地址信息
      * 信息
      */
     @RequestMapping("member/memberreceiveaddress/info/{id}")
-      R getAddrInfo(@PathVariable("id") Long id);
+    R getAddrInfo(@PathVariable("id") Long id);
 }

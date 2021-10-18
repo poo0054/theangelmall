@@ -13,7 +13,6 @@ import com.theangel.common.to.mq.OrderTo;
 import com.theangel.common.to.mq.SeckillOrderTo;
 import com.theangel.common.utils.R;
 import com.theangel.common.utils.fileutils.UUIDUtils;
-import com.theangel.themall.order.config.AlipayTemplate;
 import com.theangel.themall.order.entity.*;
 import com.theangel.themall.order.enume.OrderStatusEnum;
 import com.theangel.themall.order.interceptor.LoginInterceptor;
@@ -471,6 +470,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         //获取request上下，放入每个线程中
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         OrderConfirmVo orderConfirmVo = new OrderConfirmVo();
+
         //远程查询收货地址
         CompletableFuture<Void> future1 = CompletableFuture.runAsync(() -> {
             RequestContextHolder.setRequestAttributes(requestAttributes);

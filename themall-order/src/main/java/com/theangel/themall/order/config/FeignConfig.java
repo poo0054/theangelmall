@@ -30,25 +30,22 @@ public class FeignConfig {
 
     @Bean
     public RequestInterceptor requestInterceptor() {
-        return new RequestInterceptor() {
-            @Override
-            public void apply(RequestTemplate template) {
-                log.info("远程之前，调用====================");
-                //获取当前请求参数，进来的requert
-                /**
-                 * RequestContextHolder   Request上下文，mvc封装的
-                 * ServletRequestAttributes是RequestAttributess的实现类
-                 */
-                ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-                if (!ObjectUtils.isEmpty(requestAttributes)) {
-                    //获取当前request的cookie,放入新cookie
-                    HttpServletRequest request = requestAttributes.getRequest();
-                    String cookie = request.getHeader("Cookie");
-                    //放入新请求，防止cookie丢失   给新请求同步当前request的cookie
-                    template.header("Cookie", cookie);
-                }
-
+        return template -> {
+            log.info("远程之前，调用====================");
+            //获取当前请求参数，进来的requert
+            /**
+             * RequestContextHolder   Request上下文，mvc封装的
+             * ServletRequestAttributes是RequestAttributess的实现类
+             */
+            ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            if (!ObjectUtils.isEmpty(requestAttributes)) {
+                //获取当前request的cookie,放入新cookie
+                HttpServletRequest request = requestAttributes.getRequest();
+                String cookie = request.getHeader("Cookie");
+                //放入新请求，防止cookie丢失   给新请求同步当前request的cookie
+                template.header("Cookie", cookie);
             }
+
         };
     }
 

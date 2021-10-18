@@ -25,7 +25,7 @@ import javax.sql.DataSource;
  * @Author: theangel
  * @Date: 2021/9/20 21:03
  */
-@Configuration
+//@Configuration
 public class SeataConfig {
     @Autowired
     DataSourceProperties dataSourceProperties;
