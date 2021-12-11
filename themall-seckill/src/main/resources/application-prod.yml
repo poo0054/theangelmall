@@ -1,11 +1,11 @@
 server:
-  port: 2500
+  port: 8080
 spring:
   cloud:
     nacos:
       config:
-        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b
-        server-addr: theangel.vip:8848
+#        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b
+        server-addr: nacos-server.themall:8848
         extension-configs:
           - dataId: public.yml
             refresh: true
@@ -18,7 +18,7 @@ spring:
 
   rabbitmq:
     port: 5672
-    host: 192.168.56.10
+    host: rabbitmq.themall
     username: guest
     password: guest
     virtual-host: /themall
@@ -33,9 +33,6 @@ spring:
   #session保存redis
   session:
     store-type: redis
-  redis:
-    host: 192.168.56.10
-    port: 6379
   #配置redis缓存管理器
   cache:
     type: redis

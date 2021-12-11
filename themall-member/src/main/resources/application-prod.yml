@@ -1,25 +1,24 @@
 server:
-  port: 8880
+  port: 8080
 spring:
-  application:
-    name: themall-search
   cloud:
     nacos:
       config:
-        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b
+#        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b
         extension-configs:
           - dataId: public.yml
             refresh: true
-          - dataId: themall-search.yml
+          - dataId: themall-member.yml
             refresh: true
-        server-addr: theangel.vip:8848
+        server-addr: nacos-server.themall:8848
+  application:
+    name: themall-member
+
+
 
   #session保存redis
   session:
     store-type: redis
-  redis:
-    host: 192.168.56.10
-    port: 6379
   #配置redis缓存管理器
   cache:
     type: redis
@@ -34,5 +33,10 @@ spring:
       #是否缓存空值，解决缓存穿透
       cache-null-values: true
 
-  thymeleaf:
-    cache: false
+  datasource:
+    username: root
+    password: hjj0127..
+    url: jdbc:mysql://mysql-master.themall:3306/themall_ums?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  mvc:
+    date-format: yyyy-MM-dd HH:mm:ss

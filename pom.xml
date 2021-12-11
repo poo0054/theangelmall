@@ -240,6 +240,7 @@
         <module>themall-search</module>
         <module>themall-auth-server</module>
         <module>themall-cart</module>
+        <module>themall-seckill</module>
     </modules>
 
     <build>

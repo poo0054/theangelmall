@@ -1,26 +1,21 @@
 server:
-  port: 9001
+  port: 8080
 spring:
   cloud:
     nacos:
       config:
-        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b
+#        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b
         extension-configs:
           - dataId: public.yml
             refresh: true
-          - dataId: themall-order.yml
+          - dataId: themall-ware.yml
             refresh: true
-        server-addr: theangel.vip:8848
+        server-addr: nacos-server.themall:8848
   application:
-    name: themall-order
-
-
+    name: themall-ware
   #session保存redis
   session:
     store-type: redis
-  redis:
-    host: 192.168.56.10
-    port: 6379
   #配置redis缓存管理器
   cache:
     type: redis
@@ -38,11 +33,13 @@ spring:
   datasource:
     username: root
     password: hjj0127..
-    url: jdbc:mysql://theangel.vip:3306/themall_oms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://mysql-master.themall:3306/themall_wms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
   rabbitmq:
-    host: 192.168.56.10
+    host: rabbitmq.themall
     username: guest
     password: guest
     virtual-host: /themall
@@ -58,10 +55,5 @@ spring:
       simple:
         #        auto:自动回复    manual:手动确认
         acknowledge-mode: manual
-
-  thymeleaf:
-    cache: false
-  mvc:
-    date-format: yyyy-MM-dd HH:mm:ss
 
 #spring.cloud.alibaba.seata.tx-service-group修改后缀，但是必须和file.conf中的配置保持一致

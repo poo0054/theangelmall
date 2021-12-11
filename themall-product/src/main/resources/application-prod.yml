@@ -1,11 +1,11 @@
 server:
-  port: 9000
+  port: 8080
 spring:
   cloud:
     nacos:
       config:
-        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b
-        server-addr: theangel.vip:8848
+#        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b
+        server-addr: nacos-server.themall:8848
         extension-configs:
           - dataId: public.yml
             refresh: true
@@ -15,15 +15,10 @@ spring:
     name: themall-product
 
 
-
   #session保存redis
   session:
     store-type: redis
-  redis:
-    host: 192.168.56.10
-    port: 6379
-
-  #配置redis缓存管理器
+   #配置redis缓存管理器
   cache:
     type: redis
     # 配置了名字，就只能使用自己的名字
@@ -44,7 +39,7 @@ spring:
   datasource:
     username: root
     password: hjj0127..
-    url: jdbc:mysql://theangel.vip:3306/themall_pms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://mysql-master.themall:3306/themall_pms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jackson:
@@ -70,3 +65,6 @@ themall:
     maxSize: 200
     keepAliveTime: 10
 
+logging:
+  level:
+    com.theangel.themall: error

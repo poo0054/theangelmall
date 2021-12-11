@@ -1,10 +1,19 @@
 spring:
+  application:
+    name: themall-auth-server
+  cloud:
+    nacos:
+      config:
+        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b
+        server-addr: theangel.vip:8848
+        extension-configs:
+          - dataId: public.yml
+            refresh: true
+          - dataId: themall-auth-server.yml
+            refresh: true
   #session保存redis
   session:
     store-type: redis
-  redis:
-    host: 192.168.56.10
-    port: 6379
   #配置redis缓存管理器
   cache:
     type: redis
@@ -30,6 +39,7 @@ logging:
     com.theangel.themall: error
 
 server:
+  port: 20000
   servlet:
     session:
       #session超时时间

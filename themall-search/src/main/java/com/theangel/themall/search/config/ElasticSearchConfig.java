@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 public class ElasticSearchConfig {
 
     public static final RequestOptions COMMON_OPTIONS;
+
     static {
         RequestOptions.Builder builder = RequestOptions.DEFAULT.toBuilder();
     /*    builder.addHeader("Authorization", "Bearer " + TOKEN);
@@ -25,7 +26,7 @@ public class ElasticSearchConfig {
     public RestHighLevelClient esClient() {
         RestHighLevelClient client = new RestHighLevelClient(
                 RestClient.builder(
-                        new HttpHost("theangel.vip", 9200, "http")));
+                        new HttpHost("el.themall", 9200, "http")));
         return client;
     }
 
