@@ -28,7 +28,7 @@ pipeline {
             git(credentialsId: 'gitee', url: 'https://gitee.com/theangel/theangelmall.git', branch: 'master', changelog: true, poll: false)
             sh 'echo 正在构建 $PROJECT_NAME 版本号 $PROJECT_VERSION 将会提交给 $REGISTRY 镜像仓库'
             container ('maven') {
-              sh "mvn clean install -Dmaven.test.skip=true"
+              sh "mvn clean install -Dmaven.test.skip=true -gs `pwd`/mvn-setting.xml"
             }
           }
         }
