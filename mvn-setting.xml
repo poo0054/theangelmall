@@ -7,12 +7,19 @@
             <url>https://maven.aliyun.com/repository/public</url>
         </mirror>-->
 
-        <mirror>
+        <!--<mirror>
             <id>nexus-aliyun</id>
             <mirrorOf>central</mirrorOf>
             <name>nexus aliyun</name>
-            <!--             <url>https://maven.aliyun.com/repository/central</url>-->
+            &lt;!&ndash;             <url>https://maven.aliyun.com/repository/central</url>&ndash;&gt;
             <url>https://maven.aliyun.com/nexus/content/groups/public</url>
+        </mirror>-->
+
+        <mirror>
+            <id>alimaven</id>
+            <name>aliyun maven</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+            <mirrorOf>central</mirrorOf>
         </mirror>
 
     </mirrors>
