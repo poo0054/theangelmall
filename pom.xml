@@ -41,7 +41,7 @@
     </properties>
 
 
-    <repositories>
+<!--    <repositories>
         <repository>
             <id>spring-snapshots</id>
             <url>http://repo.spring.io/snapshot</url>
@@ -53,9 +53,9 @@
             <id>spring-milestones</id>
             <url>http://repo.spring.io/milestone</url>
         </repository>
-    </repositories>
+    </repositories>-->
 
-    <pluginRepositories>
+    <!--<pluginRepositories>
         <pluginRepository>
             <id>spring-snapshots</id>
             <url>http://repo.spring.io/snapshot</url>
@@ -64,7 +64,7 @@
             <id>spring-milestones</id>
             <url>http://repo.spring.io/milestone</url>
         </pluginRepository>
-    </pluginRepositories>
+    </pluginRepositories>-->
 
 
     <dependencyManagement>
@@ -284,42 +284,43 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.2</version>
-                <configuration>
-                    <append>true</append>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>agent-for-ut</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>agent-for-it</id>
-                        <goals>
-                            <goal>prepare-agent-integration</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>jacoco-site</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+
+            <!--  <plugin>
+                  <groupId>org.jacoco</groupId>
+                  <artifactId>jacoco-maven-plugin</artifactId>
+                  <version>0.8.2</version>
+                  <configuration>
+                      <append>true</append>
+                  </configuration>
+                  <executions>
+                      <execution>
+                          <id>agent-for-ut</id>
+                          <goals>
+                              <goal>prepare-agent</goal>
+                          </goals>
+                      </execution>
+                      <execution>
+                          <id>agent-for-it</id>
+                          <goals>
+                              <goal>prepare-agent-integration</goal>
+                          </goals>
+                      </execution>
+                      <execution>
+                          <id>jacoco-site</id>
+                          <phase>verify</phase>
+                          <goals>
+                              <goal>report</goal>
+                          </goals>
+                      </execution>
+                  </executions>
+              </plugin>
 
 
-            <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>3.6.0.1398</version>
-            </plugin>
+              <plugin>
+                  <groupId>org.sonarsource.scanner.maven</groupId>
+                  <artifactId>sonar-maven-plugin</artifactId>
+                  <version>3.6.0.1398</version>
+              </plugin>-->
 
         </plugins>
 
