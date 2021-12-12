@@ -286,25 +286,66 @@
                 </configuration>
             </plugin>
 
-        </plugins>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.2</version>
+                <configuration>
+                    <append>true</append>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>agent-for-ut</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>agent-for-it</id>
+                        <goals>
+                            <goal>prepare-agent-integration</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>jacoco-site</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <fork>true</fork>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.6.0.1398</version>
+            </plugin>
 
+        </plugins>
 
     </build>
 
     <!-- 1.添加腾讯云指定的仓库地址 -->
-    <repositories>
-        <repository>
-            <id>bintray-qcloud-maven-repo</id>
-            <name>qcloud-maven-repo</name>
-            <url>https://dl.bintray.com/qcloud/maven-repo/</url>
-            <layout>default</layout>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
+    <!--   <repositories>
+           <repository>
+               <id>bintray-qcloud-maven-repo</id>
+               <name>qcloud-maven-repo</name>
+               <url>https://dl.bintray.com/qcloud/maven-repo/</url>
+               <layout>default</layout>
+               <releases>
+                   <enabled>true</enabled>
+               </releases>
+               <snapshots>
+                   <enabled>false</enabled>
+               </snapshots>
+           </repository>
+       </repositories>-->
 
 </project>
