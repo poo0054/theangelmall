@@ -43,15 +43,11 @@
 
     <repositories>
         <repository>
-            <id>alimaven</id>
-            <url>https://maven.aliyun.com/repository/central</url>
+            <id>spring-snapshots</id>
+            <url>http://repo.spring.io/snapshot</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
-        </repository>
-        <repository>
-            <id>spring-snapshots</id>
-            <url>http://repo.spring.io/snapshot</url>
         </repository>
         <repository>
             <id>spring-milestones</id>
