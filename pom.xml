@@ -36,8 +36,8 @@
         <redisson.version>3.15.6</redisson.version>
         <alipay-sdk.version>4.9.28.ALL</alipay-sdk.version>
 
-        <sonar.jacoco.reportPaths>${PWD}/./target/jacoco.exec</sonar.jacoco.reportPaths>
-        <sonar.groovy.binaries>target/classes</sonar.groovy.binaries>
+        <!-- <sonar.jacoco.reportPaths>${PWD}/./target/jacoco.exec</sonar.jacoco.reportPaths>
+         <sonar.groovy.binaries>target/classes</sonar.groovy.binaries>-->
     </properties>
 
 
