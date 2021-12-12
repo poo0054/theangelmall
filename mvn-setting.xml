@@ -1,7 +1,5 @@
 <settings>
     <mirrors>
-
-
         <mirror>
             <id>nexus-aliyun</id>
             <mirrorOf>central</mirrorOf>
