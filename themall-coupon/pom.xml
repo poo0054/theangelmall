@@ -6,6 +6,7 @@
         <groupId>com.theangel.themall</groupId>
         <artifactId>themall-theangelmall</artifactId>
         <version>0.1</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>themall-coupon</artifactId>
