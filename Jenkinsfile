@@ -36,8 +36,17 @@ pipeline {
 
     stage('部署到k8s') {
       steps {
-        input(id: 'deploy-to-dev-$PROJECT_NAME' , message: '是否将$PROJECT_NAME部署到集群中?')
-        kubernetesDeploy(configs: "renren-fast/deploy/**", enableConfigSubstitution: true, kubeconfigId: "$KUBECONFIG_CREDENTIAL_ID", dockerCredentials: [])
+       input(id: 'deploy-to-dev-$PROJECT_NAME' , message: '是否将$PROJECT_NAME部署到集群中?')
+       container ('maven') {
+          withCredentials([
+              kubeconfigFile(
+              credentialsId: env.KUBECONFIG_CREDENTIAL_ID,
+              variable: 'KUBECONFIG')
+              ]) {
+              sh 'envsubst < $PROJECT_NAME/deploy/$PROJECT_NAME.yaml | kubectl apply -f -'
+          }
+       }
+//         kubernetesDeploy(configs: "renren-fast/deploy/**", enableConfigSubstitution: true, kubeconfigId: "$KUBECONFIG_CREDENTIAL_ID", dockerCredentials: [])
       }
     }
 
