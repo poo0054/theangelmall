@@ -85,7 +85,7 @@ pipeline {
     BRANCH_NAME = 'master'
   }
   parameters {
-    string(name: 'PROJECT_VERSION', defaultValue: 'v0.0Beta', description: '')
+    string(name: 'PROJECT_VERSION', defaultValue: 'v0.1Beta', description: '')
     string(name: 'PROJECT_NAME', defaultValue: 'renren-fast', description: '')
   }
 }
