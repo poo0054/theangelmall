@@ -6,7 +6,7 @@ pipeline {
   }
 
     parameters {
-        string(name:'PROJECT_VERSION',defaultValue: 'v0.0Beta',description:'')
+        string(name:'PROJECT_VERSION',defaultValue: 'v0.1',description:'')
         string(name:'PROJECT_NAME',defaultValue: '',description:'')
     }
 
@@ -33,13 +33,13 @@ pipeline {
           }
         }
 
-        stage('代码质量分析') {
+    /*   stage('代码质量分析') {
             steps {
               container ('maven') {
                 withCredentials([string(credentialsId: "$SONAR_CREDENTIAL_ID", variable: 'SONAR_TOKEN')]) {
                   withSonarQubeEnv('sonar') {
                    sh "echo 当前目录 `pwd` "
-                   sh "mvn sonar:sonar -o -gs `pwd`/mvn-setting.xml -Dsonar.branch=$BRANCH_NAME -Dsonar.login=$SONAR_TOKEN"
+                   sh "mvn sonar:sonar -gs `pwd`/mvn-setting.xml -Dsonar.branch=$BRANCH_NAME -Dsonar.login=$SONAR_TOKEN"
                   }
                 }
                 timeout(time: 1, unit: 'HOURS') {
@@ -47,10 +47,68 @@ pipeline {
                 }
               }
             }
-        }
+        }*/
 
+      stage ('打包 & 推送快照') {
+                steps {
+                    container ('maven') {
+                        sh 'mvn  -Dmaven.test.skip=true -gs `pwd`/mvn-setting.xml clean package'
+                        sh 'cd $PROJECT_NAME && docker build -f Dockerfile -t $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER .'
+                        withCredentials([usernamePassword(passwordVariable : 'DOCKER_PASSWORD' ,usernameVariable :   'DOCKER_USERNAME' ,credentialsId : "$DOCKER_CREDENTIAL_ID" ,)]) {
+                            sh 'echo "$DOCKER_PASSWORD" | docker login $REGISTRY -u "$DOCKER_USERNAME" --password-stdin'
+//                             sh 'docker push  $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER'
+// 由于网络问题 直接推送最新镜像
+                            sh 'docker tag  $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:latest '
+                            sh 'docker push  $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:latest '
+                        }
+                    }
+                }
+      }
+
+/*      stage('推送镜像'){
+        when{
+          branch 'master'
+        }
+        steps{
+             container ('maven') {
+               sh 'docker tag  $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:latest '
+               sh 'docker push  $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:latest '
+             }
+        }
+     } */
+
+      stage('部署到k8s') {
+        when{
+          branch 'master'
+        }
+        steps {
+          input(id: 'deploy-to-dev-$PROJECT_NAME', message: '是否将$PROJECT_NAME部署到集群中')
+          kubernetesDeploy(configs: '$PROJECT_NAME/deploy/**', enableConfigSubstitution: true, kubeconfigId: "$KUBECONFIG_CREDENTIAL_ID")
+        }
+      }
+
+
+      stage('发布版本'){
+                when{
+                  expression{
+                    return params.PROJECT_VERSION =~ /v.*/
+                  }
+                }
+         steps {
+             container ('maven') {
+               input(id: 'release-image-with-tag', message: '是否发布当前版本镜像？')
+                 withCredentials([usernamePassword(credentialsId: "$GITEE_CREDENTIAL_ID", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+                   sh 'git config --global user.email "poo0054.com" '
+                   sh 'git config --global user.name "poo0054" '
+                   sh 'git tag -a $PROJECT_VERSION -m "$PROJECT_VERSION" '
+                   sh 'git push http://$GIT_USERNAME:$GIT_PASSWORD@gitee.com/$GITEE_ACCOUNT/theangel/theangelmall.git --tags --ipv4'
+                 }
+               sh 'docker tag  $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER  $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:$PROJECT_VERSION '
+               sh 'docker push  $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:$PROJECT_VERSION '
+             }
+         }
+      }
 
 
     }
-
 }
