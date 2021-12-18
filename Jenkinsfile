@@ -64,7 +64,7 @@ pipeline {
             sh 'git config --global user.email "poo0054.com" '
             sh 'git config --global user.name "poo0054" '
             sh 'git tag -a $PROJECT_VERSION -m "$PROJECT_VERSION" '
-            sh 'git push http://$GIT_USERNAME:$GIT_PASSWORD@gitee.com/$GITEE_ACCOUNT/theangel/theangelmall.git   --tags --ipv4'
+            sh 'git push http://$GIT_USERNAME:$GIT_PASSWORD@gitee.com/$GITEE_ACCOUNT/theangelmall.git   --tags --ipv4'
           }
           sh 'docker tag  $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:$PROJECT_VERSION '
           sh 'docker push  $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:$PROJECT_VERSION '
@@ -81,7 +81,7 @@ pipeline {
     SONAR_CREDENTIAL_ID = 'sonar-qube'
     REGISTRY = 'docker.io'
     DOCKERHUB_NAMESPACE = 'poo0054'
-    GITEE_ACCOUNT = 'poo0054'
+    GITEE_ACCOUNT = 'theangel'
     BRANCH_NAME = 'master'
   }
   parameters {
