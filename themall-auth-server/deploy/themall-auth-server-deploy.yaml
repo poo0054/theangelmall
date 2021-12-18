@@ -91,7 +91,7 @@ spec:
       #容器端口
       targetPort: 8080
       #外部端口
-      nodePort: 20002
+      nodePort: 30002
   selector:
     app: themall-auth-server
   type: NodePort

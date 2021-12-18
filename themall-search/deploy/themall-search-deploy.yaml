@@ -88,7 +88,7 @@ spec:
       #容器端口
       targetPort: 8080
       #外部端口
-      nodePort: 20009
+      nodePort: 30009
   selector:
     app: themall-search
   type: NodePort

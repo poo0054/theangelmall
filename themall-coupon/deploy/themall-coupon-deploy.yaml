@@ -91,7 +91,7 @@ spec:
       #容器端口
       targetPort: 8080
       #外部端口
-      nodePort: 20004
+      nodePort: 30004
   selector:
     app: themall-coupon
   type: NodePort

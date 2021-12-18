@@ -91,7 +91,7 @@ spec:
       #容器端口
       targetPort: 8080
       #外部端口
-      nodePort: 20005
+      nodePort: 30005
   selector:
     app: themall-gatway
   type: NodePort

@@ -88,7 +88,7 @@ spec:
       #容器端口
       targetPort: 8080
       #外部端口
-      nodePort: 20012
+      nodePort: 30012
   selector:
     app: third-party
   type: NodePort

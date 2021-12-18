@@ -91,7 +91,7 @@ spec:
       #容器端口
       targetPort: 8080
       #外部端口
-      nodePort: 20003
+      nodePort: 30003
   selector:
     app: themall-cart
   type: NodePort
