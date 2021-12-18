@@ -6,7 +6,7 @@ pipeline {
   }
 
     parameters {
-        string(name:'PROJECT_VERSION',defaultValue: 'v0.1',description:'')
+        string(name:'PROJECT_VERSION',defaultValue: 'v0.0Beta',description:'')
         string(name:'PROJECT_NAME',defaultValue: '',description:'')
     }
 
@@ -21,51 +21,51 @@ pipeline {
         BRANCH_NAME = 'master'
     }
 
-    stages {
+      stages {
         stage('拉取代码') {
-          agent none
-          steps {
-            git(credentialsId: 'gitee', url: 'https://gitee.com/theangel/theangelmall.git', branch: 'master', changelog: true, poll: false)
-            sh 'echo 正在构建 $PROJECT_NAME 版本号 $PROJECT_VERSION 将会提交给 $REGISTRY 镜像仓库'
-            container ('maven') {
-              sh "mvn clean install -Dmaven.test.skip=true -gs `pwd`/mvn-setting.xml"
-            }
-          }
-        }
-
-    /*   stage('代码质量分析') {
+            agent none
             steps {
+              git(credentialsId: 'gitee', url: 'https://gitee.com/theangel/theangelmall.git', branch: 'master', changelog  : true, poll: false)
+              sh 'echo 正在构建 $PROJECT_NAME 版本号 $PROJECT_VERSION 将会提交给 $REGISTRY 镜像仓库'
               container ('maven') {
-                withCredentials([string(credentialsId: "$SONAR_CREDENTIAL_ID", variable: 'SONAR_TOKEN')]) {
-                  withSonarQubeEnv('sonar') {
-                   sh "echo 当前目录 `pwd` "
-                   sh "mvn sonar:sonar -gs `pwd`/mvn-setting.xml -Dsonar.branch=$BRANCH_NAME -Dsonar.login=$SONAR_TOKEN"
-                  }
-                }
-                timeout(time: 1, unit: 'HOURS') {
-                  waitForQualityGate abortPipeline: true
-                }
+                sh "mvn clean install -Dmaven.test.skip=true -gs `pwd`/mvn-setting.xml"
               }
             }
-        }*/
+        }
+
+     /* stage('代码质量分析') {
+              steps {
+                container ('maven') {
+                  withCredentials([string(credentialsId: "$SONAR_CREDENTIAL_ID", variable: 'SONAR_TOKEN')]) {
+                    withSonarQubeEnv('sonar') {
+                     sh "echo 当前目录 `pwd` "
+                     sh "mvn sonar:sonar -gs `pwd`/mvn-setting.xml -Dsonar.branch=$BRANCH_NAME -Dsonar.login =$SONAR_TOKEN"
+                    }
+                  }
+                  timeout(time: 1, unit: 'HOURS') {
+                    waitForQualityGate abortPipeline: true
+                  }
+                }
+              }
+      }*/
 
       stage ('打包 & 推送快照') {
-                steps {
-                    container ('maven') {
-                        sh 'mvn  -Dmaven.test.skip=true -gs `pwd`/mvn-setting.xml clean package'
-                        sh 'cd $PROJECT_NAME && docker build -f Dockerfile -t $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER .'
-                        withCredentials([usernamePassword(passwordVariable : 'DOCKER_PASSWORD' ,usernameVariable :   'DOCKER_USERNAME' ,credentialsId : "$DOCKER_CREDENTIAL_ID" ,)]) {
-                            sh 'echo "$DOCKER_PASSWORD" | docker login $REGISTRY -u "$DOCKER_USERNAME" --password-stdin'
-//                             sh 'docker push  $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER'
-// 由于网络问题 直接推送最新镜像
-                            sh 'docker tag  $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:latest '
-                            sh 'docker push  $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:latest '
-                        }
-                    }
+        steps {
+            container ('maven') {
+                sh 'mvn  -Dmaven.test.skip=true -gs `pwd`/mvn-setting.xml clean package'
+                sh 'cd $PROJECT_NAME && docker build -f Dockerfile -t $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER .'
+                withCredentials([usernamePassword(passwordVariable : 'DOCKER_PASSWORD' ,usernameVariable :   'DOCKER_USERNAME' ,credentialsId : "$DOCKER_CREDENTIAL_ID" ,)]) {
+                    sh 'echo "$DOCKER_PASSWORD" | docker login $REGISTRY -u "$DOCKER_USERNAME" --password-stdin'
+                    //sh 'docker push  $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER'
+                    // 由于网络问题 直接推送最新镜像
+                    sh 'docker tag  $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:latest '
+                    sh 'docker push  $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:latest '
                 }
+            }
+        }
       }
 
-/*      stage('推送镜像'){
+    /*      stage('推送镜像'){
         when{
           branch 'master'
         }
@@ -82,11 +82,10 @@ pipeline {
           branch 'master'
         }
         steps {
-          input(id: 'deploy-to-dev-$PROJECT_NAME', message: '是否将$PROJECT_NAME部署到集群中')
-          kubernetesDeploy(configs: '$PROJECT_NAME/deploy/**', enableConfigSubstitution: true, kubeconfigId: "$KUBECONFIG_CREDENTIAL_ID")
+          input(id: "deploy-to-dev-$PROJECT_NAME", message: "是否将$PROJECT_NAME部署到集群中")
+          kubernetesDeploy(configs: "$PROJECT_NAME/deploy/**", enableConfigSubstitution: true, kubeconfigId: "$KUBECONFIG_CREDENTIAL_ID")
         }
       }
-
 
       stage('发布版本'){
                 when{
@@ -109,6 +108,6 @@ pipeline {
          }
       }
 
+  }
 
-    }
 }
