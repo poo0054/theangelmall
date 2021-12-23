@@ -26,7 +26,7 @@ spring:
       driver-class-name: com.mysql.cj.jdbc.Driver
       url: jdbc:mysql://mysql-master.themall:3306/themall_oms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
       username: root
-      password: hjj0127..
+      password: root
       initial-size: 10
       max-active: 100
       min-idle: 10
