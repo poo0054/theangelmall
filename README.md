@@ -19,33 +19,20 @@
 
 #### 使用说明
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+renren-fast-vue：后台前端模块，采用开源代码renrenfast，整个商城项目的后台管理
+renrenfast：后台后端模块
+themall-cart：购物车模块，购物车的基本功能（增删改查）
+themall-common：公共模块，其余模块都依赖该模块，常用方法，全局异常
+themall-coupon：优惠券模块，优惠券的基本功能
+themall-gatway：网关模块，项目的路径跳转
+themall-member：用户模块，用户和会员的基本功能
+themall-order：订购模块，用户下单的基本功能，下单进行锁库存，死信队列设置时间释放库存
+themall-product：商品模块，商品的基本功能
+themall-search：搜索模块elasticsearch。商品上架，添加入el，修改使用canal把el和mysql进行同步
+themall-seckill：秒杀功能，redisson信号量设置秒杀数量，抢成功添加入mq进行创建订单操作
+themall-ware：库存的基本功能
+third-party：第三方服务模块，阿里云的发送短信，对象存储
+Jenkinsfile：k8s的devops，本地打包镜像，发送docker-hub，k8s部署项目，gitee打上标签（Jenkins自动化打包部署）
 
 #### 参与贡献
-
-
-
-#### 商品模块
-
-SPU：standard product unit(标准化产品单元)：是商品信息聚合的最小单位，是一组可复用、易检索的标准化信息的集合，该集合描述了一个产品的特性。如iphoneX是SPU
-
-SKU：stock keeping unit(库存量单位)：库存进出计量的基本单元，可以是件/盒/托盘等单位。SKU是对于大型连锁超市DC配送中心物流管理的一个必要的方法。现在已经被引申为产品统一编号的简称，每种产品对应有唯一的SKU号。
-
-如iphoneX 64G 黑色 是SKU
-基础属性：同一个SPU拥有的特性叫基本属性。如机身长度，这个是手机共用的属性。而每款手机的属性值不同
-
-也可以叫规格参数
-销售属性：能决定库存量的叫销售属性。如颜色
-
-3、基本属性〖规格参数〗与销售属性
-每个分类下的商品共享规格参数，与销售属性。只是有些商品不一定要用这个分类下全部的属性；
-
-属性是以三级分类组织起来的
-规格参数中有些是可以提供检索的
-规格参数也是基本属性，他们具有自己的分组
-属性的分组也是以三级分类组织起来的
-属性名确定的，但是值是每一个商品不同来决定的
-
 
