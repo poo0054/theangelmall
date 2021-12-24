@@ -20,6 +20,7 @@
 #### 使用说明
 
 theangelmall采用springcloud-alibab全家桶，服务注册使用nacos，服务调用使用openfeign，网关使用getway，链路追踪使用zipkin
+全局事务一致性采用Seata，发现如果访问量过大，会变慢最后采用添加幂等性使用rabbitmq来做
 redis使用rediscluster搭建集群
 mysql使用日志主从同步，MyCat搭建集群（也试过shadingshpere，最后采用MyCat搭建）
 elasticSearch集群，elasticSearch天然就是分布式，直接加入节点。采用master和data分离
