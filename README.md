@@ -45,7 +45,7 @@ themall-ware：库存的基本功能
 
 third-party：第三方服务模块，阿里云的发送短信，对象存储
 
-Jenkinsfile：k8s的devops，本地打包镜像，发送docker-hub，k8s部署项目，gitee打上标签（Jenkins自动化打包部署）
+Jenkinsfile：kubesphere的devops（Jenkins自动化打包部署） 本地打包镜像 -> 发送docker-hub -> k8s部署项目 -> gitee打上标签
 
 #### 参与贡献
 
