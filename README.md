@@ -20,18 +20,31 @@
 #### 使用说明
 
 renren-fast-vue：后台前端模块，采用开源代码renrenfast，整个商城项目的后台管理
+
 renrenfast：后台后端模块
+
 themall-cart：购物车模块，购物车的基本功能（增删改查）
+
 themall-common：公共模块，其余模块都依赖该模块，常用方法，全局异常
+
 themall-coupon：优惠券模块，优惠券的基本功能
+
 themall-gatway：网关模块，项目的路径跳转
+
 themall-member：用户模块，用户和会员的基本功能
+
 themall-order：订购模块，用户下单的基本功能，下单进行锁库存，死信队列设置时间释放库存
+
 themall-product：商品模块，商品的基本功能
+
 themall-search：搜索模块elasticsearch。商品上架，添加入el，修改使用canal把el和mysql进行同步
+
 themall-seckill：秒杀功能，redisson信号量设置秒杀数量，抢成功添加入mq进行创建订单操作
+
 themall-ware：库存的基本功能
+
 third-party：第三方服务模块，阿里云的发送短信，对象存储
+
 Jenkinsfile：k8s的devops，本地打包镜像，发送docker-hub，k8s部署项目，gitee打上标签（Jenkins自动化打包部署）
 
 #### 参与贡献
