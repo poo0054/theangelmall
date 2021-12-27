@@ -1,17 +1,54 @@
 spring:
+  redis:
+    host: redis.themall
+    port: 6379
+  zipkin:
+    base-url: http://zipkin-server.themall:9411
+    locator:
+      discovery:
+        #关闭服务发现，否则springcloud会把zipkin的url当成服务名称
+        enabled: false
+    sender:
+      #设置http发送数据
+      type: web
+  sleuth:
+    sampler:
+      #      设置抽取采集率为100%，默认为10%
+      probability: 1
   application:
     name: themall-auth-server
   cloud:
+    sentinel:
+      transport:
+        port: 8719
+        dashboard: sentinel-server.themall:8333
     nacos:
-      config:
-#        namespace: public
+      discovery:
         server-addr: nacos-server.themall:8848
-        extension-configs:
-          - dataId: public.yml
-            refresh: true
-          - dataId: themall-auth-server.yml
-            refresh: true
+        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b
+#      config:
+##        namespace: public
+#        server-addr: nacos-server.themall:8848
+#        extension-configs:
+#          - dataId: public.yml
+#            refresh: true
+#          - dataId: themall-auth-server.yml
+#            refresh: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 
+feign:
+  sentinel:
+    enabled: true
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  global-config:
+    db-config:
+      id-type: auto
 
   #session保存redis
   session:
@@ -38,7 +75,8 @@ spring:
 
 logging:
   level:
-    com.theangel.themall: error
+    org.springframework.cloud.openfeign: error
+    org.springframework.sleuth: error
 
 server:
   port: 8080
