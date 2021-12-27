@@ -10,16 +10,37 @@ server:
     context-path: /renren-fast
 
 spring:
+  zipkin:
+    base-url: http://zipkin-server.themall:9411
+    locator:
+      discovery:
+        #关闭服务发现，否则springcloud会把zipkin的url当成服务名称
+        enabled: false
+    sender:
+      #设置http发送数据
+      type: web
+  sleuth:
+    sampler:
+      #      设置抽取采集率为100%，默认为10%
+      probability: 1
   cloud:
+    sentinel:
+      transport:
+        port: 8719
+        dashboard: sentinel-server.themall:8333
     nacos:
-      config:
+      discovery:
         server-addr: nacos-server.themall:8848
-        #                namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b
-        extension-configs:
-          - dataId: public.yml
-            refresh: true
-          - dataId: renren-fast.yml
-            refresh: true
+        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b
+
+  #      config:
+  #        server-addr: nacos-server.themall:8848
+  #        #                namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b
+  #        extension-configs:
+  #          - dataId: public.yml
+  #            refresh: true
+  #          - dataId: renren-fast.yml
+  #            refresh: true
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
@@ -69,8 +90,8 @@ spring:
   application:
     name: renren-fast
   # 环境 dev|test|prod
-#  profiles:
-#    active: dev
+  #  profiles:
+  #    active: dev
   # jackson时间格式化
   jackson:
     time-zone: GMT+8
@@ -81,6 +102,8 @@ spring:
       max-request-size: 100MB
       enabled: true
   redis:
+    host: redis.themall
+    port: 6379
     open: true  # 是否开启redis缓存  true开启   false关闭
     database: 0
     timeout: 6000ms  # 连接超时时长（毫秒）
@@ -108,6 +131,7 @@ mybatis-plus:
       logic-delete-value: -1
       logic-not-delete-value: 0
     banner: false
+
   #原生配置
   configuration:
     map-underscore-to-camel-case: true
@@ -115,6 +139,15 @@ mybatis-plus:
     call-setters-on-nulls: true
     jdbc-type-for-null: 'null'
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+feign:
+  sentinel:
+    enabled: true
 
 renren:
   redis:
@@ -128,3 +161,8 @@ renren:
     # token有效时长，7天，单位秒
     expire: 604800
     header: token
+
+logging:
+  level:
+    org.springframework.cloud.openfeign: debug
+    org.springframework.sleuth: debug
