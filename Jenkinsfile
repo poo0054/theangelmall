@@ -37,6 +37,7 @@ pipeline {
     stage('部署到k8s') {
       steps {
        input(id: 'deploy-to-dev' , message: '是否部署到集群中?')
+       //由于本地网络  先打包 在发布
        sh 'docker tag  $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:$PROJECT_VERSION '
        container ('maven') {
           withCredentials([
