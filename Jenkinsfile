@@ -18,7 +18,7 @@ pipeline {
       }
     }
 
-    stage('打包 & 推送快照') {
+/*     stage('打包 & 推送快照') {
       steps {
         container('maven') {
           sh 'mvn  -Dmaven.test.skip=true -gs `pwd`/mvn-setting.xml clean package'
@@ -32,7 +32,7 @@ pipeline {
         }
 
       }
-    }
+    } */
 
     stage('部署到k8s') {
       steps {
