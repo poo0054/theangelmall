@@ -37,6 +37,7 @@ pipeline {
     stage('部署到k8s') {
       steps {
        input(id: 'deploy-to-dev' , message: '是否部署到集群中?')
+       sh 'docker tag  $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:$PROJECT_VERSION '
        container ('maven') {
           withCredentials([
               kubeconfigFile(
@@ -66,7 +67,6 @@ pipeline {
             sh 'git tag -a $PROJECT_VERSION -m "$PROJECT_VERSION" '
             sh 'git push http://$GIT_USERNAME:$GIT_PASSWORD@gitee.com/$GITEE_ACCOUNT/theangelmall.git   --tags --ipv4'
           }
-          sh 'docker tag  $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:$PROJECT_VERSION '
           sh 'docker push  $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:$PROJECT_VERSION '
         }
 
