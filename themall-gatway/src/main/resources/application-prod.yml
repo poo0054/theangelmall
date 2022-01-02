@@ -32,14 +32,14 @@ spring:
         dashboard: sentinel-server.themall:8333
     nacos:
       config:
+        username: nacos
+        password: Poo0054@nacos
         server-addr: nacos-server.themall:8848
-#        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b
         extension-configs:
           - dataId: themall-gatway.yml
             refresh: true
       discovery:
         server-addr: nacos-server.themall:8848
-#        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b
 
     gateway:
       routes:
