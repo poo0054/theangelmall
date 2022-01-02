@@ -32,6 +32,8 @@ spring:
             refresh: true
           - dataId: themall-auth-server.yml
             refresh: true
+        username: nacos
+        password: Poo0054@nacos
 management:
   endpoints:
     web:
@@ -60,7 +62,7 @@ mybatis-plus:
       time-to-live: 3600000
       #前缀
       #      key-prefix: AUTO-CACHE_
-      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字
+      #是否使用前缀 不使用自定义前缀，开启前缀 会把分区名放前面  分区::名字
       use-key-prefix: true
       #是否缓存空值，解决缓存穿透
       cache-null-values: true
