@@ -3,9 +3,12 @@ server:
 spring:
   cloud:
     nacos:
-      config:
+      discovery:
         server-addr: nacos-server.themall:8848
-#        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b
+      config:
+        username: nacos
+        password: Poo0054@nacos
+        server-addr: nacos-server.themall:8848
         extension-configs:
           - dataId: public.yml
             refresh: true

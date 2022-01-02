@@ -17,6 +17,9 @@ spring:
   application:
     name: themall-cart
 
+  redis:
+    host: redis.themall
+    port: 6379
   #session保存redis
   session:
     store-type: redis
