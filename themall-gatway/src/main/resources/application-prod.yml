@@ -162,8 +162,8 @@ spring:
 
 logging:
   level:
-    org.springframework.cloud.openfeign: debug
-    org.springframework.sleuth: debug
+    org.springframework.cloud.openfeign: warn
+    org.springframework.sleuth: warn
 
 
 
