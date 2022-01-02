@@ -26,14 +26,14 @@ spring:
       discovery:
         server-addr: nacos-server.themall:8848
         namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b
-#      config:
-##        namespace: public
-#        server-addr: nacos-server.themall:8848
-#        extension-configs:
-#          - dataId: public.yml
-#            refresh: true
-#          - dataId: themall-auth-server.yml
-#            refresh: true
+      config:
+        #        namespace: public
+        server-addr: nacos-server.themall:8848
+        extension-configs:
+          - dataId: public.yml
+            refresh: true
+          - dataId: themall-auth-server.yml
+            refresh: true
 management:
   endpoints:
     web:
@@ -69,14 +69,14 @@ mybatis-plus:
 
   #开发期间 关闭缓存
   thymeleaf:
-#    cache: false
+    #    cache: false
     prefix: classpath:/templates/
     suffix: .html
 
 logging:
   level:
-    org.springframework.cloud.openfeign: error
-    org.springframework.sleuth: error
+    org.springframework.cloud.openfeign: warn
+    org.springframework.sleuth: warn
 
 server:
   port: 8080

@@ -32,15 +32,14 @@ spring:
       discovery:
         server-addr: nacos-server.themall:8848
         namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b
-
-  #      config:
-  #        server-addr: nacos-server.themall:8848
-  #        #                namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b
-  #        extension-configs:
-  #          - dataId: public.yml
-  #            refresh: true
-  #          - dataId: renren-fast.yml
-  #            refresh: true
+      config:
+        server-addr: nacos-server.themall:8848
+        #                namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b
+        extension-configs:
+          - dataId: public.yml
+            refresh: true
+          - dataId: renren-fast.yml
+            refresh: true
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
@@ -164,5 +163,5 @@ renren:
 
 logging:
   level:
-    org.springframework.cloud.openfeign: debug
-    org.springframework.sleuth: debug
+    org.springframework.cloud.openfeign: warn
+    org.springframework.sleuth: warn
