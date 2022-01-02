@@ -3,6 +3,8 @@ server:
 spring:
   cloud:
     nacos:
+      discovery:
+        server-addr: nacos-server.themall:8848
       config:
         extension-configs:
           - dataId: public.yml
