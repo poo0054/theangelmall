@@ -17,7 +17,9 @@ spring:
   application:
     name: themall-coupon
 
-
+  redis:
+    host: redis.themall
+    port: 6379
   #session保存redis
   session:
     store-type: redis
