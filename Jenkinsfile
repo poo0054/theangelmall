@@ -68,7 +68,7 @@ pipeline {
             sh 'git tag -a $PROJECT_VERSION -m "$PROJECT_VERSION" '
             sh 'git push http://$GIT_USERNAME:$GIT_PASSWORD@gitee.com/$GITEE_ACCOUNT/theangelmall.git   --tags --ipv4'
           }
-          //推送阿里云仓库
+          //推送阿里云仓库发布版本
           sh 'docker push  $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:$PROJECT_VERSION '
         }
 

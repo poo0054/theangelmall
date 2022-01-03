@@ -3,6 +3,8 @@ package com.theangel.themall.product.config;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
+import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -10,7 +12,9 @@ import org.springframework.context.annotation.Configuration;
  *
  */
 @Configuration
+@EnableConfigurationProperties(RedisProperties.class)
 public class RedissonConfig {
+
 
     /**
      * 所有对redisson的使用 都是使用RedissonClient
@@ -18,11 +22,11 @@ public class RedissonConfig {
      * @return
      */
     @Bean(destroyMethod = "shutdown", value = "stringRedissonClient")
-    public RedissonClient redissonClient() {
+    public RedissonClient redissonClient(RedisProperties redisProperties) {
         Config config = new Config();
         config.useSingleServer()
                 //Redis url should start with redis:// or rediss:// (for SSL connection)
-                .setAddress("redis://192.168.56.10:6379");
+                .setAddress("redis://" + redisProperties.getHost() + ":" + redisProperties.getPort());
         return Redisson.create(config);
     }
 
