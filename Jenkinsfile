@@ -81,7 +81,7 @@ pipeline {
     GITEE_CREDENTIAL_ID = 'gitee'
     KUBECONFIG_CREDENTIAL_ID = 'demo-kubeconfig'
     SONAR_CREDENTIAL_ID = 'sonar-qube'
-    REGISTRY = 'registry.cn-qingdao.aliyuncs.com'
+    REGISTRY = 'registry.cn-shenzhen.aliyuncs.com'
     DOCKERHUB_NAMESPACE = 'themall'
     GITEE_ACCOUNT = 'theangel'
     BRANCH_NAME = 'master'
