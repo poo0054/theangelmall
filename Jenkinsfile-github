@@ -25,8 +25,8 @@ pipeline {
           sh 'cd $PROJECT_NAME && docker build -f Dockerfile -t $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER .'
           withCredentials([usernamePassword(passwordVariable : 'DOCKER_PASSWORD' ,usernameVariable : 'DOCKER_USERNAME' ,credentialsId : "$DOCKER_CREDENTIAL_ID")]) {
             sh 'echo "$DOCKER_PASSWORD" | docker login $REGISTRY -u "$DOCKER_USERNAME" --password-stdin'
-            //使用阿里云镜像仓库
-            sh 'docker push  $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER'
+            //网络太慢 不推送远程
+//             sh 'docker push  $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER'
           }
 
         }
@@ -76,12 +76,12 @@ pipeline {
 
   }
   environment {
-    DOCKER_CREDENTIAL_ID = 'aliyun-hub'
+    DOCKER_CREDENTIAL_ID = 'docker-hub'
     GITEE_CREDENTIAL_ID = 'gitee'
     KUBECONFIG_CREDENTIAL_ID = 'demo-kubeconfig'
     SONAR_CREDENTIAL_ID = 'sonar-qube'
-    REGISTRY = 'registry.cn-qingdao.aliyuncs.com'
-    DOCKERHUB_NAMESPACE = 'themall'
+    REGISTRY = 'docker.io'
+    DOCKERHUB_NAMESPACE = 'poo0054'
     GITEE_ACCOUNT = 'theangel'
     BRANCH_NAME = 'master'
   }
