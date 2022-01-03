@@ -31,6 +31,8 @@ spring:
         port: 8719
         dashboard: sentinel-server.themall:8333
     nacos:
+      discovery:
+        server-addr: nacos-server.themall:8848
       config:
         username: nacos
         password: Poo0054@nacos
@@ -38,9 +40,6 @@ spring:
         extension-configs:
           - dataId: themall-gatway.yml
             refresh: true
-      discovery:
-        server-addr: nacos-server.themall:8848
-
     gateway:
       routes:
         #         检索服务
