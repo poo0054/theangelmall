@@ -31,7 +31,7 @@ spec:
       containers:
         - name: themall-ware
           #设置动态
-          image: $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER
+          image: $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:$PROJECT_VERSION
           #暴露端口
           ports:
             - name: tcp-8080
