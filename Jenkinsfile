@@ -25,7 +25,7 @@ pipeline {
           sh 'cd $PROJECT_NAME && docker build -f Dockerfile -t $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER .'
           withCredentials([usernamePassword(passwordVariable : 'DOCKER_PASSWORD' ,usernameVariable : 'DOCKER_USERNAME' ,credentialsId : "$DOCKER_CREDENTIAL_ID")]) {
             sh 'echo "$DOCKER_PASSWORD" | docker login $REGISTRY -u "$DOCKER_USERNAME" --password-stdin'
-            //使用阿里云镜像仓库
+            //使用阿里云镜像仓库  推送快照版
             sh 'docker push  $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER'
           }
 
@@ -38,7 +38,7 @@ pipeline {
       steps {
        input(id: 'deploy-to-dev' , message: '是否部署到集群中?')
        container ('maven') {
-       //由于本地网络  先打包 在发布
+       //部署之前重命名tag
         sh 'docker tag  $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:$PROJECT_VERSION '
           withCredentials([
               kubeconfigFile(
@@ -68,6 +68,7 @@ pipeline {
             sh 'git tag -a $PROJECT_VERSION -m "$PROJECT_VERSION" '
             sh 'git push http://$GIT_USERNAME:$GIT_PASSWORD@gitee.com/$GITEE_ACCOUNT/theangelmall.git   --tags --ipv4'
           }
+          //推送阿里云仓库
           sh 'docker push  $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:$PROJECT_VERSION '
         }
 
