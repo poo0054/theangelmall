@@ -36,7 +36,7 @@ public class indexController {
     }
 
     @ResponseBody
-    @GetMapping("/index/json/catalog.json")
+    @GetMapping("/index/catalog.json")
     public Map<String, List<Catelog2Vo>> indexCatalog(Model model) {
         Map<String, List<Catelog2Vo>> categoryEntities = categoryService.getCatalogJson();
         model.addAttribute("categorys", categoryEntities);
