@@ -5,8 +5,11 @@ spring:
     name: themall-search
   cloud:
     nacos:
+      discovery:
+        server-addr: nacos-server.themall:8848
       config:
-        #        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b
+        username: nacos
+        password: Poo0054@nacos
         extension-configs:
           - dataId: public.yml
             refresh: true
@@ -14,6 +17,9 @@ spring:
             refresh: true
         server-addr: nacos-server.themall:8848
 
+  redis:
+    host: redis.themall
+    port: 6379
   #session保存redis
   session:
     store-type: redis
