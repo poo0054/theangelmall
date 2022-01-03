@@ -34,13 +34,13 @@ spring:
     nacos:
       config:
         server-addr: theangel.vip:8848
-        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b
+        #namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b
         extension-configs:
           - dataId: themall-gatway.yml
             refresh: true
       discovery:
         server-addr: theangel.vip:8848
-        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b
+        #namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b
     gateway:
       routes:
         #         检索服务
