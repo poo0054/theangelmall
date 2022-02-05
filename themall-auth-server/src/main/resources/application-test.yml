@@ -1,0 +1,32 @@
+spring:
+  redis:
+    cluster:
+      nodes: 192.168.56.10:7001,192.168.56.10:7002,192.168.56.10:7003,192.168.56.10:7004,192.168.56.10:7005,192.168.56.10:7006
+  zipkin:
+    base-url: http://192.168.56.10:8858
+  cloud:
+    sentinel:
+      transport:
+        port: 8719
+        dashboard: 192.168.56.10:8333
+    nacos:
+      discovery:
+        server-addr: 192.168.56.10:8848
+
+  #开发期间 关闭缓存
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+
+logging:
+  level:
+    org.springframework.cloud.openfeign: info
+    org.springframework.sleuth: info
+
+server:
+  port: 8082
+  servlet:
+    session:
+      #session超时时间
+      timeout: 30m

@@ -5,13 +5,20 @@ import org.elasticsearch.client.HttpAsyncResponseConsumerFactory;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.Arrays;
 
 @Configuration
 public class ElasticSearchConfig {
 
     public static final RequestOptions COMMON_OPTIONS;
+
+
+    @Value("${spring.elasticsearch.cluster.nodes}")
+    private String[] uris;
 
     static {
         RequestOptions.Builder builder = RequestOptions.DEFAULT.toBuilder();
@@ -24,10 +31,10 @@ public class ElasticSearchConfig {
 
     @Bean
     public RestHighLevelClient esClient() {
-        RestHighLevelClient client = new RestHighLevelClient(
-                RestClient.builder(
-                        new HttpHost("el.themall", 9200, "http")));
-        return client;
+        // 创建多个HttpHost
+        HttpHost[] httpHosts = Arrays.stream(uris).map(HttpHost::create).toArray(HttpHost[]::new);
+        return new RestHighLevelClient(
+                RestClient.builder(httpHosts));
     }
 
 

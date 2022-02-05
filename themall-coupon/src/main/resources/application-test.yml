@@ -1,0 +1,27 @@
+server:
+  port: 8084
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.56.10:8848
+  #      config:
+  #        username: nacos
+  #        password: Poo0054@nacos
+  #        server-addr: nacos-server.themall:8848
+  #        extension-configs:
+  #          - dataId: public.yml
+  #            refresh: true
+  #          - dataId: themall-coupon.yml
+  #            refresh: true
+
+  redis:
+    cluster:
+      nodes: 192.168.56.10:7001,192.168.56.10:7002,192.168.56.10:7003,192.168.56.10:7004,192.168.56.10:7005,192.168.56.10:7006
+
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://192.168.56.10:3306/themall_sms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+
+

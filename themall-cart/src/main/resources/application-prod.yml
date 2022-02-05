@@ -37,5 +37,5 @@ spring:
       #是否缓存空值，解决缓存穿透
       cache-null-values: true
 
-#  thymeleaf:
-#    cache: false
+  thymeleaf:
+    cache: true

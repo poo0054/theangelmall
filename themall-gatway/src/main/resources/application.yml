@@ -1,6 +1,3 @@
-server:
-  port: 88
-
 management:
   endpoints:
     web:
@@ -8,10 +5,11 @@ management:
         include: "*"
 
 spring:
+  profiles:
+    active: test
   application:
     name: themall-gatway
-  zipkin:
-    base-url: http://192.168.56.10:9411
+
     locator:
       discovery:
         #关闭服务发现，否则springcloud会把zipkin的url当成服务名称
@@ -27,20 +25,6 @@ spring:
       probability: 1
 
   cloud:
-    sentinel:
-      transport:
-        port: 8719
-        dashboard: localhost:8333
-    nacos:
-      config:
-        server-addr: theangel.vip:8848
-        #namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b
-        extension-configs:
-          - dataId: themall-gatway.yml
-            refresh: true
-      discovery:
-        server-addr: theangel.vip:8848
-        #namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b
     gateway:
       routes:
         #         检索服务
@@ -153,17 +137,12 @@ spring:
           predicates:
             - Host=member.theangel.com
 
-
         # 秒杀
         - id: themall-seckill
           uri: lb://themall-seckill
           predicates:
             - Host=seckill.theangel.com
 
-logging:
-  level:
-    org.springframework.cloud.openfeign: debug
-    org.springframework.sleuth: debug
 
 
 

@@ -11,12 +11,11 @@ import httpRequest from '@/utils/httpRequest' // api: https://github.com/axios/a
 import {isAuth} from '@/utils'
 import cloneDeep from 'lodash/cloneDeep'
 
-import ElementUI from 'element-ui';
-import PubSub from 'pubsub-js';
-import 'element-ui/lib/theme-chalk/index.css';
+import ElementUI from 'element-ui'
+import PubSub from 'pubsub-js'
+import 'element-ui/lib/theme-chalk/index.css'
 
-Vue.use(ElementUI);
-
+Vue.use(ElementUI)
 
 Vue.use(VueCookie)
 Vue.config.productionTip = false

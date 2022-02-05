@@ -1,30 +1,9 @@
 server:
-  port: 8080
+  port: 8092
 spring:
   redis:
-    host: redis.themall
-    port: 6379
-  #session保存redis
-  session:
-    store-type: redis
-  #配置redis缓存管理器
-  cache:
-    type: redis
-    # 配置了名字，就只能使用自己的名字
-    redis:
-      # 存活时间
-      time-to-live: 3600000
-      #前缀
-      #      key-prefix: AUTO-CACHE_
-      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字
-      use-key-prefix: true
-      #是否缓存空值，解决缓存穿透
-      cache-null-values: true
-
-  servlet:
-    multipart:
-      max-file-size: 20MB
-      max-request-size: 200MB
+    cluster:
+      nodes: 192.168.56.10:7001,192.168.56.10:7002,192.168.56.10:7003,192.168.56.10:7004,192.168.56.10:7005,192.168.56.10:7006
 
   # 这些配置在腾讯云控制台都可查到（使用时替换为你自己的）
   # 腾讯云的SecretId（永久的，可在控制台开启或关闭）
@@ -45,16 +24,7 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: nacos-server.themall:8848
-      config:
-        username: nacos
-        password: Poo0054@nacos
-        server-addr: nacos-server.themall:8848
-        extension-configs:
-          - dataId: public.yml
-            refresh: true
-          - dataId: third-party.yml
-            refresh: true
+        server-addr: 192.168.56.10:8848
     alicloud:
       access-key: LTAI5t5Zw9QpcLrfdGCA4NZZ
       secret-key: MEYjLvITV4G6hkv12N41mbrcqR3phk

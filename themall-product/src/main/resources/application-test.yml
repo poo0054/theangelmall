@@ -1,23 +1,14 @@
 server:
-  port: 8080
+  port: 8088
 spring:
   cloud:
     nacos:
       discovery:
-        server-addr: nacos-server.themall:8848
-      config:
-        username: nacos
-        password: Poo0054@nacos
-        server-addr: nacos-server.themall:8848
-        extension-configs:
-          - dataId: public.yml
-            refresh: true
-          - dataId: themall-product.yml
-            refresh: true
+        server-addr: 192.168.56.10:8848
 
   redis:
-    host: redis.themall
-    port: 6379
+    cluster:
+      nodes: 192.168.56.10:7001,192.168.56.10:7002,192.168.56.10:7003,192.168.56.10:7004,192.168.56.10:7005,192.168.56.10:7006
 
   servlet:
     multipart:
@@ -26,10 +17,8 @@ spring:
   datasource:
     username: root
     password: root
-    url: jdbc:mysql://mysql-master.themall:3306/themall_pms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://192.168.56.10:3306/themall_pms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
 
-  jackson:
-    date-format: yyyy-MM-dd HH:mm:ss
   #开发期间 关闭缓存
   thymeleaf:
     cache: false
@@ -53,4 +42,4 @@ themall:
 
 logging:
   level:
-    com.theangel.themall: error
+    com.theangel.themall: info

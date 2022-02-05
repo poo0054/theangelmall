@@ -1,21 +1,11 @@
-server:
-  port: 10000
 spring:
-  cloud:
-    nacos:
-      config:
-        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b
-        extension-configs:
-          - dataId: public.yml
-            refresh: true
-          - dataId: themall-member.yml
-            refresh: true
-        server-addr: theangel.vip:8848
+  profiles:
+    active: test
   application:
     name: themall-member
 
-
-
+  redis:
+    port: 6379
   #session保存redis
   session:
     store-type: redis
@@ -34,11 +24,6 @@ spring:
       cache-null-values: true
 
   datasource:
-    username: root
-    password: hjj0127..
-    url: jdbc:mysql://theangel.vip:3306/themall_ums?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.cj.jdbc.Driver
-  thymeleaf:
-    cache: false
   mvc:
     date-format: yyyy-MM-dd HH:mm:ss

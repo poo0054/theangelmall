@@ -1,27 +1,10 @@
-server:
-  port: 2500
 spring:
-  cloud:
-    nacos:
-      config:
-        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b
-        server-addr: theangel.vip:8848
-        extension-configs:
-          - dataId: public.yml
-            refresh: true
-          - dataId: themall-seckill.yml
-            refresh: true
+  profiles:
+    active: test
   application:
     name: themall-seckill
-  thymeleaf:
-    cache: false
 
   rabbitmq:
-    port: 5672
-    host: 192.168.56.10
-    username: guest
-    password: guest
-    virtual-host: /themall
     template:
       mandatory: true
     listener:
@@ -29,13 +12,9 @@ spring:
         acknowledge-mode: manual
     publisher-returns: true
 
-
   #session保存redis
   session:
     store-type: redis
-  redis:
-    host: 192.168.56.10
-    port: 6379
   #配置redis缓存管理器
   cache:
     type: redis
@@ -65,6 +44,3 @@ themall:
     maxSize: 200
     keepAliveTime: 10
 
-logging:
-  level:
-    com.theangel.themall: info

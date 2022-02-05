@@ -1,8 +1,6 @@
 server:
   port: 8080
 spring:
-  application:
-    name: themall-search
   cloud:
     nacos:
       discovery:
@@ -20,19 +18,3 @@ spring:
   redis:
     host: redis.themall
     port: 6379
-  #session保存redis
-  session:
-    store-type: redis
-  #配置redis缓存管理器
-  cache:
-    type: redis
-    # 配置了名字，就只能使用自己的名字
-    redis:
-      # 存活时间
-      time-to-live: 3600000
-      #前缀
-      #      key-prefix: AUTO-CACHE_
-      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字
-      use-key-prefix: true
-      #是否缓存空值，解决缓存穿透
-      cache-null-values: true

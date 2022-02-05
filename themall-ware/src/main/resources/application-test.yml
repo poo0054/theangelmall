@@ -1,31 +1,22 @@
 server:
-  port: 8080
+  port: 8091
 spring:
   cloud:
     nacos:
       discovery:
-        server-addr: nacos-server.themall:8848
-      config:
-        username: nacos
-        password: Poo0054@nacos
-        extension-configs:
-          - dataId: public.yml
-            refresh: true
-          - dataId: themall-ware.yml
-            refresh: true
-        server-addr: nacos-server.themall:8848
+        server-addr: 192.168.56.10:8848
 
   redis:
-    host: redis.themall
-    port: 6379
+    cluster:
+      nodes: 192.168.56.10:7001,192.168.56.10:7002,192.168.56.10:7003,192.168.56.10:7004,192.168.56.10:7005,192.168.56.10:7006
 
   datasource:
     username: root
     password: root
-    url: jdbc:mysql://mysql-master.themall:3306/themall_wms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://192.168.56.10:3306/themall_wms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
 
   rabbitmq:
-    host: rabbitmq.themall
+    host: 192.168.56.10
     username: guest
     password: guest
     virtual-host: /themall

@@ -12,13 +12,6 @@ server:
 spring:
   zipkin:
     base-url: http://zipkin-server.themall:9411
-    locator:
-      discovery:
-        #关闭服务发现，否则springcloud会把zipkin的url当成服务名称
-        enabled: false
-    sender:
-      #设置http发送数据
-      type: web
   sleuth:
     sampler:
       #      设置抽取采集率为100%，默认为10%
@@ -41,38 +34,10 @@ spring:
         username: nacos
         password: Poo0054@nacos
   datasource:
-    type: com.alibaba.druid.pool.DruidDataSource
     druid:
-      driver-class-name: com.mysql.cj.jdbc.Driver
       url: jdbc:mysql://mysql-master.themall:3306/themall_admin?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
       username: root
       password: root
-      initial-size: 10
-      max-active: 100
-      min-idle: 10
-      max-wait: 60000
-      pool-prepared-statements: true
-      max-pool-prepared-statement-per-connection-size: 20
-      time-between-eviction-runs-millis: 60000
-      min-evictable-idle-time-millis: 300000
-      #Oracle需要打开注释
-      #validation-query: SELECT 1 FROM DUAL
-      test-while-idle: true
-      test-on-borrow: false
-      test-on-return: false
-      stat-view-servlet:
-        enabled: true
-        url-pattern: /druid/*
-        #login-username: admin
-        #login-password: admin
-      filter:
-        stat:
-          log-slow-sql: true
-          slow-sql-millis: 1000
-          merge-sql: false
-        wall:
-          config:
-            multi-statement-allow: true
   ##多数据源的配置
   #dynamic:
   #  datasource:
@@ -86,20 +51,6 @@ spring:
   #      url: jdbc:postgresql://localhost:5432/renren_security
   #      username: renren
   #      password: 123456
-  application:
-    name: renren-fast
-  # 环境 dev|test|prod
-  #  profiles:
-  #    active: dev
-  # jackson时间格式化
-  jackson:
-    time-zone: GMT+8
-    date-format: yyyy-MM-dd HH:mm:ss
-  servlet:
-    multipart:
-      max-file-size: 100MB
-      max-request-size: 100MB
-      enabled: true
   redis:
     host: redis.themall
     port: 6379
@@ -114,39 +65,6 @@ spring:
         min-idle: 5       # 连接池中的最小空闲连接
   mvc:
     throw-exception-if-no-handler-found: true
-
-#  resources:
-#    add-mappings: false
-#mybatis
-mybatis-plus:
-  mapper-locations: classpath*:/mapper/**/*.xml
-  #实体扫描，多个package用逗号或者分号分隔
-  typeAliasesPackage: io.renren.modules.*.entity
-  global-config:
-    #数据库相关配置
-    db-config:
-      #主键类型  AUTO:"数据库ID自增", INPUT:"用户输入ID", ID_WORKER:"全局唯一ID (数字类型唯一ID)", UUID:"全局唯一ID UUID";
-      id-type: AUTO
-      logic-delete-value: -1
-      logic-not-delete-value: 0
-    banner: false
-
-  #原生配置
-  configuration:
-    map-underscore-to-camel-case: true
-    cache-enabled: false
-    call-setters-on-nulls: true
-    jdbc-type-for-null: 'null'
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-
-feign:
-  sentinel:
-    enabled: true
 
 renren:
   redis:

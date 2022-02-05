@@ -7,6 +7,10 @@ import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.ObjectUtils;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -24,9 +28,17 @@ public class RedissonConfig {
     @Bean(destroyMethod = "shutdown", value = "stringRedissonClient")
     public RedissonClient redissonClient(RedisProperties redisProperties) {
         Config config = new Config();
-        config.useSingleServer()
-                //Redis url should start with redis:// or rediss:// (for SSL connection)
-                .setAddress("redis://" + redisProperties.getHost() + ":" + redisProperties.getPort());
+        List<String> nodes = redisProperties.getCluster().getNodes();
+        if (!ObjectUtils.isEmpty(nodes)) {
+            List<String> collect = nodes.stream().map(item -> "redis://" + item).collect(Collectors.toList());
+            config.useClusterServers()
+                    //Redis url should start with redis:// or rediss:// (for SSL connection)
+                    .setNodeAddresses(collect);
+        } else {
+            config.useSingleServer()
+                    //Redis url should start with redis:// or rediss:// (for SSL connection)
+                    .setAddress("redis://" + redisProperties.getHost() + ":" + redisProperties.getPort());
+        }
         return Redisson.create(config);
     }
 
