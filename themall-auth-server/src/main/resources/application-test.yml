@@ -3,7 +3,18 @@ spring:
     cluster:
       nodes: 192.168.56.10:7001,192.168.56.10:7002,192.168.56.10:7003,192.168.56.10:7004,192.168.56.10:7005,192.168.56.10:7006
   zipkin:
-    base-url: http://192.168.56.10:8858
+    base-url: http://192.168.56.10:9411
+    locator:
+      discovery:
+        #关闭服务发现，否则springcloud会把zipkin的url当成服务名称
+        enabled: false
+    sender:
+      #设置http发送数据
+      type: web
+  sleuth:
+    sampler:
+      #      设置抽取采集率为100%，默认为10%
+      probability: 1
   cloud:
     sentinel:
       transport:

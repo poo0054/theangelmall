@@ -151,12 +151,12 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
 
                 //5.2  sku 图片   pms_sku_images
                 List<SkuImagesEntity> imagesEntities = item.getImages().stream().map(img -> {
-                            SkuImagesEntity skuImagesEntity = new SkuImagesEntity();
-                            skuImagesEntity.setImgUrl(img.getImgUrl());
-                            skuImagesEntity.setDefaultImg(img.getDefaultImg());
-                            skuImagesEntity.setSkuId(skuId);
-                            return skuImagesEntity;
-                        })
+                    SkuImagesEntity skuImagesEntity = new SkuImagesEntity();
+                    skuImagesEntity.setImgUrl(img.getImgUrl());
+                    skuImagesEntity.setDefaultImg(img.getDefaultImg());
+                    skuImagesEntity.setSkuId(skuId);
+                    return skuImagesEntity;
+                })
                         .filter(entity -> !StringUtils.isEmpty(entity))
                         .collect(Collectors.toList());
                 //TODO 没有图片路径不保存
@@ -268,7 +268,7 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
         try {
             R hasStock = theamgelWareFeign.getHasStock(collect1);
             stockMap = hasStock.getData(new TypeReference<List<SkuHasStockVo>>() {
-                    })
+            })
                     .stream()
                     .collect(Collectors.toMap(SkuHasStockVo::getSkuId, SkuHasStockVo::getHasStock));
         } catch (Exception e) {

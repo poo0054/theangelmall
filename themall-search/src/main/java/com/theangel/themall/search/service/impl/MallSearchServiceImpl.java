@@ -62,6 +62,7 @@ public class MallSearchServiceImpl implements MallSearchService {
         SearchRequest searchRequest = buildSearchRequest(searchParam);
         try {
             //执行请求
+            System.out.println(searchRequest.toString());
             searchResponse = restHighLevelClient.search(searchRequest, ElasticSearchConfig.COMMON_OPTIONS);
             //分析请求
             searchResult = buildSearchResult(searchResponse, searchParam);
