@@ -27,9 +27,9 @@ public class RedissonConfig {
     @Bean(destroyMethod = "shutdown")
     public RedissonClient redissonClient(RedisProperties redisProperties) {
         Config config = new Config();
-        List<String> nodes = redisProperties.getCluster().getNodes();
-        if (!ObjectUtils.isEmpty(nodes)) {
-            List<String> collect = nodes.stream().map(item -> "redis://" + item).collect(Collectors.toList());
+        RedisProperties.Cluster cluster = redisProperties.getCluster();
+        if (!ObjectUtils.isEmpty(cluster)) {
+            List<String> collect = cluster.getNodes().stream().map(item -> "redis://" + item).collect(Collectors.toList());
             config.useClusterServers()
                     //Redis url should start with redis:// or rediss:// (for SSL connection)
                     .setNodeAddresses(collect);

@@ -282,8 +282,8 @@ CREATE TABLE `sms_seckill_session`  (
 -- ----------------------------
 -- Records of sms_seckill_session
 -- ----------------------------
-INSERT INTO `sms_seckill_session` VALUES (1, '谷粒秒杀', '2021-10-10 00:00:00', '2022-07-10 15:59:59', 1, '2020-07-09 15:14:21');
-INSERT INTO `sms_seckill_session` VALUES (2, '谷粒秒杀', '2020-07-09 05:15:00', '2020-07-09 15:59:59', 1, '2020-07-09 05:14:47');
+INSERT INTO `sms_seckill_session` VALUES (1, 'themall秒杀', '2021-10-10 00:00:00', '2022-07-10 15:59:59', 1, '2020-07-09 15:14:21');
+INSERT INTO `sms_seckill_session` VALUES (2, 'themall秒杀', '2020-07-09 05:15:00', '2020-07-09 15:59:59', 1, '2020-07-09 05:14:47');
 INSERT INTO `sms_seckill_session` VALUES (3, '8:00', '2021-10-10 00:00:00', '2022-10-10 00:00:00', 1, '2021-11-11 19:38:27');
 
 -- ----------------------------

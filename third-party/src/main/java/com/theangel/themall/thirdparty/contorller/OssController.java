@@ -32,7 +32,7 @@ public class OssController {
 
     @GetMapping("/policy/oss")
     public R policy() {
-        //https://gulimall-hello.oss-cn-beijing.aliyuncs.com/hahaha.jpg
+        //https://themall-hello.oss-cn-beijing.aliyuncs.com/hahaha.jpg
         String host = "https://" + bucket + "." + endpoint; // host的格式为 bucketname.endpoint
         // callbackUrl为 上传回调服务器的URL，请将下面的IP和Port配置为您自己的真实信息。
 //        String callbackUrl = "http://88.88.88.88:8888";
