@@ -85,7 +85,7 @@ CREATE TABLE `ums_member`  (
 -- ----------------------------
 -- Records of ums_member
 -- ----------------------------
-INSERT INTO `ums_member` VALUES (6, 1, '张三阿里巴巴', '$2a$10$1du5V9E6hkNfjDp9W1vdhee0D9ikCeXKkGg8S7d31w.oVc1oV1W/2', NULL, '17322969809', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `ums_member` VALUES (6, 1, '张三阿里巴巴', '$2a$10$1du5V9E6hkNfjDp9W1vdhee0D9ikCeXKkGg8S7d31w.oVc1oV1W/2', NULL, '173229698090', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for ums_member_collect_spu
