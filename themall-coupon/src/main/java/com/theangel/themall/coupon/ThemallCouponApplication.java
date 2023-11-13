@@ -5,8 +5,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
+/**
+ * @author poo0054
+ */
 @SpringBootApplication
-@MapperScan("com/theangel/themall/coupon/dao")
+@MapperScan("com.theangel.themall.coupon.dao")
 @EnableDiscoveryClient
 public class ThemallCouponApplication {
 

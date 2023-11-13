@@ -22,11 +22,3 @@ spring:
         extension-configs:
           - dataId: themall-gatway.yml
             refresh: true
-
-logging:
-  level:
-    org.springframework.cloud.openfeign: warn
-    org.springframework.sleuth: warn
-
-
-

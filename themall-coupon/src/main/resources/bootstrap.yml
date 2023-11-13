@@ -1,0 +1,9 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: themall-coupon
+# Tomcat
+server:
+  servlet:
+    context-path: /themall-coupon

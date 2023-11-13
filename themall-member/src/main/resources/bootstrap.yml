@@ -1,0 +1,8 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: themall-member
+server:
+  servlet:
+    context-path: /themall-member

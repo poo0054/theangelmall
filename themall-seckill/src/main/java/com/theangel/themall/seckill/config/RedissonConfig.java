@@ -29,17 +29,18 @@ public class RedissonConfig {
         Config config = new Config();
         RedisProperties.Cluster cluster = redisProperties.getCluster();
         if (!ObjectUtils.isEmpty(cluster)) {
-            List<String> collect = cluster.getNodes().stream().map(item -> "redis://" + item).collect(Collectors.toList());
+            List<String> collect =
+                cluster.getNodes().stream().map(item -> "redis://" + item).collect(Collectors.toList());
             config.useClusterServers()
-                    //Redis url should start with redis:// or rediss:// (for SSL connection)
-                    .setNodeAddresses(collect);
+                //Redis url should start with redis:// or rediss:// (for SSL connection)
+                .setNodeAddresses(collect);
         } else {
             config.useSingleServer()
-                    //Redis url should start with redis:// or rediss:// (for SSL connection)
-                    .setAddress("redis://" + redisProperties.getHost() + ":" + redisProperties.getPort());
+                //Redis url should start with redis:// or rediss:// (for SSL connection)
+                .setAddress("redis://" + redisProperties.getHost() + ":" + redisProperties.getPort())
+                .setDatabase(redisProperties.getDatabase()).setPassword(redisProperties.getPassword());
         }
         return Redisson.create(config);
     }
-
 
 }

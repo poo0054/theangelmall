@@ -1,0 +1,9 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: renren-fast
+
+server:
+  servlet:
+    context-path: /renren-fast

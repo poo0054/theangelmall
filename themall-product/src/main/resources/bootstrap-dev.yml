@@ -1,0 +1,20 @@
+server:
+  port: 8088
+
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.98.11:30848
+        namespace: c6efdd0f-1682-4586-9812-75b5b4e381bd
+        password: "005400"
+      config:
+        server-addr: 192.168.98.11:30848
+        namespace: c6efdd0f-1682-4586-9812-75b5b4e381bd
+        password: "005400"
+        group: dev
+        file-extension: yaml
+        shared-configs:
+          - dataId: common.yaml
+            group: dev
+            refresh: true

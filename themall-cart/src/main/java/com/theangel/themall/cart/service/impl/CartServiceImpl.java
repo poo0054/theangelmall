@@ -20,6 +20,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -225,7 +226,7 @@ public class CartServiceImpl implements CartService {
      * @return
      */
     private List<CartItem> getCartItemById(String name) {
-        BoundHashOperations<String, Object, Object> hashOps = null;
+        BoundHashOperations<String, Object, Object> hashOps;
         //为空，获取当前线程的bound redis信息   如果登录 优先获取登录的信息
         if (StringUtils.isEmpty(name)) {
             hashOps = getCartOps();
@@ -240,7 +241,7 @@ public class CartServiceImpl implements CartService {
             }).collect(Collectors.toList());
             return collect;
         }
-        return null;
+        return Collections.emptyList();
     }
 
     /**

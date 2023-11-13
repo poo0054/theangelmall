@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 @EnableConfigurationProperties(RedisProperties.class)
 public class RedissonConfig {
 
-
     /**
      * 所有对redisson的使用 都是使用RedissonClient
      *
@@ -30,17 +29,18 @@ public class RedissonConfig {
         Config config = new Config();
         RedisProperties.Cluster cluster = redisProperties.getCluster();
         if (!ObjectUtils.isEmpty(cluster)) {
-            List<String> collect = cluster.getNodes().stream().map(item -> "redis://" + item).collect(Collectors.toList());
+            List<String> collect =
+                cluster.getNodes().stream().map(item -> "redis://" + item).collect(Collectors.toList());
             config.useClusterServers()
-                    //Redis url should start with redis:// or rediss:// (for SSL connection)
-                    .setNodeAddresses(collect);
+                //Redis url should start with redis:// or rediss:// (for SSL connection)
+                .setNodeAddresses(collect);
         } else {
             config.useSingleServer()
-                    //Redis url should start with redis:// or rediss:// (for SSL connection)
-                    .setAddress("redis://" + redisProperties.getHost() + ":" + redisProperties.getPort());
+                //Redis url should start with redis:// or rediss:// (for SSL connection)
+                .setAddress("redis://" + redisProperties.getHost() + ":" + redisProperties.getPort())
+                .setPassword(redisProperties.getPassword()).setDatabase(redisProperties.getDatabase());
         }
         return Redisson.create(config);
     }
-
 
 }

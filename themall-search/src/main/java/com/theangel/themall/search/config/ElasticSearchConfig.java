@@ -1,7 +1,6 @@
 package com.theangel.themall.search.config;
 
 import org.apache.http.HttpHost;
-import org.elasticsearch.client.HttpAsyncResponseConsumerFactory;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
@@ -11,14 +10,16 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.Arrays;
 
+/**
+ * @author poo0054
+ */
 @Configuration
 public class ElasticSearchConfig {
 
     public static final RequestOptions COMMON_OPTIONS;
 
-
     @Value("${spring.elasticsearch.cluster.nodes}")
-    private String[] uris;
+    private String[] urisCloud;
 
     static {
         RequestOptions.Builder builder = RequestOptions.DEFAULT.toBuilder();
@@ -32,10 +33,8 @@ public class ElasticSearchConfig {
     @Bean
     public RestHighLevelClient esClient() {
         // 创建多个HttpHost
-        HttpHost[] httpHosts = Arrays.stream(uris).map(HttpHost::create).toArray(HttpHost[]::new);
-        return new RestHighLevelClient(
-                RestClient.builder(httpHosts));
+        HttpHost[] httpHosts = Arrays.stream(urisCloud).map(HttpHost::create).toArray(HttpHost[]::new);
+        return new RestHighLevelClient(RestClient.builder(httpHosts));
     }
-
 
 }
