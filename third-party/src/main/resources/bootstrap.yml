@@ -3,7 +3,3 @@ spring:
     active: dev
   application:
     name: third-party
-
-server:
-  servlet:
-    context-path: /third-party

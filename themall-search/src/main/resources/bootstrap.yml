@@ -3,6 +3,3 @@ spring:
     active: dev
   application:
     name: themall-search
-server:
-  servlet:
-    context-path: /themall-search

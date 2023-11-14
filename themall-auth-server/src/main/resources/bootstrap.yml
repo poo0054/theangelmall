@@ -3,6 +3,3 @@ spring:
     active: dev
   application:
     name: themall-auth-server
-server:
-  servlet:
-    context-path: /themall-auth-server

@@ -4,6 +4,3 @@ spring:
   application:
     name: themall-order
 
-server:
-  servlet:
-    context-path: /themall-order

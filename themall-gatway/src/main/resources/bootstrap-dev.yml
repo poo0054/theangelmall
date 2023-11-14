@@ -23,7 +23,7 @@ spring:
           predicates:
             - Path=/api/search/**
           filters:
-            - RewritePath=/api/?(?<the>.*), /themall-search/$\{the}
+            - RewritePath=/api/?(?<the>.*), /$\{the}
 
         #          库存服务
         - id: themall-ware
@@ -31,7 +31,7 @@ spring:
           predicates:
             - Path=/api/ware/**
           filters:
-            - RewritePath=/api/?(?<the>.*), /themall-ware/$\{the}
+            - RewritePath=/api/?(?<the>.*), /$\{the}
 
         #          商品优惠服务
         - id: themall-coupon
@@ -39,7 +39,7 @@ spring:
           predicates:
             - Path=/api/coupon/**
           filters:
-            - RewritePath=/api/?(?<the>.*), /themall-coupon/$\{the}
+            - RewritePath=/api/?(?<the>.*), /$\{the}
 
         #         第三方服务
         - id: third-party
@@ -47,7 +47,7 @@ spring:
           predicates:
             - Path=/api/third-party/**
           filters:
-            - RewritePath=/api/?(?<the>.*), /third-party/$\{the}
+            - RewritePath=/api/?(?<the>.*), /$\{the}
 
         #         商品服务
         - id: themall-product
@@ -55,7 +55,7 @@ spring:
           predicates:
             - Path=/api/product/**
           filters:
-            - RewritePath=/api/?(?<the>.*), /themall-product/$\{the}
+            - RewritePath=/api/?(?<the>.*), /$\{the}
 
         #         外网穿透的地址
         - id: themall
@@ -71,7 +71,7 @@ spring:
           predicates:
             - Path=/api/member/**
           filters:
-            - RewritePath=/api/?(?<the>.*), /themall-member/$\{the}
+            - RewritePath=/api/?(?<the>.*), /$\{the}
 
         #
         - id: renren-fast
@@ -87,16 +87,12 @@ spring:
           uri: lb://themall-product
           predicates:
             - Host=item.theangel.com
-          filters:
-            - RewritePath=/?(?<the>.*), /themall-product/$\{the}
 
         # 商品搜索
         - id: search
           uri: lb://themall-search
           predicates:
             - Host=search.theangel.com
-          filters:
-            - RewritePath=/?(?<the>.*), /themall-search/$\{the}
         #            - Path=/list.html
 
 
@@ -105,8 +101,6 @@ spring:
           uri: lb://themall-auth-server
           predicates:
             - Host=auth.theangel.com
-          filters:
-            - RewritePath=/?(?<the>.*), /themall-auth-server/$\{the}
         #            - Path=/auth/**
 
         # 购物车
@@ -114,32 +108,24 @@ spring:
           uri: lb://themall-cart
           predicates:
             - Host=cart.theangel.com:8085
-          filters:
-            - RewritePath=/?(?<the>.*), /themall-cart/$\{the}
 
         # 订单
         - id: themall-order
           uri: lb://themall-order
           predicates:
             - Host=order.theangel.com
-          filters:
-            - RewritePath=/?(?<the>.*), /themall-order/$\{the}
 
         # 首页
         - id: product-index
           uri: lb://themall-product
           predicates:
-            - Host=theangel.com:8085,theangel.vip:8888,127.0.0.1:88,159.75.26.150:8888
-          filters:
-            - RewritePath=/?(?<the>.*), /themall-product/$\{the}
+            - Host=theangel.com,theangel.vip:8888,127.0.0.1:88,159.75.26.150:8888
 
         # 用户订单
         - id: member
           uri: lb://themall-member
           predicates:
             - Host=member.theangel.com
-          filters:
-            - RewritePath=/?(?<the>.*), /themall-member/$\{the}
 
 
         # 秒杀
@@ -147,8 +133,6 @@ spring:
           uri: lb://themall-seckill
           predicates:
             - Host=seckill.theangel.com
-          filters:
-            - RewritePath=/?(?<the>.*), /themall-seckill/$\{the}
 
 
 

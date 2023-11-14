@@ -4,7 +4,4 @@ spring:
   application:
     name: themall-seckill
 
-server:
-  servlet:
-    context-path: /themall-seckill
 

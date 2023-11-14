@@ -3,6 +3,3 @@ spring:
     active: dev
   application:
     name: themall-cart
-server:
-  servlet:
-    context-path: /themall-cart
