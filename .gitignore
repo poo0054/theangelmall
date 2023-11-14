@@ -26,3 +26,4 @@ LICENSE
 
 *.jar
 
+.flattened-pom.xml

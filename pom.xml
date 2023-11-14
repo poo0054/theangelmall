@@ -5,8 +5,7 @@
 
     <groupId>com.theangel.themall</groupId>
     <artifactId>themall-theangelmall</artifactId>
-    <version>0.1</version>
-
+    <version>${revision}</version>
 
     <name>theangel-mall</name>
     <description>聚合服务</description>
@@ -14,6 +13,7 @@
     <packaging>pom</packaging>
 
     <properties>
+        <revision>1.0</revision>
         <java.version>1.8</java.version>
         <json.version>1.2.72</json.version>
         <spring-boot-alibaba.version>2.2.1.RELEASE</spring-boot-alibaba.version>
@@ -26,7 +26,6 @@
         <mybatis-plus.version>3.3.1</mybatis-plus.version>
         <lombok.version>1.18.10</lombok.version>
         <junit.version>4.13.2</junit.version>
-        <themall-common.version>0.1</themall-common.version>
         <qcloud.version>5.6.38</qcloud.version>
         <cos-sts.version>3.0.8</cos-sts.version>
         <valedatetion.version>2.0.1.Final</valedatetion.version>
@@ -39,32 +38,6 @@
         <!-- <sonar.jacoco.reportPaths>${PWD}/./target/jacoco.exec</sonar.jacoco.reportPaths>
          <sonar.groovy.binaries>target/classes</sonar.groovy.binaries>-->
     </properties>
-
-
-    <!--    <repositories>
-            <repository>
-                <id>spring-snapshots</id>
-                <url>http://repo.spring.io/snapshot</url>
-                <snapshots>
-                    <enabled>true</enabled>
-                </snapshots>
-            </repository>
-            <repository>
-                <id>spring-milestones</id>
-                <url>http://repo.spring.io/milestone</url>
-            </repository>
-        </repositories>-->
-
-    <!--<pluginRepositories>
-        <pluginRepository>
-            <id>spring-snapshots</id>
-            <url>http://repo.spring.io/snapshot</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>spring-milestones</id>
-            <url>http://repo.spring.io/milestone</url>
-        </pluginRepository>
-    </pluginRepositories>-->
 
 
     <dependencyManagement>
@@ -229,7 +202,7 @@
             <dependency>
                 <groupId>com.theangel.themall</groupId>
                 <artifactId>themall-common</artifactId>
-                <version>${themall-common.version}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
@@ -272,12 +245,38 @@
         <module>themall-seckill</module>
     </modules>
 
-    <plugins>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.0.0</version>
-        </plugin>
-    </plugins>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <configuration>
+                    <updatePomFile>true</updatePomFile>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten-clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.0.0</version>
+            </plugin>
+        </plugins>
+    </build>
 </project>

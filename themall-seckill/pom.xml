@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.theangel.themall</groupId>
         <artifactId>themall-theangelmall</artifactId>
-        <version>0.1</version>
+        <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
