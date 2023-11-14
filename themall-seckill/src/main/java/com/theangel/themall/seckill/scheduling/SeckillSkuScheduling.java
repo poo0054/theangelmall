@@ -28,12 +28,10 @@ public class SeckillSkuScheduling {
     RedissonClient redissonClient;
 
     /**
-     * 每天晚上3点上架商品
-     * 幂等性处理
+     * 每天晚上3点上架商品 幂等性处理
      */
     @Async
-//    @Scheduled(cron = "0 0 3 * * ?")
-//    @Scheduled(cron = "0 30,0 * * * ? ")
+    //    @Scheduled(cron = "0 30,0 * * * ? ")
     @Scheduled(cron = "30,0 * * * * ? ")
     public void uploadSeckillSku() {
         log.info("上架商品");
@@ -45,6 +43,5 @@ public class SeckillSkuScheduling {
             lock.unlock();
         }
     }
-
 
 }

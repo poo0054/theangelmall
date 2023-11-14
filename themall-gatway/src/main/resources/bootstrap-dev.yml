@@ -107,7 +107,7 @@ spring:
         - id: themall-cart
           uri: lb://themall-cart
           predicates:
-            - Host=cart.theangel.com:8085
+            - Host=cart.theangel.com
 
         # 订单
         - id: themall-order
