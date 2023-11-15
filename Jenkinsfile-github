@@ -9,11 +9,9 @@ pipeline {
         stage('构建') {
             steps {
                 sh 'printenv'
-                sh 'echo $TAG'
-                sh '$TAG  =  GIT_BRANCH'
-                sh 'echo $TAG'
+                sh 'echo $GIT_BRANCH'
                 container('maven') {
-                    sh 'docker -version'
+                    sh 'crt -version'
                 }
             }
         }
