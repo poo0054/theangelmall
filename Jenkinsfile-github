@@ -13,7 +13,7 @@ pipeline {
                 sh 'printenv'
                 sh 'echo $GIT_BRANCH'
                 container('maven') {
-                    sh 'crt -version'
+                    sh ' podman ps'
                 }
             }
         }
