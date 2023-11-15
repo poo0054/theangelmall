@@ -1,7 +1,5 @@
-FROM java:8
+FROM java:8u92-jre-alpine
 EXPOSE 8080
-
-VOLUME /tmp
-ADD target/*.jar  /app.jar
-RUN bash -c 'touch /app.jar'
-ENTRYPOINT ["java","-jar","-Xmx300m","/app.jar","--spring.profiles.active=prod"]
+WORKDIR /home
+COPY target/*.jar /home
+ENTRYPOINT java -jar *.jar
