@@ -102,7 +102,7 @@ pipeline {
                 input(id: 'images-to-docker', message: '是否发布镜像?')
                 container('maven') {
                     withCredentials([usernamePassword(passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME', credentialsId: "$DOCKER_ID")]) {
-                        sh 'echo "$DOCKER_PASSWORD" | docker login $REGISTRY -u "$DOCKER_USERNAME" --password-stdin'
+                        sh 'echo "$DOCKER_PASSWORD" | podman login $REGISTRY -u "$DOCKER_USERNAME" --password-stdin'
                         //网络太慢 不推送远程
 //                        sh "docker push  $REGISTRY/$DOCKER_NAME/${project}:$GIT_BRANCH"
                     }
