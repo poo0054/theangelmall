@@ -1,3 +1,7 @@
+def PROJECTS = ['renren-fast', 'themall-auth-server', 'themall-cart', 'themall-coupon', 'themall-gatway',
+                'themall-member', 'themall-order', 'themall-product', 'themall-search', 'themall-seckill',
+                'themall-ware', 'third-party']
+
 pipeline {
 
     agent {
@@ -37,22 +41,30 @@ pipeline {
             }
         }
 
-//        stage('打包 & 推送快照') {
-//            steps {
-//                container('maven') {
-//                    sh 'mvn  -Dmaven.test.skip=true -gs `pwd`/mvn-setting.xml clean package'
-//                    sh 'cd $PROJECT_NAME && docker build -f Dockerfile -t $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER .'
-//                    withCredentials([usernamePassword(passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME', credentialsId: "$DOCKER_CREDENTIAL_ID")]) {
-//                        sh 'echo "$DOCKER_PASSWORD" | docker login $REGISTRY -u "$DOCKER_USERNAME" --password-stdin'
-//                        //网络太慢 不推送远程
+        stage('打包 & 推送快照') {
+            steps {
+                container('maven') {
+                    script {
+
+                        for (PROJECT in PROJECTS) {
+                            echo '$PROJECT'
+                            sh 'echo $PROJECT'
+                        }
+//                        sh 'cd $PROJECT_NAME && docker build -f Dockerfile -t $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER .'
+//                        withCredentials([usernamePassword(passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME', credentialsId: "$DOCKER_CREDENTIAL_ID")]) {
+//                            sh 'echo "$DOCKER_PASSWORD" | docker login $REGISTRY -u "$DOCKER_USERNAME" --password-stdin'
+//                            //网络太慢 不推送远程
 ////             sh 'docker push  $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER'
-//                    }
-//
-//                }
-//
-//            }
-//        }
-//
+//                        }
+                    }
+
+
+
+                }
+
+            }
+        }
+
 //        stage('部署到k8s') {
 //            steps {
 //                input(id: 'deploy-to-dev', message: '是否部署到集群中?')
