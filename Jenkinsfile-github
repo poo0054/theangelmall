@@ -1,7 +1,3 @@
-def PROJECTS = ['renren-fast', 'themall-auth-server', 'themall-cart', 'themall-coupon', 'themall-gatway',
-                'themall-member', 'themall-order', 'themall-product', 'themall-search', 'themall-seckill',
-                'themall-ware', 'third-party']
-
 pipeline {
 
     agent {
@@ -52,7 +48,12 @@ pipeline {
                     sh 'pwd'
                     sh 'ls'
                     sh 'cd renren-fast && ls'
+                    sh 'cd target && ls'
                     script {
+                        def PROJECTS = ['renren-fast', 'themall-auth-server', 'themall-cart', 'themall-coupon', 'themall-gatway',
+                                        'themall-member', 'themall-order', 'themall-product', 'themall-search', 'themall-seckill',
+                                        'themall-ware', 'third-party']
+
                         for (PROJECT in PROJECTS) {
                             echo '$PROJECT'
                             sh 'echo ${PROJECT}'
