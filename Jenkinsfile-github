@@ -13,10 +13,11 @@ pipeline {
     environment {
         DOCKER_ID = 'docker-ali'
         GIT_ID = 'github'
+        KUBECONFIG_CREDENTIAL_ID = 'kubeconfig'
         NAMESPACE = 'theangel'
         REGISTRY = 'registry.cn-shenzhen.aliyuncs.com'
         DOCKER_NAME = 'themall'
-        KUBECONFIG_CREDENTIAL_ID = 'kubeconfig'
+
     }
 
     stages {
