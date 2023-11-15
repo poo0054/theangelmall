@@ -30,6 +30,12 @@ pipeline {
             }
         }
 
+        stage('checkout scm') {
+            steps {
+                checkout(scm)
+            }
+        }
+
         stage('拉取代码') {
             steps {
 //                git(credentialsId: 'gitee', url: 'https://github.com/poo0054/theangelmall.git', branch: 'master', changelog: true, poll: false)
