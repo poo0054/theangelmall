@@ -44,9 +44,8 @@ pipeline {
             steps {
                 container('maven') {
                     script {
-                        sh '`pdw`'
+                        sh 'pdw'
                         sh 'ls'
-                        sh '`PROJECTS`'
                         for (PROJECT in PROJECTS) {
                             echo '$PROJECT'
                             sh 'echo ${PROJECT}'
