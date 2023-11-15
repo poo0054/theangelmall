@@ -1,5 +1,9 @@
-pipeline {
+def projects = ['renren-fast', 'themall-auth-server']
+//, 'themall-cart', 'themall-coupon', 'themall-gatway',
+//                                        'themall-member', 'themall-order', 'themall-product', 'themall-search', 'themall-seckill',
+//                                        'themall-ware', 'third-party'
 
+pipeline {
     agent {
         node {
             label 'maven'
@@ -57,10 +61,6 @@ pipeline {
             steps {
                 container('maven') {
                     script {
-                        def projects = ['renren-fast', 'themall-auth-server', 'themall-cart', 'themall-coupon', 'themall-gatway',
-                                        'themall-member', 'themall-order', 'themall-product', 'themall-search', 'themall-seckill',
-                                        'themall-ware', 'third-party']
-
                         for (project in projects) {
                             sh "cd $project && podman build -f Dockerfile -t $REGISTRY/$DOCKER_NAME/${project}:$GIT_BRANCH ."
                         }
@@ -81,14 +81,16 @@ pipeline {
                 input(id: 'deploy-to-dev', message: '是否部署到集群中?')
                 container('maven') {
 
-                    /* withCredentials([
+                     withCredentials([
                              kubeconfigFile(
                                      credentialsId: env.KUBECONFIG_CREDENTIAL_ID,
                                      variable: 'KUBECONFIG')
                      ]) {
-                         //新版KubeSphere用法
-                         sh 'envsubst < $PROJECT_NAME/deploy/$PROJECT_NAME.yaml | kubectl apply -f -'
-                     }*/
+                         for (project in projects) {
+                             //新版KubeSphere用法
+                             sh "envsubst < $project/deploy/$project.yaml | kubectl apply -f -"
+                         }
+                     }
                 }
             }
         }
