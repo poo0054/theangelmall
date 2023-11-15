@@ -9,13 +9,11 @@ pipeline {
 
 
     stages {
-        stages {
-            stage('打印参数') {
-                steps {
-                    sh 'printenv'
-                    container('maven') {
-                        sh ' podman ps'
-                    }
+        stage('打印参数') {
+            steps {
+                sh 'printenv'
+                container('maven') {
+                    sh ' podman ps'
                 }
             }
         }
@@ -28,7 +26,6 @@ pipeline {
                 container('maven') {
                     sh 'mvn clean install -Dmaven.test.skip=true -gs `pwd`/mvn-setting.xml'
                 }
-
             }
         }
 
