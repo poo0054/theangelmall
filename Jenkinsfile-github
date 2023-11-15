@@ -63,7 +63,6 @@ pipeline {
 
                         for (project in projects) {
                             sh "cd $project && podman build -f Dockerfile -t $REGISTRY/$DOCKER_NAME/${project}:$GIT_BRANCH ."
-//                            sh "docker push  $REGISTRY/$DOCKER_NAME/${project}:$GIT_BRANCH"
                         }
                         sh 'podman images'
                     }
@@ -73,9 +72,15 @@ pipeline {
         }
 
         stage('部署到k8s') {
+            //            when {
+//                expression {
+//                    return params.GIT_BRANCH =~ /v.*/
+//                }
+//            }
             steps {
                 input(id: 'deploy-to-dev', message: '是否部署到集群中?')
                 container('maven') {
+
                     /* withCredentials([
                              kubeconfigFile(
                                      credentialsId: env.KUBECONFIG_CREDENTIAL_ID,
@@ -84,6 +89,23 @@ pipeline {
                          //新版KubeSphere用法
                          sh 'envsubst < $PROJECT_NAME/deploy/$PROJECT_NAME.yaml | kubectl apply -f -'
                      }*/
+                }
+            }
+        }
+        stage('发布镜像') {
+            //            when {
+//                expression {
+//                    return params.GIT_BRANCH =~ /v.*/
+//                }
+//            }
+            steps {
+                input(id: 'images-to-docker', message: '是否发布镜像?')
+                container('maven') {
+                    withCredentials([usernamePassword(passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME', credentialsId: "$DOCKER_ID")]) {
+                        sh 'echo "$DOCKER_PASSWORD" | docker login $REGISTRY -u "$DOCKER_USERNAME" --password-stdin'
+                        //网络太慢 不推送远程
+//                        sh "docker push  $REGISTRY/$DOCKER_NAME/${project}:$GIT_BRANCH"
+                    }
                 }
             }
         }
