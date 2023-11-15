@@ -1,4 +1,4 @@
-FROM java:8
+FROM openjdk:8-jre-slim
 EXPOSE 8080
 
 VOLUME /tmp
