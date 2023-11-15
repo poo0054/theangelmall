@@ -37,7 +37,7 @@ pipeline {
             }
         }
 
-        stage('拉取代码') {
+        stage('构建代码') {
 //            when {
 //                expression {
 //                    return params.GIT_BRANCH =~ /v.*/
@@ -80,16 +80,15 @@ pipeline {
             steps {
                 input(id: 'deploy-to-dev', message: '是否部署到集群中?')
                 container('maven') {
-
-                    withCredentials([
-                            kubeconfigFile(
-                                    credentialsId: env.KUBECONFIG_CREDENTIAL_ID,
-                                    variable: 'KUBECONFIG')
-                    ]) {
-                        script {
+                    script {
+                        withCredentials([
+                                kubeconfigFile(
+                                        credentialsId: env.KUBECONFIG_CREDENTIAL_ID,
+                                        variable: 'KUBECONFIG')
+                        ]) {
                             for (project in projects) {
                                 //新版KubeSphere用法
-                                sh "envsubst < $project/deploy/$project.yaml | kubectl apply -f -"
+                                sh "envsubst < ${project}/deploy/${project}.yaml | kubectl apply -f -"
                             }
                         }
                     }
