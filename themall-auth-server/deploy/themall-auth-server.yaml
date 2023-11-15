@@ -78,7 +78,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: themall-auth-server
-  namespace: themall
+  namespace: theangel
   labels:
     app: themall-auth-server
     version: v1

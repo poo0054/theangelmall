@@ -73,7 +73,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: renren-fast
-  namespace: themall
+  namespace: theangel
   labels:
     app: renren-fast
     version: v1
