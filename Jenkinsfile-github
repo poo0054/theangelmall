@@ -61,17 +61,10 @@ pipeline {
                                         'themall-ware', 'third-party']
 
                         for (project in projects) {
-                            echo "1: ${project}"
-                            echo "2: $project"
-                            echo '1: ${project}'
-                            echo '2: $project'
-                            echo "3: $REGISTRY"
-                            echo "4: ${REGISTRY}"
-                            echo '3: $REGISTRY'
-                            echo '4: ${REGISTRY}'
-//                            sh "cd $project && podman build -f Dockerfile -t $REGISTRY/$DOCKER_NAME/${project}:$GIT_BRANCH ."
+                            sh "cd $project && podman build -f Dockerfile -t $REGISTRY/$DOCKER_NAME/${project}:$GIT_BRANCH ."
 //                            sh "docker push  $REGISTRY/$DOCKER_NAME/${project}:$GIT_BRANCH"
                         }
+                        sh 'podman images'
                     }
                 }
             }
