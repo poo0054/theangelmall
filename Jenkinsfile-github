@@ -86,9 +86,11 @@ pipeline {
                                     credentialsId: env.KUBECONFIG_CREDENTIAL_ID,
                                     variable: 'KUBECONFIG')
                     ]) {
-                        for (project in projects) {
-                            //新版KubeSphere用法
-                            sh "envsubst < $project/deploy/$project.yaml | kubectl apply -f -"
+                        script {
+                            for (project in projects) {
+                                //新版KubeSphere用法
+                                sh "envsubst < $project/deploy/$project.yaml | kubectl apply -f -"
+                            }
                         }
                     }
                 }
@@ -105,9 +107,11 @@ pipeline {
                 container('maven') {
                     withCredentials([usernamePassword(passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME', credentialsId: "$DOCKER_ID")]) {
                         sh 'echo "$DOCKER_PASSWORD" | podman login $REGISTRY -u "$DOCKER_USERNAME" --password-stdin'
-                        //网络太慢 不推送远程
-                        for (project in projects) {
+                        script {
+                            //网络太慢 不推送远程
+                            for (project in projects) {
 //                        sh "docker push $REGISTRY/$DOCKER_NAME/${project}:$GIT_BRANCH"
+                            }
                         }
                     }
                 }
