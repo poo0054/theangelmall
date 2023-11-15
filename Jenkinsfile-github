@@ -49,7 +49,7 @@ pipeline {
         stage('打包 & 推送快照') {
             steps {
                 container('maven') {
-                    sh 'pdw'
+                    sh 'pwd'
                     sh 'ls'
                     sh 'cd renren-fast && ls'
                     script {
