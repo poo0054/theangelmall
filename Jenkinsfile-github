@@ -48,7 +48,7 @@ pipeline {
 
                         for (PROJECT in PROJECTS) {
                             echo '$PROJECT'
-                            sh 'echo $PROJECT'
+                            sh 'echo ${PROJECT}'
                         }
 //                        sh 'cd $PROJECT_NAME && docker build -f Dockerfile -t $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER .'
 //                        withCredentials([usernamePassword(passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME', credentialsId: "$DOCKER_CREDENTIAL_ID")]) {
