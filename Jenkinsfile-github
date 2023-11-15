@@ -16,12 +16,6 @@ pipeline {
     }
 
     stages {
-        when {
-            expression {
-                return params.GIT_BRANCH =~ /v.*/
-            }
-        }
-
         stage('打印参数') {
             steps {
                 sh 'printenv'
@@ -39,6 +33,11 @@ pipeline {
         }
 
         stage('拉取代码') {
+            when {
+                expression {
+                    return params.GIT_BRANCH =~ /v.*/
+                }
+            }
             steps {
 //                git(credentialsId: 'gitee', url: 'https://github.com/poo0054/theangelmall.git', branch: 'master', changelog: true, poll: false)
                 sh 'echo 正在构建 $GIT_URL 版本号 $GIT_BRANCH'
