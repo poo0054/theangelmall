@@ -61,14 +61,17 @@ pipeline {
                                         'themall-ware', 'third-party']
 
                         for (project in projects) {
-                            echo "test: ${project}"
-                            echo "test: $REGISTRY"
+                            echo "1: ${project}"
+                            echo "2: $project"
+                            echo "3: $REGISTRY"
+                            echo "4: ${REGISTRY}"
 //                            sh "cd $project && podman build -f Dockerfile -t $REGISTRY/$DOCKER_NAME/${project}:$GIT_BRANCH ."
 //                            sh "docker push  $REGISTRY/$DOCKER_NAME/${project}:$GIT_BRANCH"
                         }
                     }
                 }
             }
+
         }
 
 //        stage('部署到k8s') {
@@ -88,14 +91,15 @@ pipeline {
 //                }
 //            }
 //        }
+
 //
 //        stage('发布版本') {
 //            when {
 //                expression {
 //                    return params.PROJECT_VERSION =~ /v.*/
 //                }
-//
 //            }
+
 //            steps {
 //                container('maven') {
 //                    input(id: 'release-image-with-tag', message: '是否发布当前版本镜像？')
