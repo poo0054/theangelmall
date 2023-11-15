@@ -10,6 +10,9 @@ pipeline {
             steps {
                 sh 'printenv'
                 sh 'crictl -version'
+                sh 'echo $TAG'
+                sh '$TAG  =  GIT_BRANCH'
+                sh 'echo $TAG'
             }
         }
     }
@@ -92,6 +95,7 @@ pipeline {
         DOCKERHUB_NAMESPACE = 'poo0054'
         GITEE_ACCOUNT = 'theangel'
         BRANCH_NAME = 'master'
+        TAG = 'tag'
     }
 //    parameters {
 //        choice(
