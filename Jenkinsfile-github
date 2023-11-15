@@ -23,6 +23,7 @@ pipeline {
         stage('打印参数') {
             steps {
                 sh 'printenv'
+                sh ' podman ps'
                 container('maven') {
                     sh ' podman ps'
                     sh ' java -version'
@@ -31,12 +32,12 @@ pipeline {
         }
 
         stage('拉取代码') {
-            agent none
             steps {
 //                git(credentialsId: 'gitee', url: 'https://github.com/poo0054/theangelmall.git', branch: 'master', changelog: true, poll: false)
                 sh 'echo 正在构建 $GIT_URL 版本号 $GIT_BRANCH'
+                sh 'mvn clean install -Dmaven.test.skip=true -gs `pwd`/mvn-setting.xml'
                 container('maven') {
-                    sh 'mvn clean install -Dmaven.test.skip=true -gs `pwd`/mvn-setting.xml'
+
                 }
             }
         }
@@ -57,7 +58,6 @@ pipeline {
 ////             sh 'docker push  $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER'
 //                        }
                     }
-
 
 
                 }
