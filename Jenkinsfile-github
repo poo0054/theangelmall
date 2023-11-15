@@ -48,6 +48,11 @@ pipeline {
         }
 
         stage('打包 & 推送快照') {
+            when {
+                expression {
+                    return params.GIT_BRANCH =~ /v.*/
+                }
+            }
             steps {
                 container('maven') {
                     sh 'pwd'
