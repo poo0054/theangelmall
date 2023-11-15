@@ -43,9 +43,10 @@ pipeline {
         stage('打包 & 推送快照') {
             steps {
                 container('maven') {
+                    sh 'pdw'
+                    sh 'ls'
+                    sh 'cd renren-fast && ls'
                     script {
-                        sh 'pdw'
-                        sh 'ls'
                         for (PROJECT in PROJECTS) {
                             echo '$PROJECT'
                             sh 'echo ${PROJECT}'
