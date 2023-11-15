@@ -5,7 +5,7 @@ metadata:
   #和服务名一致
   name: themall-auth-server
   #属于哪个名称空间
-  namespace: themall
+  namespace: theangel
   labels:
     #类似HTML的id，下面都是操作这个app
     app: themall-auth-server
