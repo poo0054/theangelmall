@@ -40,7 +40,7 @@ pipeline {
         stage('构建代码') {
             when {
                 expression {
-                    return params.GIT_BRANCH =~ /v.*/
+                    return params.GIT_BRANCH == /v.*/
                 }
             }
             steps {
