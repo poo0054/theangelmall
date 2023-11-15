@@ -1,7 +1,7 @@
 <settings>
     <mirrors>
         <mirror>
-            <id>nexus-aliyun</id>
+            <id>aliyun</id>
             <mirrorOf>central</mirrorOf>
             <name>nexus aliyun</name>
             <!--             <url>https://maven.aliyun.com/repository/central</url>-->
