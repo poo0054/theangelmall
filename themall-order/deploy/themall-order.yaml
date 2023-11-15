@@ -30,7 +30,7 @@ spec:
       containers:
         - name: themall-order
           #设置动态
-          image: $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:$PROJECT_VERSION
+          image: $REGISTRY/$DOCKER_NAME/${project}:$GIT_BRANCH
           #暴露端口
           ports:
             - name: tcp-8080

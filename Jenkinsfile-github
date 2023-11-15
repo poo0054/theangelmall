@@ -127,7 +127,7 @@ pipeline {
 //                        sh 'git tag -a $PROJECT_VERSION -m "$PROJECT_VERSION" '
 //                        sh 'git push http://$GIT_USERNAME:$GIT_PASSWORD@gitee.com/$PROJECT_NAME/theangelmall.git   --tags --ipv4'
 //                    }
-//                    sh 'docker push  $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:$PROJECT_VERSION '
+//                    sh 'docker push  $REGISTRY/$DOCKER_NAME/${project}:$GIT_BRANCH '
 //                }
 //
 //            }
