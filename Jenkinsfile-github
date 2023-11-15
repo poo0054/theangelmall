@@ -50,13 +50,15 @@ pipeline {
                     sh 'cd renren-fast && ls'
                     sh 'cd target && ls'
                     script {
-                        def PROJECTS = ['renren-fast', 'themall-auth-server', 'themall-cart', 'themall-coupon', 'themall-gatway',
+                        def projects = ['renren-fast', 'themall-auth-server', 'themall-cart', 'themall-coupon', 'themall-gatway',
                                         'themall-member', 'themall-order', 'themall-product', 'themall-search', 'themall-seckill',
                                         'themall-ware', 'third-party']
 
-                        for (PROJECT in PROJECTS) {
-                            echo '$PROJECT'
-                            sh 'echo ${PROJECT}'
+                        for (project in projects) {
+                            echo '$project'
+                            sh 'echo ${project}'
+                            sh '  ${project}'
+                            sh '  $project'
                         }
 //                        sh 'cd $PROJECT_NAME && docker build -f Dockerfile -t $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER .'
 //                        withCredentials([usernamePassword(passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME', credentialsId: "$DOCKER_CREDENTIAL_ID")]) {
