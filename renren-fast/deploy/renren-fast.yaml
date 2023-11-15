@@ -28,7 +28,7 @@ spec:
       containers:
         - name: renren-fast
           #设置动态
-          image: $REGISTRY/$DOCKER_NAME/${project}:$GIT_BRANCH
+          image: $REGISTRY/$DOCKER_NAME/$project:$GIT_BRANCH
           #暴露端口
           ports:
             #可以多个
