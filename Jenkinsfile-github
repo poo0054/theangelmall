@@ -9,7 +9,7 @@ pipeline {
         stage('构建') {
             steps {
                 sh 'printenv'
-                sh 'docker -version'
+                sh 'crictl -version'
             }
         }
     }
