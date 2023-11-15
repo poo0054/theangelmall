@@ -93,11 +93,11 @@ pipeline {
         BRANCH_NAME = 'master'
     }
     parameters {
-        choice(
-                description: '选择发布项目',
-                name: 'PROJECT_VERSION',
-                choices: ['renren-fast', 'themall-auth-server', 'themall-cart', 'themall-coupon', 'themall-gatway', 'themall-member', 'themall-order', 'themall-product',
-                          'themall-search', 'themall-seckill', 'themall-ware', 'third-party']
-        )
+//        choice(
+//                description: '选择发布项目',
+//                name: 'PROJECT_VERSION',
+//                choices: ['renren-fast', 'themall-auth-server', 'themall-cart', 'themall-coupon', 'themall-gatway', 'themall-member', 'themall-order', 'themall-product',
+//                          'themall-search', 'themall-seckill', 'themall-ware', 'third-party']
+//        )
     }
 }
