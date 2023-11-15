@@ -13,7 +13,7 @@ pipeline {
         NAMESPACE = 'theangel'
         REGISTRY = 'registry.cn-shenzhen.aliyuncs.com'
         DOCKER_NAME = 'themall'
-        KUBECONFIG_CREDENTIAL_ID = 'themall'
+        KUBECONFIG_CREDENTIAL_ID = 'kubeconfig'
     }
 
     stages {
@@ -72,21 +72,21 @@ pipeline {
 
         }
 
-//        stage('部署到k8s') {
-//            steps {
-//                input(id: 'deploy-to-dev', message: '是否部署到集群中?')
-//                container('maven') {
-//                    withCredentials([
-//                            kubeconfigFile(
-//                                    credentialsId: env.KUBECONFIG_CREDENTIAL_ID,
-//                                    variable: 'KUBECONFIG')
-//                    ]) {
-//                        //新版KubeSphere用法
-//                        sh 'envsubst < $PROJECT_NAME/deploy/$PROJECT_NAME.yaml | kubectl apply -f -'
-//                    }
-//                }
-//            }
-//        }
+        stage('部署到k8s') {
+            steps {
+                input(id: 'deploy-to-dev', message: '是否部署到集群中?')
+                container('maven') {
+                    /* withCredentials([
+                             kubeconfigFile(
+                                     credentialsId: env.KUBECONFIG_CREDENTIAL_ID,
+                                     variable: 'KUBECONFIG')
+                     ]) {
+                         //新版KubeSphere用法
+                         sh 'envsubst < $PROJECT_NAME/deploy/$PROJECT_NAME.yaml | kubectl apply -f -'
+                     }*/
+                }
+            }
+        }
 
 //
 //        stage('发布版本') {
