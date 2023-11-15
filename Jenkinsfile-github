@@ -8,7 +8,6 @@ pipeline {
         node {
             label 'maven'
         }
-
     }
 
     environment {
@@ -38,11 +37,11 @@ pipeline {
         }
 
         stage('构建代码') {
-//            when {
-//                expression {
-//                    return params.GIT_BRANCH =~ /v.*/
-//                }
-//            }
+            when {
+                expression {
+                    return params.GIT_BRANCH =~ /v.*/
+                }
+            }
             steps {
 //                git(credentialsId: 'gitee', url: 'https://github.com/poo0054/theangelmall.git', branch: 'master', changelog: true, poll: false)
                 sh 'echo 正在构建 $GIT_URL 版本号 $GIT_BRANCH'
@@ -53,11 +52,11 @@ pipeline {
         }
 
         stage('打包 & 推送快照') {
-//            when {
-//                expression {
-//                    return params.GIT_BRANCH =~ /v.*/
-//                }
-//            }
+            when {
+                expression {
+                    return params.GIT_BRANCH =~ /v.*/
+                }
+            }
             steps {
                 container('maven') {
                     script {
@@ -72,11 +71,11 @@ pipeline {
         }
 
         stage('部署到k8s') {
-            //            when {
-//                expression {
-//                    return params.GIT_BRANCH =~ /v.*/
-//                }
-//            }
+            when {
+                expression {
+                    return params.GIT_BRANCH =~ /v.*/
+                }
+            }
             steps {
                 input(id: 'deploy-to-dev', message: '是否部署到集群中?')
                 container('maven') {
@@ -96,21 +95,20 @@ pipeline {
             }
         }
         stage('发布镜像') {
-            //            when {
-//                expression {
-//                    return params.GIT_BRANCH =~ /v.*/
-//                }
-//            }
+            when {
+                expression {
+                    return params.GIT_BRANCH =~ /v.*/
+                }
+            }
             steps {
                 input(id: 'images-to-docker', message: '是否发布镜像?')
                 container('maven') {
                     script {
                         withCredentials([usernamePassword(passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME', credentialsId: "$DOCKER_ID")]) {
                             sh 'echo "$DOCKER_PASSWORD" | podman login $REGISTRY -u "$DOCKER_USERNAME" --password-stdin'
-
-                            //网络太慢 不推送远程
+                            // 送远程
                             for (project in projects) {
-//                        sh "docker push $REGISTRY/$DOCKER_NAME/${project}:$GIT_BRANCH"
+                                sh "docker push $REGISTRY/$DOCKER_NAME/${project}:$GIT_BRANCH"
                             }
                         }
                     }
