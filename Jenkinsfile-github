@@ -7,30 +7,31 @@ pipeline {
 
     }
 
+
     stages {
-        stage('构建') {
-            steps {
-                sh 'printenv'
-                sh 'echo $GIT_BRANCH'
-                container('maven') {
-                    sh ' podman ps'
+        stages {
+            stage('打印参数') {
+                steps {
+                    sh 'printenv'
+                    container('maven') {
+                        sh ' podman ps'
+                    }
                 }
             }
         }
-    }
-//    stages {
-//        stage('拉取代码') {
-//            agent none
-//            steps {
-//                git(credentialsId: 'gitee', url: 'https://gitee.com/theangel/theangelmall.git', branch: 'master', changelog: true, poll: false)
-//                sh 'echo 正在构建 $PROJECT_NAME 版本号 $PROJECT_VERSION 将会提交给 $REGISTRY 镜像仓库'
-//                container('maven') {
-//                    sh 'mvn clean install -Dmaven.test.skip=true -gs `pwd`/mvn-setting.xml'
-//                }
-//
-//            }
-//        }
-//
+
+        stage('拉取代码') {
+            agent none
+            steps {
+//                git(credentialsId: 'gitee', url: 'https://github.com/poo0054/theangelmall.git', branch: 'master', changelog: true, poll: false)
+                sh 'echo 正在构建 $GIT_URL 版本号 $GIT_BRANCH'
+                container('maven') {
+                    sh 'mvn clean install -Dmaven.test.skip=true -gs `pwd`/mvn-setting.xml'
+                }
+
+            }
+        }
+
 //        stage('打包 & 推送快照') {
 //            steps {
 //                container('maven') {
@@ -79,7 +80,7 @@ pipeline {
 //                        sh 'git config --global user.email "poo0054.com" '
 //                        sh 'git config --global user.name "poo0054" '
 //                        sh 'git tag -a $PROJECT_VERSION -m "$PROJECT_VERSION" '
-//                        sh 'git push http://$GIT_USERNAME:$GIT_PASSWORD@gitee.com/$GITEE_ACCOUNT/theangelmall.git   --tags --ipv4'
+//                        sh 'git push http://$GIT_USERNAME:$GIT_PASSWORD@gitee.com/$PROJECT_NAME/theangelmall.git   --tags --ipv4'
 //                    }
 //                    sh 'docker push  $REGISTRY/$DOCKERHUB_NAMESPACE/$PROJECT_NAME:$PROJECT_VERSION '
 //                }
@@ -88,23 +89,12 @@ pipeline {
 //        }
 //
 //    }
-    environment {
-        DOCKER_CREDENTIAL_ID = 'docker-hub'
-        GITEE_CREDENTIAL_ID = 'gitee'
-        KUBECONFIG_CREDENTIAL_ID = 'demo-kubeconfig'
-        SONAR_CREDENTIAL_ID = 'sonar-qube'
-        REGISTRY = 'docker.io'
-        DOCKERHUB_NAMESPACE = 'poo0054'
-        GITEE_ACCOUNT = 'theangel'
-        BRANCH_NAME = 'master'
-        TAG = 'tag'
+        environment {
+            DOCKER_ID = 'docker-ali'
+            GIT_ID = 'git'
+            NAMESPACE = 'theangel'
+            REGISTRY = 'registry.cn-shenzhen.aliyuncs.com'
+            DOCKER_NAME = 'themall'
+        }
     }
-//    parameters {
-//        choice(
-//                description: '选择发布项目',
-//                name: 'PROJECT_VERSION',
-//                choices: ['renren-fast', 'themall-auth-server', 'themall-cart', 'themall-coupon', 'themall-gatway', 'themall-member', 'themall-order', 'themall-product',
-//                          'themall-search', 'themall-seckill', 'themall-ware', 'third-party']
-//        )
-//    }
 }
