@@ -23,7 +23,6 @@ pipeline {
         stage('打印参数') {
             steps {
                 sh 'printenv'
-                sh ' podman ps'
                 container('maven') {
                     sh ' podman ps'
                     sh ' java -version'
