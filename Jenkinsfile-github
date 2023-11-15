@@ -12,7 +12,7 @@ pipeline {
 
     environment {
         DOCKER_ID = 'docker-ali'
-        GIT_ID = 'git'
+        GIT_ID = 'github'
         NAMESPACE = 'theangel'
         REGISTRY = 'registry.cn-shenzhen.aliyuncs.com'
         DOCKER_NAME = 'themall'
