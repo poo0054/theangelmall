@@ -1,13 +1,11 @@
 pipeline {
-//    agent {
-//        node {
-//            label 'maven'
-//        }
-//
-//    }
 
-    agent none
+    agent {
+        node {
+            label 'maven'
+        }
 
+    }
 
     stages {
         stage('构建') {
