@@ -16,6 +16,12 @@ pipeline {
     }
 
     stages {
+        when {
+            expression {
+                return params.GIT_BRANCH =~ /v.*/
+            }
+        }
+
         stage('打印参数') {
             steps {
                 sh 'printenv'
@@ -47,8 +53,7 @@ pipeline {
                 container('maven') {
                     sh 'pwd'
                     sh 'ls'
-                    sh 'cd renren-fast && ls'
-                    sh 'cd target && ls'
+                    sh 'cd renren-fast && ls && cd target && ls'
                     script {
                         def projects = ['renren-fast', 'themall-auth-server', 'themall-cart', 'themall-coupon', 'themall-gatway',
                                         'themall-member', 'themall-order', 'themall-product', 'themall-search', 'themall-seckill',
