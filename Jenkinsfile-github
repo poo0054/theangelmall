@@ -113,6 +113,20 @@ pipeline {
             }
         }
 
+        stage('git标签') {
+            input(id: '是否标记git标签', message: 'tag to git?')
+            steps {
+                container('maven') {
+                    withCredentials([usernamePassword(credentialsId: "$GIT_ID", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+                        sh 'git config --global user.email "poo0054@outlook.com" '
+                        sh 'git config --global user.name "poo0054" '
+                        sh 'git tag -a $TAG_NAME -m "$TAG_NAME" '
+                        sh 'git push http://$GIT_USERNAME:$GIT_PASSWORD@github.com/poo0054/theangelmall.git   --tags --ipv4'
+                    }
+                }
+            }
+        }
+
     }
 
 }
