@@ -1,0 +1,92 @@
+#是一次部署
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  #和服务名一致
+  name: $MODEL_NAME
+  #属于哪个名称空间
+  namespace: theangel
+  labels:
+    #类似HTML的id，下面都是操作这个app
+    app: $MODEL_NAME
+    version: v1
+spec:
+  #副本数
+  replicas: 3
+  #给谁设置副本
+  selector:
+    matchLabels:
+      app: $MODEL_NAME
+      #模板
+  template:
+    metadata:
+      labels:
+        app: $MODEL_NAME
+        #规格
+    spec:
+      #容器
+      containers:
+        - name: $MODEL_NAME
+          #设置动态
+          image: $REGISTRY/$DOCKER_NAME/$MODEL_NAME:$TAG_NAME
+          #暴露端口
+          ports:
+            #可以多个
+            - name: tcp-8080
+              containerPort: 8080
+              protocol: TCP
+          #申请资源
+          resources:
+            #限制
+            limits:
+              cpu: 1000m
+              memory: 500Mi
+            #初始资源
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          #镜像拉取策略 镜像不存在才拉取
+          imagePullPolicy: IfNotPresent
+          #自动启动
+      restartPolicy: Always
+      #停机秒数
+      terminationGracePeriodSeconds: 30
+  #策略
+  strategy:
+    #滚动更新策略 -> 停一个起一个的更新
+    type: RollingUpdate
+    rollingUpdate:
+      #最大不可用 最多让总共集群的25%不可用，升级的时候最多让25%先不可用
+      maxUnavailable: 25%
+      #最大存活 更新期间最大允许25%使用
+      maxSurge: 25%
+      #保留最多10个历史版本
+  revisionHistoryLimit: 10
+  #最多600秒没有启动成功，就认为卡住了
+  progressDeadlineSeconds: 600
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: $MODEL_NAME
+  namespace: theangel
+  labels:
+    app: $MODEL_NAME
+    version: v1
+spec:
+  ports:
+    - name: tcp-8080
+      #类型http
+      protocol: TCP
+      #Service的端口
+      port: 8080
+      #容器端口
+      targetPort: 8080
+  selector:
+    app: $MODEL_NAME
+  type: ClusterIP
+  sessionAffinity: None
