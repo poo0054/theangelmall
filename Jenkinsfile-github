@@ -1,7 +1,6 @@
-def projects = ['renren-fast', 'themall-auth-server', 'themall-cart', 'themall-coupon', 'themall-gatway',
-                'themall-member', 'themall-order', 'themall-product', 'themall-search', 'themall-seckill',
-                'themall-ware']
-
+//def projects = ['renren-fast', 'themall-auth-server', 'themall-cart', 'themall-coupon', 'themall-gatway',
+//                'themall-member', 'themall-order', 'themall-product', 'themall-search', 'themall-seckill',
+//                'themall-ware']
 //, 'third-party'
 
 pipeline {
@@ -13,6 +12,14 @@ pipeline {
 
     parameters {
         string(name: 'TAG_NAME', defaultValue: 'v1.0', description: '版本名称')
+        choice(
+                description: '选择模块进行构建',
+                name: 'projects',
+                choices: ['renren-fast', 'themall-auth-server', 'themall-cart', 'themall-coupon', 'themall-gatway',
+                          'themall-member', 'themall-order', 'themall-product', 'themall-search', 'themall-seckill',
+                          'themall-ware']
+//                , 'third-party'
+        )
     }
 
     environment {
