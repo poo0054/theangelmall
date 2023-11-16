@@ -31,7 +31,7 @@ spec:
       containers:
         - name: themall-search
           #设置动态
-          image: $REGISTRY/$DOCKER_NAME/${project}:$GIT_BRANCH
+          image: $REGISTRY/$DOCKER_NAME/$MODEL_NAME:$TAG_NAME
           #暴露端口
           ports:
             - name: tcp-8080
