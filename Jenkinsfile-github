@@ -25,7 +25,12 @@ pipeline {
     }
 
     stages {
-        stage('打印参数') {
+        stage('checkout scm') {
+            steps {
+                checkout(scm)
+            }
+        }
+        stage('环境') {
             steps {
                 sh 'printenv'
                 container('maven') {
@@ -34,13 +39,6 @@ pipeline {
                 }
             }
         }
-
-        stage('checkout scm') {
-            steps {
-                checkout(scm)
-            }
-        }
-
         stage('构建代码') {
             steps {
 //                git(credentialsId: 'gitee', url: 'https://github.com/poo0054/theangelmall.git', branch: 'master', changelog: true, poll: false)
