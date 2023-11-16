@@ -78,7 +78,7 @@ pipeline {
                             sh 'echo "$DOCKER_PASSWORD" | podman login $REGISTRY -u "$DOCKER_USERNAME" --password-stdin'
                             // 送远程
                             for (project in projects) {
-                                sh "docker push $REGISTRY/$DOCKER_NAME/$project:$TAG_NAME"
+                                sh "podman push $REGISTRY/$DOCKER_NAME/$project:$TAG_NAME"
                             }
                         }
                     }
