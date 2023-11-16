@@ -55,7 +55,7 @@ pipeline {
         stage('打包 & 推送快照') {
             when {
                 expression {
-                    return params.GIT_BRANCH =~ /v.*/
+                    return params.GIT_BRANCH =~ /v*/
                 }
             }
             steps {
@@ -74,7 +74,7 @@ pipeline {
         stage('部署到k8s') {
             when {
                 expression {
-                    return params.GIT_BRANCH =~ /v.*/
+                    return params.GIT_BRANCH =~ /v*/
                 }
             }
             steps {
@@ -98,7 +98,7 @@ pipeline {
         stage('发布镜像') {
             when {
                 expression {
-                    return params.GIT_BRANCH =~ /v.*/
+                    return params.GIT_BRANCH =~ /v*/
                 }
             }
             steps {
