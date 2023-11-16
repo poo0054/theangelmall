@@ -51,7 +51,7 @@ pipeline {
             }
         }
 
-        stage('打包 & 推送快照') {
+        stage('打包') {
 
             steps {
                 container('maven') {
@@ -63,12 +63,10 @@ pipeline {
                     }
                 }
             }
-
         }
 
         stage('部署到k8s') {
             steps {
-                input(id: 'deploy-to-dev', message: '是否部署到集群中?')
                 container('maven') {
                     script {
                         withCredentials([
@@ -87,12 +85,18 @@ pipeline {
                 }
             }
         }
-        stage('发布镜像') {
+        stage('发布版本') {
             steps {
-                input(id: 'images-to-docker', message: '是否发布镜像?')
+                input(id: 'images-to-docker', message: '是否发布版本?')
                 container('maven') {
+                    withCredentials([usernamePassword(credentialsId: "GITEE_CREDENTIAL_ID", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+                        sh 'git config --global user.email "poo0054.com" '
+                        sh 'git config --global user.name "poo0054" '
+                        sh 'git tag -a $TAG_NAME -m "$TAG_NAME" '
+                        sh 'git push http://$GIT_USERNAME:$GIT_PASSWORD@github.com/poo0054/theangelmall.git   --tags --ipv4'
+                    }
                     script {
-                        withCredentials([usernamePassword(passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME', credentialsId: "$DOCKER_ID")]) {
+                        withCredentials([usernamePassword(passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME', credentialsId: "DOCKER_ID")]) {
                             sh 'echo "$DOCKER_PASSWORD" | podman login $REGISTRY -u "$DOCKER_USERNAME" --password-stdin'
                             // 送远程
                             for (project in projects) {
@@ -104,21 +108,6 @@ pipeline {
             }
         }
 
-
-        stage('发布版本') {
-            steps {
-                input(id: 'release-image-with-tag', message: '是否发布当前版本镜像？')
-                container('maven') {
-                    withCredentials([usernamePassword(credentialsId: "$GITEE_CREDENTIAL_ID", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-                        sh 'git config --global user.email "poo0054.com" '
-                        sh 'git config --global user.name "poo0054" '
-                        sh 'git tag -a $TAG_NAME -m "$TAG_NAME" '
-                        sh 'git push http://$GIT_USERNAME:$GIT_PASSWORD@github.com/poo0054/theangelmall.git   --tags --ipv4'
-                    }
-                }
-
-            }
-        }
 
     }
 
