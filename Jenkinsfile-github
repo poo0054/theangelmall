@@ -97,7 +97,7 @@ pipeline {
 
         stage('git标签') {
             steps {
-                input(id: '是否标记git标签', message: 'tag to git?')
+                input(id: 'tag to git', message: 'git是否标记标签?')
                 container('maven') {
                     withCredentials([usernamePassword(credentialsId: "$GIT_ID", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
                         sh 'git config --global user.email "poo0054@outlook.com" '
