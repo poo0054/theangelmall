@@ -68,12 +68,12 @@ pipeline {
         stage('部署到k8s') {
             steps {
                 container('maven') {
-                    withCredentials([
-                            kubeconfigFile(
-                                    credentialsId: env.KUBECONFIG_CREDENTIAL_ID,
-                                    variable: 'KUBECONFIG')
-                    ]) {
-                        script {
+                    script {
+                        withCredentials([
+                                kubeconfigFile(
+                                        credentialsId: env.KUBECONFIG_CREDENTIAL_ID,
+                                        variable: 'KUBECONFIG')
+                        ]) {
                             for (project in projects) {
                                 //新版KubeSphere用法
                                 withEnv(["MODEL_NAME=$project"]) {
