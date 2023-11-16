@@ -51,8 +51,7 @@ pipeline {
             }
         }
 
-        stage('打包') {
-
+        stage('构建镜像') {
             steps {
                 container('maven') {
                     script {
@@ -60,6 +59,28 @@ pipeline {
                             sh "cd $project && podman build -f Dockerfile -t $REGISTRY/$DOCKER_NAME/${project}:$TAG_NAME ."
                         }
                         sh 'podman images'
+                    }
+                }
+            }
+        }
+
+        stage('发布版本') {
+            steps {
+                container('maven') {
+                    withCredentials([usernamePassword(credentialsId: "$GIT_ID", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+                        sh 'git config --global user.email "poo0054@outlook.com" '
+                        sh 'git config --global user.name "poo0054" '
+                        sh 'git tag -a $TAG_NAME -m "$TAG_NAME" '
+                        sh 'git push http://$GIT_USERNAME:$GIT_PASSWORD@github.com/poo0054/theangelmall.git   --tags --ipv4'
+                    }
+                    script {
+                        withCredentials([usernamePassword(credentialsId: "$DOCKER_ID", passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                            sh 'echo " $DOCKER_PASSWORD " | podman login $REGISTRY -u " $DOCKER_USERNAME " --password-stdin'
+                            // 送远程
+                            for (project in projects) {
+                                sh "docker push $REGISTRY/$DOCKER_NAME/$project:$TAG_NAME"
+                            }
+                        }
                     }
                 }
             }
@@ -85,29 +106,6 @@ pipeline {
                 }
             }
         }
-        stage('发布版本') {
-            steps {
-                input(id: 'images-to-docker', message: '是否发布版本?')
-                container('maven') {
-                    withCredentials([usernamePassword(credentialsId: "$GIT_ID", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-                        sh 'git config --global user.email "poo0054@outlook.com" '
-                        sh 'git config --global user.name "poo0054" '
-                        sh 'git tag -a $TAG_NAME -m "$TAG_NAME" '
-                        sh 'git push http://$GIT_USERNAME:$GIT_PASSWORD@github.com/poo0054/theangelmall.git   --tags --ipv4'
-                    }
-                    script {
-                        withCredentials([usernamePassword(credentialsId: "$DOCKER_ID", passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-                            sh "echo " $DOCKER_PASSWORD " | podman login $REGISTRY -u " $DOCKER_USERNAME " --password-stdin"
-                            // 送远程
-                            for (project in projects) {
-                                sh "docker push $REGISTRY/$DOCKER_NAME/${project}:$TAG_NAME"
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
 
     }
 

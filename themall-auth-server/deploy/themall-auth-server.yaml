@@ -13,7 +13,7 @@ metadata:
 
 spec:
   #副本数
-  replicas: 1
+  replicas: 3
   #给谁设置副本
   selector:
     matchLabels:
