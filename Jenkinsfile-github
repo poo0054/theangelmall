@@ -14,7 +14,7 @@ pipeline {
         string(name: 'TAG_NAME', defaultValue: 'v1.0', description: '版本名称')
         choice(
                 description: '选择模块进行构建',
-                name: 'projects',
+                name: 'PROJECT',
                 choices: ['renren-fast', 'themall-auth-server', 'themall-cart', 'themall-coupon', 'themall-gatway',
                           'themall-member', 'themall-order', 'themall-product', 'themall-search', 'themall-seckill',
                           'themall-ware']
@@ -50,9 +50,9 @@ pipeline {
         stage('构建代码') {
             steps {
 //                git(credentialsId: 'gitee', url: 'https://github.com/poo0054/theangelmall.git', branch: 'master', changelog: true, poll: false)
-                sh 'echo 正在构建 $GIT_URL 版本号 $GIT_BRANCH'
+                sh 'echo 正在构建 $PROJECT 版本号 $GIT_BRANCH'
                 container('maven') {
-                    sh 'mvn clean install -Dmaven.test.skip=true -gs `pwd`/mvn-setting.xml'
+                    sh 'mvn -U-pl ${MODULE}  -am clean install -Dmaven.test.skip=true -gs `pwd`/mvn-setting.xml'
                 }
             }
         }
@@ -60,12 +60,8 @@ pipeline {
         stage('构建镜像') {
             steps {
                 container('maven') {
-                    script {
-                        for (project in projects) {
-                            sh "cd $project && podman build -f Dockerfile -t $REGISTRY/$DOCKER_NAME/${project}:$TAG_NAME ."
-                        }
-                        sh 'podman images'
-                    }
+                    sh "cd $PROJECT && podman build -f Dockerfile -t $REGISTRY/$DOCKER_NAME/${project}:$TAG_NAME ."
+                    sh 'podman images'
                 }
             }
         }
@@ -79,14 +75,10 @@ pipeline {
                         sh 'git tag -a $TAG_NAME -m "$TAG_NAME" '
                         sh 'git push http://$GIT_USERNAME:$GIT_PASSWORD@github.com/poo0054/theangelmall.git   --tags --ipv4'
                     }
-                    script {
-                        withCredentials([usernamePassword(credentialsId: "$DOCKER_ID", passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-                            sh 'echo "$DOCKER_PASSWORD" | podman login $REGISTRY -u "$DOCKER_USERNAME" --password-stdin'
-                            // 送远程
-                            for (project in projects) {
-                                sh "podman push $REGISTRY/$DOCKER_NAME/$project:$TAG_NAME"
-                            }
-                        }
+                    withCredentials([usernamePassword(credentialsId: "$DOCKER_ID", passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                        sh 'echo "$DOCKER_PASSWORD" | podman login $REGISTRY -u "$DOCKER_USERNAME" --password-stdin'
+                        // 送远程
+                        sh "podman push $REGISTRY/$DOCKER_NAME/$PROJECT:$TAG_NAME"
                     }
                 }
             }
@@ -94,19 +86,15 @@ pipeline {
 
         stage('部署到k8s') {
             steps {
-                script {
-                    container('maven') {
-                        withCredentials([
-                                kubeconfigFile(
-                                        credentialsId: env.KUBECONFIG_CREDENTIAL_ID,
-                                        variable: 'KUBECONFIG')
-                        ]) {
-                            for (project in projects) {
-                                //新版KubeSphere用法
-                                withEnv(["MODEL_NAME=$project"]) {
-                                    sh 'envsubst < $MODEL_NAME/deploy/$MODEL_NAME.yaml | kubectl apply -f -'
-                                }
-                            }
+                container('maven') {
+                    withCredentials([
+                            kubeconfigFile(
+                                    credentialsId: env.KUBECONFIG_CREDENTIAL_ID,
+                                    variable: 'KUBECONFIG')
+                    ]) {
+                        //新版KubeSphere用法
+                        withEnv(["MODEL_NAME=$PROJECT"]) {
+                            sh 'envsubst < $MODEL_NAME/deploy/$MODEL_NAME.yaml | kubectl apply -f -'
                         }
                     }
                 }
@@ -114,8 +102,8 @@ pipeline {
         }
 
         stage('git标签') {
-            input(id: '是否标记git标签', message: 'tag to git?')
             steps {
+                input(id: '是否标记git标签', message: 'tag to git?')
                 container('maven') {
                     withCredentials([usernamePassword(credentialsId: "$GIT_ID", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
                         sh 'git config --global user.email "poo0054@outlook.com" '
