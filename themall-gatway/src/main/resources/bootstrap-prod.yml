@@ -1,6 +1,6 @@
 # Tomcat
 server:
-  port: 80
+  port: 8080
 
 spring:
   cloud:
