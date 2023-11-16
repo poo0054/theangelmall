@@ -1,7 +1,8 @@
-def projects = ['renren-fast', 'themall-auth-server']
-//, 'themall-cart', 'themall-coupon', 'themall-gatway',
-//                                        'themall-member', 'themall-order', 'themall-product', 'themall-search', 'themall-seckill',
-//                                        'themall-ware', 'third-party'
+def projects = ['renren-fast', 'themall-auth-server', 'themall-cart', 'themall-coupon', 'themall-gatway',
+                'themall-member', 'themall-order', 'themall-product', 'themall-search', 'themall-seckill',
+                'themall-ware']
+
+//, 'third-party'
 
 pipeline {
     agent {
