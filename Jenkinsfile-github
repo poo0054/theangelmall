@@ -32,7 +32,6 @@ pipeline {
                             withEnv(["VERSION_NAME=$project"]) {
                                 echo "VERSION_NAME = $env.VERSION_NAME"
                             }
-                            sh "$VERSION_NAME = $project"
                             echo "$VERSION_NAME"
                         }
                     }
