@@ -3,12 +3,12 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   #和服务名一致
-  name: $MODEL_NAME
+  name: $PROJECT
   #属于哪个名称空间
   namespace: theangel
   labels:
     #类似HTML的id，下面都是操作这个app
-    app: $MODEL_NAME
+    app: $PROJECT
     version: v1
 spec:
   #副本数
@@ -16,19 +16,19 @@ spec:
   #给谁设置副本
   selector:
     matchLabels:
-      app: $MODEL_NAME
+      app: $PROJECT
       #模板
   template:
     metadata:
       labels:
-        app: $MODEL_NAME
+        app: $PROJECT
         #规格
     spec:
       #容器
       containers:
-        - name: $MODEL_NAME
+        - name: $PROJECT
           #设置动态
-          image: $REGISTRY/$DOCKER_NAME/$MODEL_NAME:$TAG_NAME
+          image: $REGISTRY/$DOCKER_NAME/$PROJECT:$TAG_NAME
           #暴露端口
           ports:
             #可以多个
@@ -72,10 +72,10 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: $MODEL_NAME
+  name: $PROJECT
   namespace: theangel
   labels:
-    app: $MODEL_NAME
+    app: $PROJECT
     version: v1
 spec:
   ports:
@@ -87,6 +87,6 @@ spec:
       #容器端口
       targetPort: 8080
   selector:
-    app: $MODEL_NAME
+    app: $PROJECT
   type: ClusterIP
   sessionAffinity: None

@@ -29,7 +29,6 @@ pipeline {
         NAMESPACE = 'theangel'
         REGISTRY = 'registry.cn-shenzhen.aliyuncs.com'
         DOCKER_NAME = 'themall'
-        MODEL_NAME = ''
     }
 
     stages {
@@ -86,10 +85,8 @@ pipeline {
                                     credentialsId: env.KUBECONFIG_CREDENTIAL_ID,
                                     variable: 'KUBECONFIG')
                     ]) {
-                        //新版KubeSphere用法  - 适配（withEnv 修改变量）
-                        withEnv(["MODEL_NAME=$PROJECT"]) {
-                            sh 'envsubst < deploy/app.yaml | kubectl apply -f -'
-                        }
+                        //新版KubeSphere用法
+                        sh 'envsubst < deploy/app.yaml | kubectl apply -f -'
                     }
                 }
             }
