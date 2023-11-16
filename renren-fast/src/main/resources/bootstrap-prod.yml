@@ -1,85 +1,21 @@
 # Tomcat
 server:
   port: 8080
-  tomcat:
-    uri-encoding: UTF-8
-    max-threads: 1000
-    min-spare-threads: 30
-  connection-timeout: 5000ms
-  servlet:
-    context-path: /renren-fast
 
 spring:
-  zipkin:
-    base-url: http://zipkin-server.themall:9411
-  sleuth:
-    sampler:
-      #      设置抽取采集率为100%，默认为10%
-      probability: 1
   cloud:
-    sentinel:
-      transport:
-        port: 8719
-        dashboard: sentinel-server.themall:8333
     nacos:
       discovery:
-        server-addr: nacos-server.themall:8848
+        server-addr: nacos-0:8848
+        namespace: c6efdd0f-1682-4586-9812-75b5b4e381bd
+        password: "005400"
       config:
-        server-addr: nacos-server.themall:8848
-        extension-configs:
-          - dataId: public.yml
+        server-addr: nacos-0:8848
+        namespace: c6efdd0f-1682-4586-9812-75b5b4e381bd
+        password: "005400"
+        group: prod
+        file-extension: yaml
+        shared-configs:
+          - dataId: common.yaml
+            group: prod
             refresh: true
-          - dataId: renren-fast.yml
-            refresh: true
-        username: nacos
-        password: Poo0054@nacos
-  datasource:
-    druid:
-      url: jdbc:mysql://mysql-master.themall:3306/themall_admin?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
-      username: root
-      password: root
-  ##多数据源的配置
-  #dynamic:
-  #  datasource:
-  #    slave1:
-  #      driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-  #      url: jdbc:sqlserver://localhost:1433;DatabaseName=renren_security
-  #      username: sa
-  #      password: 123456
-  #    slave2:
-  #      driver-class-name: org.postgresql.Driver
-  #      url: jdbc:postgresql://localhost:5432/renren_security
-  #      username: renren
-  #      password: 123456
-  redis:
-    host: redis.themall
-    port: 6379
-    open: true  # 是否开启redis缓存  true开启   false关闭
-    database: 0
-    timeout: 6000ms  # 连接超时时长（毫秒）
-    jedis:
-      pool:
-        max-active: 1000  # 连接池最大连接数（使用负值表示没有限制）
-        max-wait: -1ms      # 连接池最大阻塞等待时间（使用负值表示没有限制）
-        max-idle: 10      # 连接池中的最大空闲连接
-        min-idle: 5       # 连接池中的最小空闲连接
-  mvc:
-    throw-exception-if-no-handler-found: true
-
-renren:
-  redis:
-    open: false
-  shiro:
-    redis: false
-  # APP模块，是通过jwt认证的，如果要使用APP模块，则需要修改【加密秘钥】
-  jwt:
-    # 加密秘钥
-    secret: f4e2e52034348f86b67cde581c0f9eb5[www.theangel.vip]
-    # token有效时长，7天，单位秒
-    expire: 604800
-    header: token
-
-logging:
-  level:
-    org.springframework.cloud.openfeign: warn
-    org.springframework.sleuth: warn

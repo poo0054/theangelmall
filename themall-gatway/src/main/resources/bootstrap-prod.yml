@@ -1,24 +1,21 @@
+# Tomcat
 server:
   port: 8080
 
-
 spring:
-
-  zipkin:
-    base-url: http://zipkin-server.themall:9411
-
   cloud:
-    sentinel:
-      transport:
-        port: 8719
-        dashboard: sentinel-server.themall:8333
     nacos:
       discovery:
-        server-addr: nacos-server.themall:8848
+        server-addr: nacos-0:8848
+        namespace: c6efdd0f-1682-4586-9812-75b5b4e381bd
+        password: "005400"
       config:
-        username: nacos
-        password: Poo0054@nacos
-        server-addr: nacos-server.themall:8848
-        extension-configs:
-          - dataId: themall-gatway.yml
+        server-addr: nacos-0:8848
+        namespace: c6efdd0f-1682-4586-9812-75b5b4e381bd
+        password: "005400"
+        group: prod
+        file-extension: yaml
+        shared-configs:
+          - dataId: common.yaml
+            group: prod
             refresh: true
