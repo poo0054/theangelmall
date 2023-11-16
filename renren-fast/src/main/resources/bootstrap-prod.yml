@@ -6,11 +6,11 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: nacos-0:8848
+        server-addr: nacos-0:8848,nacos-1:8848,nacos-2:8848
         namespace: c6efdd0f-1682-4586-9812-75b5b4e381bd
         password: "005400"
       config:
-        server-addr: nacos-0:8848
+        server-addr: nacos-0:8848,nacos-1:8848,nacos-2:8848
         namespace: c6efdd0f-1682-4586-9812-75b5b4e381bd
         password: "005400"
         group: prod
