@@ -17,7 +17,7 @@ pipeline {
         NAMESPACE = 'theangel'
         REGISTRY = 'registry.cn-shenzhen.aliyuncs.com'
         DOCKER_NAME = 'themall'
-
+        VERSION_NAME = ''
     }
 
     stages {
@@ -25,123 +25,106 @@ pipeline {
             steps {
                 sh 'printenv'
                 container('maven') {
+                    for (project in projects) {
+                        sh "$VERSION_NAME"
+                        sh "$project"
+                        sh "$VERSION_NAME = $project"
+                        sh "$VERSION_NAME"
+                    }
                     sh ' podman ps'
                     sh ' java -version'
                 }
             }
         }
 
-        stage('checkout scm') {
-            steps {
-                checkout(scm)
-            }
-        }
-
-        stage('构建代码') {
-            when {
-                expression {
-                    return params.GIT_BRANCH =~ /v*/
-                }
-            }
-            steps {
-//                git(credentialsId: 'gitee', url: 'https://github.com/poo0054/theangelmall.git', branch: 'master', changelog: true, poll: false)
-                sh 'echo 正在构建 $GIT_URL 版本号 $GIT_BRANCH'
-                container('maven') {
-                    sh 'mvn clean install -Dmaven.test.skip=true -gs `pwd`/mvn-setting.xml'
-                }
-            }
-        }
-
-        stage('打包 & 推送快照') {
-            when {
-                expression {
-                    return params.GIT_BRANCH =~ /v*/
-                }
-            }
-            steps {
-                container('maven') {
-                    script {
-                        for (project in projects) {
-                            sh "cd $project && podman build -f Dockerfile -t $REGISTRY/$DOCKER_NAME/${project}:$GIT_BRANCH ."
-                        }
-                        sh 'podman images'
-                    }
-                }
-            }
-
-        }
-
-        stage('部署到k8s') {
-            when {
-                expression {
-                    return params.GIT_BRANCH =~ /v*/
-                }
-            }
-            steps {
-                input(id: 'deploy-to-dev', message: '是否部署到集群中?')
-                container('maven') {
-                    script {
-                        withCredentials([
-                                kubeconfigFile(
-                                        credentialsId: env.KUBECONFIG_CREDENTIAL_ID,
-                                        variable: 'KUBECONFIG')
-                        ]) {
-                            for (project in projects) {
-                                //新版KubeSphere用法
-                                sh "envsubst < ${project}/deploy/${project}.yaml | kubectl apply -f -"
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        stage('发布镜像') {
-            when {
-                expression {
-                    return params.GIT_BRANCH =~ /v*/
-                }
-            }
-            steps {
-                input(id: 'images-to-docker', message: '是否发布镜像?')
-                container('maven') {
-                    script {
-                        withCredentials([usernamePassword(passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME', credentialsId: "$DOCKER_ID")]) {
-                            sh 'echo "$DOCKER_PASSWORD" | podman login $REGISTRY -u "$DOCKER_USERNAME" --password-stdin'
-                            // 送远程
-                            for (project in projects) {
-                                sh "docker push $REGISTRY/$DOCKER_NAME/${project}:$GIT_BRANCH"
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
+//        stage('checkout scm') {
+//            steps {
+//                checkout(scm)
+//            }
+//        }
 //
-//        stage('发布版本') {
-//            when {
-//                expression {
-//                    return params.PROJECT_VERSION =~ /v.*/
+//        stage('构建代码') {
+//            steps {
+////                git(credentialsId: 'gitee', url: 'https://github.com/poo0054/theangelmall.git', branch: 'master', changelog: true, poll: false)
+//                sh 'echo 正在构建 $GIT_URL 版本号 $GIT_BRANCH'
+//                container('maven') {
+//                    sh 'mvn clean install -Dmaven.test.skip=true -gs `pwd`/mvn-setting.xml'
 //                }
 //            }
-
+//        }
+//
+//        stage('打包 & 推送快照') {
+//
 //            steps {
 //                container('maven') {
-//                    input(id: 'release-image-with-tag', message: '是否发布当前版本镜像？')
+//                    script {
+//                        for (project in projects) {
+//                            sh "cd $project && podman build -f Dockerfile -t $REGISTRY/$DOCKER_NAME/${project}:$GIT_BRANCH ."
+//                        }
+//                        sh 'podman images'
+//                    }
+//                }
+//            }
+//
+//        }
+//
+//        stage('部署到k8s') {
+//
+//            steps {
+//                input(id: 'deploy-to-dev', message: '是否部署到集群中?')
+//                container('maven') {
+//                    script {
+//                        withCredentials([
+//                                kubeconfigFile(
+//                                        credentialsId: env.KUBECONFIG_CREDENTIAL_ID,
+//                                        variable: 'KUBECONFIG')
+//                        ]) {
+//                            for (project in projects) {
+//                                //新版KubeSphere用法
+//                                sh "envsubst < ${project}/deploy/${project}.yaml | kubectl apply -f -"
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        stage('发布镜像') {
+//            steps {
+//                input(id: 'images-to-docker', message: '是否发布镜像?')
+//                container('maven') {
+//                    script {
+//                        withCredentials([usernamePassword(passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME', credentialsId: "$DOCKER_ID")]) {
+//                            sh 'echo "$DOCKER_PASSWORD" | podman login $REGISTRY -u "$DOCKER_USERNAME" --password-stdin'
+//                            // 送远程
+//                            for (project in projects) {
+//                                sh "docker push $REGISTRY/$DOCKER_NAME/${project}:$GIT_BRANCH"
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
+//
+//        stage('发布版本') {
+//            steps {
+//                input(id: 'release-image-with-tag', message: '是否发布当前版本镜像？')
+//                container('maven') {
 //                    withCredentials([usernamePassword(credentialsId: "$GITEE_CREDENTIAL_ID", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
 //                        sh 'git config --global user.email "poo0054.com" '
 //                        sh 'git config --global user.name "poo0054" '
 //                        sh 'git tag -a $PROJECT_VERSION -m "$PROJECT_VERSION" '
-//                        sh 'git push http://$GIT_USERNAME:$GIT_PASSWORD@gitee.com/$PROJECT_NAME/theangelmall.git   --tags --ipv4'
+//                        sh 'git push http://$GIT_USERNAME:$GIT_PASSWORD@github.com/$PROJECT_NAME/theangelmall.git   --tags --ipv4'
 //                    }
-//                    sh 'docker push  $REGISTRY/$DOCKER_NAME/${project}:$GIT_BRANCH '
+//
+//                    sh 'docker push  $REGISTRY/$DOCKER_NAME/${project}:$GIT_BRANCH'
+//
 //                }
 //
 //            }
 //        }
-//
-//    }
 
     }
 
 }
+
