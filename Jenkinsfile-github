@@ -27,10 +27,10 @@ pipeline {
                 container('maven') {
                     script {
                         for (project in projects) {
-                            sh "{$env.VERSION_NAME}"
-                            sh "$project"
+                            echo "{$env.VERSION_NAME}"
+                            echo "$project"
                             sh "${env.VERSION_NAME} = $project"
-                            sh "${env.VERSION_NAME}"
+                            echo "${env.VERSION_NAME}"
                         }
                     }
                     sh ' podman ps'
