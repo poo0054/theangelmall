@@ -25,11 +25,13 @@ pipeline {
             steps {
                 sh 'printenv'
                 container('maven') {
-                    for (project in projects) {
-                        sh "$VERSION_NAME"
-                        sh "$project"
-                        sh "$VERSION_NAME = $project"
-                        sh "$VERSION_NAME"
+                    script {
+                        for (project in projects) {
+                            sh "$VERSION_NAME"
+                            sh "$project"
+                            sh "$VERSION_NAME = $project"
+                            sh "$VERSION_NAME"
+                        }
                     }
                     sh ' podman ps'
                     sh ' java -version'
