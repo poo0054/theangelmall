@@ -88,17 +88,17 @@ pipeline {
 
         stage('部署到k8s') {
             steps {
-                container('maven') {
-                    withCredentials([
-                            kubeconfigFile(
-                                    credentialsId: env.KUBECONFIG_CREDENTIAL_ID,
-                                    variable: 'KUBECONFIG')
-                    ]) {
-                        script {
+                script {
+                    container('maven') {
+                        withCredentials([
+                                kubeconfigFile(
+                                        credentialsId: env.KUBECONFIG_CREDENTIAL_ID,
+                                        variable: 'KUBECONFIG')
+                        ]) {
                             for (project in projects) {
                                 //新版KubeSphere用法
                                 withEnv(["MODEL_NAME=$project"]) {
-                                    sh "envsubst < $MODEL_NAME/deploy/$MODEL_NAME.yaml | kubectl apply -f -"
+                                    sh 'envsubst < $MODEL_NAME/deploy/$MODEL_NAME.yaml | kubectl apply -f -'
                                 }
                             }
                         }
