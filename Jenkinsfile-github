@@ -17,7 +17,7 @@ pipeline {
         NAMESPACE = 'theangel'
         REGISTRY = 'registry.cn-shenzhen.aliyuncs.com'
         DOCKER_NAME = 'themall'
-        VERSION_NAME = ''
+        VERSION_NAME = '123'
     }
 
     stages {
@@ -27,10 +27,10 @@ pipeline {
                 container('maven') {
                     script {
                         for (project in projects) {
-                            echo "$env.VERSION_NAME"
+                            echo "$VERSION_NAME"
                             echo "$project"
-                            env.VERSION_NAME = "$project"
-                            echo "$env.VERSION_NAME"
+                            env.VERSION_NAME = "${project}"
+                            echo "$VERSION_NAME"
                         }
                     }
                     sh ' podman ps'
