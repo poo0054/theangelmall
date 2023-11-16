@@ -8,11 +8,12 @@ spring:
         server-addr: 192.168.98.11:30848
         namespace: c6efdd0f-1682-4586-9812-75b5b4e381bd
         password: "005400"
+        group: ${spring.profiles.active}
       config:
         server-addr: 192.168.98.11:30848
         namespace: c6efdd0f-1682-4586-9812-75b5b4e381bd
         password: "005400"
-        group: dev
+        group: ${spring.profiles.active}
         file-extension: yaml
 
     gateway:
@@ -119,7 +120,7 @@ spring:
         - id: product-index
           uri: lb://themall-product
           predicates:
-            - Host=theangel.com,theangel.vip:8888,127.0.0.1:88,159.75.26.150:8888
+            - Host=theangel.com
 
         # 用户订单
         - id: member

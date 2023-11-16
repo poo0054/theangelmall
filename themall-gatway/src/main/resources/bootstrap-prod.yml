@@ -1,21 +1,142 @@
 # Tomcat
 server:
-  port: 8080
+  port: 80
 
 spring:
   cloud:
     nacos:
       discovery:
-        server-addr: nacos-0:8848
+        server-addr: nacos-0:8848,nacos-1:8848,nacos-2:8848
         namespace: c6efdd0f-1682-4586-9812-75b5b4e381bd
         password: "005400"
+        group: ${spring.profiles.active}
       config:
-        server-addr: nacos-0:8848
+        server-addr: nacos-0:8848,nacos-1:8848,nacos-2:8848
         namespace: c6efdd0f-1682-4586-9812-75b5b4e381bd
         password: "005400"
-        group: prod
+        group: ${spring.profiles.active}
         file-extension: yaml
         shared-configs:
           - dataId: common.yaml
-            group: prod
+            group: ${spring.profiles.active}
             refresh: true
+
+    gateway:
+      routes:
+        #         检索服务
+        - id: themall-search
+          uri: lb://themall-search
+          predicates:
+            - Path=/api/search/**
+          filters:
+            - RewritePath=/api/?(?<the>.*), /$\{the}
+
+        #          库存服务
+        - id: themall-ware
+          uri: lb://themall-ware
+          predicates:
+            - Path=/api/ware/**
+          filters:
+            - RewritePath=/api/?(?<the>.*), /$\{the}
+
+        #          商品优惠服务
+        - id: themall-coupon
+          uri: lb://themall-coupon
+          predicates:
+            - Path=/api/coupon/**
+          filters:
+            - RewritePath=/api/?(?<the>.*), /$\{the}
+
+        #         第三方服务
+        - id: third-party
+          uri: lb://third-party
+          predicates:
+            - Path=/api/third-party/**
+          filters:
+            - RewritePath=/api/?(?<the>.*), /$\{the}
+
+        #         商品服务
+        - id: themall-product
+          uri: lb://themall-product
+          predicates:
+            - Path=/api/product/**
+          filters:
+            - RewritePath=/api/?(?<the>.*), /$\{the}
+
+        #         外网穿透的地址
+        - id: themall
+          uri: lb://themall-product
+          predicates:
+            - Path=/themall/**
+          filters:
+            - RewritePath=/themall/?(?<the>.*), /$\{the}
+
+        #         会员服务
+        - id: themall-member
+          uri: lb://themall-member
+          predicates:
+            - Path=/api/member/**
+          filters:
+            - RewritePath=/api/?(?<the>.*), /$\{the}
+
+        #
+        - id: renren-fast
+          uri: lb://renren-fast
+          predicates:
+            - Path=/api/**,/renren-fast/**
+          filters:
+            - RewritePath=/api/?(?<the>.*), /renren-fast/$\{the}
+
+
+        # 商品详情页
+        - id: item
+          uri: lb://themall-product
+          predicates:
+            - Host=item.theangel.com
+
+        # 商品搜索
+        - id: search
+          uri: lb://themall-search
+          predicates:
+            - Host=search.theangel.com
+        #            - Path=/list.html
+
+
+        # 认证
+        - id: auth-server
+          uri: lb://themall-auth-server
+          predicates:
+            - Host=auth.theangel.com
+        #            - Path=/auth/**
+
+        # 购物车
+        - id: themall-cart
+          uri: lb://themall-cart
+          predicates:
+            - Host=cart.theangel.com
+
+        # 订单
+        - id: themall-order
+          uri: lb://themall-order
+          predicates:
+            - Host=order.theangel.com
+
+        # 首页
+        - id: product-index
+          uri: lb://themall-product
+          predicates:
+            - Host=theangel.com
+
+        # 用户订单
+        - id: member
+          uri: lb://themall-member
+          predicates:
+            - Host=member.theangel.com
+
+
+        # 秒杀
+        - id: themall-seckill
+          uri: lb://themall-seckill
+          predicates:
+            - Host=seckill.theangel.com
+

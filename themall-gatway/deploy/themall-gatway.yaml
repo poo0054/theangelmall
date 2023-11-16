@@ -34,8 +34,8 @@ spec:
           image: $REGISTRY/$DOCKER_NAME/$MODEL_NAME:$TAG_NAME
           #暴露端口
           ports:
-            - name: tcp-8080
-              containerPort: 8080
+            - name: tcp-80
+              containerPort: 80
               protocol: TCP
           #            - name: tcp-8858
           #              containerPort: 8858
@@ -84,12 +84,12 @@ metadata:
     version: v1
 spec:
   ports:
-    - name: tcp-8080
+    - name: tcp-80
       protocol: TCP
       #Service的端口
-      port: 8080
+      port: 80
       #容器端口
-      targetPort: 8080
+      targetPort: 80
       #外部端口
       nodePort: 30005
   selector:
