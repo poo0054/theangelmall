@@ -77,7 +77,7 @@ pipeline {
                             for (project in projects) {
                                 //新版KubeSphere用法
                                 withEnv(["MODEL_NAME=$project"]) {
-                                    sh 'envsubst < $MODEL_NAME/deploy/$MODEL_NAME.yaml | kubectl apply -f -'
+                                    sh "envsubst < $MODEL_NAME/deploy/$MODEL_NAME.yaml | kubectl apply -f -"
                                 }
                             }
                         }
@@ -97,7 +97,7 @@ pipeline {
                     }
                     script {
                         withCredentials([usernamePassword(credentialsId: "$DOCKER_ID", passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-                            sh 'echo "$DOCKER_PASSWORD" | podman login $REGISTRY -u "$DOCKER_USERNAME" --password-stdin'
+                            sh "echo " $DOCKER_PASSWORD " | podman login $REGISTRY -u " $DOCKER_USERNAME " --password-stdin"
                             // 送远程
                             for (project in projects) {
                                 sh "docker push $REGISTRY/$DOCKER_NAME/${project}:$TAG_NAME"
