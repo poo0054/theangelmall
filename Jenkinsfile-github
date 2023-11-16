@@ -29,7 +29,7 @@ pipeline {
                         for (project in projects) {
                             echo "{$env.VERSION_NAME}"
                             echo "$project"
-                            sh "${env.VERSION_NAME} = $project"
+                            env.VERSION_NAME = "$project"
                             echo "${env.VERSION_NAME}"
                         }
                     }
