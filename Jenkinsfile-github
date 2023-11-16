@@ -50,7 +50,7 @@ pipeline {
         stage('构建代码') {
             steps {
 //                git(credentialsId: 'gitee', url: 'https://github.com/poo0054/theangelmall.git', branch: 'master', changelog: true, poll: false)
-                sh 'echo 正在构建 $PROJECT 版本号 $TAG_NAME'
+                echo "echo 正在构建 $PROJECT 版本号 $TAG_NAME"
                 container('maven') {
                     sh 'mvn -U -pl $PROJECT -am clean install -Dmaven.test.skip=true -gs `pwd`/mvn-setting.xml'
                 }
