@@ -88,7 +88,7 @@ pipeline {
                     ]) {
                         //新版KubeSphere用法  - 适配（withEnv 修改变量）
                         withEnv(["MODEL_NAME=$PROJECT"]) {
-                            sh 'envsubst < $MODEL_NAME/deploy/$MODEL_NAME.yaml | kubectl apply -f -'
+                            sh 'envsubst < /deploy/app.yaml | kubectl apply -f -'
                         }
                     }
                 }
