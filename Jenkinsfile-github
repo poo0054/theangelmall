@@ -25,9 +25,11 @@ pipeline {
     environment {
         DOCKER_ID = 'docker-ali'
         GIT_ID = 'github'
+        HARBOR_ID = 'harbor'
         KUBECONFIG_CREDENTIAL_ID = 'kubeconfig'
         NAMESPACE = 'theangel'
-        REGISTRY = 'registry.cn-shenzhen.aliyuncs.com'
+//        REGISTRY = 'registry.cn-shenzhen.aliyuncs.com'
+        REGISTRY = '192.168.98.9:30003'
         DOCKER_NAME = 'themall'
     }
 
@@ -68,7 +70,7 @@ pipeline {
         stage('发布版本') {
             steps {
                 container('maven') {
-                    withCredentials([usernamePassword(credentialsId: "$DOCKER_ID", passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                    withCredentials([usernamePassword(credentialsId: "$HARBOR_ID", passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
                         sh 'echo "$DOCKER_PASSWORD" | podman login $REGISTRY -u "$DOCKER_USERNAME" --password-stdin'
                         // 推送远程
                         sh "podman push $REGISTRY/$DOCKER_NAME/$PROJECT:$TAG_NAME"
