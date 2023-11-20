@@ -14,7 +14,7 @@ module.exports = {
     // 代理列表, 是否开启代理通过[./dev.env.js]配置
     proxyTable: devEnv.OPEN_PROXY === false ? {} : {
       '/proxyApi': {
-        target: 'http://themall-gatway:8080/renren-fast/',
+        target: 'http://localhost:8085/renren-fast/',
         changeOrigin: true,
         pathRewrite: {
           '^/proxyApi': '/'
