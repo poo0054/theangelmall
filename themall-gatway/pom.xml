@@ -23,6 +23,12 @@
         <dependency>
             <groupId>com.theangel.themall</groupId>
             <artifactId>themall-common</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.session</groupId>
+                    <artifactId>spring-session-data-redis</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
