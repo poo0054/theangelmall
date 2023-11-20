@@ -12,7 +12,7 @@ metadata:
     version: v1
 spec:
   #副本数
-  replicas: 3
+  replicas: 2
   #给谁设置副本
   selector:
     matchLabels:
@@ -28,7 +28,7 @@ spec:
       containers:
         - name: renren-fast
           #设置动态
-          image: $REGISTRY/$DOCKER_NAME/$MODEL_NAME:$TAG_NAME
+          image: $REGISTRY/$DOCKER_NAME/$PROJECT:$TAG_NAME
           #暴露端口
           ports:
             #可以多个
@@ -86,9 +86,9 @@ spec:
       port: 8080
       #容器端口
       targetPort: 8080
-      #外网端口
-      nodePort: 30001
+  #      #外网端口
+  #      nodePort: 30001
   selector:
     app: renren-fast
-  type: NodePort
+  type: ClusterIP
   sessionAffinity: None

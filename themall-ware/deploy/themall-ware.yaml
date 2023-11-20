@@ -5,7 +5,7 @@ metadata:
   #和服务名一致
   name: themall-ware
   #属于哪个名称空间
-  namespace: themall
+  namespace: theangel
   labels:
     #类似HTML的id，下面都是操作这个app
     app: themall-ware
@@ -13,7 +13,7 @@ metadata:
 
 spec:
   #副本数
-  replicas: 1
+  replicas: 2
   #给谁设置副本
   selector:
     matchLabels:
@@ -31,7 +31,7 @@ spec:
       containers:
         - name: themall-ware
           #设置动态
-          image: $REGISTRY/$DOCKER_NAME/$MODEL_NAME:$TAG_NAME
+          image: $REGISTRY/$DOCKER_NAME/$PROJECT:$TAG_NAME
           #暴露端口
           ports:
             - name: tcp-8080
@@ -75,7 +75,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: themall-ware
-  namespace: themall
+  namespace: theangel
   labels:
     app: themall-ware
     version: v1
@@ -88,8 +88,8 @@ spec:
       #容器端口
       targetPort: 8080
       #外部端口
-      nodePort: 30011
+    # nodePort: 30011
   selector:
     app: themall-ware
-  type: NodePort
+  type: ClusterIP
   sessionAffinity: None

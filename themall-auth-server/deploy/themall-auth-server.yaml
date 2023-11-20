@@ -13,7 +13,7 @@ metadata:
 
 spec:
   #副本数
-  replicas: 3
+  replicas: 2
   #给谁设置副本
   selector:
     matchLabels:
@@ -31,7 +31,7 @@ spec:
       containers:
         - name: themall-auth-server
           #设置动态
-          image: $REGISTRY/$DOCKER_NAME/$MODEL_NAME:$TAG_NAME
+          image: $REGISTRY/$DOCKER_NAME/$PROJECT:$TAG_NAME
           #暴露端口
           ports:
             - name: tcp-8080
@@ -90,9 +90,9 @@ spec:
       port: 8080
       #容器端口
       targetPort: 8080
-      #外部端口
-      nodePort: 30002
+  #      #外部端口
+  #      nodePort: 30002
   selector:
     app: themall-auth-server
-  type: NodePort
+  type: ClusterIP
   sessionAffinity: None
