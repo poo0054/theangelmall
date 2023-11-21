@@ -126,7 +126,7 @@ spring:
         - id: product-index
           uri: lb://themall-product
           predicates:
-            - Host=index.theangel.com
+            - Host=theangel.com
 
         # 用户订单
         - id: member
