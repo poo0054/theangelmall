@@ -87,6 +87,7 @@ spring:
           filters:
             - RewritePath=/api/?(?<the>.*), /renren-fast/$\{the}
 
+        # 页面
 
         # 商品详情页
         - id: item
@@ -125,7 +126,7 @@ spring:
         - id: product-index
           uri: lb://themall-product
           predicates:
-            - Host=theangel.com
+            - Host=index.theangel.com
 
         # 用户订单
         - id: member
