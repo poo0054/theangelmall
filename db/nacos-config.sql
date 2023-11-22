@@ -747,7 +747,7 @@ LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users`
     DISABLE KEYS */;
 INSERT INTO `users`
-VALUES ('nacos', '$2a$10$eZJFhasn4VauvtZYn5mGz.qtUCLDjKMKFuZO.cVtTmT64yTyxAFbi', 1),
+VALUES ('nacos', '$2a$10$spRw5SyYiy.4RzKNrHBudut/jfZp5v9EMcVSGoGpqtbDccubeMGqa', 1),
        ('test', '$2a$10$Ejp0PWLPI5bZCw6oMCbaVuv.CBawylvF3JNggY5KSLOwkRU2oR1ne', 1);
 /*!40000 ALTER TABLE `users`
     ENABLE KEYS */;

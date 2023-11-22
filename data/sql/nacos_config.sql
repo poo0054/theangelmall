@@ -328,7 +328,8 @@ CREATE TABLE `users`  (
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES ('nacos', '$2a$10$eZJFhasn4VauvtZYn5mGz.qtUCLDjKMKFuZO.cVtTmT64yTyxAFbi', 1);
+INSERT INTO `users`
+VALUES ('nacos', '$2a$10$spRw5SyYiy.4RzKNrHBudut/jfZp5v9EMcVSGoGpqtbDccubeMGqa', 1);
 INSERT INTO `users` VALUES ('test', '$2a$10$Ejp0PWLPI5bZCw6oMCbaVuv.CBawylvF3JNggY5KSLOwkRU2oR1ne', 1);
 
 SET FOREIGN_KEY_CHECKS = 1;
