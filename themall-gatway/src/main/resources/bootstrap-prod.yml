@@ -93,13 +93,13 @@ spring:
         - id: item
           uri: lb://themall-product
           predicates:
-            - Host=item.theangel.com
+            - Host=item.poo0054.top
 
         # 商品搜索
         - id: search
           uri: lb://themall-search
           predicates:
-            - Host=search.theangel.com
+            - Host=search.poo0054.top
         #            - Path=/list.html
 
 
@@ -107,37 +107,37 @@ spring:
         - id: auth-server
           uri: lb://themall-auth-server
           predicates:
-            - Host=auth.theangel.com
+            - Host=auth.poo0054.top
         #            - Path=/auth/**
 
         # 购物车
         - id: themall-cart
           uri: lb://themall-cart
           predicates:
-            - Host=cart.theangel.com
+            - Host=cart.poo0054.top
 
         # 订单
         - id: themall-order
           uri: lb://themall-order
           predicates:
-            - Host=order.theangel.com
+            - Host=order.poo0054.top
 
         # 首页
         - id: product-index
           uri: lb://themall-product
           predicates:
-            - Host=theangel.com
+            - Host=index.poo0054.top
 
         # 用户订单
         - id: member
           uri: lb://themall-member
           predicates:
-            - Host=member.theangel.com
+            - Host=member.poo0054.top
 
 
         # 秒杀
         - id: themall-seckill
           uri: lb://themall-seckill
           predicates:
-            - Host=seckill.theangel.com
+            - Host=seckill.poo0054.top
 
