@@ -1,12 +1,12 @@
-//def projects = ['renren-fast', 'themall-auth-server', 'themall-cart', 'themall-coupon', 'themall-gatway',
-//                'themall-member', 'themall-order', 'themall-product', 'themall-search', 'themall-seckill',
-//                'themall-ware']
-//, 'third-party'
-
 pipeline {
-  containerTemplate {
-    name 'nodejs'
-    image 'node:14.19.0'
+  agent {
+    kubernetes {
+      inheritFrom 'nodejs base'
+      containerTemplate {
+        name 'nodejs'
+        image 'node:14.19.0'
+      }
+    }
   }
 
   parameters {
