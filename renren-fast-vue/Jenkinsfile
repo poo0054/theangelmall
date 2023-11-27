@@ -24,9 +24,9 @@ pipeline {
   }
 
   stages {
-    stage('install') {
+    stage('checkout scm') {
       steps {
-        sh 'npm install'
+        checkout(scm)
       }
     }
     stage('环境') {
@@ -37,6 +37,13 @@ pipeline {
         }
       }
     }
+    
+    stage('install') {
+      steps {
+        sh 'npm install'
+      }
+    }
+
     stage('构建代码') {
       steps {
 //                git(credentialsId: 'gitee', url: 'https://github.com/poo0054/theangelmall.git', branch: 'master', changelog: true, poll: false)
