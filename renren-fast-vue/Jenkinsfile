@@ -50,7 +50,7 @@ pipeline {
     stage('构建镜像') {
       steps {
         container('nodejs') {
-          sh "cd themall-vue && podman build -f Dockerfile -t $REGISTRY/$DOCKER_NAME/themall-vue:$TAG_NAME ."
+          sh "cd renren-fast-vue && podman build -f Dockerfile -t $REGISTRY/$DOCKER_NAME/themall-vue:$TAG_NAME ."
           sh 'podman images'
         }
       }
