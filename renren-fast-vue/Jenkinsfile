@@ -32,7 +32,7 @@ pipeline {
     stage('环境') {
       steps {
         sh 'printenv'
-        container('maven') {
+        container('nodejs') {
           sh ' podman ps'
         }
       }
