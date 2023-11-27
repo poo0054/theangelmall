@@ -1,11 +1,7 @@
 pipeline {
   agent {
-    kubernetes {
-      inheritFrom 'nodejs base'
-      containerTemplate {
-        name 'nodejs'
-        image 'node:14.19.0'
-      }
+    node {
+      label 'nodejs'
     }
   }
 
