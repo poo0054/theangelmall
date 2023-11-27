@@ -37,10 +37,12 @@ pipeline {
         }
       }
     }
-    
+
     stage('install') {
       steps {
-        sh 'npm install'
+        container('nodejs') {
+          sh 'npm install'
+        }
       }
     }
 
