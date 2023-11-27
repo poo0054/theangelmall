@@ -1,0 +1,104 @@
+//def projects = ['renren-fast', 'themall-auth-server', 'themall-cart', 'themall-coupon', 'themall-gatway',
+//                'themall-member', 'themall-order', 'themall-product', 'themall-search', 'themall-seckill',
+//                'themall-ware']
+//, 'third-party'
+
+pipeline {
+  containerTemplate {
+    name 'nodejs'
+    image 'node:14.19.0'
+  }
+
+  parameters {
+    string(name: 'TAG_NAME', defaultValue: 'v1.0', description: '版本名称')
+  }
+
+  environment {
+    DOCKER_ID = 'docker-ali'
+    GIT_ID = 'github'
+    HARBOR_ID = 'harbor'
+    KUBECONFIG_CREDENTIAL_ID = 'kubeconfig'
+    NAMESPACE = 'theangel'
+    REGISTRY = 'registry.cn-shenzhen.aliyuncs.com'
+    DOCKER_NAME = 'themall'
+  }
+
+  stages {
+    stage('install') {
+      steps {
+        sh 'npm install'
+      }
+    }
+    stage('环境') {
+      steps {
+        sh 'printenv'
+        container('maven') {
+          sh ' podman ps'
+          sh ' java -version'
+        }
+      }
+    }
+    stage('构建代码') {
+      steps {
+//                git(credentialsId: 'gitee', url: 'https://github.com/poo0054/theangelmall.git', branch: 'master', changelog: true, poll: false)
+        echo "echo 正在构建 themall-vue 版本号 $TAG_NAME"
+        container('nodejs') {
+          sh 'npm run build'
+        }
+      }
+    }
+
+    stage('构建镜像') {
+      steps {
+        container('nodejs') {
+          sh "cd themall-vue && podman build -f Dockerfile -t $REGISTRY/$DOCKER_NAME/themall-vue:$TAG_NAME ."
+          sh 'podman images'
+        }
+      }
+    }
+
+    stage('发布版本') {
+      steps {
+        container('nodejs') {
+          withCredentials([usernamePassword(credentialsId: "$DOCKER_ID", passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+            sh 'echo "$DOCKER_PASSWORD" | podman login $REGISTRY -u "$DOCKER_USERNAME" --password-stdin '
+            // 推送远程
+            sh "podman push $REGISTRY/$DOCKER_NAME/themall-vue:$TAG_NAME"
+          }
+        }
+      }
+    }
+
+    stage('部署到k8s') {
+      steps {
+        container('nodejs') {
+          withCredentials([
+            kubeconfigFile(
+              credentialsId: env.KUBECONFIG_CREDENTIAL_ID,
+              variable: 'KUBECONFIG')
+          ]) {
+            //新版KubeSphere用法
+            sh 'envsubst < themall-vue/deploy/themall-vue.yaml | kubectl apply -f -'
+          }
+        }
+      }
+    }
+
+    stage('git标签') {
+      steps {
+        input(id: 'tag to git', message: 'git是否标记标签?')
+        container('nodejs') {
+          withCredentials([usernamePassword(credentialsId: "$GIT_ID", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+            sh 'git config --global user.email "poo0054@outlook.com" '
+            sh 'git config --global user.name "poo0054" '
+            sh 'git tag -a $TAG_NAME -m "$TAG_NAME" '
+            sh 'git push http://$GIT_USERNAME:$GIT_PASSWORD@github.com/poo0054/theangelmall.git   --tags --ipv4'
+          }
+        }
+      }
+    }
+
+  }
+
+}
+
