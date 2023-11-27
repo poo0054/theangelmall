@@ -90,9 +90,9 @@ spec:
       port: 80
       #容器端口
       targetPort: 80
-  #      #外部端口
-  #      nodePort: 30002
+      #      #外部端口
+      nodePort: 30000
   selector:
     app: themall-vue-server
-  type: ClusterIP
+  type: NodePort
   sessionAffinity: None
