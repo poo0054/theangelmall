@@ -34,7 +34,6 @@ pipeline {
         sh 'printenv'
         container('maven') {
           sh ' podman ps'
-          sh ' java -version'
         }
       }
     }
