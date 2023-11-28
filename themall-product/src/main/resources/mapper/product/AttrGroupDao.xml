@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.theangel.themall.product.dao.AttrGroupDao">
+<mapper namespace="com.themall.product.dao.AttrGroupDao">
 
     <!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.theangel.themall.product.entity.AttrGroupEntity" id="attrGroupMap">
+    <resultMap type="com.themall.product.entity.AttrGroupEntity" id="attrGroupMap">
         <result property="attrGroupId" column="attr_group_id"/>
         <result property="attrGroupName" column="attr_group_name"/>
         <result property="sort" column="sort"/>
@@ -13,9 +13,9 @@
         <result property="catelogId" column="catelog_id"/>
     </resultMap>
 
-    <resultMap id="SpuItemAttrGroupVo" type="com.theangel.themall.product.vo.SpuItemAttrGroupVo">
+    <resultMap id="SpuItemAttrGroupVo" type="com.themall.product.vo.SpuItemAttrGroupVo">
         <result column="attr_group_name" property="groupName"/>
-        <collection property="attrs" ofType="com.theangel.themall.product.vo.SpuBaseAttrVo">
+        <collection property="attrs" ofType="com.themall.product.vo.SpuBaseAttrVo">
             <result column="attr_name" property="attrName"/>
             <result column="attr_value" property="values"/>
         </collection>

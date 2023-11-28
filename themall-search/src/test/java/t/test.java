@@ -1,8 +1,8 @@
 package t;
 
 import com.alibaba.fastjson.JSON;
-import com.theangel.themall.search.ThemallSearchApplication;
-import com.theangel.themall.search.config.ElasticSearchConfig;
+import com.themall.search.ThemallSearchApplication;
+import com.themall.search.config.ElasticSearchConfig;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;

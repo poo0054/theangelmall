@@ -1,12 +1,12 @@
 package com.theangel.themall.themallproduct;
 
-import com.theangel.common.utils.fileutils.UUIDUtils;
-import com.theangel.themall.product.ThemallProductApplication;
-import com.theangel.themall.product.dao.AttrGroupDao;
-import com.theangel.themall.product.service.CategoryService;
-import com.theangel.themall.product.service.SkuSaleAttrValueService;
-import com.theangel.themall.product.vo.SkuItemAttrVo;
-import com.theangel.themall.product.vo.SpuItemAttrGroupVo;
+import com.themall.common.utils.fileutils.UUIDUtils;
+import com.themall.product.ThemallProductApplication;
+import com.themall.product.dao.AttrGroupDao;
+import com.themall.product.service.CategoryService;
+import com.themall.product.service.SkuSaleAttrValueService;
+import com.themall.product.vo.SkuItemAttrVo;
+import com.themall.product.vo.SpuItemAttrGroupVo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.redisson.api.RedissonClient;

@@ -1,7 +1,7 @@
 package test;
 
-import com.theangel.themall.thirdparty.ThemallThirdPartyApplication;
-import com.theangel.themall.thirdparty.component.SmsComponent;
+import com.themall.thirdparty.ThemallThirdPartyApplication;
+import com.themall.thirdparty.component.SmsComponent;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
