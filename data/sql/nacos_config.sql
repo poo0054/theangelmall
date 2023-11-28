@@ -1,335 +1,892 @@
-/*
- Navicat Premium Data Transfer
+-- MySQL dump 10.13  Distrib 8.0.35, for Linux (x86_64)
+--
+-- Host: 192.168.98.11    Database: nacos-config
+-- ------------------------------------------------------
+-- Server version	8.0.34
 
- Source Server         : theangel_3306
- Source Server Type    : MySQL
- Source Server Version : 50734
- Source Host           : theangel.vip:3306
- Source Schema         : nacos_config
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT = @@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS = @@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION = @@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE = @@TIME_ZONE */;
+/*!40103 SET TIME_ZONE = '+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS = @@UNIQUE_CHECKS, UNIQUE_CHECKS = 0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS = @@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS = 0 */;
+/*!40101 SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES = @@SQL_NOTES, SQL_NOTES = 0 */;
 
- Target Server Type    : MySQL
- Target Server Version : 50734
- File Encoding         : 65001
+--
+-- Table structure for table `config_info`
+--
 
- Date: 20/09/2021 14:48:07
-*/
-
-SET NAMES utf8mb4;
-SET FOREIGN_KEY_CHECKS = 0;
-
--- ----------------------------
--- Table structure for config_info
--- ----------------------------
 DROP TABLE IF EXISTS `config_info`;
-CREATE TABLE `config_info`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `data_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'data_id',
-  `group_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
-  `content` longtext CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'content',
-  `md5` varchar(32) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT 'md5',
-  `gmt_create` datetime NOT NULL DEFAULT '2010-05-05 00:00:00' COMMENT '创建时间',
-  `gmt_modified` datetime NOT NULL DEFAULT '2010-05-05 00:00:00' COMMENT '修改时间',
-  `src_user` text CHARACTER SET utf8 COLLATE utf8_bin NULL COMMENT 'source user',
-  `src_ip` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT 'source ip',
-  `app_name` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
-  `tenant_id` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT '' COMMENT '租户字段',
-  `c_desc` varchar(256) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
-  `c_use` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
-  `effect` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
-  `type` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
-  `c_schema` text CHARACTER SET utf8 COLLATE utf8_bin NULL,
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uk_configinfo_datagrouptenant`(`data_id`, `group_id`, `tenant_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 152 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = 'config_info' ROW_FORMAT = Dynamic;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `config_info`
+(
+    `id`           bigint                                                 NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `data_id`      varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT 'data_id',
+    `group_id`     varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin          DEFAULT NULL,
+    `content`      longtext CHARACTER SET utf8mb3 COLLATE utf8mb3_bin     NOT NULL COMMENT 'content',
+    `md5`          varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin           DEFAULT NULL COMMENT 'md5',
+    `gmt_create`   datetime                                               NOT NULL DEFAULT '2010-05-05 00:00:00' COMMENT '创建时间',
+    `gmt_modified` datetime                                               NOT NULL DEFAULT '2010-05-05 00:00:00' COMMENT '修改时间',
+    `src_user`     text CHARACTER SET utf8mb3 COLLATE utf8mb3_bin COMMENT 'source user',
+    `src_ip`       varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin           DEFAULT NULL COMMENT 'source ip',
+    `app_name`     varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin          DEFAULT NULL,
+    `tenant_id`    varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin          DEFAULT '' COMMENT '租户字段',
+    `c_desc`       varchar(256) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin          DEFAULT NULL,
+    `c_use`        varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin           DEFAULT NULL,
+    `effect`       varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin           DEFAULT NULL,
+    `type`         varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin           DEFAULT NULL,
+    `c_schema`     text CHARACTER SET utf8mb3 COLLATE utf8mb3_bin,
+    PRIMARY KEY (`id`) USING BTREE,
+    UNIQUE KEY `uk_configinfo_datagrouptenant` (`data_id`, `group_id`, `tenant_id`) USING BTREE
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 301
+  DEFAULT CHARSET = utf8mb3
+  COLLATE = utf8mb3_bin
+  ROW_FORMAT = DYNAMIC COMMENT ='config_info';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of config_info
--- ----------------------------
-INSERT INTO `config_info` VALUES (1, 'public.yml', 'DEFAULT_GROUP', 'spring:\n  cloud:\n    nacos:\n      discovery:\n        server-addr: theangel.vip:8848\n        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b\n\nmybatis-plus:\n  mapper-locations: classpath*:/mapper/**/*.xml\n  global-config:\n    db-config:\n      id-type: auto\nfeign:\n  client:\n    config:\n      default:\n        connectTimeout: 10000\n        readTimeout: 10000', 'bb51175876a85f5d21a16de4e85ac023', '2021-06-12 18:19:06', '2021-09-07 13:18:07', NULL, '119.123.177.58', '', '9e9bfac1-f266-4fc4-b220-2c95997c532b', '', '', '', 'yaml', '');
-INSERT INTO `config_info` VALUES (4, 'themall-coupon.yml', 'DEFAULT_GROUP', 'spring:\n    #session保存redis\n  session:\n    store-type: redis\n  redis:\n    host: 192.168.56.10\n    port: 6379\n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n  datasource:\n    username: root\n    password: hjj0127..\n    url: jdbc:mysql://theangel.vip:3306/themall_sms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai\n    driver-class-name: com.mysql.cj.jdbc.Driver\n\n\n', '492f4b8e70fec4a4cee13bcd947bc072', '2021-06-12 18:24:02', '2021-09-07 13:23:40', NULL, '119.123.177.58', '', '9e9bfac1-f266-4fc4-b220-2c95997c532b', '优惠服务配置文件', '', '', 'yaml', '');
-INSERT INTO `config_info` VALUES (9, 'themall-member.yml', 'DEFAULT_GROUP', 'spring:\n    #session保存redis\n  session:\n    store-type: redis\n  redis:\n    host: 192.168.56.10\n    port: 6379\n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n  datasource:\n    username: root\n    password: hjj0127..\n    url: jdbc:mysql://theangel.vip:3306/themall_ums?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai\n    driver-class-name: com.mysql.cj.jdbc.Driver\n', '461baef227cf69582f4222bc8ed376fa', '2021-06-14 12:48:59', '2021-09-07 13:19:53', NULL, '119.123.177.58', '', '9e9bfac1-f266-4fc4-b220-2c95997c532b', '会员服务配置文件', '', '', 'yaml', '');
-INSERT INTO `config_info` VALUES (12, 'themall-order.yml', 'DEFAULT_GROUP', 'spring:\n    #session保存redis\n  session:\n    store-type: redis\n  redis:\n    host: 192.168.56.10\n    port: 6379\n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n  datasource:\n    username: root\n    password: hjj0127..\n    url: jdbc:mysql://theangel.vip:3306/themall_oms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai\n    driver-class-name: com.mysql.cj.jdbc.Driver\n  rabbitmq:\n    host: 192.168.56.10\n    username: guest\n    password: guest\n    virtual-host: /\n    port: 5672\n    #开启发送端确认，到达rabbitmq\n    publisher-confirms: true\n    #发送端确认，有没有路由到指定的key  集群是一个副本模式，所有确认才能够确认\n    publisher-returns: true\n    #    只要抵达队列，以异步发送优先回调我们这个returns\n    template:\n      mandatory: true\n    listener:\n      simple:\n        #        auto:自动回复    manual:手动确认\n        acknowledge-mode: manual\n\n  thymeleaf:\n    cache: false\n\n\n\n', '3f23a3b36591da6836255f86be04c6d1', '2021-06-14 12:56:26', '2021-09-07 13:19:15', NULL, '119.123.177.58', '', '9e9bfac1-f266-4fc4-b220-2c95997c532b', '', '', '', 'yaml', '');
-INSERT INTO `config_info` VALUES (13, 'themall-product.yml', 'DEFAULT_GROUP', 'spring:\n      #session保存redis\n  session:\n    store-type: redis\n  redis:\n    host: 192.168.56.10\n    port: 6379\n    \n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n  servlet:\n    multipart:\n      max-file-size: 20MB\n      max-request-size: 200MB\n  datasource:\n    username: root\n    password: hjj0127..\n    url: jdbc:mysql://theangel.vip:3306/themall_pms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai\n    driver-class-name: com.mysql.cj.jdbc.Driver\n\n  jackson:\n    date-format: yyyy-MM-dd HH:mm:ss\n  #开发期间 关闭缓存\n  thymeleaf:\n    cache: false\n    prefix: classpath:/templates/\n    suffix: .html\n\nmybatis-plus:\n  mapper-locations: classpath*:/mapper/**/*.xml\n  global-config:\n    db-config:\n      id-type: auto\n      logic-delete-field: flag  # 全局逻辑删除的实体字段名(since 3.3.0,配置后可以忽略不配置步骤2)\n      logic-delete-value: 1 # 逻辑已删除值(默认为 1)\n      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)\n\nthemall:\n  thread:\n    coreSize: 10\n    maxSize: 200\n    keepAliveTime: 10\n\nfeign:\n  client:\n    config:\n      default:\n        connectTimeout: 10000\n        readTimeout: 10000\n\nlogging:\n  level:\n    com.theangel.themall: error\n\n', '62ed50d4035a4cbf1d5472bfb5a76b35', '2021-06-14 13:16:07', '2021-09-07 13:18:27', NULL, '119.123.177.58', '', '9e9bfac1-f266-4fc4-b220-2c95997c532b', '商品模块', '', '', 'yaml', '');
-INSERT INTO `config_info` VALUES (14, 'themall-ware.yml', 'DEFAULT_GROUP', 'spring:\n    #session保存redis\n  session:\n    store-type: redis\n  redis:\n    host: 192.168.56.10\n    port: 6379\n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n  datasource:\n    username: root\n    password: hjj0127..\n    url: jdbc:mysql://theangel.vip:3306/themall_wms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai\n    driver-class-name: com.mysql.cj.jdbc.Driver\n\n  jackson:\n    date-format: yyyy-MM-dd HH:mm:ss\n', 'b63ee159a9fbe1ad53c1994e4c476527', '2021-06-14 13:25:39', '2021-09-07 13:25:54', NULL, '119.123.177.58', '', '9e9bfac1-f266-4fc4-b220-2c95997c532b', '库存模块配置文件', '', '', 'yaml', '');
-INSERT INTO `config_info` VALUES (15, 'themall-gatway.yml', 'DEFAULT_GROUP', 'spring:\n  cloud:\n    gateway:\n      routes:\n        #         检索服务\n        - id: themall-search\n          uri: lb://themall-search\n          predicates:\n            - Path=/api/search/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #          库存服务\n        - id: themall-ware\n          uri: lb://themall-ware\n          predicates:\n            - Path=/api/ware/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #          商品优惠服务\n        - id: themall-coupon\n          uri: lb://themall-coupon\n          predicates:\n            - Path=/api/coupon/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #         第三方服务\n        - id: third-party\n          uri: lb://third-party\n          predicates:\n            - Path=/api/third-party/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #         商品服务\n        - id: themall-product\n          uri: lb://themall-product\n          predicates:\n            - Path=/api/product/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #         会员服务\n        - id: themall-member\n          uri: lb://themall-member\n          predicates:\n            - Path=/api/member/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #\n        - id: renren-fast\n          uri: lb://renren-fast\n          predicates:\n            - Path=/api/**,/renren-fast/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /renren-fast/$\\{the}\n\n\n        # 商品详情页\n        - id: item\n          uri: lb://themall-product\n          predicates:\n            - Host=item.theangel.com\n        #            - Path=/item/*.html\n\n        # 商品搜索\n        - id: search\n          uri: lb://themall-search\n          predicates:\n            - Host=search.theangel.com\n        #            - Path=/list.html\n\n        # 认证\n        - id: auth-server\n          uri: lb://themall-auth-server\n          predicates:\n            - Host=auth.theangel.com\n        #            - Path=/auth/**\n\n        # 购物车\n        - id: themall-cart\n          uri: lb://themall-cart\n          predicates:\n            - Host=cart.theangel.com\n\n        # 订单\n        - id: themall-order\n          uri: lb://themall-order\n          predicates:\n            - Host=order.theangel.com\n\n        # 首页\n        - id: host\n          uri: lb://themall-product\n          predicates:\n            - Host=theangel.com\n\n\n\n', 'a0b9f2b819f2c0b12c4245f9e866c752', '2021-06-14 14:03:33', '2021-09-05 07:11:49', NULL, '119.123.176.244', '', '9e9bfac1-f266-4fc4-b220-2c95997c532b', 'API网关配置', '', '', 'yaml', '');
-INSERT INTO `config_info` VALUES (18, 'renren-fast.yml', 'DEFAULT_GROUP', 'spring: \n  application:\n    name: renren-fast\nserver:\n  port: 8088', '83fa205e829bf70106e59f34c445bcd4', '2021-06-17 13:38:51', '2021-06-19 13:13:17', NULL, '183.14.31.49', '', '9e9bfac1-f266-4fc4-b220-2c95997c532b', '', '', '', 'yaml', '');
-INSERT INTO `config_info` VALUES (41, 'third-party.yml', 'DEFAULT_GROUP', 'spring:\n  #session保存redis\n  session:\n    store-type: redis\n  redis:\n    host: 192.168.56.10\n    port: 6379\n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n  servlet:\n    multipart:\n      max-file-size: 20MB\n      max-request-size: 200MB\n\n  # 这些配置在腾讯云控制台都可查到（使用时替换为你自己的）\n  # 腾讯云的SecretId（永久的，可在控制台开启或关闭）\n  tencent:\n    secretId: AKIDIPHsCF3aqpdAQP7ZkeGdjY6NN6YicGdi\n    # 腾讯云的SecretKey（永久的，可在控制台开启或关闭）\n    SecretKey: qOffOq1uWrviFVVDetrYx5wWqtfAOKdg\n    # 腾讯云的bucket (存储桶)\n    bucket: theangel-1306086135\n    # 腾讯云的region(bucket所在地区)\n    region: ap-guangzhou\n    # 腾讯云的allowPrefix(允许上传的路径)\n    allowPrefix: \'*\'\n    # 腾讯云的临时密钥时长(单位秒)\n    durationSeconds: 10\n    # 腾讯云的访问基础链接:\n    baseUrl: https://theangel-1306086135.cos.ap-guangzhou.myqcloud.com\n  cloud:\n    alicloud:\n      access-key: LTAI5t5Zw9QpcLrfdGCA4NZZ\n      secret-key: MEYjLvITV4G6hkv12N41mbrcqR3phk\n      oss:\n        endpoint: oss-cn-hangzhou.aliyuncs.com\n        bucket: theangel-mall\n      sms:\n        host: https://dfsns.market.alicloudapi.com\n        path: /data/send_sms\n        appcode: 9d04ec7d99b740a9973cf01a438b9337\n', '3e702b87a5206493d8f63127981f9cff', '2021-06-21 16:29:18', '2021-09-07 13:30:06', NULL, '119.123.177.58', '', '9e9bfac1-f266-4fc4-b220-2c95997c532b', '第三方服务配置', '', '', 'yaml', '');
-INSERT INTO `config_info` VALUES (42, 'themall-search.yml', 'DEFAULT_GROUP', 'spring:\n    #session保存redis\n  session:\n    store-type: redis\n  redis:\n    host: 192.168.56.10\n    port: 6379\n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n  thymeleaf:\n    cache: false\n', '5476c7d72630db6b1b9c19c3f022c447', '2021-08-01 05:54:48', '2021-09-07 13:20:22', NULL, '119.123.177.58', '', '9e9bfac1-f266-4fc4-b220-2c95997c532b', '全文检索  elasticsearch ', '', '', 'yaml', '');
-INSERT INTO `config_info` VALUES (111, 'themall-auth-server', 'DEFAULT_GROUP', 'spring:\n    #session保存redis\n  session:\n    store-type: redis\n  redis:\n    host: 192.168.56.10\n    port: 6379\n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n  #开发期间 关闭缓存\n  thymeleaf:\n    cache: false\n    prefix: classpath:/templates/\n    suffix: .html\n\nlogging:\n  level:\n    com.theangel.themall: error\n\nserver:\n  servlet:\n    session:\n      #session超时时间\n      timeout: 30m\n\n', '732219d67395357b43d2afb1dad33652', '2021-08-19 14:34:56', '2021-09-07 13:21:56', NULL, '119.123.177.58', '', '9e9bfac1-f266-4fc4-b220-2c95997c532b', '认证服务', '', '', 'yaml', '');
-INSERT INTO `config_info` VALUES (129, 'themall-cart.yml', 'DEFAULT_GROUP', 'spring:\n    #session保存redis\n  session:\n    store-type: redis\n  redis:\n    host: 192.168.56.10\n    port: 6379\n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n  thymeleaf:\n    cache: false', '708feb2c1553c035a1da7ccd65a9b602', '2021-08-29 04:39:46', '2021-09-07 13:21:35', NULL, '119.123.177.58', '', '9e9bfac1-f266-4fc4-b220-2c95997c532b', '购物车服务配置', '', '', 'yaml', '');
+--
+-- Dumping data for table `config_info`
+--
 
--- ----------------------------
--- Table structure for config_info_aggr
--- ----------------------------
+LOCK TABLES `config_info` WRITE;
+/*!40000 ALTER TABLE `config_info`
+    DISABLE KEYS */;
+INSERT INTO `config_info`
+VALUES (1, 'public.yml', 'DEFAULT_GROUP',
+        'spring:\n  zipkin:\n    base-url: http://192.168.56.10:9411\n    locator:\n      discovery:\n        #关闭服务发现，否则springcloud会把zipkin的url当成服务名称\n        enabled: false\n    sender:\n      #设置http发送数据\n      type: web\n  sleuth:\n    sampler:\n      #      设置抽取采集率为100%，默认为10%\n      probability: 1\n\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: localhost:8333\n    nacos:\n      discovery:\n        server-addr: theangel.vip:8848\n        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b\n\nmybatis-plus:\n  mapper-locations: classpath*:/mapper/**/*.xml\n  global-config:\n    db-config:\n      id-type: auto\n\nmanagement:\n  endpoints:\n    web:\n      exposure:\n        include: \"*\"\n\nfeign:\n  sentinel:\n    enabled: true\n\n\nlogging:\n  level:\n    org.springframework.cloud.openfeign: debug\n    org.springframework.sleuth: debug\n\n\n    ',
+        '45b5b769e147e7dd9de7e5666e1cefa7', '2021-06-12 18:19:06', '2021-10-26 09:52:55', NULL, '113.90.130.187', '',
+        '9e9bfac1-f266-4fc4-b220-2c95997c532b', '', '', '', 'yaml', ''),
+       (4, 'themall-coupon.yml', 'DEFAULT_GROUP',
+        'spring:\n    #session保存redis\n  session:\n    store-type: redis\n  redis:\n    host: 192.168.56.10\n    port: 6379\n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n  datasource:\n    username: root\n    password: hjj0127..\n    url: jdbc:mysql://theangel.vip:3306/themall_sms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai\n    driver-class-name: com.mysql.cj.jdbc.Driver\n\n\n',
+        '492f4b8e70fec4a4cee13bcd947bc072', '2021-06-12 18:24:02', '2021-09-07 13:23:40', NULL, '119.123.177.58', '',
+        '9e9bfac1-f266-4fc4-b220-2c95997c532b', '优惠服务配置文件', '', '', 'yaml', ''),
+       (9, 'themall-member.yml', 'DEFAULT_GROUP',
+        'spring:\n    #session保存redis\n  session:\n    store-type: redis\n  redis:\n    host: 192.168.56.10\n    port: 6379\n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n  datasource:\n    username: root\n    password: hjj0127..\n    url: jdbc:mysql://theangel.vip:3306/themall_ums?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai\n    driver-class-name: com.mysql.cj.jdbc.Driver\n  mvc:\n    date-format: yyyy-MM-dd HH:mm:ss',
+        '5ce6b80eb0377642c83a699b3e386831', '2021-06-14 12:48:59', '2021-10-02 08:17:45', NULL, '121.35.0.182', '',
+        '9e9bfac1-f266-4fc4-b220-2c95997c532b', '会员服务配置文件', '', '', 'yaml', ''),
+       (12, 'themall-order.yml', 'DEFAULT_GROUP',
+        'spring:\n  #session保存redis\n  session:\n    store-type: redis\n  redis:\n    host: 192.168.56.10\n    port: 6379\n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n  datasource:\n    username: root\n    password: hjj0127..\n    url: jdbc:mysql://theangel.vip:3306/themall_oms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai\n    driver-class-name: com.mysql.cj.jdbc.Driver\n\n  rabbitmq:\n    host: 192.168.56.10\n    username: guest\n    password: guest\n    virtual-host: /themall\n    port: 5672\n    #开启发送端确认，到达rabbitmq\n    publisher-confirms: true\n    #发送端确认，有没有路由到指定的key  集群是一个副本模式，所有确认才能够确认\n    publisher-returns: true\n    #    只要抵达队列，以异步发送优先回调我们这个returns\n    template:\n      mandatory: true\n    listener:\n      simple:\n        #        auto:自动回复    manual:手动确认\n        acknowledge-mode: manual\n\n  thymeleaf:\n    cache: false\n  mvc:\n    date-format: yyyy-MM-dd HH:mm:ss\n\n#spring.cloud.alibaba.seata.tx-service-group修改后缀，但是必须和file.conf中的配置保持一致\n',
+        'bfe538327d4d56f84d38a4a7ea7f9412', '2021-06-14 12:56:26', '2021-10-02 08:18:04', NULL, '121.35.0.182', '',
+        '9e9bfac1-f266-4fc4-b220-2c95997c532b', '', '', '', 'yaml', ''),
+       (13, 'themall-product.yml', 'DEFAULT_GROUP',
+        'spring:\n      #session保存redis\n  session:\n    store-type: redis\n  redis:\n    host: 192.168.56.10\n    port: 6379\n    \n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n  servlet:\n    multipart:\n      max-file-size: 20MB\n      max-request-size: 200MB\n  datasource:\n    username: root\n    password: hjj0127..\n    url: jdbc:mysql://theangel.vip:3306/themall_pms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai\n    driver-class-name: com.mysql.cj.jdbc.Driver\n\n  jackson:\n    date-format: yyyy-MM-dd HH:mm:ss\n  #开发期间 关闭缓存\n  thymeleaf:\n    cache: false\n    prefix: classpath:/templates/\n    suffix: .html\n\nmybatis-plus:\n  mapper-locations: classpath*:/mapper/**/*.xml\n  global-config:\n    db-config:\n      id-type: auto\n      logic-delete-field: flag  # 全局逻辑删除的实体字段名(since 3.3.0,配置后可以忽略不配置步骤2)\n      logic-delete-value: 1 # 逻辑已删除值(默认为 1)\n      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)\n\nthemall:\n  thread:\n    coreSize: 10\n    maxSize: 200\n    keepAliveTime: 10\n\nfeign:\n  client:\n    config:\n      default:\n        connectTimeout: 10000\n        readTimeout: 10000\n\nlogging:\n  level:\n    com.theangel.themall: error\n\n',
+        '62ed50d4035a4cbf1d5472bfb5a76b35', '2021-06-14 13:16:07', '2021-09-07 13:18:27', NULL, '119.123.177.58', '',
+        '9e9bfac1-f266-4fc4-b220-2c95997c532b', '商品模块', '', '', 'yaml', ''),
+       (14, 'themall-ware.yml', 'DEFAULT_GROUP',
+        'spring:\n  #session保存redis\n  session:\n    store-type: redis\n  redis:\n    host: 192.168.56.10\n    port: 6379\n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n  datasource:\n    username: root\n    password: hjj0127..\n    url: jdbc:mysql://theangel.vip:3306/themall_wms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai\n    driver-class-name: com.mysql.cj.jdbc.Driver\n\n  jackson:\n    date-format: yyyy-MM-dd HH:mm:ss\n  rabbitmq:\n    host: 192.168.56.10\n    username: guest\n    password: guest\n    virtual-host: /themall\n    port: 5672\n    #开启发送端确认，到达rabbitmq\n    publisher-confirms: true\n    #发送端确认，有没有路由到指定的key  集群是一个副本模式，所有确认才能够确认\n    publisher-returns: true\n    #    只要抵达队列，以异步发送优先回调我们这个returns\n    template:\n      mandatory: true\n    listener:\n      simple:\n        #        auto:自动回复    manual:手动确认\n        acknowledge-mode: manual\n\n#spring.cloud.alibaba.seata.tx-service-group修改后缀，但是必须和file.conf中的配置保持一致',
+        '5417c0a31d7a55c04c6502620cb620e3', '2021-06-14 13:25:39', '2021-09-21 06:59:06', NULL, '113.90.130.180', '',
+        '9e9bfac1-f266-4fc4-b220-2c95997c532b', '库存模块配置文件', '', '', 'yaml', ''),
+       (15, 'themall-gatway.yml', 'DEFAULT_GROUP',
+        'management:\n  endpoints:\n    web:\n      exposure:\n        include: \"*\"\n\nspring:\n  zipkin:\n    base-url: http://192.168.56.10:9411\n    locator:\n      discovery:\n        #关闭服务发现，否则springcloud会把zipkin的url当成服务名称\n        enabled: false\n    sender:\n      #设置http发送数据\n      type: web\n  sleuth:\n    sampler:\n      #      设置抽取采集率为100%，默认为10%\n      probability: 1\n\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: localhost:8333\n\n    gateway:\n      routes:\n        #         检索服务\n        - id: themall-search\n          uri: lb://themall-search\n          predicates:\n            - Path=/api/search/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #          库存服务\n        - id: themall-ware\n          uri: lb://themall-ware\n          predicates:\n            - Path=/api/ware/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #          商品优惠服务\n        - id: themall-coupon\n          uri: lb://themall-coupon\n          predicates:\n            - Path=/api/coupon/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #         第三方服务\n        - id: third-party\n          uri: lb://third-party\n          predicates:\n            - Path=/api/third-party/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #         商品服务\n        - id: themall-product\n          uri: lb://themall-product\n          predicates:\n            - Path=/api/product/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #         外网穿透的地址\n        - id: themall\n          uri: lb://themall-product\n          predicates:\n            - Path=/themall/**\n          filters:\n            - RewritePath=/themall/?(?<the>.*), /$\\{the}\n\n        #         会员服务\n        - id: themall-member\n          uri: lb://themall-member\n          predicates:\n            - Path=/api/member/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #\n        - id: renren-fast\n          uri: lb://renren-fast\n          predicates:\n            - Path=/api/**,/renren-fast/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /renren-fast/$\\{the}\n\n\n        # 商品详情页\n        - id: item\n          uri: lb://themall-product\n          predicates:\n            - Host=item.theangel.com\n        #            - Path=/item/*.html\n\n        # 商品搜索\n        - id: search\n          uri: lb://themall-search\n          predicates:\n            - Host=search.theangel.com\n        #            - Path=/list.html\n\n        # 认证\n        - id: auth-server\n          uri: lb://themall-auth-server\n          predicates:\n            - Host=auth.theangel.com\n        #            - Path=/auth/**\n\n        # 购物车\n        - id: themall-cart\n          uri: lb://themall-cart\n          predicates:\n            - Host=cart.theangel.com\n\n        # 订单\n        - id: themall-order\n          uri: lb://themall-order\n          predicates:\n            - Host=order.theangel.com\n\n        # 首页\n        - id: product-index\n          uri: lb://themall-product\n          predicates:\n            - Host=theangel.com,theangel.vip:8888,127.0.0.1:88,159.75.26.150:8888\n\n        # 用户订单\n        - id: member\n          uri: lb://themall-member\n          predicates:\n            - Host=member.theangel.com\n\n\n        # 秒杀\n        - id: themall-seckill\n          uri: lb://themall-seckill\n          predicates:\n            - Host=seckill.theangel.com\n\nlogging:\n  level:\n    org.springframework.cloud.openfeign: debug\n    org.springframework.sleuth: debug\n\n\n\n',
+        'a779b8539f4437ccc24584a669d6bfef', '2021-06-14 14:03:33', '2021-10-16 16:19:13', NULL, '113.87.2.85', '',
+        '9e9bfac1-f266-4fc4-b220-2c95997c532b', 'API网关配置', '', '', 'yaml', ''),
+       (18, 'renren-fast.yml', 'DEFAULT_GROUP',
+        'spring: \n  application:\n    name: renren-fast\nserver:\n  port: 8088', '83fa205e829bf70106e59f34c445bcd4',
+        '2021-06-17 13:38:51', '2021-06-19 13:13:17', NULL, '183.14.31.49', '', '9e9bfac1-f266-4fc4-b220-2c95997c532b',
+        '', '', '', 'yaml', ''),
+       (41, 'third-party.yml', 'DEFAULT_GROUP',
+        'spring:\n  #session保存redis\n  session:\n    store-type: redis\n  redis:\n    host: 192.168.56.10\n    port: 6379\n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n  servlet:\n    multipart:\n      max-file-size: 20MB\n      max-request-size: 200MB\n\n  # 这些配置在腾讯云控制台都可查到（使用时替换为你自己的）\n  # 腾讯云的SecretId（永久的，可在控制台开启或关闭）\n  tencent:\n    secretId: AKIDIPHsCF3aqpdAQP7ZkeGdjY6NN6YicGdi\n    # 腾讯云的SecretKey（永久的，可在控制台开启或关闭）\n    SecretKey: qOffOq1uWrviFVVDetrYx5wWqtfAOKdg\n    # 腾讯云的bucket (存储桶)\n    bucket: theangel-1306086135\n    # 腾讯云的region(bucket所在地区)\n    region: ap-guangzhou\n    # 腾讯云的allowPrefix(允许上传的路径)\n    allowPrefix: \'*\'\n    # 腾讯云的临时密钥时长(单位秒)\n    durationSeconds: 10\n    # 腾讯云的访问基础链接:\n    baseUrl: https://theangel-1306086135.cos.ap-guangzhou.myqcloud.com\n  cloud:\n    alicloud:\n      access-key: LTAI5t5Zw9QpcLrfdGCA4NZZ\n      secret-key: MEYjLvITV4G6hkv12N41mbrcqR3phk\n      oss:\n        endpoint: oss-cn-hangzhou.aliyuncs.com\n        bucket: theangel-mall\n      sms:\n        host: https://dfsns.market.alicloudapi.com\n        path: /data/send_sms\n        appcode: 9d04ec7d99b740a9973cf01a438b9337\n',
+        '3e702b87a5206493d8f63127981f9cff', '2021-06-21 16:29:18', '2021-09-07 13:30:06', NULL, '119.123.177.58', '',
+        '9e9bfac1-f266-4fc4-b220-2c95997c532b', '第三方服务配置', '', '', 'yaml', ''),
+       (42, 'themall-search.yml', 'DEFAULT_GROUP',
+        'spring:\n    #session保存redis\n  session:\n    store-type: redis\n  redis:\n    host: 192.168.56.10\n    port: 6379\n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n  thymeleaf:\n    cache: false\n',
+        '5476c7d72630db6b1b9c19c3f022c447', '2021-08-01 05:54:48', '2021-09-07 13:20:22', NULL, '119.123.177.58', '',
+        '9e9bfac1-f266-4fc4-b220-2c95997c532b', '全文检索  elasticsearch ', '', '', 'yaml', ''),
+       (111, 'themall-auth-server', 'DEFAULT_GROUP',
+        'spring:\n  #session保存redis\n  session:\n    store-type: redis\n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n  #开发期间 关闭缓存\n  thymeleaf:\n    cache: false\n    prefix: classpath:/templates/\n    suffix: .html\n\nlogging:\n  level:\n    com.theangel.themall: error\n\nserver:\n  port: 20000\n  servlet:\n    session:\n      #session超时时间\n      timeout: 30m\n',
+        '63c71e2c2435dafc95b54e5fd477ba10', '2021-08-19 14:34:56', '2021-12-11 16:08:05', NULL, '113.87.226.163', '',
+        '9e9bfac1-f266-4fc4-b220-2c95997c532b', '认证服务', '', '', 'yaml', ''),
+       (129, 'themall-cart.yml', 'DEFAULT_GROUP',
+        'spring:\n    #session保存redis\n  session:\n    store-type: redis\n  redis:\n    host: 192.168.56.10\n    port: 6379\n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n  thymeleaf:\n    cache: false',
+        '708feb2c1553c035a1da7ccd65a9b602', '2021-08-29 04:39:46', '2021-09-07 13:21:35', NULL, '119.123.177.58', '',
+        '9e9bfac1-f266-4fc4-b220-2c95997c532b', '购物车服务配置', '', '', 'yaml', ''),
+       (164, 'themall-seckill.yml', 'DEFAULT_GROUP',
+        'spring:\n  #session保存redis\n  session:\n    store-type: redis\n  redis:\n    host: 192.168.56.10\n    port: 6379\n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n  jackson:\n    date-format: yyyy-MM-dd HH:mm:ss\n  task:\n    execution:\n      pool:\n        core-size: 20\n        maxSize: 50\n        queueCapacity: 50\n\nthemall:\n  thread:\n    coreSize: 10\n    maxSize: 200\n    keepAliveTime: 10\n\nfeign:\n  client:\n    config:\n      default:\n        connectTimeout: 10000\n        readTimeout: 10000\n\nlogging:\n  level:\n    com.theangel.themall: info\n\n',
+        '2dc98037e957735e496cf8ab943c1115', '2021-10-03 12:00:34', '2021-10-10 16:22:11', NULL, '119.123.176.241', '',
+        '9e9bfac1-f266-4fc4-b220-2c95997c532b', NULL, NULL, NULL, 'text', NULL),
+       (246, 'themall-gatway-dev.yaml', 'dev',
+        'spring:\n  zipkin:\n    base-url: http://192.168.98.11:30941\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858\n\n\n\n\n\n',
+        '85dd0b1180e0fa4aeb895082da8327a8', '2023-11-20 02:23:29', '2023-11-20 02:23:29', NULL, '10.244.0.0', '',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd', '', NULL, NULL, 'yaml', NULL),
+       (247, 'renren-fast-dev.yaml', 'dev',
+        '\n\nspring:\n  zipkin:\n    base-url: http://192.168.98.11:30941\n\n  datasource:\n    type: com.alibaba.druid.pool.DruidDataSource\n    druid:\n      db-type: mysql\n      driver-class-name: com.mysql.cj.jdbc.Driver\n      url: jdbc:mysql://192.168.98.11:30306/themall_admin?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false\n      username: root\n      password: \"005400\"\n      initial-size: 10\n      max-active: 100\n      min-idle: 10\n      max-wait: 60000\n      pool-prepared-statements: true\n      max-pool-prepared-statement-per-connection-size: 20\n      time-between-eviction-runs-millis: 60000\n      min-evictable-idle-time-millis: 300000\n      #Oracle需要打开注释\n      #validation-query: SELECT 1 FROM DUAL\n      test-while-idle: true\n      test-on-borrow: false\n      test-on-return: false\n      stat-view-servlet:\n        enabled: true\n        url-pattern: /druid/*\n        #login-username: admin\n        #login-password: admin\n      filter:\n        stat:\n          log-slow-sql: true\n          slow-sql-millis: 1000\n          merge-sql: false\n        wall:\n          config:\n            multi-statement-allow: true\n  ##多数据源的配置\n  #dynamic:\n  #  datasource:\n  #    slave1:\n  #      driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver\n  #      url: jdbc:sqlserver://localhost:1433;DatabaseName=renren_security\n  #      username: sa\n  #      password: 123456\n  #    slave2:\n  #      driver-class-name: org.postgresql.Driver\n  #      url: jdbc:postgresql://localhost:5432/renren_security\n  #      username: renren\n  #      password: 123456\n  redis:\n    password: \"005400\"\n    host: 192.168.98.11\n    port: 30679\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858\n\nmybatis-plus:\n  #实体扫描，多个package用逗号或者分号分隔\n  typeAliasesPackage: io.renren.modules.*.entity\n\n\nrenren:\n  redis:\n    open: false\n  shiro:\n    redis: false\n  # APP模块，是通过jwt认证的，如果要使用APP模块，则需要修改【加密秘钥】\n  jwt:\n    # 加密秘钥\n    secret: f4e2e52034348f86b67cde581c0f9eb5[www.theangel.vip]\n    # token有效时长，7天，单位秒\n    expire: 604800\n    header: token\n\nlogging:\n  level:\n    org.springframework.cloud.openfeign: info\n    org.springframework.sleuth: info\n',
+        '6d7e0a2bf6269c00787a7a2b48408a5d', '2023-11-20 02:23:29', '2023-11-20 02:23:29', NULL, '10.244.0.0', '',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd', '', NULL, NULL, 'yaml', NULL),
+       (248, 'themall-auth-server-dev.yaml', 'dev',
+        'spring:\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858\n  zipkin:\n    base-url: http://192.168.98.11:30941\n  redis:\n    password: \"005400\"\n    host: 192.168.98.11\n    port: 30679\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n\n  #开发期间 关闭缓存\n  thymeleaf:\n    #    cache: false\n    prefix: classpath:/templates/\n    suffix: .html\n\nlogging:\n  level:\n    org.springframework.cloud.openfeign: info\n    org.springframework.sleuth: info\n\n\n',
+        '5c4f5237936c9d83da560aa43f3f7bb2', '2023-11-20 02:23:29', '2023-11-20 02:23:29', NULL, '10.244.0.0', '',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd', '', NULL, NULL, 'yaml', NULL),
+       (249, 'common.yaml', 'dev',
+        '# Tomcat\nserver:\n  tomcat:\n    uri-encoding: UTF-8\n    max-threads: 1000\n    min-spare-threads: 30\n  connection-timeout: 5000ms\n  servlet:\n    session:\n      #session超时时间\n      timeout: 30m\n\nspring:\n  zipkin:\n    locator:\n      discovery:\n        #关闭服务发现，否则springcloud会把zipkin的url当成服务名称\n        enabled: false\n    sender:\n      #设置http发送数据\n      type: web\n  sleuth:\n    sampler:\n      #      设置抽取采集率为100%，默认为10%\n      probability: 1\n\n  session:\n    store-type: redis\n    #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀但开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n  # jackson时间格式化\n  jackson:\n    time-zone: GMT+8\n#    date-format: yyyy-MM-dd HH:mm:ss\n  servlet:\n    multipart:\n      max-file-size: 100MB\n      max-request-size: 100MB\n      enabled: true\n  redis:\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    timeout: 6000ms  # 连接超时时长（毫秒）\n    jedis:\n      pool:\n        max-active: 1000  # 连接池最大连接数（使用负值表示没有限制）\n        max-wait: -1ms      # 连接池最大阻塞等待时间（使用负值表示没有限制）\n        max-idle: 10      # 连接池中的最大空闲连接\n        min-idle: 5       # 连接池中的最小空闲连接\n  mvc:\n    throw-exception-if-no-handler-found: true\n #   date-format: yyyy-MM-dd HH:mm:ss\n\nmybatis-plus:\n  mapper-locations: classpath*:/mapper/**/*.xml\n  global-config:\n    #数据库相关配置\n    db-config:\n      #主键类型  AUTO:\"数据库ID自增\", INPUT:\"用户输入ID\", ID_WORKER:\"全局唯一ID (数字类型唯一ID)\", UUID:\"全局唯一ID UUID\";\n      id-type: ID_WORKER\n      logic-delete-field: flag  # 全局逻辑删除的实体字段名(since 3.3.0,配置后可以忽略不配置步骤2)\n      logic-delete-value: 1 # 逻辑已删除值(默认为 1)\n      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)\n    banner: false\n\n  #原生配置\n  configuration:\n    map-underscore-to-camel-case: true\n    cache-enabled: false\n    call-setters-on-nulls: true\n    jdbc-type-for-null: \'null\'\n\nmanagement:\n  endpoints:\n    web:\n      exposure:\n        include: \"*\"\n\nfeign:\n  sentinel:\n    enabled: true\n\n',
+        'd37df780366b378ba3cad1a1d219897f', '2023-11-20 02:23:29', '2023-11-20 02:23:29', NULL, '10.244.0.0', '',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd', '', NULL, NULL, 'yaml', NULL),
+       (250, 'themall-cart-dev.yaml', 'dev',
+        'spring:\n  zipkin:\n    base-url: http://192.168.98.11:30941\n  redis:\n    password: \"005400\"\n    host: 192.168.98.11\n    port: 30679\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858\n  thymeleaf:\n    cache: false',
+        '889f6957ba11c5650ae0eb4bd4e70dfa', '2023-11-20 02:23:29', '2023-11-20 02:23:29', NULL, '10.244.0.0', '',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd', '', NULL, NULL, 'yaml', NULL),
+       (251, 'themall-coupon-dev.yaml', 'dev',
+        'spring:\n  zipkin:\n    base-url: http://192.168.98.11:30941\n    \n  datasource:\n    driver-class-name: com.mysql.cj.jdbc.Driver\n    url: jdbc:mysql://192.168.98.11:30306/themall_sms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false\n    username: root\n    password: \"005400\"\n\n  redis:\n    password: \"005400\"\n    host: 192.168.98.11\n    port: 30679\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858',
+        'a8a8c0586f688859ca6fbe3f949c1581', '2023-11-20 02:23:29', '2023-11-20 02:23:29', NULL, '10.244.0.0', '',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd', '', NULL, NULL, 'yaml', NULL),
+       (252, 'themall-member-dev.yaml', 'dev',
+        'spring:\n  redis:\n    password: \"005400\"\n    host: 192.168.98.11\n    port: 30679\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  zipkin:\n    base-url: http://192.168.98.11:30941\n    \n  datasource:\n    driver-class-name: com.mysql.cj.jdbc.Driver\n    url: jdbc:mysql://192.168.98.11:30306/themall_ums?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false\n    username: root\n    password: \"005400\"\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858\n',
+        '2eaa662a430161b95458dffbe5ac022c', '2023-11-20 02:23:29', '2023-11-20 02:23:29', NULL, '10.244.0.0', '',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd', '', NULL, NULL, 'yaml', NULL),
+       (253, 'themall-order-dev.yaml', 'dev',
+        'spring:\n  datasource:\n    driver-class-name: com.mysql.cj.jdbc.Driver\n    url: jdbc:mysql://192.168.98.11:30306/themall_oms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false\n    username: root\n    password: \"005400\"\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858\n\n  rabbitmq:\n    host: 192.168.98.11\n    username: admin\n    password: \"005400\"\n    virtual-host: /themall\n    port: 30672\n    #开启发送端确认，到达rabbitmq\n    publisher-confirms: true\n    #发送端确认，有没有路由到指定的key  集群是一个副本模式，所有确认才能够确认\n    publisher-returns: true\n    #    只要抵达队列，以异步发送优先回调我们这个returns\n    template:\n      mandatory: true\n    listener:\n      simple:\n        #        auto:自动回复    manual:手动确认\n        acknowledge-mode: manual\n        \n  thymeleaf:\n    cache: false\n\n  redis:\n    password: \"005400\"\n    host: 192.168.98.11\n    port: 30679\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  zipkin:\n    base-url: http://192.168.98.11:30941',
+        '65e37f6217fdecb9acfb0c4ebeefa297', '2023-11-20 02:23:29', '2023-11-20 02:23:29', NULL, '10.244.0.0', '',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd', '', NULL, NULL, 'yaml', NULL),
+       (254, 'themall-product-dev.yaml', 'dev',
+        'spring:\n  datasource:\n    driver-class-name: com.mysql.cj.jdbc.Driver\n    url: jdbc:mysql://192.168.98.11:30306/themall_pms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false\n    username: root\n    password: \"005400\"\n    \n  redis:\n    password: \"005400\"\n    host: 192.168.98.11\n    port: 30679\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  #开发期间 关闭缓存\n  thymeleaf:\n    cache: false\n    prefix: classpath:/templates/\n    suffix: .html\n\n\nthemall:\n  thread:\n    coreSize: 10\n    maxSize: 200\n    keepAliveTime: 10\nlogging:\n  level:\n    com.theangel.themall: info\n\n\n',
+        '8813b6828123950a525366e82617da4a', '2023-11-20 02:23:29', '2023-11-20 02:23:29', NULL, '10.244.0.0', '',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd', NULL, NULL, NULL, 'yaml', NULL),
+       (255, 'themall-search-dev.yaml', 'dev',
+        'spring:\n  redis:\n    password: \"005400\"\n    host: 192.168.98.11\n    port: 30679\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n  elasticsearch:\n    cluster:\n      nodes: http://192.168.98.11:30920\n      password: gqF51lX6fA3fM210N8Y3fz0f\n      username: elastic',
+        'f7d579d975fabc7b25fc26bbb14361a7', '2023-11-20 02:23:29', '2023-11-28 05:54:25', 'nacos', '10.244.0.0', '',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd', '', '', '', 'yaml', ''),
+       (256, 'themall-seckill-dev.yaml', 'dev',
+        'spring:\n  rabbitmq:\n    host: 192.168.98.11\n    username: admin\n    password: \"005400\"\n    virtual-host: /themall\n    port: 30672\n    #开启发送端确认，到达rabbitmq\n    publisher-confirms: true\n    #发送端确认，有没有路由到指定的key  集群是一个副本模式，所有确认才能够确认\n    publisher-returns: true\n    #    只要抵达队列，以异步发送优先回调我们这个returns\n    template:\n      mandatory: true\n    listener:\n      simple:\n        #        auto:自动回复    manual:手动确认\n        acknowledge-mode: manual\n  thymeleaf:\n    cache: false\n\n\n  redis:\n    password: \"005400\"\n    host: 192.168.98.11\n    port: 30679\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  zipkin:\n    base-url: http://192.168.98.11:30941\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858\n  task:\n    execution:\n      pool:\n        core-size: 20\n        maxSize: 50\n        queueCapacity: 50\n\nthemall:\n  thread:\n    coreSize: 10\n    maxSize: 200\n    keepAliveTime: 10\n\nlogging:\n  level:\n    com.theangel.themall: info\n\n\n    ',
+        '5594f13c402044d091fc58b898239c55', '2023-11-20 02:23:29', '2023-11-20 02:23:29', NULL, '10.244.0.0', '',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd', NULL, NULL, NULL, 'yaml', NULL),
+       (257, 'themall-ware-dev.yaml', 'dev',
+        'spring:\n  rabbitmq:\n    host: 192.168.98.11\n    username: admin\n    password: \"005400\"\n    virtual-host: /themall\n    port: 30672\n    #开启发送端确认，到达rabbitmq\n    publisher-confirms: true\n    #发送端确认，有没有路由到指定的key  集群是一个副本模式，所有确认才能够确认\n    publisher-returns: true\n    #    只要抵达队列，以异步发送优先回调我们这个returns\n    template:\n      mandatory: true\n    listener:\n      simple:\n        #        auto:自动回复    manual:手动确认\n        acknowledge-mode: manual\n\n\n  datasource:\n    driver-class-name: com.mysql.cj.jdbc.Driver\n    url: jdbc:mysql://192.168.98.11:30306/themall_wms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false\n    username: root\n    password: \"005400\"\n\n\n  redis:\n    password: \"005400\"\n    host: 192.168.98.11\n    port: 30679\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  zipkin:\n    base-url: http://192.168.98.11:30941\n\n',
+        '2e4c1d49aeb0eb432546e149f9b11de1', '2023-11-20 02:23:29', '2023-11-20 02:23:29', NULL, '10.244.0.0', '',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd', NULL, NULL, NULL, 'yaml', NULL),
+       (258, 'third-party-dev.yaml', 'dev',
+        'spring:\n  redis:\n    password: \"005400\"\n    host: 192.168.98.11\n    port: 30679\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  # 这些配置在腾讯云控制台都可查到（使用时替换为你自己的）\n  # 腾讯云的SecretId（永久的，可在控制台开启或关闭）\n  tencent:\n    secretId: AKIDIPHsCF3aqpdAQP7ZkeGdjY6NN6YicGdi\n    # 腾讯云的SecretKey（永久的，可在控制台开启或关闭）\n    SecretKey: qOffOq1uWrviFVVDetrYx5wWqtfAOKdg\n    # 腾讯云的bucket (存储桶)\n    bucket: theangel-1306086135\n    # 腾讯云的region(bucket所在地区)\n    region: ap-guangzhou\n    # 腾讯云的allowPrefix(允许上传的路径)\n    allowPrefix: \'*\'\n    # 腾讯云的临时密钥时长(单位秒)\n    durationSeconds: 10\n    # 腾讯云的访问基础链接:\n    baseUrl: https://theangel-1306086135.cos.ap-guangzhou.myqcloud.com\n\n    alicloud:\n      access-key: LTAI5t5Zw9QpcLrfdGCA4NZZ\n      secret-key: MEYjLvITV4G6hkv12N41mbrcqR3phk\n      oss:\n        endpoint: oss-cn-hangzhou.aliyuncs.com\n        bucket: theangel-mall\n      sms:\n        host: https://dfsns.market.alicloudapi.com\n        path: /data/send_sms\n        appcode: 9d04ec7d99b740a9973cf01a438b9337',
+        'd76a58b36de4cefe600d5b5f132ff334', '2023-11-20 02:23:29', '2023-11-20 02:23:29', NULL, '10.244.0.0', '',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd', '', NULL, NULL, 'yaml', NULL),
+       (259, 'common.yaml', 'prod',
+        '# Tomcat\nserver:\n  tomcat:\n    uri-encoding: UTF-8\n    max-threads: 1000\n    min-spare-threads: 30\n  connection-timeout: 5000ms\n  servlet:\n    session:\n      #session超时时间\n      timeout: 30m\n\nspring:\n  zipkin:\n    locator:\n      discovery:\n        #关闭服务发现，否则springcloud会把zipkin的url当成服务名称\n        enabled: false\n    sender:\n      #设置http发送数据\n      type: web\n  sleuth:\n    sampler:\n      #      设置抽取采集率为100%，默认为10%\n      probability: 1\n\n  session:\n    store-type: redis\n    #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀但开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n  # jackson时间格式化\n  jackson:\n    time-zone: GMT+8\n#    date-format: yyyy-MM-dd HH:mm:ss\n  servlet:\n    multipart:\n      max-file-size: 100MB\n      max-request-size: 100MB\n      enabled: true\n  redis:\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    timeout: 6000ms  # 连接超时时长（毫秒）\n    jedis:\n      pool:\n        max-active: 1000  # 连接池最大连接数（使用负值表示没有限制）\n        max-wait: -1ms      # 连接池最大阻塞等待时间（使用负值表示没有限制）\n        max-idle: 10      # 连接池中的最大空闲连接\n        min-idle: 5       # 连接池中的最小空闲连接\n  mvc:\n    throw-exception-if-no-handler-found: true\n #   date-format: yyyy-MM-dd HH:mm:ss\n\nmybatis-plus:\n  mapper-locations: classpath*:/mapper/**/*.xml\n  global-config:\n    #数据库相关配置\n    db-config:\n      #主键类型  AUTO:\"数据库ID自增\", INPUT:\"用户输入ID\", ID_WORKER:\"全局唯一ID (数字类型唯一ID)\", UUID:\"全局唯一ID UUID\";\n      id-type: ID_WORKER\n      logic-delete-field: flag  # 全局逻辑删除的实体字段名(since 3.3.0,配置后可以忽略不配置步骤2)\n      logic-delete-value: 1 # 逻辑已删除值(默认为 1)\n      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)\n    banner: false\n\n  #原生配置\n  configuration:\n    map-underscore-to-camel-case: true\n    cache-enabled: false\n    call-setters-on-nulls: true\n    jdbc-type-for-null: \'null\'\n\nmanagement:\n  endpoints:\n    web:\n      exposure:\n        include: \"*\"\n\nfeign:\n  sentinel:\n    enabled: true\n\n',
+        'd37df780366b378ba3cad1a1d219897f', '2023-11-20 02:23:29', '2023-11-20 02:23:29', NULL, '10.244.0.0', '',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd', '', NULL, NULL, 'yaml', NULL),
+       (260, 'themall-gatway-prod.yaml', 'prod',
+        'spring:\n  zipkin:\n    base-url: http://zipkin:9411\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: sentinel-dashboard:8080\n\n\n\n\n\n',
+        '030304846099d3e4e98aa81ce50d0914', '2023-11-20 02:23:29', '2023-11-28 06:38:47', 'nacos', '10.244.0.0', '',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd', '', '', '', 'yaml', ''),
+       (261, 'renren-fast-prod.yaml', 'prod',
+        '\n\nspring:\n  zipkin:\n    base-url: http://zipkin:9411\n\n  datasource:\n    type: com.alibaba.druid.pool.DruidDataSource\n    druid:\n      db-type: mysql\n      driver-class-name: com.mysql.cj.jdbc.Driver\n      url: jdbc:mysql://mysql:3306/themall_admin?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false\n      username: root\n      password: \"005400\"\n      initial-size: 10\n      max-active: 100\n      min-idle: 10\n      max-wait: 60000\n      pool-prepared-statements: true\n      max-pool-prepared-statement-per-connection-size: 20\n      time-between-eviction-runs-millis: 60000\n      min-evictable-idle-time-millis: 300000\n      #Oracle需要打开注释\n      #validation-query: SELECT 1 FROM DUAL\n      test-while-idle: true\n      test-on-borrow: false\n      test-on-return: false\n      stat-view-servlet:\n        enabled: true\n        url-pattern: /druid/*\n        #login-username: admin\n        #login-password: admin\n      filter:\n        stat:\n          log-slow-sql: true\n          slow-sql-millis: 1000\n          merge-sql: false\n        wall:\n          config:\n            multi-statement-allow: true\n  ##多数据源的配置\n  #dynamic:\n  #  datasource:\n  #    slave1:\n  #      driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver\n  #      url: jdbc:sqlserver://localhost:1433;DatabaseName=renren_security\n  #      username: sa\n  #      password: 123456\n  #    slave2:\n  #      driver-class-name: org.postgresql.Driver\n  #      url: jdbc:postgresql://localhost:5432/renren_security\n  #      username: renren\n  #      password: 123456\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: sentinel-dashboard:8080\n\nmybatis-plus:\n  #实体扫描，多个package用逗号或者分号分隔\n  typeAliasesPackage: io.renren.modules.*.entity\n\n\nrenren:\n  redis:\n    open: false\n  shiro:\n    redis: false\n  # APP模块，是通过jwt认证的，如果要使用APP模块，则需要修改【加密秘钥】\n  jwt:\n    # 加密秘钥\n    secret: f4e2e52034348f86b67cde581c0f9eb5[www.theangel.vip]\n    # token有效时长，7天，单位秒\n    expire: 604800\n    header: token\n',
+        'c93d228dcc80bb263fae89e1810defb2', '2023-11-20 02:23:29', '2023-11-28 06:39:49', 'nacos', '10.244.0.0', '',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd', '', '', '', 'yaml', ''),
+       (262, 'themall-auth-server-prod.yaml', 'prod',
+        'spring:\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: sentinel-dashboard:8080\n\n  zipkin:\n    base-url: http://zipkin:9411\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n\n  #开发期间 关闭缓存\n  thymeleaf:\n    #    cache: false\n    prefix: classpath:/templates/\n    suffix: .html\n\n',
+        'd3bc4423fefc895e78d69586d0f70cd0', '2023-11-20 02:23:29', '2023-11-28 06:39:20', 'nacos', '10.244.0.0', '',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd', '', '', '', 'yaml', ''),
+       (263, 'themall-cart-prod.yaml', 'prod',
+        'spring:\n  zipkin:\n    base-url: http://zipkin:9411\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: sentinel-dashboard:8080\n',
+        '9d3661fe4149bf4f27ddef903c1ed341', '2023-11-20 02:23:29', '2023-11-28 06:57:08', 'nacos', '10.244.0.0', '',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd', '', '', '', 'yaml', ''),
+       (264, 'themall-coupon-prod.yaml', 'prod',
+        'spring:\n  zipkin:\n    base-url: http://zipkin:9411\n    \n  datasource:\n    driver-class-name: com.mysql.cj.jdbc.Driver\n    url: jdbc:mysql://mysql:3306/themall_sms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false\n    username: root\n    password: \"005400\"\n\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: sentinel-dashboard:8080',
+        '494ffd42fa4d1cb28c66d74935265916', '2023-11-20 02:23:29', '2023-11-28 06:57:21', 'nacos', '10.244.0.0', '',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd', '', '', '', 'yaml', ''),
+       (265, 'themall-member-prod.yaml', 'prod',
+        'spring:\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  zipkin:\n    base-url: http://zipkin:9411\n    \n  datasource:\n    driver-class-name: com.mysql.cj.jdbc.Driver\n    url: jdbc:mysql://mysql:3306/themall_ums?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false\n    username: root\n    password: \"005400\"\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858\n',
+        '9114d0862a7f9800d466399e693daf5c', '2023-11-20 02:23:29', '2023-11-21 02:05:20', 'nacos', '10.244.0.0', '',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd', '', '', '', 'yaml', ''),
+       (266, 'themall-order-prod.yaml', 'prod',
+        'spring:\n  datasource:\n    driver-class-name: com.mysql.cj.jdbc.Driver\n    url: jdbc:mysql://mysql:3306/themall_oms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false\n    username: root\n    password: \"005400\"\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: sentinel-dashboard:8080\n\n  rabbitmq:\n    host: rabbit-mq-rabbitmq\n    username: admin\n    password: \"005400\"\n    virtual-host: /themall\n    port: 5672\n    #开启发送端确认，到达rabbitmq\n    publisher-confirms: true\n    #发送端确认，有没有路由到指定的key  集群是一个副本模式，所有确认才能够确认\n    publisher-returns: true\n    #    只要抵达队列，以异步发送优先回调我们这个returns\n    template:\n      mandatory: true\n    listener:\n      simple:\n        #        auto:自动回复    manual:手动确认\n        acknowledge-mode: manual\n\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  zipkin:\n    base-url: http://zipkin:9411',
+        '29669d2ac5b8d68138f38283ee23dff7', '2023-11-20 02:23:29', '2023-11-28 06:57:40', 'nacos', '10.244.0.0', '',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd', '', '', '', 'yaml', ''),
+       (267, 'themall-product-prod.yaml', 'prod',
+        'spring:\n  datasource:\n    driver-class-name: com.mysql.cj.jdbc.Driver\n    url: jdbc:mysql://mysql:3306/themall_pms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false\n    username: root\n    password: \"005400\"\n\n  zipkin:\n    base-url: http://zipkin:9411\n\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  #开发期间 关闭缓存\n  thymeleaf:\n    cache: true\n    prefix: classpath:/templates/\n    suffix: .html\n\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: sentinel-dashboard:8080\n\nthemall:\n  thread:\n    coreSize: 10\n    maxSize: 200\n    keepAliveTime: 10\n\n\n\n',
+        '61affa99c2f474e5cc51f1b02fefd5ca', '2023-11-20 02:23:29', '2023-11-28 06:58:23', 'nacos', '10.244.0.0', '',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd', '', '', '', 'yaml', ''),
+       (268, 'themall-search-prod.yaml', 'prod',
+        'spring:\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n  elasticsearch:\n    cluster:\n      nodes: http://elastic-es-http:9200\n      password: gqF51lX6fA3fM210N8Y3fz0f\n      username: elastic\n\n  zipkin:\n    base-url: http://zipkin:9411\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: sentinel-dashboard:8080',
+        '321dc50fb1e97036f8b5ebfdcfe655db', '2023-11-20 02:23:29', '2023-11-28 06:58:41', 'nacos', '10.244.0.0', '',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd', '', '', '', 'yaml', ''),
+       (269, 'themall-seckill-prod.yaml', 'prod',
+        'spring:\n  rabbitmq:\n    host: rabbit-mq-rabbitmq\n    username: admin\n    password: \"005400\"\n    virtual-host: /themall\n    port: 5672\n    #开启发送端确认，到达rabbitmq\n    publisher-confirms: true\n    #发送端确认，有没有路由到指定的key  集群是一个副本模式，所有确认才能够确认\n    publisher-returns: true\n    #    只要抵达队列，以异步发送优先回调我们这个returns\n    template:\n      mandatory: true\n    listener:\n      simple:\n        #        auto:自动回复    manual:手动确认\n        acknowledge-mode: manual\n\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  zipkin:\n    base-url: http://zipkin:9411\n\n    \n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: sentinel-dashboard:8080\n  task:\n    execution:\n      pool:\n        core-size: 20\n        maxSize: 50\n        queueCapacity: 50\n\nthemall:\n  thread:\n    coreSize: 10\n    maxSize: 200\n    keepAliveTime: 10\n\n\n\n    ',
+        '298cb72152b1290a00db0cd48cb17364', '2023-11-20 02:23:29', '2023-11-28 06:59:08', 'nacos', '10.244.0.0', '',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd', '', '', '', 'yaml', ''),
+       (270, 'themall-ware-prod.yaml', 'prod',
+        'spring:\n  rabbitmq:\n    host: rabbit-mq-rabbitmq\n    username: admin\n    password: \"005400\"\n    virtual-host: /themall\n    port: 30672\n    #开启发送端确认，到达rabbitmq\n    publisher-confirms: true\n    #发送端确认，有没有路由到指定的key  集群是一个副本模式，所有确认才能够确认\n    publisher-returns: true\n    #    只要抵达队列，以异步发送优先回调我们这个returns\n    template:\n      mandatory: true\n    listener:\n      simple:\n        #        auto:自动回复    manual:手动确认\n        acknowledge-mode: manual\n\n\n  datasource:\n    driver-class-name: com.mysql.cj.jdbc.Driver\n    url: jdbc:mysql://mysql:3306/themall_wms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false\n    username: root\n    password: \"005400\"\n\n\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  zipkin:\n    base-url: http://zipkin:9411\n\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: sentinel-dashboard:8080\n',
+        '13cd5626277f11cff2eaaf1fb82dd52a', '2023-11-20 02:23:29', '2023-11-28 06:59:26', 'nacos', '10.244.0.0', '',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd', '', '', '', 'yaml', ''),
+       (271, 'third-party-prod.yaml', 'prod',
+        'spring:\n  redis:\n    password: \"005400\"\n    host: 192.168.98.11\n    port: 30679\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  # 这些配置在腾讯云控制台都可查到（使用时替换为你自己的）\n  # 腾讯云的SecretId（永久的，可在控制台开启或关闭）\n  tencent:\n    secretId: AKIDIPHsCF3aqpdAQP7ZkeGdjY6NN6YicGdi\n    # 腾讯云的SecretKey（永久的，可在控制台开启或关闭）\n    SecretKey: qOffOq1uWrviFVVDetrYx5wWqtfAOKdg\n    # 腾讯云的bucket (存储桶)\n    bucket: theangel-1306086135\n    # 腾讯云的region(bucket所在地区)\n    region: ap-guangzhou\n    # 腾讯云的allowPrefix(允许上传的路径)\n    allowPrefix: \'*\'\n    # 腾讯云的临时密钥时长(单位秒)\n    durationSeconds: 10\n    # 腾讯云的访问基础链接:\n    baseUrl: https://theangel-1306086135.cos.ap-guangzhou.myqcloud.com\n\n    alicloud:\n      access-key: LTAI5t5Zw9QpcLrfdGCA4NZZ\n      secret-key: MEYjLvITV4G6hkv12N41mbrcqR3phk\n      oss:\n        endpoint: oss-cn-hangzhou.aliyuncs.com\n        bucket: theangel-mall\n      sms:\n        host: https://dfsns.market.alicloudapi.com\n        path: /data/send_sms\n        appcode: 9d04ec7d99b740a9973cf01a438b9337\n\n\n  zipkin:\n    base-url: http://zipkin:9411\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: sentinel-dashboard:8080',
+        '61848ca413c15efd17ac171085ad9f04', '2023-11-20 02:23:29', '2023-11-28 06:59:46', 'nacos', '10.244.0.0', '',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd', '', '', '', 'yaml', '');
+/*!40000 ALTER TABLE `config_info`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `config_info_aggr`
+--
+
 DROP TABLE IF EXISTS `config_info_aggr`;
-CREATE TABLE `config_info_aggr`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `data_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'data_id',
-  `group_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'group_id',
-  `datum_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'datum_id',
-  `content` longtext CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '内容',
-  `gmt_modified` datetime NOT NULL COMMENT '修改时间',
-  `app_name` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
-  `tenant_id` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT '' COMMENT '租户字段',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uk_configinfoaggr_datagrouptenantdatum`(`data_id`, `group_id`, `tenant_id`, `datum_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '增加租户字段' ROW_FORMAT = Dynamic;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `config_info_aggr`
+(
+    `id`           bigint                                                 NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `data_id`      varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT 'data_id',
+    `group_id`     varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT 'group_id',
+    `datum_id`     varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT 'datum_id',
+    `content`      longtext CHARACTER SET utf8mb3 COLLATE utf8mb3_bin     NOT NULL COMMENT '内容',
+    `gmt_modified` datetime                                               NOT NULL COMMENT '修改时间',
+    `app_name`     varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT NULL,
+    `tenant_id`    varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT '' COMMENT '租户字段',
+    PRIMARY KEY (`id`) USING BTREE,
+    UNIQUE KEY `uk_configinfoaggr_datagrouptenantdatum` (`data_id`, `group_id`, `tenant_id`, `datum_id`) USING BTREE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb3
+  COLLATE = utf8mb3_bin
+  ROW_FORMAT = DYNAMIC COMMENT ='增加租户字段';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of config_info_aggr
--- ----------------------------
+--
+-- Dumping data for table `config_info_aggr`
+--
 
--- ----------------------------
--- Table structure for config_info_beta
--- ----------------------------
+LOCK TABLES `config_info_aggr` WRITE;
+/*!40000 ALTER TABLE `config_info_aggr`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `config_info_aggr`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `config_info_beta`
+--
+
 DROP TABLE IF EXISTS `config_info_beta`;
-CREATE TABLE `config_info_beta`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `data_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'data_id',
-  `group_id` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'group_id',
-  `app_name` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT 'app_name',
-  `content` longtext CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'content',
-  `beta_ips` varchar(1024) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT 'betaIps',
-  `md5` varchar(32) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT 'md5',
-  `gmt_create` datetime NOT NULL DEFAULT '2010-05-05 00:00:00' COMMENT '创建时间',
-  `gmt_modified` datetime NOT NULL DEFAULT '2010-05-05 00:00:00' COMMENT '修改时间',
-  `src_user` text CHARACTER SET utf8 COLLATE utf8_bin NULL COMMENT 'source user',
-  `src_ip` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT 'source ip',
-  `tenant_id` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT '' COMMENT '租户字段',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uk_configinfobeta_datagrouptenant`(`data_id`, `group_id`, `tenant_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = 'config_info_beta' ROW_FORMAT = Dynamic;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `config_info_beta`
+(
+    `id`           bigint                                                 NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `data_id`      varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT 'data_id',
+    `group_id`     varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT 'group_id',
+    `app_name`     varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin          DEFAULT NULL COMMENT 'app_name',
+    `content`      longtext CHARACTER SET utf8mb3 COLLATE utf8mb3_bin     NOT NULL COMMENT 'content',
+    `beta_ips`     varchar(1024) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin         DEFAULT NULL COMMENT 'betaIps',
+    `md5`          varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin           DEFAULT NULL COMMENT 'md5',
+    `gmt_create`   datetime                                               NOT NULL DEFAULT '2010-05-05 00:00:00' COMMENT '创建时间',
+    `gmt_modified` datetime                                               NOT NULL DEFAULT '2010-05-05 00:00:00' COMMENT '修改时间',
+    `src_user`     text CHARACTER SET utf8mb3 COLLATE utf8mb3_bin COMMENT 'source user',
+    `src_ip`       varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin           DEFAULT NULL COMMENT 'source ip',
+    `tenant_id`    varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin          DEFAULT '' COMMENT '租户字段',
+    PRIMARY KEY (`id`) USING BTREE,
+    UNIQUE KEY `uk_configinfobeta_datagrouptenant` (`data_id`, `group_id`, `tenant_id`) USING BTREE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb3
+  COLLATE = utf8mb3_bin
+  ROW_FORMAT = DYNAMIC COMMENT ='config_info_beta';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of config_info_beta
--- ----------------------------
+--
+-- Dumping data for table `config_info_beta`
+--
 
--- ----------------------------
--- Table structure for config_info_tag
--- ----------------------------
+LOCK TABLES `config_info_beta` WRITE;
+/*!40000 ALTER TABLE `config_info_beta`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `config_info_beta`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `config_info_tag`
+--
+
 DROP TABLE IF EXISTS `config_info_tag`;
-CREATE TABLE `config_info_tag`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `data_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'data_id',
-  `group_id` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'group_id',
-  `tenant_id` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT '' COMMENT 'tenant_id',
-  `tag_id` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'tag_id',
-  `app_name` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT 'app_name',
-  `content` longtext CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'content',
-  `md5` varchar(32) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT 'md5',
-  `gmt_create` datetime NOT NULL DEFAULT '2010-05-05 00:00:00' COMMENT '创建时间',
-  `gmt_modified` datetime NOT NULL DEFAULT '2010-05-05 00:00:00' COMMENT '修改时间',
-  `src_user` text CHARACTER SET utf8 COLLATE utf8_bin NULL COMMENT 'source user',
-  `src_ip` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT 'source ip',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uk_configinfotag_datagrouptenanttag`(`data_id`, `group_id`, `tenant_id`, `tag_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = 'config_info_tag' ROW_FORMAT = Dynamic;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `config_info_tag`
+(
+    `id`           bigint                                                 NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `data_id`      varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT 'data_id',
+    `group_id`     varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT 'group_id',
+    `tenant_id`    varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin          DEFAULT '' COMMENT 'tenant_id',
+    `tag_id`       varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT 'tag_id',
+    `app_name`     varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin          DEFAULT NULL COMMENT 'app_name',
+    `content`      longtext CHARACTER SET utf8mb3 COLLATE utf8mb3_bin     NOT NULL COMMENT 'content',
+    `md5`          varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin           DEFAULT NULL COMMENT 'md5',
+    `gmt_create`   datetime                                               NOT NULL DEFAULT '2010-05-05 00:00:00' COMMENT '创建时间',
+    `gmt_modified` datetime                                               NOT NULL DEFAULT '2010-05-05 00:00:00' COMMENT '修改时间',
+    `src_user`     text CHARACTER SET utf8mb3 COLLATE utf8mb3_bin COMMENT 'source user',
+    `src_ip`       varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin           DEFAULT NULL COMMENT 'source ip',
+    PRIMARY KEY (`id`) USING BTREE,
+    UNIQUE KEY `uk_configinfotag_datagrouptenanttag` (`data_id`, `group_id`, `tenant_id`, `tag_id`) USING BTREE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb3
+  COLLATE = utf8mb3_bin
+  ROW_FORMAT = DYNAMIC COMMENT ='config_info_tag';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of config_info_tag
--- ----------------------------
+--
+-- Dumping data for table `config_info_tag`
+--
 
--- ----------------------------
--- Table structure for config_tags_relation
--- ----------------------------
+LOCK TABLES `config_info_tag` WRITE;
+/*!40000 ALTER TABLE `config_info_tag`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `config_info_tag`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `config_tags_relation`
+--
+
 DROP TABLE IF EXISTS `config_tags_relation`;
-CREATE TABLE `config_tags_relation`  (
-  `id` bigint(20) NOT NULL COMMENT 'id',
-  `tag_name` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'tag_name',
-  `tag_type` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT 'tag_type',
-  `data_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'data_id',
-  `group_id` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'group_id',
-  `tenant_id` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT '' COMMENT 'tenant_id',
-  `nid` bigint(20) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`nid`) USING BTREE,
-  UNIQUE INDEX `uk_configtagrelation_configidtag`(`id`, `tag_name`, `tag_type`) USING BTREE,
-  INDEX `idx_tenant_id`(`tenant_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = 'config_tag_relation' ROW_FORMAT = Dynamic;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `config_tags_relation`
+(
+    `id`        bigint                                                 NOT NULL COMMENT 'id',
+    `tag_name`  varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT 'tag_name',
+    `tag_type`  varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin  DEFAULT NULL COMMENT 'tag_type',
+    `data_id`   varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT 'data_id',
+    `group_id`  varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT 'group_id',
+    `tenant_id` varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT '' COMMENT 'tenant_id',
+    `nid`       bigint                                                 NOT NULL AUTO_INCREMENT,
+    PRIMARY KEY (`nid`) USING BTREE,
+    UNIQUE KEY `uk_configtagrelation_configidtag` (`id`, `tag_name`, `tag_type`) USING BTREE,
+    KEY `idx_tenant_id` (`tenant_id`) USING BTREE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb3
+  COLLATE = utf8mb3_bin
+  ROW_FORMAT = DYNAMIC COMMENT ='config_tag_relation';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of config_tags_relation
--- ----------------------------
+--
+-- Dumping data for table `config_tags_relation`
+--
 
--- ----------------------------
--- Table structure for group_capacity
--- ----------------------------
+LOCK TABLES `config_tags_relation` WRITE;
+/*!40000 ALTER TABLE `config_tags_relation`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `config_tags_relation`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `group_capacity`
+--
+
 DROP TABLE IF EXISTS `group_capacity`;
-CREATE TABLE `group_capacity`  (
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `group_id` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT 'Group ID，空字符表示整个集群',
-  `quota` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '配额，0表示使用默认值',
-  `usage` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '使用量',
-  `max_size` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '单个配置大小上限，单位为字节，0表示使用默认值',
-  `max_aggr_count` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '聚合子配置最大个数，，0表示使用默认值',
-  `max_aggr_size` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '单个聚合数据的子配置大小上限，单位为字节，0表示使用默认值',
-  `max_history_count` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '最大变更历史数量',
-  `gmt_create` datetime NOT NULL DEFAULT '2010-05-05 00:00:00' COMMENT '创建时间',
-  `gmt_modified` datetime NOT NULL DEFAULT '2010-05-05 00:00:00' COMMENT '修改时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uk_group_id`(`group_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '集群、各Group容量信息表' ROW_FORMAT = Dynamic;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `group_capacity`
+(
+    `id`                bigint unsigned                                        NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+    `group_id`          varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL DEFAULT '' COMMENT 'Group ID，空字符表示整个集群',
+    `quota`             int unsigned                                           NOT NULL DEFAULT '0' COMMENT '配额，0表示使用默认值',
+    `usage`             int unsigned                                           NOT NULL DEFAULT '0' COMMENT '使用量',
+    `max_size`          int unsigned                                           NOT NULL DEFAULT '0' COMMENT '单个配置大小上限，单位为字节，0表示使用默认值',
+    `max_aggr_count`    int unsigned                                           NOT NULL DEFAULT '0' COMMENT '聚合子配置最大个数，，0表示使用默认值',
+    `max_aggr_size`     int unsigned                                           NOT NULL DEFAULT '0' COMMENT '单个聚合数据的子配置大小上限，单位为字节，0表示使用默认值',
+    `max_history_count` int unsigned                                           NOT NULL DEFAULT '0' COMMENT '最大变更历史数量',
+    `gmt_create`        datetime                                               NOT NULL DEFAULT '2010-05-05 00:00:00' COMMENT '创建时间',
+    `gmt_modified`      datetime                                               NOT NULL DEFAULT '2010-05-05 00:00:00' COMMENT '修改时间',
+    PRIMARY KEY (`id`) USING BTREE,
+    UNIQUE KEY `uk_group_id` (`group_id`) USING BTREE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb3
+  COLLATE = utf8mb3_bin
+  ROW_FORMAT = DYNAMIC COMMENT ='集群、各Group容量信息表';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of group_capacity
--- ----------------------------
+--
+-- Dumping data for table `group_capacity`
+--
 
--- ----------------------------
--- Table structure for his_config_info
--- ----------------------------
+LOCK TABLES `group_capacity` WRITE;
+/*!40000 ALTER TABLE `group_capacity`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `group_capacity`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `his_config_info`
+--
+
 DROP TABLE IF EXISTS `his_config_info`;
-CREATE TABLE `his_config_info`  (
-  `id` bigint(64) UNSIGNED NOT NULL,
-  `nid` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `data_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
-  `group_id` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
-  `app_name` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT 'app_name',
-  `content` longtext CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
-  `md5` varchar(32) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
-  `gmt_create` datetime NOT NULL DEFAULT '2010-05-05 00:00:00',
-  `gmt_modified` datetime NOT NULL DEFAULT '2010-05-05 00:00:00',
-  `src_user` text CHARACTER SET utf8 COLLATE utf8_bin NULL,
-  `src_ip` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
-  `op_type` char(10) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
-  `tenant_id` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT '' COMMENT '租户字段',
-  PRIMARY KEY (`nid`) USING BTREE,
-  INDEX `idx_gmt_create`(`gmt_create`) USING BTREE,
-  INDEX `idx_gmt_modified`(`gmt_modified`) USING BTREE,
-  INDEX `idx_did`(`data_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 200 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '多租户改造' ROW_FORMAT = Dynamic;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `his_config_info`
+(
+    `id`           bigint unsigned                                        NOT NULL,
+    `nid`          bigint unsigned                                        NOT NULL AUTO_INCREMENT,
+    `data_id`      varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+    `group_id`     varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+    `app_name`     varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin          DEFAULT NULL COMMENT 'app_name',
+    `content`      longtext CHARACTER SET utf8mb3 COLLATE utf8mb3_bin     NOT NULL,
+    `md5`          varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin           DEFAULT NULL,
+    `gmt_create`   datetime                                               NOT NULL DEFAULT '2010-05-05 00:00:00',
+    `gmt_modified` datetime                                               NOT NULL DEFAULT '2010-05-05 00:00:00',
+    `src_user`     text CHARACTER SET utf8mb3 COLLATE utf8mb3_bin,
+    `src_ip`       varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin           DEFAULT NULL,
+    `op_type`      char(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin              DEFAULT NULL,
+    `tenant_id`    varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin          DEFAULT '' COMMENT '租户字段',
+    PRIMARY KEY (`nid`) USING BTREE,
+    KEY `idx_gmt_create` (`gmt_create`) USING BTREE,
+    KEY `idx_gmt_modified` (`gmt_modified`) USING BTREE,
+    KEY `idx_did` (`data_id`) USING BTREE
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 384
+  DEFAULT CHARSET = utf8mb3
+  COLLATE = utf8mb3_bin
+  ROW_FORMAT = DYNAMIC COMMENT ='多租户改造';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of his_config_info
--- ----------------------------
-INSERT INTO `his_config_info` VALUES (41, 163, 'third-party.yml', 'DEFAULT_GROUP', '', 'server:\n  port: 3333\n\n\nspring:\n  servlet:\n    multipart:\n      max-file-size: 20MB\n      max-request-size: 200MB\n  application:\n    name: third-party\n  # 这些配置在腾讯云控制台都可查到（使用时替换为你自己的）\n  # 腾讯云的SecretId（永久的，可在控制台开启或关闭）\n  tencent:\n    secretId: AKIDIPHsCF3aqpdAQP7ZkeGdjY6NN6YicGdi\n    # 腾讯云的SecretKey（永久的，可在控制台开启或关闭）\n    SecretKey: qOffOq1uWrviFVVDetrYx5wWqtfAOKdg\n    # 腾讯云的bucket (存储桶)\n    bucket: theangel-1306086135\n    # 腾讯云的region(bucket所在地区)\n    region: ap-guangzhou\n    # 腾讯云的allowPrefix(允许上传的路径)\n    allowPrefix: \'*\'\n    # 腾讯云的临时密钥时长(单位秒)\n    durationSeconds: 10\n    # 腾讯云的访问基础链接:\n    baseUrl: https://theangel-1306086135.cos.ap-guangzhou.myqcloud.com\n  cloud:\n    alicloud:\n      access-key: LTAI5t5Zw9QpcLrfdGCA4NZZ\n      secret-key: MEYjLvITV4G6hkv12N41mbrcqR3phk\n      oss:\n        endpoint: oss-cn-hangzhou.aliyuncs.com\n        bucket: theangel-mall\n', 'e6fdbc38f589cf47fe5b05dba276a87f', '2010-05-05 00:00:00', '2021-08-21 08:33:13', NULL, '113.87.224.2', 'U', '9e9bfac1-f266-4fc4-b220-2c95997c532b');
-INSERT INTO `his_config_info` VALUES (15, 164, 'themall-gatway.yml', 'DEFAULT_GROUP', '', 'server:\n  port: 88\n\nspring:\n  application:\n    name: themall-gatway\n  cloud:\n    gateway:\n      routes:\n        #         检索服务\n        - id: themall-search\n          uri: lb://themall-search\n          predicates:\n            - Path=/api/search/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #          库存服务\n        - id: themall-ware\n          uri: lb://themall-ware\n          predicates:\n            - Path=/api/ware/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #          商品优惠服务\n        - id: themall-coupon\n          uri: lb://themall-coupon\n          predicates:\n            - Path=/api/coupon/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #         第三方服务\n        - id: third-party\n          uri: lb://third-party\n          predicates:\n            - Path=/api/third-party/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #         商品服务\n        - id: themall-product\n          uri: lb://themall-product\n          predicates:\n            - Path=/api/product/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #         会员服务\n        - id: themall-member\n          uri: lb://themall-member\n          predicates:\n            - Path=/api/member/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #\n        - id: renren-fast\n          uri: lb://renren-fast\n          predicates:\n            - Path=/api/**,/renren-fast/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /renren-fast/$\\{the}\n\n\n        # 商品详情页\n        - id: item\n          uri: lb://themall-product\n          predicates:\n            - Path=/item/*.html\n\n        # 商品详情页\n        - id: search\n          uri: lb://themall-search\n          predicates:\n            - Path=/list.html\n\n        # 认证\n        - id: themall-auth-server\n          uri: lb://themall-auth-server\n          predicates:\n            - Path=/auth/**\n\n        # 首页\n        - id: host\n          uri: lb://themall-product\n          predicates:\n            - Path=/,/index/**\n\n\n\n', 'bb7dbbefe048d4320f4f575cf359d4eb', '2010-05-05 00:00:00', '2021-08-25 11:29:30', NULL, '119.123.179.79', 'U', '9e9bfac1-f266-4fc4-b220-2c95997c532b');
-INSERT INTO `his_config_info` VALUES (15, 165, 'themall-gatway.yml', 'DEFAULT_GROUP', '', 'server:\n  port: 88\n\nspring:\n  application:\n    name: themall-gatway\n  cloud:\n    gateway:\n      routes:\n        #         检索服务\n        - id: themall-search\n          uri: lb://themall-search\n          predicates:\n            - Path=/api/search/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #          库存服务\n        - id: themall-ware\n          uri: lb://themall-ware\n          predicates:\n            - Path=/api/ware/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #          商品优惠服务\n        - id: themall-coupon\n          uri: lb://themall-coupon\n          predicates:\n            - Path=/api/coupon/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #         第三方服务\n        - id: third-party\n          uri: lb://third-party\n          predicates:\n            - Path=/api/third-party/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #         商品服务\n        - id: themall-product\n          uri: lb://themall-product\n          predicates:\n            - Path=/api/product/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #         会员服务\n        - id: themall-member\n          uri: lb://themall-member\n          predicates:\n            - Path=/api/member/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #\n        - id: renren-fast\n          uri: lb://renren-fast\n          predicates:\n            - Path=/api/**,/renren-fast/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /renren-fast/$\\{the}\n\n\n        # 商品详情页\n        - id: item\n          uri: lb://themall-product\n          predicates:\n            - Path=/item/*.html\n\n        # 商品详情页\n        - id: search\n          uri: lb://themall-search\n          predicates:\n            - Path=/list.html\n\n        # 认证\n        - id: themall-auth-server\n          uri: lb://themall-auth-server\n          predicates:\n            - Path=/auth/**\n\n        # 首页\n        - id: host\n          uri: lb://themall-product\n          predicates:\n            - Path=/,/index/**\n\n\n\n', 'bb7dbbefe048d4320f4f575cf359d4eb', '2010-05-05 00:00:00', '2021-08-28 06:09:32', NULL, '121.35.2.60', 'U', '9e9bfac1-f266-4fc4-b220-2c95997c532b');
-INSERT INTO `his_config_info` VALUES (15, 166, 'themall-gatway.yml', 'DEFAULT_GROUP', '', 'server:\n  port: 88\n\nspring:\n  application:\n    name: themall-gatway\n  cloud:\n    gateway:\n      routes:\n        #         检索服务\n        - id: themall-search\n          uri: lb://themall-search\n          predicates:\n            - Path=/api/search/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #          库存服务\n        - id: themall-ware\n          uri: lb://themall-ware\n          predicates:\n            - Path=/api/ware/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #          商品优惠服务\n        - id: themall-coupon\n          uri: lb://themall-coupon\n          predicates:\n            - Path=/api/coupon/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #         第三方服务\n        - id: third-party\n          uri: lb://third-party\n          predicates:\n            - Path=/api/third-party/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #         商品服务\n        - id: themall-product\n          uri: lb://themall-product\n          predicates:\n            - Path=/api/product/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #         会员服务\n        - id: themall-member\n          uri: lb://themall-member\n          predicates:\n            - Path=/api/member/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #\n        - id: renren-fast\n          uri: lb://renren-fast\n          predicates:\n            - Path=/api/**,/renren-fast/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /renren-fast/$\\{the}\n\n\n        # 商品详情页\n        - id: item\n          uri: lb://themall-product\n          predicates:\n            - Host=item.theangel.com\n        #            - Path=/item/*.html\n\n        # 商品搜索\n        - id: search\n          uri: lb://themall-search\n          predicates:\n            - Host=search.theangel.com\n        #            - Path=/list.html\n\n        # 认证\n        - id: themall-auth-server\n          uri: lb://themall-auth-server\n          predicates:\n            - Host=auth.theangel.com\n        #            - Path=/auth/**\n\n        # 首页\n        - id: host\n          uri: lb://themall-product\n          predicates:\n            - theangel.com\n\n\n\n', 'e297210da6880d3b63d57f1b90a4fc11', '2010-05-05 00:00:00', '2021-08-28 06:21:32', NULL, '121.35.2.60', 'U', '9e9bfac1-f266-4fc4-b220-2c95997c532b');
-INSERT INTO `his_config_info` VALUES (15, 167, 'themall-gatway.yml', 'DEFAULT_GROUP', '', 'server:\n  port: 88\n\nspring:\n  application:\n    name: themall-gatway\n  cloud:\n    gateway:\n      routes:\n        #         检索服务\n        - id: themall-search\n          uri: lb://themall-search\n          predicates:\n            - Path=/api/search/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #          库存服务\n        - id: themall-ware\n          uri: lb://themall-ware\n          predicates:\n            - Path=/api/ware/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #          商品优惠服务\n        - id: themall-coupon\n          uri: lb://themall-coupon\n          predicates:\n            - Path=/api/coupon/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #         第三方服务\n        - id: third-party\n          uri: lb://third-party\n          predicates:\n            - Path=/api/third-party/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #         商品服务\n        - id: themall-product\n          uri: lb://themall-product\n          predicates:\n            - Path=/api/product/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #         会员服务\n        - id: themall-member\n          uri: lb://themall-member\n          predicates:\n            - Path=/api/member/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #\n        - id: renren-fast\n          uri: lb://renren-fast\n          predicates:\n            - Path=/api/**,/renren-fast/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /renren-fast/$\\{the}\n\n\n        # 商品详情页\n        - id: item\n          uri: lb://themall-product\n          predicates:\n            - Host=item.theangel.com\n        #            - Path=/item/*.html\n\n        # 商品搜索\n        - id: search\n          uri: lb://themall-search\n          predicates:\n            - Host=search.theangel.com\n        #            - Path=/list.html\n\n        # 认证\n        - id: themall-auth-server\n          uri: lb://themall-auth-server\n          predicates:\n            - Host=auth.theangel.com/**\n        #            - Path=/auth/**\n\n        # 首页\n        - id: host\n          uri: lb://themall-product\n          predicates:\n            - Host=theangel.com\n\n\n\n', '43eb9060b5b7656071f5e9d4de155ab4', '2010-05-05 00:00:00', '2021-08-28 06:21:40', NULL, '121.35.2.60', 'U', '9e9bfac1-f266-4fc4-b220-2c95997c532b');
-INSERT INTO `his_config_info` VALUES (1, 168, 'public.yml', 'DEFAULT_GROUP', '', 'spring:\n  cloud:\n    nacos:\n      discovery:\n        server-addr: theangel.vip:8848\n        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b\nmybatis-plus:\n  mapper-locations: classpath*:/mapper/**/*.xml\n  global-config:\n    db-config:\n      id-type: auto\n', 'fd27c73a1552fd9980939cad77004d44', '2010-05-05 00:00:00', '2021-08-28 09:30:46', NULL, '121.35.2.60', 'U', '9e9bfac1-f266-4fc4-b220-2c95997c532b');
-INSERT INTO `his_config_info` VALUES (1, 169, 'public.yml', 'DEFAULT_GROUP', '', 'spring:\n  redis:\n    host: localhost\n    port: 6379\n  cloud:\n    nacos:\n      discovery:\n        server-addr: theangel.vip:8848\n        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b\nmybatis-plus:\n  mapper-locations: classpath*:/mapper/**/*.xml\n  global-config:\n    db-config:\n      id-type: auto\n', 'b5230734991b21d832c6b4a0c73caae7', '2010-05-05 00:00:00', '2021-08-28 09:31:23', NULL, '121.35.2.60', 'U', '9e9bfac1-f266-4fc4-b220-2c95997c532b');
-INSERT INTO `his_config_info` VALUES (1, 170, 'public.yml', 'DEFAULT_GROUP', '', 'spring:\n    #session保存redis\n  session:\n    store-type: redis\n  redis:\n    host: localhost\n    port: 6379\n  cloud:\n    nacos:\n      discovery:\n        server-addr: theangel.vip:8848\n        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b\nmybatis-plus:\n  mapper-locations: classpath*:/mapper/**/*.xml\n  global-config:\n    db-config:\n      id-type: auto\n', '55224d701c6e69916ab0f2292481261f', '2010-05-05 00:00:00', '2021-08-28 09:33:33', NULL, '121.35.2.60', 'U', '9e9bfac1-f266-4fc4-b220-2c95997c532b');
-INSERT INTO `his_config_info` VALUES (13, 171, 'themall-product.yml', 'DEFAULT_GROUP', '', 'spring:\n  servlet:\n    multipart:\n      max-file-size: 20MB\n      max-request-size: 200MB\n  datasource:\n    username: root\n    password: hjj0127..\n    url: jdbc:mysql://theangel.vip:3306/themall_pms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai\n    driver-class-name: com.mysql.cj.jdbc.Driver\n  application:\n    name: themall-product\n  jackson:\n    date-format: yyyy-MM-dd HH:mm:ss\n  #开发期间 关闭缓存\n  thymeleaf:\n    cache: false\n    prefix: classpath:/templates/\n    suffix: .html\n\n  redis:\n    host: 127.0.0.1\n    #    password: hjj0127..\n    port: 6379\n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n#    cache-names:\n\n\n\n#  cloud:\n#    nacos:\n#      discovery:\n#        server-addr: theangel.vip:8848\n\nmybatis-plus:\n  mapper-locations: classpath*:/mapper/**/*.xml\n  global-config:\n    db-config:\n      id-type: auto\n      logic-delete-field: flag  # 全局逻辑删除的实体字段名(since 3.3.0,配置后可以忽略不配置步骤2)\n      logic-delete-value: 1 # 逻辑已删除值(默认为 1)\n      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)\n\n\n\nfeign:\n  client:\n    config:\n      default:\n        connectTimeout: 10000\n        readTimeout: 10000\n\nlogging:\n  level:\n    com.theangel.themall: error\n\n', '7b78928ee21c492f7d5d47a6ecd90730', '2010-05-05 00:00:00', '2021-08-28 09:56:43', NULL, '121.35.2.60', 'U', '9e9bfac1-f266-4fc4-b220-2c95997c532b');
-INSERT INTO `his_config_info` VALUES (42, 172, 'themall-search.yml', 'DEFAULT_GROUP', '', 'spring:\n  application:\n    name: themall-search\n  thymeleaf:\n    cache: false\n', 'a3010629bb3d65c6064ee6ca84c9c276', '2010-05-05 00:00:00', '2021-08-28 09:56:59', NULL, '121.35.2.60', 'U', '9e9bfac1-f266-4fc4-b220-2c95997c532b');
-INSERT INTO `his_config_info` VALUES (111, 173, 'themall-auth-server', 'DEFAULT_GROUP', '', 'spring:\n  #开发期间 关闭缓存\n  thymeleaf:\n    cache: false\n    prefix: classpath:/templates/\n    suffix: .html\n\nlogging:\n  level:\n    com.theangel.themall: error\n', '3c30ed059c70a0cf08e73accde2af29f', '2010-05-05 00:00:00', '2021-08-28 09:57:27', NULL, '121.35.2.60', 'U', '9e9bfac1-f266-4fc4-b220-2c95997c532b');
-INSERT INTO `his_config_info` VALUES (1, 174, 'public.yml', 'DEFAULT_GROUP', '', 'spring:\n    #session保存redis\n  session:\n    store-type: redis\n  redis:\n    host: localhost\n    port: 6379\n\n    \n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n\n  cloud:\n    nacos:\n      discovery:\n        server-addr: theangel.vip:8848\n        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b\nmybatis-plus:\n  mapper-locations: classpath*:/mapper/**/*.xml\n  global-config:\n    db-config:\n      id-type: auto\n', '072f8eaa305f8d69c07e84b3d19acb1c', '2010-05-05 00:00:00', '2021-08-28 10:28:34', NULL, '121.35.2.60', 'U', '9e9bfac1-f266-4fc4-b220-2c95997c532b');
-INSERT INTO `his_config_info` VALUES (9, 175, 'themall-member.yml', 'DEFAULT_GROUP', '', 'spring:\n  datasource:\n    username: root\n    password: hjj0127..\n    url: jdbc:mysql://theangel.vip:3306/themall_ums?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai\n    driver-class-name: com.mysql.cj.jdbc.Driver\n  cloud:\n    nacos:\n      discovery:\n        server-addr: theangel.vip:8848\n  application:\n    name: themall-member\nmybatis-plus:\n  mapper-locations: classpath*:/mapper/**/*.xml\n  global-config:\n    db-config:\n      id-type: auto\nserver:\n  port: 10000', 'b0f3c96f75d46008367a3fae440bec59', '2010-05-05 00:00:00', '2021-08-28 10:28:48', NULL, '121.35.2.60', 'U', '9e9bfac1-f266-4fc4-b220-2c95997c532b');
-INSERT INTO `his_config_info` VALUES (1, 176, 'public.yml', 'DEFAULT_GROUP', '', 'spring:\n    #session保存redis\n  session:\n    store-type: redis\n  redis:\n    host: localhost\n    port: 6379\n\n    \n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n\n  cloud:\n    nacos:\n      discovery:\n        server-addr: theangel.vip:8848\n        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b\n\nmybatis-plus:\n  mapper-locations: classpath*:/mapper/**/*.xml\n  global-config:\n    db-config:\n      id-type: auto\n', 'ba9755d57b2cfe69b399f69f3eb794dc', '2010-05-05 00:00:00', '2021-08-28 10:35:13', NULL, '121.35.2.60', 'U', '9e9bfac1-f266-4fc4-b220-2c95997c532b');
-INSERT INTO `his_config_info` VALUES (0, 177, 'themall-cart.yml', 'DEFAULT_GROUP', '', 'server:\r\n  port: 20000', '61a9c8121f78a158c82240661310b798', '2010-05-05 00:00:00', '2021-08-29 04:39:46', NULL, '121.35.2.60', 'I', '9e9bfac1-f266-4fc4-b220-2c95997c532b');
-INSERT INTO `his_config_info` VALUES (129, 178, 'themall-cart.yml', 'DEFAULT_GROUP', '', 'server:\r\n  port: 20000', '61a9c8121f78a158c82240661310b798', '2010-05-05 00:00:00', '2021-08-29 04:43:23', NULL, '121.35.2.60', 'U', '9e9bfac1-f266-4fc4-b220-2c95997c532b');
-INSERT INTO `his_config_info` VALUES (129, 179, 'themall-cart.yml', 'DEFAULT_GROUP', '', 'spring:\n  thymeleaf:\n    cache: false', 'f4b55dd4105bd294436ee645c13fcfd4', '2010-05-05 00:00:00', '2021-08-29 04:47:27', NULL, '121.35.2.60', 'U', '9e9bfac1-f266-4fc4-b220-2c95997c532b');
-INSERT INTO `his_config_info` VALUES (15, 180, 'themall-gatway.yml', 'DEFAULT_GROUP', '', 'server:\n  port: 88\n\nspring:\n  application:\n    name: themall-gatway\n  cloud:\n    gateway:\n      routes:\n        #         检索服务\n        - id: themall-search\n          uri: lb://themall-search\n          predicates:\n            - Path=/api/search/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #          库存服务\n        - id: themall-ware\n          uri: lb://themall-ware\n          predicates:\n            - Path=/api/ware/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #          商品优惠服务\n        - id: themall-coupon\n          uri: lb://themall-coupon\n          predicates:\n            - Path=/api/coupon/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #         第三方服务\n        - id: third-party\n          uri: lb://third-party\n          predicates:\n            - Path=/api/third-party/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #         商品服务\n        - id: themall-product\n          uri: lb://themall-product\n          predicates:\n            - Path=/api/product/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #         会员服务\n        - id: themall-member\n          uri: lb://themall-member\n          predicates:\n            - Path=/api/member/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #\n        - id: renren-fast\n          uri: lb://renren-fast\n          predicates:\n            - Path=/api/**,/renren-fast/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /renren-fast/$\\{the}\n\n\n        # 商品详情页\n        - id: item\n          uri: lb://themall-product\n          predicates:\n            - Host=item.theangel.com\n        #            - Path=/item/*.html\n\n        # 商品搜索\n        - id: search\n          uri: lb://themall-search\n          predicates:\n            - Host=search.theangel.com\n        #            - Path=/list.html\n\n        # 认证\n        - id: themall-auth-server\n          uri: lb://themall-auth-server\n          predicates:\n            - Host=auth.theangel.com\n        #            - Path=/auth/**\n\n        # 首页\n        - id: host\n          uri: lb://themall-product\n          predicates:\n            - Host=theangel.com\n\n\n\n', '1e1f74d62ce766b3a0b8ab06553eade9', '2010-05-05 00:00:00', '2021-08-29 04:52:19', NULL, '121.35.2.60', 'U', '9e9bfac1-f266-4fc4-b220-2c95997c532b');
-INSERT INTO `his_config_info` VALUES (1, 181, 'public.yml', 'DEFAULT_GROUP', '', 'spring:\n    #session保存redis\n  session:\n    store-type: redis\n  redis:\n    host: localhost\n    port: 6379\n\n    \n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n\n  cloud:\n    nacos:\n      discovery:\n        server-addr: theangel.vip:8848\n        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b\n\nmybatis-plus:\n  mapper-locations: classpath*:/mapper/**/*.xml\n  global-config:\n    db-config:\n      id-type: auto\nfeign:\n  client:\n    config:\n      default:\n        connectTimeout: 10000\n        readTimeout: 10000', '04e607595f61dc37ed64561d249e5be1', '2010-05-05 00:00:00', '2021-08-29 05:42:47', NULL, '121.35.2.60', 'U', '9e9bfac1-f266-4fc4-b220-2c95997c532b');
-INSERT INTO `his_config_info` VALUES (1, 182, 'public.yml', 'DEFAULT_GROUP', '', 'spring:\n    #session保存redis\n  session:\n    store-type: redis\n  redis:\n    host: localhost\n   # port: 6379\n\n    \n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n\n  cloud:\n    nacos:\n      discovery:\n        server-addr: theangel.vip:8848\n        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b\n\nmybatis-plus:\n  mapper-locations: classpath*:/mapper/**/*.xml\n  global-config:\n    db-config:\n      id-type: auto\nfeign:\n  client:\n    config:\n      default:\n        connectTimeout: 10000\n        readTimeout: 10000', 'c305ff58711ce91d73c2a63b05e4c9bf', '2010-05-05 00:00:00', '2021-09-04 17:08:40', NULL, '119.123.176.244', 'U', '9e9bfac1-f266-4fc4-b220-2c95997c532b');
-INSERT INTO `his_config_info` VALUES (15, 183, 'themall-gatway.yml', 'DEFAULT_GROUP', '', 'spring:\n  cloud:\n    gateway:\n      routes:\n        #         检索服务\n        - id: themall-search\n          uri: lb://themall-search\n          predicates:\n            - Path=/api/search/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #          库存服务\n        - id: themall-ware\n          uri: lb://themall-ware\n          predicates:\n            - Path=/api/ware/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #          商品优惠服务\n        - id: themall-coupon\n          uri: lb://themall-coupon\n          predicates:\n            - Path=/api/coupon/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #         第三方服务\n        - id: third-party\n          uri: lb://third-party\n          predicates:\n            - Path=/api/third-party/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #         商品服务\n        - id: themall-product\n          uri: lb://themall-product\n          predicates:\n            - Path=/api/product/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #         会员服务\n        - id: themall-member\n          uri: lb://themall-member\n          predicates:\n            - Path=/api/member/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #\n        - id: renren-fast\n          uri: lb://renren-fast\n          predicates:\n            - Path=/api/**,/renren-fast/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /renren-fast/$\\{the}\n\n\n        # 商品详情页\n        - id: item\n          uri: lb://themall-product\n          predicates:\n            - Host=item.theangel.com\n        #            - Path=/item/*.html\n\n        # 商品搜索\n        - id: search\n          uri: lb://themall-search\n          predicates:\n            - Host=search.theangel.com\n        #            - Path=/list.html\n\n        # 认证\n        - id: auth-server\n          uri: lb://themall-auth-server\n          predicates:\n            - Host=auth.theangel.com\n        #            - Path=/auth/**\n\n\n        # 购物车\n        - id: themall-cart\n          uri: lb://themall-cart\n          predicates:\n            - Host=cart.theangel.com\n\n        # 首页\n        - id: host\n          uri: lb://themall-product\n          predicates:\n            - Host=theangel.com\n\n\n\n', '4b1f7ff486400942261817292505104f', '2010-05-05 00:00:00', '2021-09-05 07:11:49', NULL, '119.123.176.244', 'U', '9e9bfac1-f266-4fc4-b220-2c95997c532b');
-INSERT INTO `his_config_info` VALUES (12, 184, 'themall-order.yml', 'DEFAULT_GROUP', '', 'spring:\r\n  datasource:\r\n    username: root\r\n    password: hjj0127..\r\n    url: jdbc:mysql://theangel.vip:3306/themall_oms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai\r\n    driver-class-name: com.mysql.cj.jdbc.Driver', 'e7fc876b5f5d28761e77f9bf340b9ee7', '2010-05-05 00:00:00', '2021-09-05 07:21:03', NULL, '119.123.176.244', 'U', '9e9bfac1-f266-4fc4-b220-2c95997c532b');
-INSERT INTO `his_config_info` VALUES (12, 185, 'themall-order.yml', 'DEFAULT_GROUP', '', 'spring:\n  datasource:\n    username: root\n    password: hjj0127..\n    url: jdbc:mysql://theangel.vip:3306/themall_oms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai\n    driver-class-name: com.mysql.cj.jdbc.Driver\n  rabbitmq:\n    host: 192.168.56.10\n    username: guest\n    password: guest\n    virtual-host: /\n    port: 5672\n    #开启发送端确认，到达rabbitmq\n    publisher-confirms: true\n    #发送端确认，有没有路由到指定的key  集群是一个副本模式，所有确认才能够确认\n    publisher-returns: true\n    #    只要抵达队列，以异步发送优先回调我们这个returns\n    template:\n      mandatory: true\n    listener:\n      simple:\n        #        auto:自动回复    manual:手动确认\n        acknowledge-mode: manual\n        \n  thymeleaf:\n    cache: false\n\n\n\n', '0e9149f6d3a5a2da7e0c4d4a4a569f14', '2010-05-05 00:00:00', '2021-09-05 07:33:08', NULL, '119.123.176.244', 'U', '9e9bfac1-f266-4fc4-b220-2c95997c532b');
-INSERT INTO `his_config_info` VALUES (1, 186, 'public.yml', 'DEFAULT_GROUP', '', 'spring:\n    #session保存redis\n  session:\n    store-type: redis\n  redis:\n    host: 192.168.56.10\n    port: 6379\n\n    \n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n\n  cloud:\n    nacos:\n      discovery:\n        server-addr: theangel.vip:8848\n        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b\n\nmybatis-plus:\n  mapper-locations: classpath*:/mapper/**/*.xml\n  global-config:\n    db-config:\n      id-type: auto\nfeign:\n  client:\n    config:\n      default:\n        connectTimeout: 10000\n        readTimeout: 10000', 'f2222a26bcbe1e65d8090f597622bcb0', '2010-05-05 00:00:00', '2021-09-07 13:18:07', NULL, '119.123.177.58', 'U', '9e9bfac1-f266-4fc4-b220-2c95997c532b');
-INSERT INTO `his_config_info` VALUES (13, 187, 'themall-product.yml', 'DEFAULT_GROUP', '', 'spring:\n  servlet:\n    multipart:\n      max-file-size: 20MB\n      max-request-size: 200MB\n  datasource:\n    username: root\n    password: hjj0127..\n    url: jdbc:mysql://theangel.vip:3306/themall_pms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai\n    driver-class-name: com.mysql.cj.jdbc.Driver\n\n  jackson:\n    date-format: yyyy-MM-dd HH:mm:ss\n  #开发期间 关闭缓存\n  thymeleaf:\n    cache: false\n    prefix: classpath:/templates/\n    suffix: .html\n\nmybatis-plus:\n  mapper-locations: classpath*:/mapper/**/*.xml\n  global-config:\n    db-config:\n      id-type: auto\n      logic-delete-field: flag  # 全局逻辑删除的实体字段名(since 3.3.0,配置后可以忽略不配置步骤2)\n      logic-delete-value: 1 # 逻辑已删除值(默认为 1)\n      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)\n\nthemall:\n  thread:\n    coreSize: 10\n    maxSize: 200\n    keepAliveTime: 10\n\nfeign:\n  client:\n    config:\n      default:\n        connectTimeout: 10000\n        readTimeout: 10000\n\nlogging:\n  level:\n    com.theangel.themall: error\n\n', 'af6f2d1143212f28c163213b03ffc94f', '2010-05-05 00:00:00', '2021-09-07 13:18:27', NULL, '119.123.177.58', 'U', '9e9bfac1-f266-4fc4-b220-2c95997c532b');
-INSERT INTO `his_config_info` VALUES (12, 188, 'themall-order.yml', 'DEFAULT_GROUP', '', 'spring:\n  datasource:\n    username: root\n    password: hjj0127..\n    url: jdbc:mysql://theangel.vip:3306/themall_oms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai\n    driver-class-name: com.mysql.cj.jdbc.Driver\n  rabbitmq:\n    host: 192.168.56.10\n    username: guest\n    password: guest\n    virtual-host: /\n    port: 5672\n    #开启发送端确认，到达rabbitmq\n    publisher-confirms: true\n    #发送端确认，有没有路由到指定的key  集群是一个副本模式，所有确认才能够确认\n    publisher-returns: true\n    #    只要抵达队列，以异步发送优先回调我们这个returns\n    template:\n      mandatory: true\n    listener:\n      simple:\n        #        auto:自动回复    manual:手动确认\n        acknowledge-mode: manual\n\n  thymeleaf:\n    cache: false\n\n\n\n', 'e1d57622ac282aa6c2da93c4ad920117', '2010-05-05 00:00:00', '2021-09-07 13:19:15', NULL, '119.123.177.58', 'U', '9e9bfac1-f266-4fc4-b220-2c95997c532b');
-INSERT INTO `his_config_info` VALUES (4, 189, 'themall-coupon.yml', 'DEFAULT_GROUP', '', 'spring:\n  datasource:\n    username: root\n    password: hjj0127..\n    url: jdbc:mysql://theangel.vip:3306/themall_sms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai\n    driver-class-name: com.mysql.cj.jdbc.Driver\n\n  application:\n    name: themall-coupon\nserver:\n  port: 8002\n', 'c0bb1199c6cac336d99fe29234615fb5', '2010-05-05 00:00:00', '2021-09-07 13:19:42', NULL, '119.123.177.58', 'U', '9e9bfac1-f266-4fc4-b220-2c95997c532b');
-INSERT INTO `his_config_info` VALUES (9, 190, 'themall-member.yml', 'DEFAULT_GROUP', '', 'spring:\n  datasource:\n    username: root\n    password: hjj0127..\n    url: jdbc:mysql://theangel.vip:3306/themall_ums?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai\n    driver-class-name: com.mysql.cj.jdbc.Driver\n', '3249dd5144da7a7f74301b9b6c741736', '2010-05-05 00:00:00', '2021-09-07 13:19:53', NULL, '119.123.177.58', 'U', '9e9bfac1-f266-4fc4-b220-2c95997c532b');
-INSERT INTO `his_config_info` VALUES (14, 191, 'themall-ware.yml', 'DEFAULT_GROUP', '', 'spring:\n  datasource:\n    username: root\n    password: hjj0127..\n    url: jdbc:mysql://theangel.vip:3306/themall_wms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai\n    driver-class-name: com.mysql.cj.jdbc.Driver\n  application:\n    name: themall-ware\n  jackson:\n    date-format: yyyy-MM-dd HH:mm:ss\nserver:\n  port: 10001', '3862623aa8fd1bd4025ccda30c49afd5', '2010-05-05 00:00:00', '2021-09-07 13:20:08', NULL, '119.123.177.58', 'U', '9e9bfac1-f266-4fc4-b220-2c95997c532b');
-INSERT INTO `his_config_info` VALUES (42, 192, 'themall-search.yml', 'DEFAULT_GROUP', '', 'spring:\n  thymeleaf:\n    cache: false\n', 'cb76c3620a140f7e18f590e91d6bf57a', '2010-05-05 00:00:00', '2021-09-07 13:20:22', NULL, '119.123.177.58', 'U', '9e9bfac1-f266-4fc4-b220-2c95997c532b');
-INSERT INTO `his_config_info` VALUES (129, 193, 'themall-cart.yml', 'DEFAULT_GROUP', '', 'spring:\n  thymeleaf:\n    cache: false', 'f4b55dd4105bd294436ee645c13fcfd4', '2010-05-05 00:00:00', '2021-09-07 13:20:35', NULL, '119.123.177.58', 'U', '9e9bfac1-f266-4fc4-b220-2c95997c532b');
-INSERT INTO `his_config_info` VALUES (111, 194, 'themall-auth-server', 'DEFAULT_GROUP', '', 'spring:\n  #开发期间 关闭缓存\n  thymeleaf:\n    cache: false\n    prefix: classpath:/templates/\n    suffix: .html\n\nlogging:\n  level:\n    com.theangel.themall: error\n\nserver:\n  servlet:\n    session:\n      #session超时时间\n      timeout: 30m\n\n', 'dbf2f82fa610fbb8d477eda6bd451081', '2010-05-05 00:00:00', '2021-09-07 13:20:58', NULL, '119.123.177.58', 'U', '9e9bfac1-f266-4fc4-b220-2c95997c532b');
-INSERT INTO `his_config_info` VALUES (129, 195, 'themall-cart.yml', 'DEFAULT_GROUP', '', 'spring:\n    #session保存redis\n  session:\n    store-type: redis\n  redis:\n    host: 192.168.56.10\n    port: 6379\n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n  thymeleaf:\n    cache: false', '708feb2c1553c035a1da7ccd65a9b602', '2010-05-05 00:00:00', '2021-09-07 13:21:35', NULL, '119.123.177.58', 'U', '9e9bfac1-f266-4fc4-b220-2c95997c532b');
-INSERT INTO `his_config_info` VALUES (111, 196, 'themall-auth-server', 'DEFAULT_GROUP', '', 'spring:\n    #session保存redis\n  session:\n    store-type: redis\n  redis:\n    host: 192.168.56.10\n    port: 6379\n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n  #开发期间 关闭缓存\n  thymeleaf:\n    cache: false\n    prefix: classpath:/templates/\n    suffix: .html\n\nlogging:\n  level:\n    com.theangel.themall: error\n\nserver:\n  servlet:\n    session:\n      #session超时时间\n      timeout: 30m\n\n', '732219d67395357b43d2afb1dad33652', '2010-05-05 00:00:00', '2021-09-07 13:21:56', NULL, '119.123.177.58', 'U', '9e9bfac1-f266-4fc4-b220-2c95997c532b');
-INSERT INTO `his_config_info` VALUES (4, 197, 'themall-coupon.yml', 'DEFAULT_GROUP', '', 'spring:\n    #session保存redis\n  session:\n    store-type: redis\n  redis:\n    host: 192.168.56.10\n    port: 6379\n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n  datasource:\n    username: root\n    password: hjj0127..\n    url: jdbc:mysql://theangel.vip:3306/themall_sms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai\n    driver-class-name: com.mysql.cj.jdbc.Driver\n\n  application:\n    name: themall-coupon\nserver:\n  port: 8002\n', '4fce568d23342dbfc1a1feb8c5f2c262', '2010-05-05 00:00:00', '2021-09-07 13:23:40', NULL, '119.123.177.58', 'U', '9e9bfac1-f266-4fc4-b220-2c95997c532b');
-INSERT INTO `his_config_info` VALUES (14, 198, 'themall-ware.yml', 'DEFAULT_GROUP', '', 'spring:\n    #session保存redis\n  session:\n    store-type: redis\n  redis:\n    host: 192.168.56.10\n    port: 6379\n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n  datasource:\n    username: root\n    password: hjj0127..\n    url: jdbc:mysql://theangel.vip:3306/themall_wms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai\n    driver-class-name: com.mysql.cj.jdbc.Driver\n  application:\n    name: themall-ware\n  jackson:\n    date-format: yyyy-MM-dd HH:mm:ss\nserver:\n  port: 10001', '0ad6ed568ef5b07cdb6a282180ce7013', '2010-05-05 00:00:00', '2021-09-07 13:25:54', NULL, '119.123.177.58', 'U', '9e9bfac1-f266-4fc4-b220-2c95997c532b');
-INSERT INTO `his_config_info` VALUES (41, 199, 'third-party.yml', 'DEFAULT_GROUP', '', 'server:\n  port: 3333\n\nspring:\n  servlet:\n    multipart:\n      max-file-size: 20MB\n      max-request-size: 200MB\n  application:\n    name: third-party\n  # 这些配置在腾讯云控制台都可查到（使用时替换为你自己的）\n  # 腾讯云的SecretId（永久的，可在控制台开启或关闭）\n  tencent:\n    secretId: AKIDIPHsCF3aqpdAQP7ZkeGdjY6NN6YicGdi\n    # 腾讯云的SecretKey（永久的，可在控制台开启或关闭）\n    SecretKey: qOffOq1uWrviFVVDetrYx5wWqtfAOKdg\n    # 腾讯云的bucket (存储桶)\n    bucket: theangel-1306086135\n    # 腾讯云的region(bucket所在地区)\n    region: ap-guangzhou\n    # 腾讯云的allowPrefix(允许上传的路径)\n    allowPrefix: \'*\'\n    # 腾讯云的临时密钥时长(单位秒)\n    durationSeconds: 10\n    # 腾讯云的访问基础链接:\n    baseUrl: https://theangel-1306086135.cos.ap-guangzhou.myqcloud.com\n  cloud:\n    alicloud:\n      access-key: LTAI5t5Zw9QpcLrfdGCA4NZZ\n      secret-key: MEYjLvITV4G6hkv12N41mbrcqR3phk\n      oss:\n        endpoint: oss-cn-hangzhou.aliyuncs.com\n        bucket: theangel-mall\n      sms:\n        host: https://dfsns.market.alicloudapi.com\n        path: /data/send_sms\n        appcode: 9d04ec7d99b740a9973cf01a438b9337\n\n\n', '85a192d93a33a29821ab6025e9c2b971', '2010-05-05 00:00:00', '2021-09-07 13:30:06', NULL, '119.123.177.58', 'U', '9e9bfac1-f266-4fc4-b220-2c95997c532b');
+--
+-- Dumping data for table `his_config_info`
+--
 
--- ----------------------------
--- Table structure for permissions
--- ----------------------------
+LOCK TABLES `his_config_info` WRITE;
+/*!40000 ALTER TABLE `his_config_info`
+    DISABLE KEYS */;
+INSERT INTO `his_config_info`
+VALUES (0, 316, 'themall-gatway-dev.yaml', 'dev', '',
+        'spring:\n  zipkin:\n    base-url: http://192.168.98.11:30941\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858\n\n\n\n\n\n',
+        '85dd0b1180e0fa4aeb895082da8327a8', '2010-05-05 00:00:00', '2023-11-20 02:23:29', NULL, '10.244.0.0', 'I',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (0, 317, 'renren-fast-dev.yaml', 'dev', '',
+        '\n\nspring:\n  zipkin:\n    base-url: http://192.168.98.11:30941\n\n  datasource:\n    type: com.alibaba.druid.pool.DruidDataSource\n    druid:\n      db-type: mysql\n      driver-class-name: com.mysql.cj.jdbc.Driver\n      url: jdbc:mysql://192.168.98.11:30306/themall_admin?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false\n      username: root\n      password: \"005400\"\n      initial-size: 10\n      max-active: 100\n      min-idle: 10\n      max-wait: 60000\n      pool-prepared-statements: true\n      max-pool-prepared-statement-per-connection-size: 20\n      time-between-eviction-runs-millis: 60000\n      min-evictable-idle-time-millis: 300000\n      #Oracle需要打开注释\n      #validation-query: SELECT 1 FROM DUAL\n      test-while-idle: true\n      test-on-borrow: false\n      test-on-return: false\n      stat-view-servlet:\n        enabled: true\n        url-pattern: /druid/*\n        #login-username: admin\n        #login-password: admin\n      filter:\n        stat:\n          log-slow-sql: true\n          slow-sql-millis: 1000\n          merge-sql: false\n        wall:\n          config:\n            multi-statement-allow: true\n  ##多数据源的配置\n  #dynamic:\n  #  datasource:\n  #    slave1:\n  #      driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver\n  #      url: jdbc:sqlserver://localhost:1433;DatabaseName=renren_security\n  #      username: sa\n  #      password: 123456\n  #    slave2:\n  #      driver-class-name: org.postgresql.Driver\n  #      url: jdbc:postgresql://localhost:5432/renren_security\n  #      username: renren\n  #      password: 123456\n  redis:\n    password: \"005400\"\n    host: 192.168.98.11\n    port: 30679\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858\n\nmybatis-plus:\n  #实体扫描，多个package用逗号或者分号分隔\n  typeAliasesPackage: io.renren.modules.*.entity\n\n\nrenren:\n  redis:\n    open: false\n  shiro:\n    redis: false\n  # APP模块，是通过jwt认证的，如果要使用APP模块，则需要修改【加密秘钥】\n  jwt:\n    # 加密秘钥\n    secret: f4e2e52034348f86b67cde581c0f9eb5[www.theangel.vip]\n    # token有效时长，7天，单位秒\n    expire: 604800\n    header: token\n\nlogging:\n  level:\n    org.springframework.cloud.openfeign: info\n    org.springframework.sleuth: info\n',
+        '6d7e0a2bf6269c00787a7a2b48408a5d', '2010-05-05 00:00:00', '2023-11-20 02:23:29', NULL, '10.244.0.0', 'I',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (0, 318, 'themall-auth-server-dev.yaml', 'dev', '',
+        'spring:\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858\n  zipkin:\n    base-url: http://192.168.98.11:30941\n  redis:\n    password: \"005400\"\n    host: 192.168.98.11\n    port: 30679\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n\n  #开发期间 关闭缓存\n  thymeleaf:\n    #    cache: false\n    prefix: classpath:/templates/\n    suffix: .html\n\nlogging:\n  level:\n    org.springframework.cloud.openfeign: info\n    org.springframework.sleuth: info\n\n\n',
+        '5c4f5237936c9d83da560aa43f3f7bb2', '2010-05-05 00:00:00', '2023-11-20 02:23:29', NULL, '10.244.0.0', 'I',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (0, 319, 'common.yaml', 'dev', '',
+        '# Tomcat\nserver:\n  tomcat:\n    uri-encoding: UTF-8\n    max-threads: 1000\n    min-spare-threads: 30\n  connection-timeout: 5000ms\n  servlet:\n    session:\n      #session超时时间\n      timeout: 30m\n\nspring:\n  zipkin:\n    locator:\n      discovery:\n        #关闭服务发现，否则springcloud会把zipkin的url当成服务名称\n        enabled: false\n    sender:\n      #设置http发送数据\n      type: web\n  sleuth:\n    sampler:\n      #      设置抽取采集率为100%，默认为10%\n      probability: 1\n\n  session:\n    store-type: redis\n    #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀但开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n  # jackson时间格式化\n  jackson:\n    time-zone: GMT+8\n#    date-format: yyyy-MM-dd HH:mm:ss\n  servlet:\n    multipart:\n      max-file-size: 100MB\n      max-request-size: 100MB\n      enabled: true\n  redis:\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    timeout: 6000ms  # 连接超时时长（毫秒）\n    jedis:\n      pool:\n        max-active: 1000  # 连接池最大连接数（使用负值表示没有限制）\n        max-wait: -1ms      # 连接池最大阻塞等待时间（使用负值表示没有限制）\n        max-idle: 10      # 连接池中的最大空闲连接\n        min-idle: 5       # 连接池中的最小空闲连接\n  mvc:\n    throw-exception-if-no-handler-found: true\n #   date-format: yyyy-MM-dd HH:mm:ss\n\nmybatis-plus:\n  mapper-locations: classpath*:/mapper/**/*.xml\n  global-config:\n    #数据库相关配置\n    db-config:\n      #主键类型  AUTO:\"数据库ID自增\", INPUT:\"用户输入ID\", ID_WORKER:\"全局唯一ID (数字类型唯一ID)\", UUID:\"全局唯一ID UUID\";\n      id-type: ID_WORKER\n      logic-delete-field: flag  # 全局逻辑删除的实体字段名(since 3.3.0,配置后可以忽略不配置步骤2)\n      logic-delete-value: 1 # 逻辑已删除值(默认为 1)\n      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)\n    banner: false\n\n  #原生配置\n  configuration:\n    map-underscore-to-camel-case: true\n    cache-enabled: false\n    call-setters-on-nulls: true\n    jdbc-type-for-null: \'null\'\n\nmanagement:\n  endpoints:\n    web:\n      exposure:\n        include: \"*\"\n\nfeign:\n  sentinel:\n    enabled: true\n\n',
+        'd37df780366b378ba3cad1a1d219897f', '2010-05-05 00:00:00', '2023-11-20 02:23:29', NULL, '10.244.0.0', 'I',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (0, 320, 'themall-cart-dev.yaml', 'dev', '',
+        'spring:\n  zipkin:\n    base-url: http://192.168.98.11:30941\n  redis:\n    password: \"005400\"\n    host: 192.168.98.11\n    port: 30679\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858\n  thymeleaf:\n    cache: false',
+        '889f6957ba11c5650ae0eb4bd4e70dfa', '2010-05-05 00:00:00', '2023-11-20 02:23:29', NULL, '10.244.0.0', 'I',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (0, 321, 'themall-coupon-dev.yaml', 'dev', '',
+        'spring:\n  zipkin:\n    base-url: http://192.168.98.11:30941\n    \n  datasource:\n    driver-class-name: com.mysql.cj.jdbc.Driver\n    url: jdbc:mysql://192.168.98.11:30306/themall_sms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false\n    username: root\n    password: \"005400\"\n\n  redis:\n    password: \"005400\"\n    host: 192.168.98.11\n    port: 30679\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858',
+        'a8a8c0586f688859ca6fbe3f949c1581', '2010-05-05 00:00:00', '2023-11-20 02:23:29', NULL, '10.244.0.0', 'I',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (0, 322, 'themall-member-dev.yaml', 'dev', '',
+        'spring:\n  redis:\n    password: \"005400\"\n    host: 192.168.98.11\n    port: 30679\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  zipkin:\n    base-url: http://192.168.98.11:30941\n    \n  datasource:\n    driver-class-name: com.mysql.cj.jdbc.Driver\n    url: jdbc:mysql://192.168.98.11:30306/themall_ums?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false\n    username: root\n    password: \"005400\"\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858\n',
+        '2eaa662a430161b95458dffbe5ac022c', '2010-05-05 00:00:00', '2023-11-20 02:23:29', NULL, '10.244.0.0', 'I',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (0, 323, 'themall-order-dev.yaml', 'dev', '',
+        'spring:\n  datasource:\n    driver-class-name: com.mysql.cj.jdbc.Driver\n    url: jdbc:mysql://192.168.98.11:30306/themall_oms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false\n    username: root\n    password: \"005400\"\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858\n\n  rabbitmq:\n    host: 192.168.98.11\n    username: admin\n    password: \"005400\"\n    virtual-host: /themall\n    port: 30672\n    #开启发送端确认，到达rabbitmq\n    publisher-confirms: true\n    #发送端确认，有没有路由到指定的key  集群是一个副本模式，所有确认才能够确认\n    publisher-returns: true\n    #    只要抵达队列，以异步发送优先回调我们这个returns\n    template:\n      mandatory: true\n    listener:\n      simple:\n        #        auto:自动回复    manual:手动确认\n        acknowledge-mode: manual\n        \n  thymeleaf:\n    cache: false\n\n  redis:\n    password: \"005400\"\n    host: 192.168.98.11\n    port: 30679\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  zipkin:\n    base-url: http://192.168.98.11:30941',
+        '65e37f6217fdecb9acfb0c4ebeefa297', '2010-05-05 00:00:00', '2023-11-20 02:23:29', NULL, '10.244.0.0', 'I',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (0, 324, 'themall-product-dev.yaml', 'dev', '',
+        'spring:\n  datasource:\n    driver-class-name: com.mysql.cj.jdbc.Driver\n    url: jdbc:mysql://192.168.98.11:30306/themall_pms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false\n    username: root\n    password: \"005400\"\n    \n  redis:\n    password: \"005400\"\n    host: 192.168.98.11\n    port: 30679\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  #开发期间 关闭缓存\n  thymeleaf:\n    cache: false\n    prefix: classpath:/templates/\n    suffix: .html\n\n\nthemall:\n  thread:\n    coreSize: 10\n    maxSize: 200\n    keepAliveTime: 10\nlogging:\n  level:\n    com.theangel.themall: info\n\n\n',
+        '8813b6828123950a525366e82617da4a', '2010-05-05 00:00:00', '2023-11-20 02:23:29', NULL, '10.244.0.0', 'I',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (0, 325, 'themall-search-dev.yaml', 'dev', '',
+        'spring:\n  redis:\n    password: \"005400\"\n    host: 192.168.98.11\n    port: 30679\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n  elasticsearch:\n    cluster:\n      nodes: http://192.168.98.11:30920',
+        '5397d3f57d3a2fe29082ed2aa7917213', '2010-05-05 00:00:00', '2023-11-20 02:23:29', NULL, '10.244.0.0', 'I',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (0, 326, 'themall-seckill-dev.yaml', 'dev', '',
+        'spring:\n  rabbitmq:\n    host: 192.168.98.11\n    username: admin\n    password: \"005400\"\n    virtual-host: /themall\n    port: 30672\n    #开启发送端确认，到达rabbitmq\n    publisher-confirms: true\n    #发送端确认，有没有路由到指定的key  集群是一个副本模式，所有确认才能够确认\n    publisher-returns: true\n    #    只要抵达队列，以异步发送优先回调我们这个returns\n    template:\n      mandatory: true\n    listener:\n      simple:\n        #        auto:自动回复    manual:手动确认\n        acknowledge-mode: manual\n  thymeleaf:\n    cache: false\n\n\n  redis:\n    password: \"005400\"\n    host: 192.168.98.11\n    port: 30679\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  zipkin:\n    base-url: http://192.168.98.11:30941\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858\n  task:\n    execution:\n      pool:\n        core-size: 20\n        maxSize: 50\n        queueCapacity: 50\n\nthemall:\n  thread:\n    coreSize: 10\n    maxSize: 200\n    keepAliveTime: 10\n\nlogging:\n  level:\n    com.theangel.themall: info\n\n\n    ',
+        '5594f13c402044d091fc58b898239c55', '2010-05-05 00:00:00', '2023-11-20 02:23:29', NULL, '10.244.0.0', 'I',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (0, 327, 'themall-ware-dev.yaml', 'dev', '',
+        'spring:\n  rabbitmq:\n    host: 192.168.98.11\n    username: admin\n    password: \"005400\"\n    virtual-host: /themall\n    port: 30672\n    #开启发送端确认，到达rabbitmq\n    publisher-confirms: true\n    #发送端确认，有没有路由到指定的key  集群是一个副本模式，所有确认才能够确认\n    publisher-returns: true\n    #    只要抵达队列，以异步发送优先回调我们这个returns\n    template:\n      mandatory: true\n    listener:\n      simple:\n        #        auto:自动回复    manual:手动确认\n        acknowledge-mode: manual\n\n\n  datasource:\n    driver-class-name: com.mysql.cj.jdbc.Driver\n    url: jdbc:mysql://192.168.98.11:30306/themall_wms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false\n    username: root\n    password: \"005400\"\n\n\n  redis:\n    password: \"005400\"\n    host: 192.168.98.11\n    port: 30679\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  zipkin:\n    base-url: http://192.168.98.11:30941\n\n',
+        '2e4c1d49aeb0eb432546e149f9b11de1', '2010-05-05 00:00:00', '2023-11-20 02:23:29', NULL, '10.244.0.0', 'I',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (0, 328, 'third-party-dev.yaml', 'dev', '',
+        'spring:\n  redis:\n    password: \"005400\"\n    host: 192.168.98.11\n    port: 30679\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  # 这些配置在腾讯云控制台都可查到（使用时替换为你自己的）\n  # 腾讯云的SecretId（永久的，可在控制台开启或关闭）\n  tencent:\n    secretId: AKIDIPHsCF3aqpdAQP7ZkeGdjY6NN6YicGdi\n    # 腾讯云的SecretKey（永久的，可在控制台开启或关闭）\n    SecretKey: qOffOq1uWrviFVVDetrYx5wWqtfAOKdg\n    # 腾讯云的bucket (存储桶)\n    bucket: theangel-1306086135\n    # 腾讯云的region(bucket所在地区)\n    region: ap-guangzhou\n    # 腾讯云的allowPrefix(允许上传的路径)\n    allowPrefix: \'*\'\n    # 腾讯云的临时密钥时长(单位秒)\n    durationSeconds: 10\n    # 腾讯云的访问基础链接:\n    baseUrl: https://theangel-1306086135.cos.ap-guangzhou.myqcloud.com\n\n    alicloud:\n      access-key: LTAI5t5Zw9QpcLrfdGCA4NZZ\n      secret-key: MEYjLvITV4G6hkv12N41mbrcqR3phk\n      oss:\n        endpoint: oss-cn-hangzhou.aliyuncs.com\n        bucket: theangel-mall\n      sms:\n        host: https://dfsns.market.alicloudapi.com\n        path: /data/send_sms\n        appcode: 9d04ec7d99b740a9973cf01a438b9337',
+        'd76a58b36de4cefe600d5b5f132ff334', '2010-05-05 00:00:00', '2023-11-20 02:23:29', NULL, '10.244.0.0', 'I',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (0, 329, 'common.yaml', 'prod', '',
+        '# Tomcat\nserver:\n  tomcat:\n    uri-encoding: UTF-8\n    max-threads: 1000\n    min-spare-threads: 30\n  connection-timeout: 5000ms\n  servlet:\n    session:\n      #session超时时间\n      timeout: 30m\n\nspring:\n  zipkin:\n    locator:\n      discovery:\n        #关闭服务发现，否则springcloud会把zipkin的url当成服务名称\n        enabled: false\n    sender:\n      #设置http发送数据\n      type: web\n  sleuth:\n    sampler:\n      #      设置抽取采集率为100%，默认为10%\n      probability: 1\n\n  session:\n    store-type: redis\n    #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀但开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n  # jackson时间格式化\n  jackson:\n    time-zone: GMT+8\n#    date-format: yyyy-MM-dd HH:mm:ss\n  servlet:\n    multipart:\n      max-file-size: 100MB\n      max-request-size: 100MB\n      enabled: true\n  redis:\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    timeout: 6000ms  # 连接超时时长（毫秒）\n    jedis:\n      pool:\n        max-active: 1000  # 连接池最大连接数（使用负值表示没有限制）\n        max-wait: -1ms      # 连接池最大阻塞等待时间（使用负值表示没有限制）\n        max-idle: 10      # 连接池中的最大空闲连接\n        min-idle: 5       # 连接池中的最小空闲连接\n  mvc:\n    throw-exception-if-no-handler-found: true\n #   date-format: yyyy-MM-dd HH:mm:ss\n\nmybatis-plus:\n  mapper-locations: classpath*:/mapper/**/*.xml\n  global-config:\n    #数据库相关配置\n    db-config:\n      #主键类型  AUTO:\"数据库ID自增\", INPUT:\"用户输入ID\", ID_WORKER:\"全局唯一ID (数字类型唯一ID)\", UUID:\"全局唯一ID UUID\";\n      id-type: ID_WORKER\n      logic-delete-field: flag  # 全局逻辑删除的实体字段名(since 3.3.0,配置后可以忽略不配置步骤2)\n      logic-delete-value: 1 # 逻辑已删除值(默认为 1)\n      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)\n    banner: false\n\n  #原生配置\n  configuration:\n    map-underscore-to-camel-case: true\n    cache-enabled: false\n    call-setters-on-nulls: true\n    jdbc-type-for-null: \'null\'\n\nmanagement:\n  endpoints:\n    web:\n      exposure:\n        include: \"*\"\n\nfeign:\n  sentinel:\n    enabled: true\n\n',
+        'd37df780366b378ba3cad1a1d219897f', '2010-05-05 00:00:00', '2023-11-20 02:23:29', NULL, '10.244.0.0', 'I',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (0, 330, 'themall-gatway-prod.yaml', 'prod', '',
+        'spring:\n  zipkin:\n    base-url: http://192.168.98.11:30941\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858\n\n\n\n\n\n',
+        '85dd0b1180e0fa4aeb895082da8327a8', '2010-05-05 00:00:00', '2023-11-20 02:23:29', NULL, '10.244.0.0', 'I',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (0, 331, 'renren-fast-prod.yaml', 'prod', '',
+        '\n\nspring:\n  zipkin:\n    base-url: http://192.168.98.11:30941\n\n  datasource:\n    type: com.alibaba.druid.pool.DruidDataSource\n    druid:\n      db-type: mysql\n      driver-class-name: com.mysql.cj.jdbc.Driver\n      url: jdbc:mysql://mysql:3306/themall_admin?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false\n      username: root\n      password: \"005400\"\n      initial-size: 10\n      max-active: 100\n      min-idle: 10\n      max-wait: 60000\n      pool-prepared-statements: true\n      max-pool-prepared-statement-per-connection-size: 20\n      time-between-eviction-runs-millis: 60000\n      min-evictable-idle-time-millis: 300000\n      #Oracle需要打开注释\n      #validation-query: SELECT 1 FROM DUAL\n      test-while-idle: true\n      test-on-borrow: false\n      test-on-return: false\n      stat-view-servlet:\n        enabled: true\n        url-pattern: /druid/*\n        #login-username: admin\n        #login-password: admin\n      filter:\n        stat:\n          log-slow-sql: true\n          slow-sql-millis: 1000\n          merge-sql: false\n        wall:\n          config:\n            multi-statement-allow: true\n  ##多数据源的配置\n  #dynamic:\n  #  datasource:\n  #    slave1:\n  #      driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver\n  #      url: jdbc:sqlserver://localhost:1433;DatabaseName=renren_security\n  #      username: sa\n  #      password: 123456\n  #    slave2:\n  #      driver-class-name: org.postgresql.Driver\n  #      url: jdbc:postgresql://localhost:5432/renren_security\n  #      username: renren\n  #      password: 123456\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858\n\nmybatis-plus:\n  #实体扫描，多个package用逗号或者分号分隔\n  typeAliasesPackage: io.renren.modules.*.entity\n\n\nrenren:\n  redis:\n    open: false\n  shiro:\n    redis: false\n  # APP模块，是通过jwt认证的，如果要使用APP模块，则需要修改【加密秘钥】\n  jwt:\n    # 加密秘钥\n    secret: f4e2e52034348f86b67cde581c0f9eb5[www.theangel.vip]\n    # token有效时长，7天，单位秒\n    expire: 604800\n    header: token\n\nlogging:\n  level:\n    org.springframework.cloud.openfeign: info\n    org.springframework.sleuth: info\n',
+        '6baaf57c54be834ebd230b8f69bfcd10', '2010-05-05 00:00:00', '2023-11-20 02:23:29', NULL, '10.244.0.0', 'I',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (0, 332, 'themall-auth-server-prod.yaml', 'prod', '',
+        'spring:\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858\n  zipkin:\n    base-url: http://192.168.98.11:30941\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n\n  #开发期间 关闭缓存\n  thymeleaf:\n    #    cache: false\n    prefix: classpath:/templates/\n    suffix: .html\n\nlogging:\n  level:\n    org.springframework.cloud.openfeign: info\n    org.springframework.sleuth: info\n\n\n',
+        'b1d8021397af7f2026f5e1ba02011ed2', '2010-05-05 00:00:00', '2023-11-20 02:23:29', NULL, '10.244.0.0', 'I',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (0, 333, 'themall-cart-prod.yaml', 'prod', '',
+        'spring:\n  zipkin:\n    base-url: http://192.168.98.11:30941\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858\n  thymeleaf:\n    cache: true',
+        '0e586005a11b8fbd1b2ba529635e5d35', '2010-05-05 00:00:00', '2023-11-20 02:23:29', NULL, '10.244.0.0', 'I',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (0, 334, 'themall-coupon-prod.yaml', 'prod', '',
+        'spring:\n  zipkin:\n    base-url: http://192.168.98.11:30941\n    \n  datasource:\n    driver-class-name: com.mysql.cj.jdbc.Driver\n    url: jdbc:mysql://mysql:3306/themall_sms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false\n    username: root\n    password: \"005400\"\n\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858',
+        '09f72142831cda22761867a672cdf842', '2010-05-05 00:00:00', '2023-11-20 02:23:29', NULL, '10.244.0.0', 'I',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (0, 335, 'themall-member-prod.yaml', 'prod', '',
+        'spring:\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  zipkin:\n    base-url: http://192.168.98.11:30941\n    \n  datasource:\n    driver-class-name: com.mysql.cj.jdbc.Driver\n    url: jdbc:mysql://mysql:3306/themall_ums?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false\n    username: root\n    password: \"005400\"\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858\n',
+        '7303fa0469317ebb7ae7205698850ea3', '2010-05-05 00:00:00', '2023-11-20 02:23:29', NULL, '10.244.0.0', 'I',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (0, 336, 'themall-order-prod.yaml', 'prod', '',
+        'spring:\n  datasource:\n    driver-class-name: com.mysql.cj.jdbc.Driver\n    url: jdbc:mysql://mysql:3306/themall_oms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false\n    username: root\n    password: \"005400\"\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858\n\n  rabbitmq:\n    host: rabbit-mq-rabbitmq\n    username: admin\n    password: \"005400\"\n    virtual-host: /themall\n    port: 5672\n    #开启发送端确认，到达rabbitmq\n    publisher-confirms: true\n    #发送端确认，有没有路由到指定的key  集群是一个副本模式，所有确认才能够确认\n    publisher-returns: true\n    #    只要抵达队列，以异步发送优先回调我们这个returns\n    template:\n      mandatory: true\n    listener:\n      simple:\n        #        auto:自动回复    manual:手动确认\n        acknowledge-mode: manual\n        \n  thymeleaf:\n    cache: true\n\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  zipkin:\n    base-url: http://192.168.98.11:30941',
+        'af0a4ec0a16c723e3528e76e2acf5a3b', '2010-05-05 00:00:00', '2023-11-20 02:23:29', NULL, '10.244.0.0', 'I',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (0, 337, 'themall-product-prod.yaml', 'prod', '',
+        'spring:\n  datasource:\n    driver-class-name: com.mysql.cj.jdbc.Driver\n    url: jdbc:mysql://mysql:3306/themall_pms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false\n    username: root\n    password: \"005400\"\n    \n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  #开发期间 关闭缓存\n  thymeleaf:\n    cache: true\n    prefix: classpath:/templates/\n    suffix: .html\n\n\nthemall:\n  thread:\n    coreSize: 10\n    maxSize: 200\n    keepAliveTime: 10\nlogging:\n  level:\n    com.theangel.themall: info\n\n\n',
+        '5bb126186f2c78361cfe8a4e1f4abcc7', '2010-05-05 00:00:00', '2023-11-20 02:23:29', NULL, '10.244.0.0', 'I',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (0, 338, 'themall-search-prod.yaml', 'prod', '',
+        'spring:\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n  elasticsearch:\n    cluster:\n      nodes: http://elasticsearch:9200',
+        'e5715fa87d4c5ab088a872279b013791', '2010-05-05 00:00:00', '2023-11-20 02:23:29', NULL, '10.244.0.0', 'I',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (0, 339, 'themall-seckill-prod.yaml', 'prod', '',
+        'spring:\n  rabbitmq:\n    host: rabbit-mq-rabbitmq\n    username: admin\n    password: \"005400\"\n    virtual-host: /themall\n    port: 5672\n    #开启发送端确认，到达rabbitmq\n    publisher-confirms: true\n    #发送端确认，有没有路由到指定的key  集群是一个副本模式，所有确认才能够确认\n    publisher-returns: true\n    #    只要抵达队列，以异步发送优先回调我们这个returns\n    template:\n      mandatory: true\n    listener:\n      simple:\n        #        auto:自动回复    manual:手动确认\n        acknowledge-mode: manual\n  thymeleaf:\n    cache: false\n\n\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  zipkin:\n    base-url: http://192.168.98.11:30941\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858\n  task:\n    execution:\n      pool:\n        core-size: 20\n        maxSize: 50\n        queueCapacity: 50\n\nthemall:\n  thread:\n    coreSize: 10\n    maxSize: 200\n    keepAliveTime: 10\n\nlogging:\n  level:\n    com.theangel.themall: info\n\n\n    ',
+        'bad9545ca2da4f114a01448cfd5ec26a', '2010-05-05 00:00:00', '2023-11-20 02:23:29', NULL, '10.244.0.0', 'I',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (0, 340, 'themall-ware-prod.yaml', 'prod', '',
+        'spring:\n  rabbitmq:\n    host: rabbit-mq-rabbitmq\n    username: admin\n    password: \"005400\"\n    virtual-host: /themall\n    port: 30672\n    #开启发送端确认，到达rabbitmq\n    publisher-confirms: true\n    #发送端确认，有没有路由到指定的key  集群是一个副本模式，所有确认才能够确认\n    publisher-returns: true\n    #    只要抵达队列，以异步发送优先回调我们这个returns\n    template:\n      mandatory: true\n    listener:\n      simple:\n        #        auto:自动回复    manual:手动确认\n        acknowledge-mode: manual\n\n\n  datasource:\n    driver-class-name: com.mysql.cj.jdbc.Driver\n    url: jdbc:mysql://mysql:3306/themall_wms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false\n    username: root\n    password: \"005400\"\n\n\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  zipkin:\n    base-url: http://192.168.98.11:30941\n\n',
+        '03f0f8d9de1f71ccdb085b4c9b48013a', '2010-05-05 00:00:00', '2023-11-20 02:23:29', NULL, '10.244.0.0', 'I',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (0, 341, 'third-party-prod.yaml', 'prod', '',
+        'spring:\n  redis:\n    password: \"005400\"\n    host: 192.168.98.11\n    port: 30679\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  # 这些配置在腾讯云控制台都可查到（使用时替换为你自己的）\n  # 腾讯云的SecretId（永久的，可在控制台开启或关闭）\n  tencent:\n    secretId: AKIDIPHsCF3aqpdAQP7ZkeGdjY6NN6YicGdi\n    # 腾讯云的SecretKey（永久的，可在控制台开启或关闭）\n    SecretKey: qOffOq1uWrviFVVDetrYx5wWqtfAOKdg\n    # 腾讯云的bucket (存储桶)\n    bucket: theangel-1306086135\n    # 腾讯云的region(bucket所在地区)\n    region: ap-guangzhou\n    # 腾讯云的allowPrefix(允许上传的路径)\n    allowPrefix: \'*\'\n    # 腾讯云的临时密钥时长(单位秒)\n    durationSeconds: 10\n    # 腾讯云的访问基础链接:\n    baseUrl: https://theangel-1306086135.cos.ap-guangzhou.myqcloud.com\n\n    alicloud:\n      access-key: LTAI5t5Zw9QpcLrfdGCA4NZZ\n      secret-key: MEYjLvITV4G6hkv12N41mbrcqR3phk\n      oss:\n        endpoint: oss-cn-hangzhou.aliyuncs.com\n        bucket: theangel-mall\n      sms:\n        host: https://dfsns.market.alicloudapi.com\n        path: /data/send_sms\n        appcode: 9d04ec7d99b740a9973cf01a438b9337',
+        'd76a58b36de4cefe600d5b5f132ff334', '2010-05-05 00:00:00', '2023-11-20 02:23:29', NULL, '10.244.0.0', 'I',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (198, 342, 'public.yml', 'DEFAULT_GROUP', '',
+        'spring:\n  redis:\n    host: redis.themall\n    port: 6379\n  zipkin:\n    base-url: http://zipkin-server.themall:9411\n    locator:\n      discovery:\n        #关闭服务发现，否则springcloud会把zipkin的url当成服务名称\n        enabled: false\n    sender:\n      #设置http发送数据\n      type: web\n  sleuth:\n    sampler:\n      #      设置抽取采集率为100%，默认为10%\n      probability: 1\n\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: sentinel-server.themall:8333\n    nacos:\n      discovery:\n        server-addr: nacos-server.themall:8848\n        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b\n\nmybatis-plus:\n  mapper-locations: classpath*:/mapper/**/*.xml\n  global-config:\n    db-config:\n      id-type: auto\n\nmanagement:\n  endpoints:\n    web:\n      exposure:\n        include: \"*\"\n\nfeign:\n  sentinel:\n    enabled: true\n\n\nlogging:\n  level:\n    org.springframework.cloud.openfeign: debug\n    org.springframework.sleuth: debug\n\n\n    ',
+        'cd1cbbcf00431b1d95b828dfd753c6bb', '2010-05-05 00:00:00', '2023-11-20 02:35:58', NULL, '10.244.0.0', 'D', ''),
+       (199, 343, 'themall-coupon.yml', 'DEFAULT_GROUP', '',
+        'server:\n  port: 8080\nspring:\n  cloud:\n    nacos:\n      config:\n        server-addr: nacos-server.themall:8848\n#        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b\n        extension-configs:\n          - dataId: public.yml\n            refresh: true\n          - dataId: themall-coupon.yml\n            refresh: true\n  application:\n    name: themall-coupon\n\n\n  #session保存redis\n  session:\n    store-type: redis\n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n  datasource:\n    username: root\n    password: hjj0127..\n    url: jdbc:mysql://mysql-master.themall:3306/themall_sms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai\n    driver-class-name: com.mysql.cj.jdbc.Driver\n\n\n',
+        '3521ab675bd70aa04b52e39f5eb314a8', '2010-05-05 00:00:00', '2023-11-20 02:35:58', NULL, '10.244.0.0', 'D', ''),
+       (200, 344, 'themall-member.yml', 'DEFAULT_GROUP', '',
+        'server:\n  port: 8080\nspring:\n  cloud:\n    nacos:\n      config:\n#        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b\n        extension-configs:\n          - dataId: public.yml\n            refresh: true\n          - dataId: themall-member.yml\n            refresh: true\n        server-addr: nacos-server.themall:8848\n  application:\n    name: themall-member\n\n\n\n  #session保存redis\n  session:\n    store-type: redis\n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n  datasource:\n    username: root\n    password: hjj0127..\n    url: jdbc:mysql://mysql-master.themall:3306/themall_ums?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai\n    driver-class-name: com.mysql.cj.jdbc.Driver\n  mvc:\n    date-format: yyyy-MM-dd HH:mm:ss',
+        '89695c82e1afa2e91d3d5a61ba56a2ce', '2010-05-05 00:00:00', '2023-11-20 02:35:58', NULL, '10.244.0.0', 'D', ''),
+       (201, 345, 'themall-order.yml', 'DEFAULT_GROUP', '',
+        'server:\n  port: 8080\nspring:\n  cloud:\n    nacos:\n      config:\n#        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b\n        extension-configs:\n          - dataId: public.yml\n            refresh: true\n          - dataId: themall-order.yml\n            refresh: true\n        server-addr: nacos-server.themall:8848\n  application:\n    name: themall-order\n  #session保存redis\n  session:\n    store-type: redis\n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n  datasource:\n    username: root\n    password: hjj0127..\n    url: jdbc:mysql://mysql-master.themall:3306/themall_oms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai\n    driver-class-name: com.mysql.cj.jdbc.Driver\n\n  rabbitmq:\n    host: rabbitmq.themall\n    username: guest\n    password: guest\n    virtual-host: /themall\n    port: 5672\n    #开启发送端确认，到达rabbitmq\n    publisher-confirms: true\n    #发送端确认，有没有路由到指定的key  集群是一个副本模式，所有确认才能够确认\n    publisher-returns: true\n    #    只要抵达队列，以异步发送优先回调我们这个returns\n    template:\n      mandatory: true\n    listener:\n      simple:\n        #        auto:自动回复    manual:手动确认\n        acknowledge-mode: manual\n\n  thymeleaf:\n    cache: false\n  mvc:\n    date-format: yyyy-MM-dd HH:mm:ss\n\n#spring.cloud.alibaba.seata.tx-service-group修改后缀，但是必须和file.conf中的配置保持一致\n',
+        'de078751d232a2963a36ce931efb3a57', '2010-05-05 00:00:00', '2023-11-20 02:35:58', NULL, '10.244.0.0', 'D', ''),
+       (202, 346, 'themall-product.yml', 'DEFAULT_GROUP', '',
+        'server:\n  port: 8080\nspring:\n  cloud:\n    nacos:\n      config:\n#        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b\n        server-addr: nacos-server.themall:8848\n        extension-configs:\n          - dataId: public.yml\n            refresh: true\n          - dataId: themall-product.yml\n            refresh: true\n  application:\n    name: themall-product\n\n\n  #session保存redis\n  session:\n    store-type: redis\n   #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀但开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n  servlet:\n    multipart:\n      max-file-size: 20MB\n      max-request-size: 200MB\n  datasource:\n    username: root\n    password: hjj0127..\n    url: jdbc:mysql://mysql-master.themall:3306/themall_pms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai\n    driver-class-name: com.mysql.cj.jdbc.Driver\n\n  jackson:\n    date-format: yyyy-MM-dd HH:mm:ss\n  #开发期间 关闭缓存\n  thymeleaf:\n    cache: false\n    prefix: classpath:/templates/\n    suffix: .html\n\nmybatis-plus:\n  mapper-locations: classpath*:/mapper/**/*.xml\n  global-config:\n    db-config:\n      id-type: auto\n      logic-delete-field: flag  # 全局逻辑删除的实体字段名(since 3.3.0,配置后可以忽略不配置步骤2)\n      logic-delete-value: 1 # 逻辑已删除值(默认为 1)\n      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)\n\nthemall:\n  thread:\n    coreSize: 10\n    maxSize: 200\n    keepAliveTime: 10\n\nlogging:\n  level:\n    com.theangel.themall: error',
+        '2a336bba1ac9735040fc7c8095bf6a1e', '2010-05-05 00:00:00', '2023-11-20 02:35:58', NULL, '10.244.0.0', 'D', ''),
+       (203, 347, 'themall-ware.yml', 'DEFAULT_GROUP', '',
+        'server:\n  port: 8080\nspring:\n  cloud:\n    nacos:\n      config:\n#        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b\n        extension-configs:\n          - dataId: public.yml\n            refresh: true\n          - dataId: themall-ware.yml\n            refresh: true\n        server-addr: nacos-server.themall:8848\n  application:\n    name: themall-ware\n  #session保存redis\n  session:\n    store-type: redis\n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n  datasource:\n    username: root\n    password: hjj0127..\n    url: jdbc:mysql://mysql-master.themall:3306/themall_wms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai\n    driver-class-name: com.mysql.cj.jdbc.Driver\n\n  jackson:\n    date-format: yyyy-MM-dd HH:mm:ss\n  rabbitmq:\n    host: rabbitmq.themall\n    username: guest\n    password: guest\n    virtual-host: /themall\n    port: 5672\n    #开启发送端确认，到达rabbitmq\n    publisher-confirms: true\n    #发送端确认，有没有路由到指定的key  集群是一个副本模式，所有确认才能够确认\n    publisher-returns: true\n    #    只要抵达队列，以异步发送优先回调我们这个returns\n    template:\n      mandatory: true\n    listener:\n      simple:\n        #        auto:自动回复    manual:手动确认\n        acknowledge-mode: manual\n\n#spring.cloud.alibaba.seata.tx-service-group修改后缀，但是必须和file.conf中的配置保持一致',
+        '67ddef417a0800779e4297161fd929c0', '2010-05-05 00:00:00', '2023-11-20 02:35:58', NULL, '10.244.0.0', 'D', ''),
+       (204, 348, 'themall-gatway.yml', 'DEFAULT_GROUP', '',
+        'server:\n  port: 8080\nmanagement:\n  endpoints:\n    web:\n      exposure:\n        include: \"*\"\n\nspring:\n  application:\n    name: themall-gatway\n  zipkin:\n    base-url: http://zipkin-server.themall:9411\n    locator:\n      discovery:\n        #关闭服务发现，否则springcloud会把zipkin的url当成服务名称\n        enabled: false\n\n    sender:\n      #设置http发送数据\n      type: web\n\n  sleuth:\n    sampler:\n      #      设置抽取采集率为100%，默认为10%\n      probability: 1\n\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: sentinel-server.themall:8333\n    nacos:\n      config:\n        server-addr: nacos-server.themall:8848\n#        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b\n        extension-configs:\n          - dataId: themall-gatway.yml\n            refresh: true\n      discovery:\n        server-addr: nacos-server.themall:8848\n#        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b\n\n    gateway:\n      routes:\n        #         检索服务\n        - id: themall-search\n          uri: lb://themall-search\n          predicates:\n            - Path=/api/search/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #          库存服务\n        - id: themall-ware\n          uri: lb://themall-ware\n          predicates:\n            - Path=/api/ware/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #          商品优惠服务\n        - id: themall-coupon\n          uri: lb://themall-coupon\n          predicates:\n            - Path=/api/coupon/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #         第三方服务\n        - id: third-party\n          uri: lb://third-party\n          predicates:\n            - Path=/api/third-party/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #         商品服务\n        - id: themall-product\n          uri: lb://themall-product\n          predicates:\n            - Path=/api/product/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #         外网穿透的地址\n        - id: themall\n          uri: lb://themall-product\n          predicates:\n            - Path=/themall/**\n          filters:\n            - RewritePath=/themall/?(?<the>.*), /$\\{the}\n\n        #         会员服务\n        - id: themall-member\n          uri: lb://themall-member\n          predicates:\n            - Path=/api/member/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /$\\{the}\n\n        #\n        - id: renren-fast\n          uri: lb://renren-fast\n          predicates:\n            - Path=/api/**,/renren-fast/**\n          filters:\n            - RewritePath=/api/?(?<the>.*), /renren-fast/$\\{the}\n\n\n        # 商品详情页\n        - id: item\n          uri: lb://themall-product\n          predicates:\n            - Host=item.theangel.com\n        #            - Path=/item/*.html\n\n        # 商品搜索\n        - id: search\n          uri: lb://themall-search\n          predicates:\n            - Host=search.theangel.com\n        #            - Path=/list.html\n\n        # 认证\n        - id: auth-server\n          uri: lb://themall-auth-server\n          predicates:\n            - Host=auth.theangel.com\n        #            - Path=/auth/**\n\n        # 购物车\n        - id: themall-cart\n          uri: lb://themall-cart\n          predicates:\n            - Host=cart.theangel.com\n\n        # 订单\n        - id: themall-order\n          uri: lb://themall-order\n          predicates:\n            - Host=order.theangel.com\n\n        # 首页\n        - id: product-index\n          uri: lb://themall-product\n          predicates:\n            - Host=theangel.com,theangel.vip:8888,127.0.0.1:88,159.75.26.150:8888\n\n        # 用户订单\n        - id: member\n          uri: lb://themall-member\n          predicates:\n            - Host=member.theangel.com\n\n\n        # 秒杀\n        - id: themall-seckill\n          uri: lb://themall-seckill\n          predicates:\n            - Host=seckill.theangel.com\n\nlogging:\n  level:\n    org.springframework.cloud.openfeign: debug\n    org.springframework.sleuth: debug\n\n\n\n',
+        'b70c512ecffe769bf1957cbc0dde887c', '2010-05-05 00:00:00', '2023-11-20 02:35:58', NULL, '10.244.0.0', 'D', ''),
+       (205, 349, 'renren-fast.yml', 'DEFAULT_GROUP', '',
+        '# Tomcat\nserver:\n  port: 8080\n  tomcat:\n    uri-encoding: UTF-8\n    max-threads: 1000\n    min-spare-threads: 30\n  connection-timeout: 5000ms\n  servlet:\n    context-path: /renren-fast\n\nspring:\n  cloud:\n    nacos:\n      config:\n        server-addr: nacos-server.themall:8848\n        #                namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b\n        extension-configs:\n          - dataId: public.yml\n            refresh: true\n          - dataId: renren-fast.yml\n            refresh: true\n  datasource:\n    type: com.alibaba.druid.pool.DruidDataSource\n    druid:\n      driver-class-name: com.mysql.cj.jdbc.Driver\n      url: jdbc:mysql://mysql-master.themall:3306/themall_oms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai\n      username: root\n      password: hjj0127..\n      initial-size: 10\n      max-active: 100\n      min-idle: 10\n      max-wait: 60000\n      pool-prepared-statements: true\n      max-pool-prepared-statement-per-connection-size: 20\n      time-between-eviction-runs-millis: 60000\n      min-evictable-idle-time-millis: 300000\n      #Oracle需要打开注释\n      #validation-query: SELECT 1 FROM DUAL\n      test-while-idle: true\n      test-on-borrow: false\n      test-on-return: false\n      stat-view-servlet:\n        enabled: true\n        url-pattern: /druid/*\n        #login-username: admin\n        #login-password: admin\n      filter:\n        stat:\n          log-slow-sql: true\n          slow-sql-millis: 1000\n          merge-sql: false\n        wall:\n          config:\n            multi-statement-allow: true\n  ##多数据源的配置\n  #dynamic:\n  #  datasource:\n  #    slave1:\n  #      driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver\n  #      url: jdbc:sqlserver://localhost:1433;DatabaseName=renren_security\n  #      username: sa\n  #      password: 123456\n  #    slave2:\n  #      driver-class-name: org.postgresql.Driver\n  #      url: jdbc:postgresql://localhost:5432/renren_security\n  #      username: renren\n  #      password: 123456\n  application:\n    name: renren-fast\n  # 环境 dev|test|prod\n#  profiles:\n#    active: dev\n  # jackson时间格式化\n  jackson:\n    time-zone: GMT+8\n    date-format: yyyy-MM-dd HH:mm:ss\n  servlet:\n    multipart:\n      max-file-size: 100MB\n      max-request-size: 100MB\n      enabled: true\n  redis:\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n    timeout: 6000ms  # 连接超时时长（毫秒）\n    jedis:\n      pool:\n        max-active: 1000  # 连接池最大连接数（使用负值表示没有限制）\n        max-wait: -1ms      # 连接池最大阻塞等待时间（使用负值表示没有限制）\n        max-idle: 10      # 连接池中的最大空闲连接\n        min-idle: 5       # 连接池中的最小空闲连接\n  mvc:\n    throw-exception-if-no-handler-found: true\n\n#  resources:\n#    add-mappings: false\n#mybatis\nmybatis-plus:\n  mapper-locations: classpath*:/mapper/**/*.xml\n  #实体扫描，多个package用逗号或者分号分隔\n  typeAliasesPackage: io.renren.modules.*.entity\n  global-config:\n    #数据库相关配置\n    db-config:\n      #主键类型  AUTO:\"数据库ID自增\", INPUT:\"用户输入ID\", ID_WORKER:\"全局唯一ID (数字类型唯一ID)\", UUID:\"全局唯一ID UUID\";\n      id-type: AUTO\n      logic-delete-value: -1\n      logic-not-delete-value: 0\n    banner: false\n  #原生配置\n  configuration:\n    map-underscore-to-camel-case: true\n    cache-enabled: false\n    call-setters-on-nulls: true\n    jdbc-type-for-null: \'null\'\n\n\nrenren:\n  redis:\n    open: false\n  shiro:\n    redis: false\n  # APP模块，是通过jwt认证的，如果要使用APP模块，则需要修改【加密秘钥】\n  jwt:\n    # 加密秘钥\n    secret: f4e2e52034348f86b67cde581c0f9eb5[www.theangel.vip]\n    # token有效时长，7天，单位秒\n    expire: 604800\n    header: token',
+        '87554fe58b06f02161e288e5cb08dbaf', '2010-05-05 00:00:00', '2023-11-20 02:35:58', NULL, '10.244.0.0', 'D', ''),
+       (206, 350, 'third-party.yml', 'DEFAULT_GROUP', '',
+        'server:\n  port: 8080\nspring:\n  application:\n    name: third-party\n  #session保存redis\n  session:\n    store-type: redis\n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n  servlet:\n    multipart:\n      max-file-size: 20MB\n      max-request-size: 200MB\n\n  # 这些配置在腾讯云控制台都可查到（使用时替换为你自己的）\n  # 腾讯云的SecretId（永久的，可在控制台开启或关闭）\n  tencent:\n    secretId: AKIDIPHsCF3aqpdAQP7ZkeGdjY6NN6YicGdi\n    # 腾讯云的SecretKey（永久的，可在控制台开启或关闭）\n    SecretKey: qOffOq1uWrviFVVDetrYx5wWqtfAOKdg\n    # 腾讯云的bucket (存储桶)\n    bucket: theangel-1306086135\n    # 腾讯云的region(bucket所在地区)\n    region: ap-guangzhou\n    # 腾讯云的allowPrefix(允许上传的路径)\n    allowPrefix: \'*\'\n    # 腾讯云的临时密钥时长(单位秒)\n    durationSeconds: 10\n    # 腾讯云的访问基础链接:\n    baseUrl: https://theangel-1306086135.cos.ap-guangzhou.myqcloud.com\n  cloud:\n    nacos:\n      config:\n        server-addr: nacos-server.themall:8848\n#        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b\n        extension-configs:\n          - dataId: public.yml\n            refresh: true\n          - dataId: third-party.yml\n            refresh: true\n    alicloud:\n      access-key: LTAI5t5Zw9QpcLrfdGCA4NZZ\n      secret-key: MEYjLvITV4G6hkv12N41mbrcqR3phk\n      oss:\n        endpoint: oss-cn-hangzhou.aliyuncs.com\n        bucket: theangel-mall\n      sms:\n        host: https://dfsns.market.alicloudapi.com\n        path: /data/send_sms\n        appcode: 9d04ec7d99b740a9973cf01a438b9337\n',
+        '83cc5bfbeb0fed8546d2f35424d25469', '2010-05-05 00:00:00', '2023-11-20 02:35:58', NULL, '10.244.0.0', 'D', ''),
+       (207, 351, 'themall-search.yml', 'DEFAULT_GROUP', '',
+        'server:\n  port: 8080\nspring:\n  application:\n    name: themall-search\n  cloud:\n    nacos:\n      config:\n        #        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b\n        extension-configs:\n          - dataId: public.yml\n            refresh: true\n          - dataId: themall-search.yml\n            refresh: true\n        server-addr: nacos-server.themall:8848\n\n  #session保存redis\n  session:\n    store-type: redis\n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n',
+        '3293c4c46377ed226c39f8f3324aa227', '2010-05-05 00:00:00', '2023-11-20 02:35:58', NULL, '10.244.0.0', 'D', ''),
+       (208, 352, 'themall-auth-server', 'DEFAULT_GROUP', '',
+        'spring:\n  application:\n    name: themall-auth-server\n  cloud:\n    nacos:\n      config:\n#        namespace: public\n        server-addr: nacos-server.themall:8848\n        extension-configs:\n          - dataId: public.yml\n            refresh: true\n          - dataId: themall-auth-server.yml\n            refresh: true\n\n\n  #session保存redis\n  session:\n    store-type: redis\n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n  #开发期间 关闭缓存\n  thymeleaf:\n#    cache: false\n    prefix: classpath:/templates/\n    suffix: .html\n\nlogging:\n  level:\n    com.theangel.themall: error\n\nserver:\n  port: 8080\n  servlet:\n    session:\n      #session超时时间\n      timeout: 30m\n',
+        'f7b31d1920e973fe90130c202c2f682b', '2010-05-05 00:00:00', '2023-11-20 02:35:58', NULL, '10.244.0.0', 'D', ''),
+       (209, 353, 'themall-cart.yml', 'DEFAULT_GROUP', '',
+        'server:\n  port: 8080\nspring:\n  cloud:\n    nacos:\n      config:\n#        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b\n        extension-configs:\n          - dataId: public.yml\n            refresh: true\n          - dataId: themall-cart.yml\n            refresh: true\n        server-addr: nacos-server.themall:8848\n  application:\n    name: themall-cart\n\n  #session保存redis\n  session:\n    store-type: redis\n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n#  thymeleaf:\n#    cache: false',
+        '206ee956953d675db9c9706ba3f67830', '2010-05-05 00:00:00', '2023-11-20 02:35:58', NULL, '10.244.0.0', 'D', ''),
+       (210, 354, 'themall-seckill.yml', 'DEFAULT_GROUP', '',
+        'server:\n  port: 8080\nspring:\n  cloud:\n    nacos:\n      config:\n#        namespace: 9e9bfac1-f266-4fc4-b220-2c95997c532b\n        server-addr: nacos-server.themall:8848\n        extension-configs:\n          - dataId: public.yml\n            refresh: true\n          - dataId: themall-seckill.yml\n            refresh: true\n  application:\n    name: themall-seckill\n  thymeleaf:\n    cache: false\n\n  rabbitmq:\n    port: 5672\n    host: rabbitmq.themall\n    username: guest\n    password: guest\n    virtual-host: /themall\n    template:\n      mandatory: true\n    listener:\n      simple:\n        acknowledge-mode: manual\n    publisher-returns: true\n\n\n  #session保存redis\n  session:\n    store-type: redis\n  #配置redis缓存管理器\n  cache:\n    type: redis\n    # 配置了名字，就只能使用自己的名字\n    redis:\n      # 存活时间\n      time-to-live: 3600000\n      #前缀\n      #      key-prefix: AUTO-CACHE_\n      #是否使用前缀 不使用前缀，开启前缀 会把分区名放前面  分区::名字\n      use-key-prefix: true\n      #是否缓存空值，解决缓存穿透\n      cache-null-values: true\n\n  jackson:\n    date-format: yyyy-MM-dd HH:mm:ss\n  task:\n    execution:\n      pool:\n        core-size: 20\n        maxSize: 50\n        queueCapacity: 50\n\nthemall:\n  thread:\n    coreSize: 10\n    maxSize: 200\n    keepAliveTime: 10\n\nlogging:\n  level:\n    com.theangel.themall: info\n',
+        '91b8003a4c9b92b92d5f5f1e9461560d', '2010-05-05 00:00:00', '2023-11-20 02:35:58', NULL, '10.244.0.0', 'D', ''),
+       (260, 355, 'themall-gatway-prod.yaml', 'prod', '',
+        'spring:\n  zipkin:\n    base-url: http://192.168.98.11:30941\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858\n\n\n\n\n\n',
+        '85dd0b1180e0fa4aeb895082da8327a8', '2010-05-05 00:00:00', '2023-11-21 02:03:51', 'nacos', '10.244.0.0', 'U',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (261, 356, 'renren-fast-prod.yaml', 'prod', '',
+        '\n\nspring:\n  zipkin:\n    base-url: http://192.168.98.11:30941\n\n  datasource:\n    type: com.alibaba.druid.pool.DruidDataSource\n    druid:\n      db-type: mysql\n      driver-class-name: com.mysql.cj.jdbc.Driver\n      url: jdbc:mysql://mysql:3306/themall_admin?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false\n      username: root\n      password: \"005400\"\n      initial-size: 10\n      max-active: 100\n      min-idle: 10\n      max-wait: 60000\n      pool-prepared-statements: true\n      max-pool-prepared-statement-per-connection-size: 20\n      time-between-eviction-runs-millis: 60000\n      min-evictable-idle-time-millis: 300000\n      #Oracle需要打开注释\n      #validation-query: SELECT 1 FROM DUAL\n      test-while-idle: true\n      test-on-borrow: false\n      test-on-return: false\n      stat-view-servlet:\n        enabled: true\n        url-pattern: /druid/*\n        #login-username: admin\n        #login-password: admin\n      filter:\n        stat:\n          log-slow-sql: true\n          slow-sql-millis: 1000\n          merge-sql: false\n        wall:\n          config:\n            multi-statement-allow: true\n  ##多数据源的配置\n  #dynamic:\n  #  datasource:\n  #    slave1:\n  #      driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver\n  #      url: jdbc:sqlserver://localhost:1433;DatabaseName=renren_security\n  #      username: sa\n  #      password: 123456\n  #    slave2:\n  #      driver-class-name: org.postgresql.Driver\n  #      url: jdbc:postgresql://localhost:5432/renren_security\n  #      username: renren\n  #      password: 123456\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858\n\nmybatis-plus:\n  #实体扫描，多个package用逗号或者分号分隔\n  typeAliasesPackage: io.renren.modules.*.entity\n\n\nrenren:\n  redis:\n    open: false\n  shiro:\n    redis: false\n  # APP模块，是通过jwt认证的，如果要使用APP模块，则需要修改【加密秘钥】\n  jwt:\n    # 加密秘钥\n    secret: f4e2e52034348f86b67cde581c0f9eb5[www.theangel.vip]\n    # token有效时长，7天，单位秒\n    expire: 604800\n    header: token\n\nlogging:\n  level:\n    org.springframework.cloud.openfeign: info\n    org.springframework.sleuth: info\n',
+        '6baaf57c54be834ebd230b8f69bfcd10', '2010-05-05 00:00:00', '2023-11-21 02:04:21', 'nacos', '10.244.0.0', 'U',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (262, 357, 'themall-auth-server-prod.yaml', 'prod', '',
+        'spring:\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858\n  zipkin:\n    base-url: http://192.168.98.11:30941\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n\n  #开发期间 关闭缓存\n  thymeleaf:\n    #    cache: false\n    prefix: classpath:/templates/\n    suffix: .html\n\nlogging:\n  level:\n    org.springframework.cloud.openfeign: info\n    org.springframework.sleuth: info\n\n\n',
+        'b1d8021397af7f2026f5e1ba02011ed2', '2010-05-05 00:00:00', '2023-11-21 02:04:41', 'nacos', '10.244.0.0', 'U',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (263, 358, 'themall-cart-prod.yaml', 'prod', '',
+        'spring:\n  zipkin:\n    base-url: http://192.168.98.11:30941\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858\n  thymeleaf:\n    cache: true',
+        '0e586005a11b8fbd1b2ba529635e5d35', '2010-05-05 00:00:00', '2023-11-21 02:04:53', 'nacos', '10.244.0.0', 'U',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (264, 359, 'themall-coupon-prod.yaml', 'prod', '',
+        'spring:\n  zipkin:\n    base-url: http://192.168.98.11:30941\n    \n  datasource:\n    driver-class-name: com.mysql.cj.jdbc.Driver\n    url: jdbc:mysql://mysql:3306/themall_sms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false\n    username: root\n    password: \"005400\"\n\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858',
+        '09f72142831cda22761867a672cdf842', '2010-05-05 00:00:00', '2023-11-21 02:05:08', 'nacos', '10.244.0.0', 'U',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (265, 360, 'themall-member-prod.yaml', 'prod', '',
+        'spring:\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  zipkin:\n    base-url: http://192.168.98.11:30941\n    \n  datasource:\n    driver-class-name: com.mysql.cj.jdbc.Driver\n    url: jdbc:mysql://mysql:3306/themall_ums?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false\n    username: root\n    password: \"005400\"\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858\n',
+        '7303fa0469317ebb7ae7205698850ea3', '2010-05-05 00:00:00', '2023-11-21 02:05:20', 'nacos', '10.244.0.0', 'U',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (266, 361, 'themall-order-prod.yaml', 'prod', '',
+        'spring:\n  datasource:\n    driver-class-name: com.mysql.cj.jdbc.Driver\n    url: jdbc:mysql://mysql:3306/themall_oms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false\n    username: root\n    password: \"005400\"\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858\n\n  rabbitmq:\n    host: rabbit-mq-rabbitmq\n    username: admin\n    password: \"005400\"\n    virtual-host: /themall\n    port: 5672\n    #开启发送端确认，到达rabbitmq\n    publisher-confirms: true\n    #发送端确认，有没有路由到指定的key  集群是一个副本模式，所有确认才能够确认\n    publisher-returns: true\n    #    只要抵达队列，以异步发送优先回调我们这个returns\n    template:\n      mandatory: true\n    listener:\n      simple:\n        #        auto:自动回复    manual:手动确认\n        acknowledge-mode: manual\n        \n  thymeleaf:\n    cache: true\n\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  zipkin:\n    base-url: http://192.168.98.11:30941',
+        'af0a4ec0a16c723e3528e76e2acf5a3b', '2010-05-05 00:00:00', '2023-11-21 02:05:36', 'nacos', '10.244.0.0', 'U',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (267, 362, 'themall-product-prod.yaml', 'prod', '',
+        'spring:\n  datasource:\n    driver-class-name: com.mysql.cj.jdbc.Driver\n    url: jdbc:mysql://mysql:3306/themall_pms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false\n    username: root\n    password: \"005400\"\n    \n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  #开发期间 关闭缓存\n  thymeleaf:\n    cache: true\n    prefix: classpath:/templates/\n    suffix: .html\n\n\nthemall:\n  thread:\n    coreSize: 10\n    maxSize: 200\n    keepAliveTime: 10\nlogging:\n  level:\n    com.theangel.themall: info\n\n\n',
+        '5bb126186f2c78361cfe8a4e1f4abcc7', '2010-05-05 00:00:00', '2023-11-21 02:06:19', 'nacos', '10.244.0.0', 'U',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (268, 363, 'themall-search-prod.yaml', 'prod', '',
+        'spring:\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n  elasticsearch:\n    cluster:\n      nodes: http://elasticsearch:9200',
+        'e5715fa87d4c5ab088a872279b013791', '2010-05-05 00:00:00', '2023-11-21 02:06:31', 'nacos', '10.244.0.0', 'U',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (269, 364, 'themall-seckill-prod.yaml', 'prod', '',
+        'spring:\n  rabbitmq:\n    host: rabbit-mq-rabbitmq\n    username: admin\n    password: \"005400\"\n    virtual-host: /themall\n    port: 5672\n    #开启发送端确认，到达rabbitmq\n    publisher-confirms: true\n    #发送端确认，有没有路由到指定的key  集群是一个副本模式，所有确认才能够确认\n    publisher-returns: true\n    #    只要抵达队列，以异步发送优先回调我们这个returns\n    template:\n      mandatory: true\n    listener:\n      simple:\n        #        auto:自动回复    manual:手动确认\n        acknowledge-mode: manual\n  thymeleaf:\n    cache: false\n\n\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  zipkin:\n    base-url: http://192.168.98.11:30941\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858\n  task:\n    execution:\n      pool:\n        core-size: 20\n        maxSize: 50\n        queueCapacity: 50\n\nthemall:\n  thread:\n    coreSize: 10\n    maxSize: 200\n    keepAliveTime: 10\n\nlogging:\n  level:\n    com.theangel.themall: info\n\n\n    ',
+        'bad9545ca2da4f114a01448cfd5ec26a', '2010-05-05 00:00:00', '2023-11-21 02:06:57', 'nacos', '10.244.0.0', 'U',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (270, 365, 'themall-ware-prod.yaml', 'prod', '',
+        'spring:\n  rabbitmq:\n    host: rabbit-mq-rabbitmq\n    username: admin\n    password: \"005400\"\n    virtual-host: /themall\n    port: 30672\n    #开启发送端确认，到达rabbitmq\n    publisher-confirms: true\n    #发送端确认，有没有路由到指定的key  集群是一个副本模式，所有确认才能够确认\n    publisher-returns: true\n    #    只要抵达队列，以异步发送优先回调我们这个returns\n    template:\n      mandatory: true\n    listener:\n      simple:\n        #        auto:自动回复    manual:手动确认\n        acknowledge-mode: manual\n\n\n  datasource:\n    driver-class-name: com.mysql.cj.jdbc.Driver\n    url: jdbc:mysql://mysql:3306/themall_wms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false\n    username: root\n    password: \"005400\"\n\n\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  zipkin:\n    base-url: http://192.168.98.11:30941\n\n',
+        '03f0f8d9de1f71ccdb085b4c9b48013a', '2010-05-05 00:00:00', '2023-11-21 02:07:09', 'nacos', '10.244.0.0', 'U',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (271, 366, 'third-party-prod.yaml', 'prod', '',
+        'spring:\n  redis:\n    password: \"005400\"\n    host: 192.168.98.11\n    port: 30679\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  # 这些配置在腾讯云控制台都可查到（使用时替换为你自己的）\n  # 腾讯云的SecretId（永久的，可在控制台开启或关闭）\n  tencent:\n    secretId: AKIDIPHsCF3aqpdAQP7ZkeGdjY6NN6YicGdi\n    # 腾讯云的SecretKey（永久的，可在控制台开启或关闭）\n    SecretKey: qOffOq1uWrviFVVDetrYx5wWqtfAOKdg\n    # 腾讯云的bucket (存储桶)\n    bucket: theangel-1306086135\n    # 腾讯云的region(bucket所在地区)\n    region: ap-guangzhou\n    # 腾讯云的allowPrefix(允许上传的路径)\n    allowPrefix: \'*\'\n    # 腾讯云的临时密钥时长(单位秒)\n    durationSeconds: 10\n    # 腾讯云的访问基础链接:\n    baseUrl: https://theangel-1306086135.cos.ap-guangzhou.myqcloud.com\n\n    alicloud:\n      access-key: LTAI5t5Zw9QpcLrfdGCA4NZZ\n      secret-key: MEYjLvITV4G6hkv12N41mbrcqR3phk\n      oss:\n        endpoint: oss-cn-hangzhou.aliyuncs.com\n        bucket: theangel-mall\n      sms:\n        host: https://dfsns.market.alicloudapi.com\n        path: /data/send_sms\n        appcode: 9d04ec7d99b740a9973cf01a438b9337',
+        'd76a58b36de4cefe600d5b5f132ff334', '2010-05-05 00:00:00', '2023-11-21 02:07:22', 'nacos', '10.244.0.0', 'U',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (268, 367, 'themall-search-prod.yaml', 'prod', '',
+        'spring:\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n  elasticsearch:\n    cluster:\n      nodes: http://elasticsearch:9200\n\n\n  zipkin:\n    base-url: http://zipkin:9411',
+        'd23cff781af3ec801434ec6000bb3154', '2010-05-05 00:00:00', '2023-11-21 09:11:42', 'nacos', '10.244.0.0', 'U',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (268, 368, 'themall-search-prod.yaml', 'prod', '',
+        'spring:\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n  elasticsearch:\n    cluster:\n      nodes: http://elasticsearch:9200\n      password: wacWX469zEm77N0Xb59o53Hx\n      username: elastic\n\n  zipkin:\n    base-url: http://zipkin:9411',
+        '3256b99eb688121562c2a8fb3d500fc0', '2010-05-05 00:00:00', '2023-11-21 09:11:52', 'nacos', '10.244.0.0', 'U',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (255, 369, 'themall-search-dev.yaml', 'dev', '',
+        'spring:\n  redis:\n    password: \"005400\"\n    host: 192.168.98.11\n    port: 30679\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n  elasticsearch:\n    cluster:\n      nodes: http://192.168.98.11:30920',
+        '5397d3f57d3a2fe29082ed2aa7917213', '2010-05-05 00:00:00', '2023-11-22 03:28:52', 'nacos', '10.244.0.0', 'U',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (255, 370, 'themall-search-dev.yaml', 'dev', '',
+        'spring:\n  redis:\n    password: \"005400\"\n    host: 192.168.98.11\n    port: 30679\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n  elasticsearch:\n    cluster:\n      nodes: http://192.168.98.11:30920\n      password: wacWX469zEm77N0Xb59o53Hx\n      username: elastic',
+        '16922f254dd781b9a5176d21404641ea', '2010-05-05 00:00:00', '2023-11-28 05:54:25', 'nacos', '10.244.0.0', 'U',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (268, 371, 'themall-search-prod.yaml', 'prod', '',
+        'spring:\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n  elasticsearch:\n    cluster:\n      nodes: http://elastic-es-http:9200\n      password: wacWX469zEm77N0Xb59o53Hx\n      username: elastic\n\n  zipkin:\n    base-url: http://zipkin:9411',
+        'b1ea4e0c053b0ddd1673a59fc19cdf01', '2010-05-05 00:00:00', '2023-11-28 05:54:52', 'nacos', '10.244.0.0', 'U',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (261, 372, 'renren-fast-prod.yaml', 'prod', '',
+        '\n\nspring:\n  zipkin:\n    base-url: http://zipkin:9411\n\n  datasource:\n    type: com.alibaba.druid.pool.DruidDataSource\n    druid:\n      db-type: mysql\n      driver-class-name: com.mysql.cj.jdbc.Driver\n      url: jdbc:mysql://mysql:3306/themall_admin?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false\n      username: root\n      password: \"005400\"\n      initial-size: 10\n      max-active: 100\n      min-idle: 10\n      max-wait: 60000\n      pool-prepared-statements: true\n      max-pool-prepared-statement-per-connection-size: 20\n      time-between-eviction-runs-millis: 60000\n      min-evictable-idle-time-millis: 300000\n      #Oracle需要打开注释\n      #validation-query: SELECT 1 FROM DUAL\n      test-while-idle: true\n      test-on-borrow: false\n      test-on-return: false\n      stat-view-servlet:\n        enabled: true\n        url-pattern: /druid/*\n        #login-username: admin\n        #login-password: admin\n      filter:\n        stat:\n          log-slow-sql: true\n          slow-sql-millis: 1000\n          merge-sql: false\n        wall:\n          config:\n            multi-statement-allow: true\n  ##多数据源的配置\n  #dynamic:\n  #  datasource:\n  #    slave1:\n  #      driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver\n  #      url: jdbc:sqlserver://localhost:1433;DatabaseName=renren_security\n  #      username: sa\n  #      password: 123456\n  #    slave2:\n  #      driver-class-name: org.postgresql.Driver\n  #      url: jdbc:postgresql://localhost:5432/renren_security\n  #      username: renren\n  #      password: 123456\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858\n\nmybatis-plus:\n  #实体扫描，多个package用逗号或者分号分隔\n  typeAliasesPackage: io.renren.modules.*.entity\n\n\nrenren:\n  redis:\n    open: false\n  shiro:\n    redis: false\n  # APP模块，是通过jwt认证的，如果要使用APP模块，则需要修改【加密秘钥】\n  jwt:\n    # 加密秘钥\n    secret: f4e2e52034348f86b67cde581c0f9eb5[www.theangel.vip]\n    # token有效时长，7天，单位秒\n    expire: 604800\n    header: token\n\nlogging:\n  level:\n    org.springframework.cloud.openfeign: info\n    org.springframework.sleuth: info\n',
+        'd65d885d8ae152e0868fbab1c01a435b', '2010-05-05 00:00:00', '2023-11-28 06:26:47', 'nacos', '10.244.0.0', 'U',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (260, 373, 'themall-gatway-prod.yaml', 'prod', '',
+        'spring:\n  zipkin:\n    base-url: http://zipkin:9411\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858\n\n\n\n\n\n',
+        '054112af2ea5d3e23195c66a1a9e20f8', '2010-05-05 00:00:00', '2023-11-28 06:38:47', 'nacos', '10.244.0.0', 'U',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (262, 374, 'themall-auth-server-prod.yaml', 'prod', '',
+        'spring:\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858\n  zipkin:\n    base-url: http://zipkin:9411\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n\n  #开发期间 关闭缓存\n  thymeleaf:\n    #    cache: false\n    prefix: classpath:/templates/\n    suffix: .html\n\nlogging:\n  level:\n    org.springframework.cloud.openfeign: info\n    org.springframework.sleuth: info\n\n\n',
+        '03944597a9c0662efc2717cecb96c4d6', '2010-05-05 00:00:00', '2023-11-28 06:39:20', 'nacos', '10.244.0.0', 'U',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (261, 375, 'renren-fast-prod.yaml', 'prod', '',
+        '\n\nspring:\n  zipkin:\n    base-url: http://zipkin:9411\n\n  datasource:\n    type: com.alibaba.druid.pool.DruidDataSource\n    druid:\n      db-type: mysql\n      driver-class-name: com.mysql.cj.jdbc.Driver\n      url: jdbc:mysql://mysql:3306/themall_admin?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false\n      username: root\n      password: \"005400\"\n      initial-size: 10\n      max-active: 100\n      min-idle: 10\n      max-wait: 60000\n      pool-prepared-statements: true\n      max-pool-prepared-statement-per-connection-size: 20\n      time-between-eviction-runs-millis: 60000\n      min-evictable-idle-time-millis: 300000\n      #Oracle需要打开注释\n      #validation-query: SELECT 1 FROM DUAL\n      test-while-idle: true\n      test-on-borrow: false\n      test-on-return: false\n      stat-view-servlet:\n        enabled: true\n        url-pattern: /druid/*\n        #login-username: admin\n        #login-password: admin\n      filter:\n        stat:\n          log-slow-sql: true\n          slow-sql-millis: 1000\n          merge-sql: false\n        wall:\n          config:\n            multi-statement-allow: true\n  ##多数据源的配置\n  #dynamic:\n  #  datasource:\n  #    slave1:\n  #      driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver\n  #      url: jdbc:sqlserver://localhost:1433;DatabaseName=renren_security\n  #      username: sa\n  #      password: 123456\n  #    slave2:\n  #      driver-class-name: org.postgresql.Driver\n  #      url: jdbc:postgresql://localhost:5432/renren_security\n  #      username: renren\n  #      password: 123456\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: sentinel-dashboard:8080\n\nmybatis-plus:\n  #实体扫描，多个package用逗号或者分号分隔\n  typeAliasesPackage: io.renren.modules.*.entity\n\n\nrenren:\n  redis:\n    open: false\n  shiro:\n    redis: false\n  # APP模块，是通过jwt认证的，如果要使用APP模块，则需要修改【加密秘钥】\n  jwt:\n    # 加密秘钥\n    secret: f4e2e52034348f86b67cde581c0f9eb5[www.theangel.vip]\n    # token有效时长，7天，单位秒\n    expire: 604800\n    header: token\n\nlogging:\n  level:\n    org.springframework.cloud.openfeign: info\n    org.springframework.sleuth: info\n',
+        'aaab4d79ce2e59137dfb51651a476bc1', '2010-05-05 00:00:00', '2023-11-28 06:39:49', 'nacos', '10.244.0.0', 'U',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (263, 376, 'themall-cart-prod.yaml', 'prod', '',
+        'spring:\n  zipkin:\n    base-url: http://zipkin:9411\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858\n  thymeleaf:\n    cache: true',
+        '0112b5f9a114b0ebb27175a8f97057cd', '2010-05-05 00:00:00', '2023-11-28 06:57:08', 'nacos', '10.244.0.0', 'U',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (264, 377, 'themall-coupon-prod.yaml', 'prod', '',
+        'spring:\n  zipkin:\n    base-url: http://zipkin:9411\n    \n  datasource:\n    driver-class-name: com.mysql.cj.jdbc.Driver\n    url: jdbc:mysql://mysql:3306/themall_sms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false\n    username: root\n    password: \"005400\"\n\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858',
+        '177452357eb6861dd4a27cd842b8bce3', '2010-05-05 00:00:00', '2023-11-28 06:57:21', 'nacos', '10.244.0.0', 'U',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (266, 378, 'themall-order-prod.yaml', 'prod', '',
+        'spring:\n  datasource:\n    driver-class-name: com.mysql.cj.jdbc.Driver\n    url: jdbc:mysql://mysql:3306/themall_oms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false\n    username: root\n    password: \"005400\"\n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858\n\n  rabbitmq:\n    host: rabbit-mq-rabbitmq\n    username: admin\n    password: \"005400\"\n    virtual-host: /themall\n    port: 5672\n    #开启发送端确认，到达rabbitmq\n    publisher-confirms: true\n    #发送端确认，有没有路由到指定的key  集群是一个副本模式，所有确认才能够确认\n    publisher-returns: true\n    #    只要抵达队列，以异步发送优先回调我们这个returns\n    template:\n      mandatory: true\n    listener:\n      simple:\n        #        auto:自动回复    manual:手动确认\n        acknowledge-mode: manual\n        \n  thymeleaf:\n    cache: true\n\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  zipkin:\n    base-url: http://zipkin:9411',
+        '37e0d48fe9e6c170805a3e6685c9e559', '2010-05-05 00:00:00', '2023-11-28 06:57:40', 'nacos', '10.244.0.0', 'U',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (267, 379, 'themall-product-prod.yaml', 'prod', '',
+        'spring:\n  datasource:\n    driver-class-name: com.mysql.cj.jdbc.Driver\n    url: jdbc:mysql://mysql:3306/themall_pms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false\n    username: root\n    password: \"005400\"\n\n  zipkin:\n    base-url: http://zipkin:9411\n\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  #开发期间 关闭缓存\n  thymeleaf:\n    cache: true\n    prefix: classpath:/templates/\n    suffix: .html\n\n\nthemall:\n  thread:\n    coreSize: 10\n    maxSize: 200\n    keepAliveTime: 10\n\n\n\n',
+        'd790bade3c126fd9e6c269df6c908348', '2010-05-05 00:00:00', '2023-11-28 06:58:23', 'nacos', '10.244.0.0', 'U',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (268, 380, 'themall-search-prod.yaml', 'prod', '',
+        'spring:\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n  elasticsearch:\n    cluster:\n      nodes: http://elastic-es-http:9200\n      password: gqF51lX6fA3fM210N8Y3fz0f\n      username: elastic\n\n  zipkin:\n    base-url: http://zipkin:9411',
+        '21978ce981c31484500d042f6c98ae0e', '2010-05-05 00:00:00', '2023-11-28 06:58:41', 'nacos', '10.244.0.0', 'U',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (269, 381, 'themall-seckill-prod.yaml', 'prod', '',
+        'spring:\n  rabbitmq:\n    host: rabbit-mq-rabbitmq\n    username: admin\n    password: \"005400\"\n    virtual-host: /themall\n    port: 5672\n    #开启发送端确认，到达rabbitmq\n    publisher-confirms: true\n    #发送端确认，有没有路由到指定的key  集群是一个副本模式，所有确认才能够确认\n    publisher-returns: true\n    #    只要抵达队列，以异步发送优先回调我们这个returns\n    template:\n      mandatory: true\n    listener:\n      simple:\n        #        auto:自动回复    manual:手动确认\n        acknowledge-mode: manual\n  thymeleaf:\n    cache: false\n\n\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  zipkin:\n    base-url: http://zipkin:9411\n\n    \n  cloud:\n    sentinel:\n      transport:\n        port: 8719\n        dashboard: 192.168.56.10:8858\n  task:\n    execution:\n      pool:\n        core-size: 20\n        maxSize: 50\n        queueCapacity: 50\n\nthemall:\n  thread:\n    coreSize: 10\n    maxSize: 200\n    keepAliveTime: 10\n\n\n\n    ',
+        '0c0c84996add4faefd8299078e49e8f1', '2010-05-05 00:00:00', '2023-11-28 06:59:08', 'nacos', '10.244.0.0', 'U',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (270, 382, 'themall-ware-prod.yaml', 'prod', '',
+        'spring:\n  rabbitmq:\n    host: rabbit-mq-rabbitmq\n    username: admin\n    password: \"005400\"\n    virtual-host: /themall\n    port: 30672\n    #开启发送端确认，到达rabbitmq\n    publisher-confirms: true\n    #发送端确认，有没有路由到指定的key  集群是一个副本模式，所有确认才能够确认\n    publisher-returns: true\n    #    只要抵达队列，以异步发送优先回调我们这个returns\n    template:\n      mandatory: true\n    listener:\n      simple:\n        #        auto:自动回复    manual:手动确认\n        acknowledge-mode: manual\n\n\n  datasource:\n    driver-class-name: com.mysql.cj.jdbc.Driver\n    url: jdbc:mysql://mysql:3306/themall_wms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false\n    username: root\n    password: \"005400\"\n\n\n  redis:\n    password: \"005400\"\n    host: redis-master\n    port: 6379\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  zipkin:\n    base-url: http://zipkin:9411\n\n',
+        '6303f618d606c197c85dca92a7bdc18e', '2010-05-05 00:00:00', '2023-11-28 06:59:26', 'nacos', '10.244.0.0', 'U',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd'),
+       (271, 383, 'third-party-prod.yaml', 'prod', '',
+        'spring:\n  redis:\n    password: \"005400\"\n    host: 192.168.98.11\n    port: 30679\n    open: true  # 是否开启redis缓存  true开启   false关闭\n    database: 0\n\n  # 这些配置在腾讯云控制台都可查到（使用时替换为你自己的）\n  # 腾讯云的SecretId（永久的，可在控制台开启或关闭）\n  tencent:\n    secretId: AKIDIPHsCF3aqpdAQP7ZkeGdjY6NN6YicGdi\n    # 腾讯云的SecretKey（永久的，可在控制台开启或关闭）\n    SecretKey: qOffOq1uWrviFVVDetrYx5wWqtfAOKdg\n    # 腾讯云的bucket (存储桶)\n    bucket: theangel-1306086135\n    # 腾讯云的region(bucket所在地区)\n    region: ap-guangzhou\n    # 腾讯云的allowPrefix(允许上传的路径)\n    allowPrefix: \'*\'\n    # 腾讯云的临时密钥时长(单位秒)\n    durationSeconds: 10\n    # 腾讯云的访问基础链接:\n    baseUrl: https://theangel-1306086135.cos.ap-guangzhou.myqcloud.com\n\n    alicloud:\n      access-key: LTAI5t5Zw9QpcLrfdGCA4NZZ\n      secret-key: MEYjLvITV4G6hkv12N41mbrcqR3phk\n      oss:\n        endpoint: oss-cn-hangzhou.aliyuncs.com\n        bucket: theangel-mall\n      sms:\n        host: https://dfsns.market.alicloudapi.com\n        path: /data/send_sms\n        appcode: 9d04ec7d99b740a9973cf01a438b9337\n\n\n  zipkin:\n    base-url: http://zipkin:9411',
+        'be1c5180ba3341225336fd282d2fea67', '2010-05-05 00:00:00', '2023-11-28 06:59:46', 'nacos', '10.244.0.0', 'U',
+        'c6efdd0f-1682-4586-9812-75b5b4e381bd');
+/*!40000 ALTER TABLE `his_config_info`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `permissions`
+--
+
 DROP TABLE IF EXISTS `permissions`;
-CREATE TABLE `permissions`  (
-  `role` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `resource` varchar(512) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `action` varchar(8) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  UNIQUE INDEX `uk_role_permission`(`role`, `resource`, `action`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `permissions`
+(
+    `role`     varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci  NOT NULL,
+    `resource` varchar(512) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+    `action`   varchar(8) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci   NOT NULL,
+    UNIQUE KEY `uk_role_permission` (`role`, `resource`, `action`) USING BTREE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb3
+  ROW_FORMAT = DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of permissions
--- ----------------------------
+--
+-- Dumping data for table `permissions`
+--
 
--- ----------------------------
--- Table structure for roles
--- ----------------------------
+LOCK TABLES `permissions` WRITE;
+/*!40000 ALTER TABLE `permissions`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `permissions`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `roles`
+--
+
 DROP TABLE IF EXISTS `roles`;
-CREATE TABLE `roles`  (
-  `username` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `role` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  UNIQUE INDEX `uk_username_role`(`username`, `role`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `roles`
+(
+    `username` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+    `role`     varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+    UNIQUE KEY `uk_username_role` (`username`, `role`) USING BTREE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb3
+  ROW_FORMAT = DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of roles
--- ----------------------------
-INSERT INTO `roles` VALUES ('nacos', 'ROLE_ADMIN');
+--
+-- Dumping data for table `roles`
+--
 
--- ----------------------------
--- Table structure for tenant_capacity
--- ----------------------------
+LOCK TABLES `roles` WRITE;
+/*!40000 ALTER TABLE `roles`
+    DISABLE KEYS */;
+INSERT INTO `roles`
+VALUES ('nacos', 'ROLE_ADMIN');
+/*!40000 ALTER TABLE `roles`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tenant_capacity`
+--
+
 DROP TABLE IF EXISTS `tenant_capacity`;
-CREATE TABLE `tenant_capacity`  (
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `tenant_id` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT 'Tenant ID',
-  `quota` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '配额，0表示使用默认值',
-  `usage` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '使用量',
-  `max_size` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '单个配置大小上限，单位为字节，0表示使用默认值',
-  `max_aggr_count` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '聚合子配置最大个数',
-  `max_aggr_size` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '单个聚合数据的子配置大小上限，单位为字节，0表示使用默认值',
-  `max_history_count` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '最大变更历史数量',
-  `gmt_create` datetime NOT NULL DEFAULT '2010-05-05 00:00:00' COMMENT '创建时间',
-  `gmt_modified` datetime NOT NULL DEFAULT '2010-05-05 00:00:00' COMMENT '修改时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uk_tenant_id`(`tenant_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '租户容量信息表' ROW_FORMAT = Dynamic;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tenant_capacity`
+(
+    `id`                bigint unsigned                                        NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+    `tenant_id`         varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL DEFAULT '' COMMENT 'Tenant ID',
+    `quota`             int unsigned                                           NOT NULL DEFAULT '0' COMMENT '配额，0表示使用默认值',
+    `usage`             int unsigned                                           NOT NULL DEFAULT '0' COMMENT '使用量',
+    `max_size`          int unsigned                                           NOT NULL DEFAULT '0' COMMENT '单个配置大小上限，单位为字节，0表示使用默认值',
+    `max_aggr_count`    int unsigned                                           NOT NULL DEFAULT '0' COMMENT '聚合子配置最大个数',
+    `max_aggr_size`     int unsigned                                           NOT NULL DEFAULT '0' COMMENT '单个聚合数据的子配置大小上限，单位为字节，0表示使用默认值',
+    `max_history_count` int unsigned                                           NOT NULL DEFAULT '0' COMMENT '最大变更历史数量',
+    `gmt_create`        datetime                                               NOT NULL DEFAULT '2010-05-05 00:00:00' COMMENT '创建时间',
+    `gmt_modified`      datetime                                               NOT NULL DEFAULT '2010-05-05 00:00:00' COMMENT '修改时间',
+    PRIMARY KEY (`id`) USING BTREE,
+    UNIQUE KEY `uk_tenant_id` (`tenant_id`) USING BTREE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb3
+  COLLATE = utf8mb3_bin
+  ROW_FORMAT = DYNAMIC COMMENT ='租户容量信息表';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of tenant_capacity
--- ----------------------------
+--
+-- Dumping data for table `tenant_capacity`
+--
 
--- ----------------------------
--- Table structure for tenant_info
--- ----------------------------
+LOCK TABLES `tenant_capacity` WRITE;
+/*!40000 ALTER TABLE `tenant_capacity`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `tenant_capacity`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tenant_info`
+--
+
 DROP TABLE IF EXISTS `tenant_info`;
-CREATE TABLE `tenant_info`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `kp` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'kp',
-  `tenant_id` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT '' COMMENT 'tenant_id',
-  `tenant_name` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT '' COMMENT 'tenant_name',
-  `tenant_desc` varchar(256) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT 'tenant_desc',
-  `create_source` varchar(32) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT 'create_source',
-  `gmt_create` bigint(20) NOT NULL COMMENT '创建时间',
-  `gmt_modified` bigint(20) NOT NULL COMMENT '修改时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uk_tenant_info_kptenantid`(`kp`, `tenant_id`) USING BTREE,
-  INDEX `idx_tenant_id`(`tenant_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = 'tenant_info' ROW_FORMAT = Dynamic;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tenant_info`
+(
+    `id`            bigint                                                 NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `kp`            varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT 'kp',
+    `tenant_id`     varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT '' COMMENT 'tenant_id',
+    `tenant_name`   varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT '' COMMENT 'tenant_name',
+    `tenant_desc`   varchar(256) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT NULL COMMENT 'tenant_desc',
+    `create_source` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin  DEFAULT NULL COMMENT 'create_source',
+    `gmt_create`    bigint                                                 NOT NULL COMMENT '创建时间',
+    `gmt_modified`  bigint                                                 NOT NULL COMMENT '修改时间',
+    PRIMARY KEY (`id`) USING BTREE,
+    UNIQUE KEY `uk_tenant_info_kptenantid` (`kp`, `tenant_id`) USING BTREE,
+    KEY `idx_tenant_id` (`tenant_id`) USING BTREE
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 3
+  DEFAULT CHARSET = utf8mb3
+  COLLATE = utf8mb3_bin
+  ROW_FORMAT = DYNAMIC COMMENT ='tenant_info';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of tenant_info
--- ----------------------------
-INSERT INTO `tenant_info` VALUES (1, '1', '9e9bfac1-f266-4fc4-b220-2c95997c532b', 'dev', '开发环境', 'nacos', 1623521856619, 1623521856619);
+--
+-- Dumping data for table `tenant_info`
+--
 
--- ----------------------------
--- Table structure for users
--- ----------------------------
+LOCK TABLES `tenant_info` WRITE;
+/*!40000 ALTER TABLE `tenant_info`
+    DISABLE KEYS */;
+INSERT INTO `tenant_info`
+VALUES (2, '1', 'c6efdd0f-1682-4586-9812-75b5b4e381bd', 'themall', 'themall', 'nacos', 1700446946074, 1700446946074);
+/*!40000 ALTER TABLE `tenant_info`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users`
+--
+
 DROP TABLE IF EXISTS `users`;
-CREATE TABLE `users`  (
-  `username` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `password` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `enabled` tinyint(1) NOT NULL,
-  PRIMARY KEY (`username`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `users`
+(
+    `username` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci  NOT NULL,
+    `password` varchar(500) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+    `enabled`  tinyint(1)                                                    NOT NULL,
+    PRIMARY KEY (`username`) USING BTREE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb3
+  ROW_FORMAT = DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of users
--- ----------------------------
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users`
+    DISABLE KEYS */;
 INSERT INTO `users`
-VALUES ('nacos', '$2a$10$spRw5SyYiy.4RzKNrHBudut/jfZp5v9EMcVSGoGpqtbDccubeMGqa', 1);
-INSERT INTO `users` VALUES ('test', '$2a$10$Ejp0PWLPI5bZCw6oMCbaVuv.CBawylvF3JNggY5KSLOwkRU2oR1ne', 1);
+VALUES ('nacos', '$2a$10$spRw5SyYiy.4RzKNrHBudut/jfZp5v9EMcVSGoGpqtbDccubeMGqa', 1),
+       ('test', '$2a$10$Ejp0PWLPI5bZCw6oMCbaVuv.CBawylvF3JNggY5KSLOwkRU2oR1ne', 1);
+/*!40000 ALTER TABLE `users`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE = @OLD_TIME_ZONE */;
 
-SET FOREIGN_KEY_CHECKS = 1;
+/*!40101 SET SQL_MODE = @OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS = @OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT = @OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS = @OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
+
+-- Dump completed on 2023-11-28 15:01:55
