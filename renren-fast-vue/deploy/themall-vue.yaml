@@ -3,12 +3,12 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   #和服务名一致
-  name: themall-vue-server
+  name: themall-vue
   #属于哪个名称空间
   namespace: theangel
   labels:
     #类似HTML的id，下面都是操作这个app
-    app: themall-vue-server
+    app: themall-vue
     version: v1
 
 spec:
@@ -17,19 +17,19 @@ spec:
   #给谁设置副本
   selector:
     matchLabels:
-      app: themall-vue-server
+      app: themall-vue
       version: v1
       #模板
   template:
     metadata:
       labels:
-        app: themall-vue-server
+        app: themall-vue
         version: v1
         #规格
     spec:
       #容器
       containers:
-        - name: themall-auth-server
+        - name: themall-vue
           #设置动态
           image: $REGISTRY/$DOCKER_NAME/themall-vue:$TAG_NAME
           #暴露端口
@@ -77,10 +77,10 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: themall-vue-server
+  name: themall-vue
   namespace: theangel
   labels:
-    app: themall-vue-server
+    app: themall-vue
     version: v1
 spec:
   ports:
@@ -93,6 +93,6 @@ spec:
       #      #外部端口
       nodePort: 30000
   selector:
-    app: themall-vue-server
+    app: themall-vue
   type: NodePort
   sessionAffinity: None
