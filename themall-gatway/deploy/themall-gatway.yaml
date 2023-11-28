@@ -37,9 +37,9 @@ spec:
             - name: tcp-80
               containerPort: 80
               protocol: TCP
-          #            - name: tcp-8858
-          #              containerPort: 8858
-          #              protocol: TCP
+            - name: tcp-8719
+              containerPort: 8719
+              protocol: TCP
           #申请资源
           resources:
             #限制
@@ -92,6 +92,13 @@ spec:
       targetPort: 80
       #外部端口
       nodePort: 31000
+    - name: tcp-8719
+      #类型http
+      protocol: TCP
+      #Service的端口
+      port: 8719
+      #容器端口
+      targetPort: 8719
   selector:
     app: themall-gatway
   type: NodePort

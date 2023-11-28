@@ -37,6 +37,9 @@ spec:
             - name: tcp-8080
               containerPort: 8080
               protocol: TCP
+            - name: tcp-8719
+              containerPort: 8719
+              protocol: TCP
           #申请资源
           resources:
             #限制
@@ -87,6 +90,13 @@ spec:
       port: 8080
       #容器端口
       targetPort: 8080
+    - name: tcp-8719
+      #类型http
+      protocol: TCP
+      #Service的端口
+      port: 8719
+      #容器端口
+      targetPort: 8719
       #外部端口
     # nodePort: 30011
   selector:
