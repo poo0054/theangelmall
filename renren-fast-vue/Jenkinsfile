@@ -82,7 +82,7 @@ pipeline {
               variable: 'KUBECONFIG')
           ]) {
             //新版KubeSphere用法
-            sh 'envsubst < themall-vue/deploy/themall-vue.yaml | kubectl apply -f -'
+            sh 'envsubst < renren-fast-vue/deploy/themall-vue.yaml | kubectl apply -f -'
           }
         }
       }
