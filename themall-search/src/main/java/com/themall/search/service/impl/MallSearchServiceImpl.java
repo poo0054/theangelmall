@@ -249,7 +249,7 @@ public class MallSearchServiceImpl implements MallSearchService {
             e.printStackTrace();
         }
         String replace = searchParam.get_queryString().replace(key + "=" + encode, "").replace("&&", "&");
-        return "http://search.theangel.com/list.html?" + replace;
+        return "https://search.poo0054.top/list.html?" + replace;
     }
 
     /**

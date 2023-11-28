@@ -92,17 +92,17 @@
             </b>
             <ul>
                 <li>
-                    <a href="http://auth.theangel.com/auth/login.html" class="aa"
+                    <a class="aa" href="https://auth.poo0054.top/auth/login.html"
                        th:if="${session.loginUser==null}">你好，请登录</a>
                     <a th:unless="${session.loginUser==null}" class="aa">[[${session.loginUser.username}]]</a>
                 </li>
                 <li>
-                    <a href=" http://auth.theangel.com/auth/reg.html" th:if="${session.loginUser==null}"
+                    <a href=" https://auth.poo0054.top/auth/reg.html" th:if="${session.loginUser==null}"
                        class="li_2">免费注册 </a>
                 </li>
                 <span>|</span>
                 <li>
-                    <a href="http://member.theangel.com/member/memberOrderList.html" class="aa">我的订单</a> |
+                    <a class="aa" href="https://member.poo0054.top/member/memberOrderList.html">我的订单</a> |
                 </li>
             </ul>
         </div>
@@ -118,7 +118,7 @@
         <div class="header_ico">
             <div class="header_gw">
                 <img src="static/index/img/img_15.png"/>
-                <span><a href="http://cart.theangel.com/cart.html">我的购物车</a></span>
+                <span><a href="https://cart.poo0054.top/cart.html">我的购物车</a></span>
                 <span>0</span>
             </div>
             <div class="header_ko">
@@ -201,7 +201,7 @@
             <div class="header_main_left">
                 <ul th:each="category:${categorys}">
                     <li>
-                        <a href="http://search.theangel.com/list.html" class="header_main_left_a"
+                        <a class="header_main_left_a" href="https://search.poo0054.top/list.html"
                            th:attr="ctg-data=${category.getCatId()}"
                            ctg-data="3">
                             <b th:text="${category.name}">家用电器</b>
@@ -587,7 +587,7 @@
 
     function search() {
         var keyword = $("#searchText").val()
-        window.location.href = "http://search.theangel.com/list.html?keyword=" + keyword;
+        window.location.href = "https://search.poo0054.top/list.html?keyword=" + keyword;
     }
 
     /**
@@ -600,7 +600,7 @@
      <s>¥99.9</s>
      </li>
      */
-    $.get("http://seckill.theangel.com/currentSeckillSkus", function (resp) {
+    $.get("https://seckill.poo0054.top/currentSeckillSkus", function (resp) {
         if (0 == resp.code && resp.data.length > 0) {
             resp.data.forEach(function (item) {
                 $("<li onclick='toHttp(" + item.skuId + ")'></li>")
@@ -616,7 +616,7 @@
 
 
     function toHttp(skuId) {
-        location.href = "http://item.theangel.com/item/" + skuId + ".html";
+        location.href = "https://item.poo0054.top/item/" + skuId + ".html";
     }
 </script>
 

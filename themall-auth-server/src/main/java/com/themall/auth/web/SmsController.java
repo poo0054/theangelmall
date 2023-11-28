@@ -84,7 +84,7 @@ public class SmsController {
                 map.put(field, defaultMessage);
             }
             attributes.addFlashAttribute("errors", map);
-            return "redirect:http://auth.theangel.com/auth/reg.html";
+            return "redirect:http://auth.poo0054.top/auth/reg.html";
         }
         //效验验证码
         String code = userRegistVo.getCode();
@@ -99,7 +99,7 @@ public class SmsController {
                 //调用远程接口注册会员
                 R regist = themallmemberFerign.regist(userRegistVo);
                 if (regist.getCode() == 0) {
-                    return "redirect:http://auth.theangel.com/auth/login.html";
+                    return "redirect:https://auth.poo0054.top/auth/login.html";
                 } else {
                     String data = regist.getData("msg", new TypeReference<String>() {
                     });
@@ -110,7 +110,7 @@ public class SmsController {
             //调用远程接口注册会员
             R regist = themallmemberFerign.regist(userRegistVo);
             if (regist.getCode() == 0) {
-                return "redirect:http://auth.theangel.com/auth/login.html";
+                return "redirect:https://auth.poo0054.top/auth/login.html";
             } else {
                 String data = regist.getData(new TypeReference<String>() {
                 });
@@ -119,6 +119,6 @@ public class SmsController {
         }
         map.put("phone", "验证码错误");
         attributes.addFlashAttribute("errors", map);
-        return "redirect:http://auth.theangel.com/auth/reg.html";
+        return "redirect:https://auth.poo0054.top/auth/reg.html";
     }
 }

@@ -100,7 +100,7 @@ public class WebController {
                     break;
             }
             redirectAttributes.addFlashAttribute("msg", msg);
-            return "redirect:http://order.theangel.com/totrade";
+            return "redirect:https://order.poo0054.top/totrade";
         }
 
     }

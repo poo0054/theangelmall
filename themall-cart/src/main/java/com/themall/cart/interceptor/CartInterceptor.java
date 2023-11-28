@@ -92,7 +92,7 @@ public class CartInterceptor implements HandlerInterceptor {
         //cookie 中没有，需要创建一个
         if (!cartUserTo.getTempUser()) {
             Cookie cookie = new Cookie(CartConstant.TEMP_USER_COOKIE_NAME, threadLocal.get().getUserKey());
-            cookie.setDomain("theangel.com");
+            cookie.setDomain("poo0054.top");
             cookie.setMaxAge(CartConstant.TEMP_USER_COOKIE_TIMEOUT);
             response.addCookie(cookie);
         }

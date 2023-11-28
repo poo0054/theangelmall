@@ -11,10 +11,10 @@ location / {
 
 
 #hosts中配置
-#127.0.0.1   auth.theangel.com
-#127.0.0.1   theangel.com
-#127.0.0.1   order.theangel.com
-#127.0.0.1   search.theangel.com
-#127.0.0.1 	item.theangel.com
-#127.0.0.1 	cart.theangel.com
-#127.0.0.1 	seckill.theangel.com
+#127.0.0.1   auth.poo0054.top
+#127.0.0.1   poo0054.top
+#127.0.0.1   order.poo0054.top
+#127.0.0.1   search.poo0054.top
+#127.0.0.1 	item.poo0054.top
+#127.0.0.1 	cart.poo0054.top
+#127.0.0.1 	seckill.poo0054.top

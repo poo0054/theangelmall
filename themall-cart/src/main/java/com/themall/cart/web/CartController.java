@@ -37,7 +37,7 @@ public class CartController {
     @GetMapping("/deleteitem")
     public String deleteItem(@RequestParam("skuId") Long skuId) {
         cartService.deleteItem(skuId);
-        return "redirect:http://cart.theangel.com/cart.html";
+        return "redirect:https://cart.poo0054.top/cart.html";
     }
 
     /**
@@ -50,7 +50,7 @@ public class CartController {
     @GetMapping("/countitem")
     public String countItem(@RequestParam("skuId") Long skuId, @RequestParam("num") Integer num) {
         cartService.countItem(skuId, num);
-        return "redirect:http://cart.theangel.com/cart.html";
+        return "redirect:https://cart.poo0054.top/cart.html";
     }
 
     /**
@@ -62,7 +62,7 @@ public class CartController {
     @GetMapping("/checkitem")
     public String checkItem(@RequestParam("skuId") Long skuId) {
         cartService.checkItem(skuId);
-        return "redirect:http://cart.theangel.com/cart.html";
+        return "redirect:https://cart.poo0054.top/cart.html";
     }
 
     /**
@@ -96,7 +96,7 @@ public class CartController {
     public String addToCart(@RequestParam("skuId") Long skuId, @RequestParam("num") Integer num, RedirectAttributes redirectAttributes) throws ExecutionException, InterruptedException {
         cartService.addToCart(skuId, num);
         redirectAttributes.addAttribute("skuId", skuId);
-        return "redirect:http://cart.theangel.com/addtocart.html";
+        return "redirect:https://cart.poo0054.top/addtocart.html";
     }
 
     /**

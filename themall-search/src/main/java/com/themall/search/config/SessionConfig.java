@@ -22,7 +22,7 @@ public class SessionConfig {
     @Bean
     public CookieSerializer cookieSerializer() {
         DefaultCookieSerializer cookieSerializer = new DefaultCookieSerializer();
-        cookieSerializer.setDomainName("theangel.com");
+        cookieSerializer.setDomainName("poo0054.top");
         return cookieSerializer;
     }
 

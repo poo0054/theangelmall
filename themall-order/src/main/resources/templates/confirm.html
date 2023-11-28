@@ -15,7 +15,7 @@
         <ul class="header-left">
             <li>
                 <img src="/static/order/confirm/img/header_1.png"/>
-                <a href="http://theangel.com">themall学院首页</a>
+                <a href="https://poo0054.top">themall首页</a>
             </li>
             <li class="header-l-2">
                 <i class="fa fa-map-marker" style="color: #5C5452;"></i>
@@ -607,7 +607,7 @@
         </p>
     </div>
 
-    <form action="http://order.theangel.com/submitOrder" method="post">
+    <form action="https://order.poo0054.top/submitOrder" method="post">
         <input id="addrIdInput" type="hidden" name="addrId"/>
         <input id="payPriceInput" type="hidden" name="payPrice"/>
         <input type="hidden" name="orderToken" th:value="${confirmVo.orderToken}">
@@ -865,7 +865,7 @@
     function initFare() {
         //获取当前地址id，查询运费信息
         let addrId = $(".addr-item p[def='1']").attr(`addrId`)
-        $.get("http://theangel.com/api/ware/wareinfo/fare/" + addrId, function (data) {
+        $.get("https://poo0054.top/api/ware/wareinfo/fare/" + addrId, function (data) {
             let fare = data.data.fare;
             //运费
             $("#fareEle").text(data.data.fare);

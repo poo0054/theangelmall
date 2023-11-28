@@ -38,7 +38,7 @@ public class LoginController {
         if (ObjectUtils.isEmpty(attribute)) {
             return "login";
         }
-        return "redirect:http://theangel.com";
+        return "redirect:http://poo0054.top";
     }
 
     /**
@@ -60,13 +60,13 @@ public class LoginController {
             httpResponse.setAttribute(AuthServerConstant.LOGIN_USER, data);
             httpResponse.getAttributeNames();
             System.out.println(httpResponse.getId());
-            return "redirect:http://theangel.com";
+            return "redirect:https://poo0054.top";
         } else {
             Map<String, String> map = new HashMap();
             map.put("msg", login.getData("msg", new TypeReference<String>() {
             }));
             attributes.addFlashAttribute("errors", map);
-            return "redirect:http://auth.theangel.com/auth/login.html";
+            return "redirect:https://auth.poo0054.top/auth/login.html";
         }
 
     }

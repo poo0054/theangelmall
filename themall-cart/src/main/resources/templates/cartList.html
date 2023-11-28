@@ -22,12 +22,12 @@
             </ul>
             <ul class="header-right">
                 <li>
-                    <a href="http://auth.theangel.com/auth/login.html" style="color: red;"
+                    <a href="https://auth.poo0054.top/auth/login.html" style="color: red;"
                        th:if="${session.loginUser==null}">你好，请登录</a>
                     <a th:unless="${session.loginUser==null}" style="color: red;">[[${session.loginUser.username}]]</a>
                 </li>
                 <li>
-                    <a href=" http://auth.theangel.com/auth/reg.html" th:if="${session.loginUser==null}">免费注册</a>
+                    <a href=" https://auth.poo0054.top/auth/reg.html" th:if="${session.loginUser==null}">免费注册</a>
                 </li>
                 <li class="spacer"></li>
                 <li><a href="">我的订单</a></li>
@@ -45,7 +45,7 @@
     <div class="one_sousuo">
         <div class="one_search_top">
             <div class="one_top_left">
-                <a href="http://theangel.com" class="one_left_logo"><img src="/static/cart/img/logo1.jpg"></a>
+                <a class="one_left_logo" href="https://poo0054.top"><img src="/static/cart/img/logo1.jpg"></a>
                 <a href="#" class="one_left_link">购物车</a>
             </div>
             <div class="one_top_right">
@@ -80,7 +80,7 @@
         </div>
 
         <div class="One_ShopCon">
-            <h1 th:if="${cart.cartItem==null}">购物车未添加商品<a href="http://search.theangel.com/list.html"></a></h1>
+            <h1 th:if="${cart.cartItem==null}">购物车未添加商品<a href="https://search.poo0054.top/list.html"></a></h1>
             <ul th:if="${cart.cartItem!=null}">
                 <li th:each="item:${cart.cartItem}">
                     <div>
@@ -224,16 +224,16 @@
 <script src="/static/cart/js/index.js" charset="utf-8"></script>
 <script type="text/javascript">
     function toTrade() {
-        window.location.href = "http://order.theangel.com/totrade";
+        window.location.href = "https://order.poo0054.top/totrade";
     }
 
     function toItem(skuId) {
-        window.location.href = "http://item.gmall.com:8084/" + skuId + ".html";
+        window.location.href = "https://item.poo0054.top/" + skuId + ".html";
     }
 
     function login() {
-        var s = encodeURIComponent("http://cart.gmall.com:8087/cartList");
-        window.location.href = "http://auth.theangel.com/auth/login.html";
+        var s = encodeURIComponent("https://cart.poo0054.top:8087/cartList");
+        window.location.href = "https://auth.poo0054.top/auth/login.html";
     }
 
     function checkSku(chkbox) {
@@ -773,14 +773,14 @@
     //选中
     $(".itemCheck").click(function () {
         let skuId = $(this).attr("skuId")
-        location.href = "http://cart.theangel.com/checkitem?skuId=" + skuId;
+        location.href = "https://cart.poo0054.top/checkitem?skuId=" + skuId;
     })
     //加减商品
     $(".countOpsBut").click(function () {
         let skuId = $(this).parent().attr("skuId");
         let num = $(this).parent().find(".countOpsNum").text();
 
-        location.href = `http://cart.theangel.com/countitem?skuId=${skuId}&num=${num}`;
+        location.href = `https://cart.poo0054.top/countitem?skuId=${skuId}&num=${num}`;
     })
 
     var deleteId = 0;
@@ -788,7 +788,7 @@
     //删除购物
     function deleteItem() {
         console.log(deleteId)
-        location.href = `http://cart.theangel.com/deleteitem?skuId=${deleteId} `;
+        location.href = `https://cart.poo0054.top/deleteitem?skuId=${deleteId} `;
     }
 
     $(".deleteItemBtn").click(function () {

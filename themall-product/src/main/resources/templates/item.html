@@ -59,11 +59,11 @@
             </ul>
             <ul class="header_ul_right">
                 <li style="border: 0;">
-                    <a href="http://auth.theangel.com/auth/login.html" class="aa"
+                    <a class="aa" href="https://auth.poo0054.top/auth/login.html"
                        th:if="${session.loginUser==null}">你好，请登录</a>
                     <a th:unless="${session.loginUser==null}" class="aa">[[${session.loginUser.username}]]</a>
                 </li>
-                <li><a href="http://auth.theangel.com/auth/reg.html" th:if="${session.loginUser==null}"
+                <li><a href="https://auth.poo0054.top/auth/reg.html" th:if="${session.loginUser==null}"
                        style="color: red;">免费注册</a> |
                 </li>
                 <li><a href="/static/item/javascript:;" class="aa">我的订单</a> |</li>
@@ -266,7 +266,7 @@
                 <div class="nav_top_two"><input type="text"/>
                     <button>搜索</button>
                 </div>
-                <div class="nav_top_three"><a href="http://cart.theangel.com/cart.html">我的购物车</a><span
+                <div class="nav_top_three"><a href="https://cart.poo0054.top/cart.html">我的购物车</a><span
                         class="glyphicon glyphicon-shopping-cart"></span>
                     <div class="nav_top_three_1">
                         <img src="/static/item/img/44.png"/>购物车还没有商品，赶紧选购吧！
@@ -1348,14 +1348,14 @@
             skuinit = $(skuinit).filter(skus[i])
         }
         //跳转
-        location.href = 'http://item.theangel.com/item/' + skuinit[0] + '.html'
+        location.href = 'https://item.poo0054.top/item/' + skuinit[0] + '.html'
     })
 
 
     $("#addToCart").click(function () {
         let num = $("#numInput").val();
         let skuId = $(this).attr("skuId")
-        location.href = `http://cart.theangel.com/addtocart?skuId=${skuId}&num=${num}`
+        location.href = `https://cart.poo0054.top/addtocart?skuId=${skuId}&num=${num}`
         return false
     })
 
@@ -1366,7 +1366,7 @@
             var id = $(this).attr("sessionid") + "_" + $(this).attr("skuid")
             var code = $(this).attr("code");
             var num = $("#numInput").val();
-            location.href = `http://seckill.theangel.com/seckill?id=${id}&code=${code}&num=${num}`
+            location.href = `https://seckill.poo0054.top/seckill?id=${id}&code=${code}&num=${num}`
         } else {
             alert("请先登录！")
         }

@@ -26,7 +26,7 @@ public class SessionConfig {
     public CookieSerializer cookieSerializer() {
         DefaultCookieSerializer cookieSerializer = new DefaultCookieSerializer();
         //作用率
-        cookieSerializer.setDomainName("theangel.com");
+        cookieSerializer.setDomainName("poo0054.top");
         return cookieSerializer;
     }
 

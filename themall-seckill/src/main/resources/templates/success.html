@@ -26,11 +26,11 @@
 
         <ul class="hd_wrap_right">
             <li class="forel">
-                <a href="http://auth.theangel.com/auth/login.html" class="aa"
+                <a class="aa" href="https://auth.poo0054.top/auth/login.html"
                    th:if="${session.loginUser==null}">你好，请登录</a>
                 <a th:unless="${session.loginUser==null}" class="aa">[[${session.loginUser.username}]]</a>
 
-                <a href=" http://auth.theangel.com/auth/reg.html" th:if="${session.loginUser==null}"
+                <a href=" https://auth.poo0054.top/auth/reg.html" th:if="${session.loginUser==null}"
                    class="li_2">免费注册</a>
             </li>
             <li class="spacer"></li>
@@ -50,7 +50,7 @@
 
         <div class="nav_top">
             <div class="nav_top_one">
-                <a href="http://theangel.com"><img src="/static/cart/img/logo1.jpg" style="height: 60px;width:180px;"/></a>
+                <a href="https://poo0054.top"><img src="/static/cart/img/logo1.jpg" style="height: 60px;width:180px;"/></a>
             </div>
             <div class="nav_top_two"><input type="text"/>
                 <button>搜索</button>
@@ -69,7 +69,7 @@
                 <div th:if="${orderSn!=null}" class="mc success-cont">
                     <h2>恭喜，秒杀成功，订单号[[${orderSn}]].正在准备订单数据，10s后自动跳转支付页面</h2>
                     <h2>
-                        <a th:href="'http://order.theangel.com/payOrder?orderSn='+${orderSn}">支付宝支付</a>
+                        <a th:href="'https://order.poo0054.top/payOrder?orderSn='+${orderSn}">支付宝支付</a>
                     </h2>
                 </div>
 
