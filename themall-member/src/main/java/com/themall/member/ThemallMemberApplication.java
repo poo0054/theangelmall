@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
-@MapperScan("com/theangel/themall/member/dao")
+@MapperScan("com.themall.member.dao")
 @EnableDiscoveryClient
 public class ThemallMemberApplication {
 
