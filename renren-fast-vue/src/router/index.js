@@ -66,7 +66,7 @@ const mainRoutes = {
 
 const router = new Router({
   base: '/web',
-  mode: 'history',
+  // mode: 'history',
   // mode: 'hash',
   scrollBehavior: () => ({y: 0}),
   isAddDynamicMenuRoutes: false, // 是否已经添加动态(菜单)路由
