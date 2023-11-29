@@ -249,6 +249,7 @@
         <module>themall-auth-server</module>
         <module>themall-cart</module>
         <module>themall-seckill</module>
+        <module>themall-sso</module>
     </modules>
 
     <build>

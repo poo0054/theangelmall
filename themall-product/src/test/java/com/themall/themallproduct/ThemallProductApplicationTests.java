@@ -1,4 +1,4 @@
-package com.theangel.themall.themallproduct;
+package com.themall.themallproduct;
 
 import com.themall.common.utils.fileutils.UUIDUtils;
 import com.themall.product.ThemallProductApplication;
