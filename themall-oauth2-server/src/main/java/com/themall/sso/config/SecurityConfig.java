@@ -14,6 +14,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -54,34 +55,30 @@ import java.util.UUID;
  * @author poo0054
  */
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true) //开启鉴权服务
 public class SecurityConfig {
 
     // @formatter:off
     public static void applyDefaultSecurity(HttpSecurity http) throws Exception {
-        OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
-            new OAuth2AuthorizationServerConfigurer();
-        RequestMatcher endpointsMatcher = authorizationServerConfigurer
-            .getEndpointsMatcher();
+        OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
+        RequestMatcher endpointsMatcher = authorizationServerConfigurer.getEndpointsMatcher();
 
         authorizationServerConfigurer.oidc(oidc -> {
             // 用户信息
-            oidc.userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint.userInfoMapper(oidcUserInfoAuthenticationContext -> {
-                OAuth2AccessToken accessToken = oidcUserInfoAuthenticationContext.getAccessToken();
-                Map<String, Object> claims = new HashMap<>();
-                claims.put("accessToken", accessToken);
-                claims.put("user", oidcUserInfoAuthenticationContext.getAuthorization().getPrincipalName());
-                claims.put("role", oidcUserInfoAuthenticationContext.getAuthentication().getAuthorities());
-                return new OidcUserInfo(claims);
-            }));
+            oidc.userInfoEndpoint(
+                userInfoEndpoint -> userInfoEndpoint.userInfoMapper(oidcUserInfoAuthenticationContext -> {
+                    OAuth2AccessToken accessToken = oidcUserInfoAuthenticationContext.getAccessToken();
+                    Map<String, Object> claims = new HashMap<>();
+                    claims.put("accessToken", accessToken);
+                    claims.put("user", oidcUserInfoAuthenticationContext.getAuthorization().getPrincipalName());
+                    claims.put("role", oidcUserInfoAuthenticationContext.getAuthentication().getAuthorities());
+                    return new OidcUserInfo(claims);
+                }));
         });
-        http
-            .requestMatcher(endpointsMatcher)
-            .authorizeRequests(authorizeRequests ->
-                authorizeRequests.anyRequest().authenticated()
-            )
-            .csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher))
-            .apply(authorizationServerConfigurer);
+        http.requestMatcher(endpointsMatcher)
+            .authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated())
+            .csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher)).apply(authorizationServerConfigurer);
     }
 
     private static KeyPair generateRsaKey() {
@@ -98,7 +95,8 @@ public class SecurityConfig {
 
     @Bean
     @Order(1)
-    public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http, JwtDecoder jwtDecoder)
+        throws Exception {
         applyDefaultSecurity(http);
 
         http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
@@ -107,21 +105,20 @@ public class SecurityConfig {
             // Redirect to the login page when not authenticated from the
             // authorization endpoint
             .exceptionHandling((exceptions) -> exceptions.defaultAuthenticationEntryPointFor(
-                new LoginUrlAuthenticationEntryPoint("/login"), new MediaTypeRequestMatcher(MediaType.TEXT_HTML)))
-            // Accept access tokens for User Info and/or Client Registration
-            .oauth2ResourceServer((resourceServer) -> resourceServer.jwt(Customizer.withDefaults()));
+                new LoginUrlAuthenticationEntryPoint("/login"), new MediaTypeRequestMatcher(MediaType.TEXT_HTML)));
+        //            .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.decoder(jwtDecoder)))
+        // Accept access tokens for User Info and/or Client Registration
+        //            .oauth2ResourceServer((resourceServer) -> resourceServer.jwt(Customizer.withDefaults()));
         return http.build();
     }
 
     @Bean
-    @Order(2)
-    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http,BearerTokenAuthenticationFilter bearerTokenAuthenticationFilter) throws Exception {
+    @Order(3)
+    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated())
-
             // Form login handles the redirect to the login page from the
             // authorization server filter chain
             .formLogin(Customizer.withDefaults());
-        http.addFilterBefore(bearerTokenAuthenticationFilter,BearerTokenAuthenticationFilter.class);
         return http.build();
     }
 
@@ -145,29 +142,34 @@ public class SecurityConfig {
                 .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build()).build();
         JdbcRegisteredClientRepository jdbcRegisteredClientRepository =
             new JdbcRegisteredClientRepository(jdbcTemplate);
-//                jdbcRegisteredClientRepository.save(registeredClient);
+        //                jdbcRegisteredClientRepository.save(registeredClient);
         return jdbcRegisteredClientRepository;
     }
 
-    @Bean
-    public  AuthenticationManager authenticationManager(RegisteredClientRepository registeredClientRepository,OAuth2AuthorizationService oAuth2AuthorizationService){
-        return new ProviderManager(new JwtClientAssertionAuthenticationProvider(registeredClientRepository,oAuth2AuthorizationService));
+    public AuthenticationManager authenticationManager(RegisteredClientRepository registeredClientRepository,
+        OAuth2AuthorizationService oAuth2AuthorizationService) {
+        return new ProviderManager(
+            new JwtClientAssertionAuthenticationProvider(registeredClientRepository, oAuth2AuthorizationService));
+    }
+
+    public BearerTokenAuthenticationFilter bearerTokenAuthenticationFilter(
+        AuthenticationManager authenticationManager) {
+        return new BearerTokenAuthenticationFilter(authenticationManager);
     }
 
     @Bean
-    public BearerTokenAuthenticationFilter bearerTokenAuthenticationFilter(AuthenticationManager authenticationManager){
-      return   new BearerTokenAuthenticationFilter(authenticationManager);
-    }
-
-    @Bean
-    public OAuth2AuthorizationService oAuth2AuthorizationService(JdbcTemplate jdbcTemplate,RegisteredClientRepository registeredClientRepository ){
-        JdbcOAuth2AuthorizationService jdbcOAuth2AuthorizationService = new JdbcOAuth2AuthorizationService(jdbcTemplate,registeredClientRepository);
+    public OAuth2AuthorizationService oAuth2AuthorizationService(JdbcTemplate jdbcTemplate,
+        RegisteredClientRepository registeredClientRepository) {
+        JdbcOAuth2AuthorizationService jdbcOAuth2AuthorizationService =
+            new JdbcOAuth2AuthorizationService(jdbcTemplate, registeredClientRepository);
         return jdbcOAuth2AuthorizationService;
     }
 
     @Bean
-    public OAuth2AuthorizationConsentService authorizationConsentService(JdbcTemplate jdbcTemplate,RegisteredClientRepository registeredClientRepository ){
-        JdbcOAuth2AuthorizationConsentService jdbcOAuth2AuthorizationConsentService = new JdbcOAuth2AuthorizationConsentService(jdbcTemplate,registeredClientRepository);
+    public OAuth2AuthorizationConsentService authorizationConsentService(JdbcTemplate jdbcTemplate,
+        RegisteredClientRepository registeredClientRepository) {
+        JdbcOAuth2AuthorizationConsentService jdbcOAuth2AuthorizationConsentService =
+            new JdbcOAuth2AuthorizationConsentService(jdbcTemplate, registeredClientRepository);
         return jdbcOAuth2AuthorizationConsentService;
     }
 
@@ -189,7 +191,6 @@ public class SecurityConfig {
 
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
-        return AuthorizationServerSettings.builder().build();
+        return AuthorizationServerSettings.builder().issuer("http://127.0.0.1:8080").build();
     }
-
 }
