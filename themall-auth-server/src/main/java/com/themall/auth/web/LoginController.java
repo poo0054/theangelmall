@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
@@ -19,12 +18,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/auth")
 public class LoginController {
 
     @Autowired
     memberFerignService themallmemberFerign;
-
 
     /**
      * 跳转登录页面，如果session中存在，则跳到首页，不存在 就跳转登录页面

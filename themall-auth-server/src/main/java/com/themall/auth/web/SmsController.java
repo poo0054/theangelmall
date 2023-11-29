@@ -3,7 +3,7 @@ package com.themall.auth.web;
 import com.alibaba.fastjson.TypeReference;
 import com.themall.auth.openfeign.ThemallPartyFeign;
 import com.themall.auth.openfeign.memberFerignService;
-import com.themall.auth.vo.UserRegistVo;
+import com.themall.auth.vo.UserRegisterterVo;
 import com.themall.common.constant.AuthServerConstant;
 import com.themall.common.exception.BizCodeEnum;
 import com.themall.common.utils.R;
@@ -16,7 +16,10 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
@@ -24,7 +27,6 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Controller
-@RequestMapping("auth")
 public class SmsController {
     @Autowired
     ThemallPartyFeign themallPartyFeign;
@@ -48,7 +50,9 @@ public class SmsController {
                 // 存redis
                 R r = themallPartyFeign.sendCode(phone, code);
                 if (r.getCode() == 0) {
-                    stringRedisTemplate.opsForValue().set(AuthServerConstant.SMS_CODE_PREFIX + phone, code + "_" + System.currentTimeMillis(), 5, TimeUnit.MINUTES);
+                    stringRedisTemplate.opsForValue()
+                        .set(AuthServerConstant.SMS_CODE_PREFIX + phone, code + "_" + System.currentTimeMillis(), 5,
+                            TimeUnit.MINUTES);
                     return R.ok();
                 }
             }
@@ -58,24 +62,26 @@ public class SmsController {
             // 存redis
             R r = themallPartyFeign.sendCode(phone, code);
             if (r.getCode() == 0) {
-                stringRedisTemplate.opsForValue().set(AuthServerConstant.SMS_CODE_PREFIX + phone, code + "_" + System.currentTimeMillis(), 5, TimeUnit.MINUTES);
+                stringRedisTemplate.opsForValue()
+                    .set(AuthServerConstant.SMS_CODE_PREFIX + phone, code + "_" + System.currentTimeMillis(), 5,
+                        TimeUnit.MINUTES);
                 return R.ok();
             }
         }
         return R.error(BizCodeEnum.SMS_CODE_EXCEPTION.getCode(), BizCodeEnum.SMS_CODE_EXCEPTION.getMsg());
     }
 
-
     /**
      * 重定向是从session中存储数据
      *
-     * @param userRegistVo
-     * @param bindingResult
-     * @param attributes
-     * @return
+     * @param userRegisterterVo 用户信息
+     * @param bindingResult     遗产校验信息
+     * @param attributes        重定向参数
+     * @return 进行重定向到注册页面，携带失败信息
      */
     @PostMapping("/regist")
-    public String regist(@Validated UserRegistVo userRegistVo, BindingResult bindingResult, RedirectAttributes attributes) {
+    public String regist(@Validated UserRegisterterVo userRegisterterVo, BindingResult bindingResult,
+        RedirectAttributes attributes) {
         if (bindingResult.hasErrors()) {
             Map<String, String> map = new HashMap();
             for (FieldError fieldError : bindingResult.getFieldErrors()) {
@@ -84,20 +90,21 @@ public class SmsController {
                 map.put(field, defaultMessage);
             }
             attributes.addFlashAttribute("errors", map);
-            return "redirect:http://auth.poo0054.top/auth/reg.html";
+            return "redirect:https://auth.poo0054.top/auth/reg.html";
         }
         //效验验证码
-        String code = userRegistVo.getCode();
-        String s = stringRedisTemplate.opsForValue().get(AuthServerConstant.SMS_CODE_PREFIX + userRegistVo.getPhone());
-        Map<String, String> map = new HashMap();
+        String code = userRegisterterVo.getCode();
+        String s =
+            stringRedisTemplate.opsForValue().get(AuthServerConstant.SMS_CODE_PREFIX + userRegisterterVo.getPhone());
+        Map<String, String> map = new HashMap<>();
         if (!ObjectUtils.isEmpty(s)) {
             if (code.equals(s.split("_")[0])) {
                 if (!ObjectUtils.isEmpty(s)) {
                     //不为空，则删除验证码
-                    stringRedisTemplate.delete(AuthServerConstant.SMS_CODE_PREFIX + userRegistVo.getPhone());
+                    stringRedisTemplate.delete(AuthServerConstant.SMS_CODE_PREFIX + userRegisterterVo.getPhone());
                 }
                 //调用远程接口注册会员
-                R regist = themallmemberFerign.regist(userRegistVo);
+                R regist = themallmemberFerign.regist(userRegisterterVo);
                 if (regist.getCode() == 0) {
                     return "redirect:https://auth.poo0054.top/auth/login.html";
                 } else {
@@ -106,9 +113,9 @@ public class SmsController {
                     map.put("msg", data);
                 }
             }
-        } else if (code.equals("theangel")) {
+        } else if (code.equals("poo0054")) {
             //调用远程接口注册会员
-            R regist = themallmemberFerign.regist(userRegistVo);
+            R regist = themallmemberFerign.regist(userRegisterterVo);
             if (regist.getCode() == 0) {
                 return "redirect:https://auth.poo0054.top/auth/login.html";
             } else {

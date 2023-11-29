@@ -19,7 +19,6 @@
 
     <dependencies>
 
-
         <dependency>
             <groupId>com.theangel.themall</groupId>
             <artifactId>themall-common</artifactId>

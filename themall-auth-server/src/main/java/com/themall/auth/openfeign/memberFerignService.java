@@ -1,7 +1,7 @@
 package com.themall.auth.openfeign;
 
 import com.themall.auth.vo.LoginUserVo;
-import com.themall.auth.vo.UserRegistVo;
+import com.themall.auth.vo.UserRegisterterVo;
 import com.themall.common.utils.R;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +15,7 @@ public interface memberFerignService {
      * @return
      */
     @PostMapping(path = "member/member/regist")
-    public R regist(@RequestBody UserRegistVo userRegistVo);
+    public R regist(@RequestBody UserRegisterterVo userRegistertVo);
 
     /**
      * 登录会员

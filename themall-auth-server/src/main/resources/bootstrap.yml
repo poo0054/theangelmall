@@ -3,3 +3,11 @@ spring:
     active: prod
   application:
     name: themall-auth-server
+  mvc:
+    servlet:
+      path: /auth
+
+# Tomcat
+server:
+  port: 8080
+

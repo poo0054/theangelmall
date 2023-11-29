@@ -1,23 +1,23 @@
 # theangelmall
 
+## 介绍
 
-#### 介绍
+## 软件架构
 
-#### 软件架构
 1. 软件架构说明
 
-#### 版本
+## 版本
 
-1.  python 3.x
-2.  nodejs 13.x
+1. python 3.x
+2. nodejs 13.x
 
-#### 安装教程
+## 安装教程
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1. xxxx
+2. xxxx
+3. xxxx
 
-#### 使用说明
+## 使用说明
 
 theangelmall采用springcloud-alibab全家桶，服务注册使用nacos，服务调用使用openfeign，网关使用getway，链路追踪使用zipkin
 全局事务一致性采用Seata，发现如果访问量过大，会变慢最后采用添加幂等性使用rabbitmq来做
@@ -53,6 +53,12 @@ themall-ware：库存的基本功能
 third-party：第三方服务模块，阿里云的发送短信，对象存储，支付宝支付
 
 Jenkinsfile：kubesphere的devops（Jenkins自动化打包部署） 本地打包镜像 -> 发送docker-hub -> k8s部署项目 -> gitee打上标签
+
+## 计划
+
+1. poo0054.top
+
+*. 升级spring并添加cas和oauth2
 
 #### 参与贡献
 
