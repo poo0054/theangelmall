@@ -36,9 +36,12 @@ import org.springframework.security.oauth2.server.authorization.config.annotatio
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
+import org.springframework.security.oauth2.server.authorization.web.authentication.JwtClientAssertionAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.ExceptionMappingAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
@@ -60,25 +63,38 @@ import java.util.UUID;
 public class SecurityConfig {
 
     // @formatter:off
-    public static void applyDefaultSecurity(HttpSecurity http) throws Exception {
+    public static void applyDefaultSecurity(HttpSecurity http, RegisteredClientRepository registeredClientRepository, OAuth2AuthorizationService authorizationService) throws Exception {
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
         RequestMatcher endpointsMatcher = authorizationServerConfigurer.getEndpointsMatcher();
+
+        authorizationServerConfigurer
+                .oidc(oidc ->
+                        oidc.clientRegistrationEndpoint(clientRegistrationEndpoint ->
+                                clientRegistrationEndpoint
+                                        .clientRegistrationRequestConverter(new JwtClientAssertionAuthenticationConverter())
+                                        .authenticationProvider(new JwtClientAssertionAuthenticationProvider(registeredClientRepository, authorizationService))
+                                        .clientRegistrationResponseHandler(new SavedRequestAwareAuthenticationSuccessHandler())
+                                        .errorResponseHandler(new ExceptionMappingAuthenticationFailureHandler())
+                        )
+                );
+
 
         authorizationServerConfigurer.oidc(oidc -> {
             // 用户信息
             oidc.userInfoEndpoint(
-                userInfoEndpoint -> userInfoEndpoint.userInfoMapper(oidcUserInfoAuthenticationContext -> {
-                    OAuth2AccessToken accessToken = oidcUserInfoAuthenticationContext.getAccessToken();
-                    Map<String, Object> claims = new HashMap<>();
-                    claims.put("accessToken", accessToken);
-                    claims.put("user", oidcUserInfoAuthenticationContext.getAuthorization().getPrincipalName());
-                    claims.put("role", oidcUserInfoAuthenticationContext.getAuthentication().getAuthorities());
-                    return new OidcUserInfo(claims);
-                }));
+                    userInfoEndpoint -> userInfoEndpoint.userInfoMapper(oidcUserInfoAuthenticationContext -> {
+                        OAuth2AccessToken accessToken = oidcUserInfoAuthenticationContext.getAccessToken();
+                        Map<String, Object> claims = new HashMap<>();
+                        claims.put("accessToken", accessToken);
+                        claims.put("user", oidcUserInfoAuthenticationContext.getAuthorization().getPrincipalName());
+                        claims.put("role", oidcUserInfoAuthenticationContext.getAuthentication().getAuthorities());
+                        return new OidcUserInfo(claims);
+                    }));
         });
+
         http.requestMatcher(endpointsMatcher)
-            .authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated())
-            .csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher)).apply(authorizationServerConfigurer);
+                .authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated())
+                .csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher)).apply(authorizationServerConfigurer);
     }
 
     private static KeyPair generateRsaKey() {
@@ -95,30 +111,21 @@ public class SecurityConfig {
 
     @Bean
     @Order(1)
-    public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http, JwtDecoder jwtDecoder)
-        throws Exception {
-        applyDefaultSecurity(http);
+    public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http, RegisteredClientRepository registeredClientRepository, OAuth2AuthorizationService authorizationService)
+            throws Exception {
+        applyDefaultSecurity(http, registeredClientRepository, authorizationService);
 
         http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
-            .oidc(Customizer.withDefaults());    // Enable OpenID Connect 1.0
+                .oidc(Customizer.withDefaults());    // Enable OpenID Connect 1.0
+
         http
-            // Redirect to the login page when not authenticated from the
-            // authorization endpoint
-            .exceptionHandling((exceptions) -> exceptions.defaultAuthenticationEntryPointFor(
-                new LoginUrlAuthenticationEntryPoint("/login"), new MediaTypeRequestMatcher(MediaType.TEXT_HTML)));
+                // Redirect to the login page when not authenticated from the
+                // authorization endpoint
+                .exceptionHandling((exceptions) -> exceptions.defaultAuthenticationEntryPointFor(
+                        new LoginUrlAuthenticationEntryPoint("/login"), new MediaTypeRequestMatcher(MediaType.TEXT_HTML)));
         //            .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.decoder(jwtDecoder)))
         // Accept access tokens for User Info and/or Client Registration
         //            .oauth2ResourceServer((resourceServer) -> resourceServer.jwt(Customizer.withDefaults()));
-        return http.build();
-    }
-
-    @Bean
-    @Order(3)
-    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated())
-            // Form login handles the redirect to the login page from the
-            // authorization server filter chain
-            .formLogin(Customizer.withDefaults());
         return http.build();
     }
 
@@ -129,59 +136,58 @@ public class SecurityConfig {
     }
 
     @Bean
+    @Order(3)
+    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated())
+                // Form login handles the redirect to the login page from the
+                // authorization server filter chain
+                .formLogin(Customizer.withDefaults());
+        return http.build();
+    }
+
+    @Bean
     public RegisteredClientRepository registeredClientRepository(JdbcTemplate jdbcTemplate) {
         RegisteredClient registeredClient =
-            RegisteredClient.withId(UUID.randomUUID().toString()).clientId("message-client")
-                .clientSecret("{noop}secret").clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-                .redirectUri("http://127.0.0.1:8080/login/oauth2/code/messaging-client-oidc")
-                .redirectUri("http://127.0.0.1:8080/authorized").scope(OidcScopes.OPENID).scope(OidcScopes.PROFILE)
-                .scope("message.read").scope("message.write")
-                .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build()).build();
+                RegisteredClient.withId(UUID.randomUUID().toString()).clientId("message-client")
+                        .clientSecret("{noop}secret").clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+                        .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                        .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+                        .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+                        .redirectUri("http://127.0.0.1:8080/login/oauth2/code/messaging-client-oidc")
+                        .redirectUri("http://127.0.0.1:8080/authorized").scope(OidcScopes.OPENID).scope(OidcScopes.PROFILE)
+                        .scope("message.read").scope("message.write")
+                        .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build()).build();
         JdbcRegisteredClientRepository jdbcRegisteredClientRepository =
-            new JdbcRegisteredClientRepository(jdbcTemplate);
+                new JdbcRegisteredClientRepository(jdbcTemplate);
         //                jdbcRegisteredClientRepository.save(registeredClient);
         return jdbcRegisteredClientRepository;
     }
 
     public AuthenticationManager authenticationManager(RegisteredClientRepository registeredClientRepository,
-        OAuth2AuthorizationService oAuth2AuthorizationService) {
+                                                       OAuth2AuthorizationService oAuth2AuthorizationService) {
         return new ProviderManager(
-            new JwtClientAssertionAuthenticationProvider(registeredClientRepository, oAuth2AuthorizationService));
+                new JwtClientAssertionAuthenticationProvider(registeredClientRepository, oAuth2AuthorizationService));
     }
 
     public BearerTokenAuthenticationFilter bearerTokenAuthenticationFilter(
-        AuthenticationManager authenticationManager) {
+            AuthenticationManager authenticationManager) {
         return new BearerTokenAuthenticationFilter(authenticationManager);
     }
 
     @Bean
     public OAuth2AuthorizationService oAuth2AuthorizationService(JdbcTemplate jdbcTemplate,
-        RegisteredClientRepository registeredClientRepository) {
+                                                                 RegisteredClientRepository registeredClientRepository) {
         JdbcOAuth2AuthorizationService jdbcOAuth2AuthorizationService =
-            new JdbcOAuth2AuthorizationService(jdbcTemplate, registeredClientRepository);
+                new JdbcOAuth2AuthorizationService(jdbcTemplate, registeredClientRepository);
         return jdbcOAuth2AuthorizationService;
     }
 
     @Bean
     public OAuth2AuthorizationConsentService authorizationConsentService(JdbcTemplate jdbcTemplate,
-        RegisteredClientRepository registeredClientRepository) {
+                                                                         RegisteredClientRepository registeredClientRepository) {
         JdbcOAuth2AuthorizationConsentService jdbcOAuth2AuthorizationConsentService =
-            new JdbcOAuth2AuthorizationConsentService(jdbcTemplate, registeredClientRepository);
+                new JdbcOAuth2AuthorizationConsentService(jdbcTemplate, registeredClientRepository);
         return jdbcOAuth2AuthorizationConsentService;
-    }
-
-    @Bean
-    public JWKSource<SecurityContext> jwkSource() {
-        KeyPair keyPair = generateRsaKey();
-        RSAPublicKey publicKey = (RSAPublicKey)keyPair.getPublic();
-        RSAPrivateKey privateKey = (RSAPrivateKey)keyPair.getPrivate();
-        RSAKey rsaKey =
-            new RSAKey.Builder(publicKey).privateKey(privateKey).keyID(UUID.randomUUID().toString()).build();
-        JWKSet jwkSet = new JWKSet(rsaKey);
-        return new ImmutableJWKSet<>(jwkSet);
     }
 
     @Bean
@@ -192,5 +198,16 @@ public class SecurityConfig {
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
         return AuthorizationServerSettings.builder().issuer("http://127.0.0.1:8080").build();
+    }
+
+    @Bean
+    public JWKSource<SecurityContext> jwkSource() {
+        KeyPair keyPair = generateRsaKey();
+        RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
+        RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
+        RSAKey rsaKey =
+                new RSAKey.Builder(publicKey).privateKey(privateKey).keyID(UUID.randomUUID().toString()).build();
+        JWKSet jwkSet = new JWKSet(rsaKey);
+        return new ImmutableJWKSet<>(jwkSet);
     }
 }

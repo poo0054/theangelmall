@@ -6,7 +6,8 @@
     <parent>
         <groupId>com.theangel.themall</groupId>
         <artifactId>themall-theangelmall</artifactId>
-        <version>1.1-Beta</version>
+        <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>themall-oauth2-server</artifactId>
