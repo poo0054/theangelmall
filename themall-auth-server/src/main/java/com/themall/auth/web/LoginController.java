@@ -35,7 +35,7 @@ public class LoginController {
         if (ObjectUtils.isEmpty(attribute)) {
             return "login";
         }
-        return "redirect:http://poo0054.top";
+        return "redirect:https://poo0054.top";
     }
 
     /**
