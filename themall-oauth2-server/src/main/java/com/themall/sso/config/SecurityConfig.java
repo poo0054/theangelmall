@@ -91,7 +91,7 @@ public class SecurityConfig {
                             .authorizationEndpoint(authorizationEndpointConfig -> {
                                 authorizationEndpointConfig.baseUri("/login/oauth2/authorization")
                                 ;
-                            })
+                            }).authorizedClientRepository()
                     ;
                 })
                /* .logout(logout -> {
