@@ -83,9 +83,9 @@ public class SecurityConfig {
                                 authorizationEndpointConfig.baseUri("/login/oauth2/authorization")
                                 ;
                             })
-                            .tokenEndpoint()
                     ;
                 })
+                .httpBasic(Customizer.withDefaults())
                 .csrf().disable()
                 .logout((logout) -> logout.logoutUrl("/logout"))
         ;
