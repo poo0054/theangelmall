@@ -1,8 +1,8 @@
 /**
  * Copyright (c) 2016-2019 人人开源 All rights reserved.
- *
+ * <p>
  * https://www.renren.io
- *
+ * <p>
  * 版权所有，侵权必究！
  */
 
@@ -14,7 +14,6 @@ import io.renren.modules.app.interceptor.AuthorizationInterceptor;
 import io.renren.modules.app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.RequestAttributes;
@@ -26,7 +25,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  *
  * @author Mark sunlightcs@gmail.com
  */
-@Component
+//@Component
 public class LoginUserHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
     @Autowired
     private UserService userService;
@@ -41,12 +40,12 @@ public class LoginUserHandlerMethodArgumentResolver implements HandlerMethodArgu
                                   NativeWebRequest request, WebDataBinderFactory factory) throws Exception {
         //获取用户ID
         Object object = request.getAttribute(AuthorizationInterceptor.USER_KEY, RequestAttributes.SCOPE_REQUEST);
-        if(object == null){
+        if (object == null) {
             return null;
         }
 
         //获取用户信息
-        UserEntity user = userService.getById((Long)object);
+        UserEntity user = userService.getById((Long) object);
 
         return user;
     }

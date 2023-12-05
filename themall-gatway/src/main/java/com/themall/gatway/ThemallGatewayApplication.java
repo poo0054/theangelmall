@@ -7,10 +7,13 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 
+/**
+ * @author poo0054
+ */
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, RedisAutoConfiguration.class})
 @EnableDiscoveryClient
-public class ThemallGatwayApplication {
+public class ThemallGatewayApplication {
     public static void main(String[] args) {
-        SpringApplication.run(ThemallGatwayApplication.class, args);
+        SpringApplication.run(ThemallGatewayApplication.class, args);
     }
 }

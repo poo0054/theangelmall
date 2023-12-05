@@ -28,6 +28,8 @@ import java.util.Date;
 @Component
 @Getter
 public class JwtUtils {
+    public static final String LOGIN_USERID = "login:id:";
+
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     private String secret;

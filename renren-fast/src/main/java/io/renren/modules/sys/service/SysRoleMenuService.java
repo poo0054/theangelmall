@@ -33,5 +33,6 @@ public interface SysRoleMenuService extends IService<SysRoleMenuEntity> {
 	 * 根据角色ID数组，批量删除
 	 */
 	int deleteBatch(Long[] roleIds);
-	
+
+	List<SysRoleMenuEntity> getByRoleId(String[] array);
 }

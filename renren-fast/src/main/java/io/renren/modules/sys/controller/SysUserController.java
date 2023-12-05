@@ -22,6 +22,7 @@ import io.renren.modules.sys.service.SysUserRoleService;
 import io.renren.modules.sys.service.SysUserService;
 import org.apache.commons.lang.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,6 +46,7 @@ public class SysUserController extends AbstractController {
      * 所有用户列表
      */
     @GetMapping("/list")
+    @PreAuthorize("hasAuthority()")
 //	@RequiresPermissions("sys:user:list")
     public R list(@RequestParam Map<String, Object> params) {
         //只有超级管理员，才能查看所有管理员列表

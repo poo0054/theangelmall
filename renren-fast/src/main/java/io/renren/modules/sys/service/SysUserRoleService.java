@@ -21,10 +21,10 @@ import java.util.List;
  * @author Mark sunlightcs@gmail.com
  */
 public interface SysUserRoleService extends IService<SysUserRoleEntity> {
-	
+
 	void saveOrUpdate(Long userId, List<Long> roleIdList);
-	
-	/**
+
+    /**
 	 * 根据用户ID，获取角色ID列表
 	 */
 	List<Long> queryRoleIdList(Long userId);
@@ -33,4 +33,6 @@ public interface SysUserRoleService extends IService<SysUserRoleEntity> {
 	 * 根据角色ID数组，批量删除
 	 */
 	int deleteBatch(Long[] roleIds);
+
+    List<SysUserRoleEntity> getByUserId(Long userId);
 }

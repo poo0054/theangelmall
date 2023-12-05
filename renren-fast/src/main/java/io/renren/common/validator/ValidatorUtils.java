@@ -23,7 +23,7 @@ import java.util.Set;
  * @author Mark sunlightcs@gmail.com
  */
 public class ValidatorUtils {
-    private static Validator validator;
+    private static final Validator validator;
 
     static {
         validator = Validation.buildDefaultValidatorFactory().getValidator();
