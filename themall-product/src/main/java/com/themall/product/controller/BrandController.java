@@ -36,7 +36,7 @@ public class BrandController {
     @GetMapping("/infos")
     public R infos(@RequestParam("brandIds") List<Long> brandIds) {
         List<BrandEntity> brandEntities = brandService.getBrandsById(brandIds);
-        return R.ok().setData(brandEntities);
+        return R.httpStatus().setData(brandEntities);
     }
 
     /**
@@ -46,7 +46,7 @@ public class BrandController {
     //@RequiresPermissions("product:brand:list")
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = brandService.queryPage(params);
-        return R.ok().put("page", page);
+        return R.httpStatus().put("page", page);
     }
 
 
@@ -58,7 +58,7 @@ public class BrandController {
     public R info(@PathVariable("brandId") Long brandId) {
         BrandEntity brand = brandService.getById(brandId);
 
-        return R.ok().put("brand", brand);
+        return R.httpStatus().put("brand", brand);
     }
 
     /**
@@ -79,7 +79,7 @@ public class BrandController {
             return R.ok();
         }*/
         brandService.save(brand);
-        return R.ok();
+        return R.httpStatus();
 
     }
 
@@ -91,7 +91,7 @@ public class BrandController {
     public R update(@Validated({updateGro.class}) @RequestBody BrandEntity brand) {
 //        brandService.updateById(brand);
         brandService.updateDetail(brand);
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -101,7 +101,7 @@ public class BrandController {
     //@RequiresPermissions("product:brand:delete")
     public R delete(@RequestBody Long[] brandIds) {
         brandService.removeByIds(Arrays.asList(brandIds));
-        return R.ok();
+        return R.httpStatus();
     }
 
 }

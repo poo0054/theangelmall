@@ -1,6 +1,6 @@
 package com.themall.ware.controller;
 
-import com.themall.common.exception.BizCodeEnum;
+import com.themall.common.constant.HttpStatusEnum;
 import com.themall.common.exception.NoStockException;
 import com.themall.common.to.SkuHasStockVo;
 import com.themall.common.utils.PageUtils;
@@ -36,10 +36,10 @@ public class WareSkuController {
     public R OrderLock(@RequestBody WareSkuLockTo skuLockTo) {
         try {
             wareSkuService.OrderLock(skuLockTo);
-            return R.ok();
+            return R.httpStatus();
         } catch (NoStockException e) {
             e.printStackTrace();
-            return R.error(BizCodeEnum.NO_STOCK_EXCEPTION.getCode(), e.getMessage());
+            return R.error(HttpStatusEnum.SYSTEM_WARE_B1000.getCode(), e.getMessage());
         }
     }
 
@@ -49,7 +49,7 @@ public class WareSkuController {
     @PostMapping("/hasstock")
     public R getHasStock(@RequestBody List<Long> skuIds) {
         List<SkuHasStockVo> skuHasStockVos = wareSkuService.getHasStock(skuIds);
-        R ok = R.ok();
+        R ok = R.httpStatus();
         return ok.setData(skuHasStockVos);
     }
 
@@ -62,7 +62,7 @@ public class WareSkuController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = wareSkuService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return R.httpStatus().put("page", page);
     }
 
 
@@ -74,7 +74,7 @@ public class WareSkuController {
     public R info(@PathVariable("id") Long id) {
         WareSkuEntity wareSku = wareSkuService.getById(id);
 
-        return R.ok().put("wareSku", wareSku);
+        return R.httpStatus().put("wareSku", wareSku);
     }
 
     /**
@@ -85,7 +85,7 @@ public class WareSkuController {
     public R save(@RequestBody WareSkuEntity wareSku) {
         wareSkuService.save(wareSku);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -96,7 +96,7 @@ public class WareSkuController {
     public R update(@RequestBody WareSkuEntity wareSku) {
         wareSkuService.updateById(wareSku);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -107,7 +107,7 @@ public class WareSkuController {
     public R delete(@RequestBody Long[] ids) {
         wareSkuService.removeByIds(Arrays.asList(ids));
 
-        return R.ok();
+        return R.httpStatus();
     }
 
 }

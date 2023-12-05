@@ -32,7 +32,7 @@ public class HomeSubjectController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = homeSubjectService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return R.httpStatus().put("page", page);
     }
 
 
@@ -44,7 +44,7 @@ public class HomeSubjectController {
     public R info(@PathVariable("id") Long id) {
             HomeSubjectEntity homeSubject = homeSubjectService.getById(id);
 
-        return R.ok().put("homeSubject", homeSubject);
+        return R.httpStatus().put("homeSubject", homeSubject);
     }
 
     /**
@@ -55,7 +55,7 @@ public class HomeSubjectController {
     public R save(@RequestBody HomeSubjectEntity homeSubject) {
             homeSubjectService.save(homeSubject);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -66,7 +66,7 @@ public class HomeSubjectController {
     public R update(@RequestBody HomeSubjectEntity homeSubject) {
             homeSubjectService.updateById(homeSubject);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -77,7 +77,7 @@ public class HomeSubjectController {
     public R delete(@RequestBody Long[] ids) {
             homeSubjectService.removeByIds(Arrays.asList(ids));
 
-        return R.ok();
+        return R.httpStatus();
     }
 
 }

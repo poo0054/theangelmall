@@ -31,7 +31,7 @@ public class MemberReceiveAddressController {
     @GetMapping("/{memberid}/address")
     public R getAddress(@PathVariable("memberid") Long memnerId) {
         List<MemberReceiveAddressEntity> address = memberReceiveAddressService.getAddress(memnerId);
-        return R.ok().setData(address);
+        return R.httpStatus().setData(address);
     }
 
 
@@ -43,7 +43,7 @@ public class MemberReceiveAddressController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = memberReceiveAddressService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return R.httpStatus().put("page", page);
     }
 
 
@@ -56,7 +56,7 @@ public class MemberReceiveAddressController {
     public R info(@PathVariable("id") Long id) {
         MemberReceiveAddressEntity memberReceiveAddress = memberReceiveAddressService.getById(id);
 
-        return R.ok().put("memberReceiveAddress", memberReceiveAddress);
+        return R.httpStatus().put("memberReceiveAddress", memberReceiveAddress);
     }
 
     /**
@@ -67,7 +67,7 @@ public class MemberReceiveAddressController {
     public R save(@RequestBody MemberReceiveAddressEntity memberReceiveAddress) {
         memberReceiveAddressService.save(memberReceiveAddress);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -78,7 +78,7 @@ public class MemberReceiveAddressController {
     public R update(@RequestBody MemberReceiveAddressEntity memberReceiveAddress) {
         memberReceiveAddressService.updateById(memberReceiveAddress);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -89,7 +89,7 @@ public class MemberReceiveAddressController {
     public R delete(@RequestBody Long[] ids) {
         memberReceiveAddressService.removeByIds(Arrays.asList(ids));
 
-        return R.ok();
+        return R.httpStatus();
     }
 
 }

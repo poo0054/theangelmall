@@ -117,7 +117,7 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
         BeanUtils.copyProperties(bounds, spuBoundTo);
         spuBoundTo.setSpuId(spuInfoEntity.getId());
         R r = themallCouponFeign.saveSpuBounds(spuBoundTo);
-        if (r.getCode() != 0) {
+        if (r.isSuccess()) {
             log.error("远程保存spu积分信息失败");
         }
 
@@ -181,7 +181,7 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
                 skuReductionTo.setSkuId(skuId);
                 if (skuReductionTo.getFullCount() > 0 || skuReductionTo.getFullPrice().compareTo(new BigDecimal(0)) == 1) {
                     R r1 = themallCouponFeign.saveSkuReduction(skuReductionTo);
-                    if (r1.getCode() != 0) {
+                    if (r1.isSuccess()) {
                         log.error("远程保存sku优惠信息失败");
                     }
                 }
@@ -316,7 +316,7 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
 
         // 发送给es  themall-search
         R r = themallSearchFeign.productStatusUp(collect);
-        if (r.getCode() == 0) {
+        if (r.isSuccess()) {
             //TODO 改变spu状态
             this.baseMapper.updateSpuStatus(spuId, ProductConstant.SPUStatusEnum.UP_SPU.getCode());
         } else {

@@ -32,7 +32,7 @@ public class MemberPriceController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = memberPriceService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return R.httpStatus().put("page", page);
     }
 
 
@@ -44,7 +44,7 @@ public class MemberPriceController {
     public R info(@PathVariable("id") Long id) {
             MemberPriceEntity memberPrice = memberPriceService.getById(id);
 
-        return R.ok().put("memberPrice", memberPrice);
+        return R.httpStatus().put("memberPrice", memberPrice);
     }
 
     /**
@@ -55,7 +55,7 @@ public class MemberPriceController {
     public R save(@RequestBody MemberPriceEntity memberPrice) {
             memberPriceService.save(memberPrice);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -66,7 +66,7 @@ public class MemberPriceController {
     public R update(@RequestBody MemberPriceEntity memberPrice) {
             memberPriceService.updateById(memberPrice);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -77,7 +77,7 @@ public class MemberPriceController {
     public R delete(@RequestBody Long[] ids) {
             memberPriceService.removeByIds(Arrays.asList(ids));
 
-        return R.ok();
+        return R.httpStatus();
     }
 
 }

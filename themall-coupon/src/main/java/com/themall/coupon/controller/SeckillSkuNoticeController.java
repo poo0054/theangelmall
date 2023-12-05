@@ -32,7 +32,7 @@ public class SeckillSkuNoticeController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = seckillSkuNoticeService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return R.httpStatus().put("page", page);
     }
 
 
@@ -44,7 +44,7 @@ public class SeckillSkuNoticeController {
     public R info(@PathVariable("id") Long id) {
             SeckillSkuNoticeEntity seckillSkuNotice = seckillSkuNoticeService.getById(id);
 
-        return R.ok().put("seckillSkuNotice", seckillSkuNotice);
+        return R.httpStatus().put("seckillSkuNotice", seckillSkuNotice);
     }
 
     /**
@@ -55,7 +55,7 @@ public class SeckillSkuNoticeController {
     public R save(@RequestBody SeckillSkuNoticeEntity seckillSkuNotice) {
             seckillSkuNoticeService.save(seckillSkuNotice);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -66,7 +66,7 @@ public class SeckillSkuNoticeController {
     public R update(@RequestBody SeckillSkuNoticeEntity seckillSkuNotice) {
             seckillSkuNoticeService.updateById(seckillSkuNotice);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -77,7 +77,7 @@ public class SeckillSkuNoticeController {
     public R delete(@RequestBody Long[] ids) {
             seckillSkuNoticeService.removeByIds(Arrays.asList(ids));
 
-        return R.ok();
+        return R.httpStatus();
     }
 
 }

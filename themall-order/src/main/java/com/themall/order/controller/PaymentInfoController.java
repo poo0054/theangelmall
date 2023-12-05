@@ -32,7 +32,7 @@ public class PaymentInfoController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = paymentInfoService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return R.httpStatus().put("page", page);
     }
 
 
@@ -44,7 +44,7 @@ public class PaymentInfoController {
     public R info(@PathVariable("id") Long id) {
             PaymentInfoEntity paymentInfo = paymentInfoService.getById(id);
 
-        return R.ok().put("paymentInfo", paymentInfo);
+        return R.httpStatus().put("paymentInfo", paymentInfo);
     }
 
     /**
@@ -55,7 +55,7 @@ public class PaymentInfoController {
     public R save(@RequestBody PaymentInfoEntity paymentInfo) {
             paymentInfoService.save(paymentInfo);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -66,7 +66,7 @@ public class PaymentInfoController {
     public R update(@RequestBody PaymentInfoEntity paymentInfo) {
             paymentInfoService.updateById(paymentInfo);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -77,7 +77,7 @@ public class PaymentInfoController {
     public R delete(@RequestBody Long[] ids) {
             paymentInfoService.removeByIds(Arrays.asList(ids));
 
-        return R.ok();
+        return R.httpStatus();
     }
 
 }

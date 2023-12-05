@@ -2,7 +2,7 @@ package com.themall.gatway.config;
 
 import com.alibaba.csp.sentinel.adapter.gateway.sc.callback.GatewayCallbackManager;
 import com.alibaba.fastjson.JSON;
-import com.themall.common.exception.BizCodeEnum;
+import com.themall.common.constant.HttpStatusEnum;
 import com.themall.common.utils.R;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -23,7 +23,7 @@ public class SentinelGetWayConfig {
     public SentinelGetWayConfig() {
         //网关限流了请求
         GatewayCallbackManager.setBlockHandler((exchange, t) -> {
-            R error = R.error(BizCodeEnum.TO_MANY_REQUEST.getCode(), BizCodeEnum.TO_MANY_REQUEST.getMsg());
+            R error = R.error(HttpStatusEnum.SYSTEM_ERROR_B0210);
             Mono<ServerResponse> body = ServerResponse.ok().body(Mono.just(JSON.toJSONString(error)), String.class);
             return body;
         });

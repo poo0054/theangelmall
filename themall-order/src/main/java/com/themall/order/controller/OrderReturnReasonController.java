@@ -32,7 +32,7 @@ public class OrderReturnReasonController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = orderReturnReasonService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return R.httpStatus().put("page", page);
     }
 
 
@@ -44,7 +44,7 @@ public class OrderReturnReasonController {
     public R info(@PathVariable("id") Long id) {
             OrderReturnReasonEntity orderReturnReason = orderReturnReasonService.getById(id);
 
-        return R.ok().put("orderReturnReason", orderReturnReason);
+        return R.httpStatus().put("orderReturnReason", orderReturnReason);
     }
 
     /**
@@ -55,7 +55,7 @@ public class OrderReturnReasonController {
     public R save(@RequestBody OrderReturnReasonEntity orderReturnReason) {
             orderReturnReasonService.save(orderReturnReason);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -66,7 +66,7 @@ public class OrderReturnReasonController {
     public R update(@RequestBody OrderReturnReasonEntity orderReturnReason) {
             orderReturnReasonService.updateById(orderReturnReason);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -77,7 +77,7 @@ public class OrderReturnReasonController {
     public R delete(@RequestBody Long[] ids) {
             orderReturnReasonService.removeByIds(Arrays.asList(ids));
 
-        return R.ok();
+        return R.httpStatus();
     }
 
 }

@@ -31,7 +31,7 @@ public class OrderController {
     @GetMapping("/status/{orderSn}")
     public R getOrderStock(@PathVariable("orderSn") String orderSn) {
         OrderEntity orderEntity = orderService.getOrderStockByOrderSn(orderSn);
-        return R.ok().setData(orderEntity);
+        return R.httpStatus().setData(orderEntity);
     }
 
     /**
@@ -40,7 +40,7 @@ public class OrderController {
     @GetMapping("/list")
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = orderService.queryPage(params);
-        return R.ok().put("page", page);
+        return R.httpStatus().put("page", page);
     }
 
     /**
@@ -49,7 +49,7 @@ public class OrderController {
     @PostMapping("/list/with/item")
     public R listWithItem(@RequestBody Map<String, Object> params) {
         PageUtils page = orderService.listWithItem(params);
-        return R.ok().put("page", page);
+        return R.httpStatus().put("page", page);
     }
 
 
@@ -61,7 +61,7 @@ public class OrderController {
     public R info(@PathVariable("id") Long id) {
         OrderEntity order = orderService.getById(id);
 
-        return R.ok().put("order", order);
+        return R.httpStatus().put("order", order);
     }
 
     /**
@@ -72,7 +72,7 @@ public class OrderController {
     public R save(@RequestBody OrderEntity order) {
         orderService.save(order);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -83,7 +83,7 @@ public class OrderController {
     public R update(@RequestBody OrderEntity order) {
         orderService.updateById(order);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -94,7 +94,7 @@ public class OrderController {
     public R delete(@RequestBody Long[] ids) {
         orderService.removeByIds(Arrays.asList(ids));
 
-        return R.ok();
+        return R.httpStatus();
     }
 
 }

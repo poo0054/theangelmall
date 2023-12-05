@@ -25,7 +25,7 @@ public class SmsController {
     @GetMapping("/sms/send")
     public R sendCode(@RequestParam("phone") String phone, @RequestParam("code") String code) {
         smsComponent.sendSmsLundroid(phone, code);
-        return R.ok();
+        return R.httpStatus();
     }
 
 }

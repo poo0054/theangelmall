@@ -150,14 +150,6 @@
                 </exclusions>
             </dependency>
 
-            <!--   <dependency>
-                   <groupId>com.alibaba.nacos</groupId>
-                   <artifactId>nacos-client</artifactId>
-                   <version>1.4.2</version>
-               </dependency>-->
-
-
-            <!-- https://mvnrepository.com/artifact/junit/junit -->
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
@@ -251,6 +243,7 @@
         <module>themall-seckill</module>
         <module>themall-oauth2-server</module>
         <module>themall-oauth2-resource</module>
+        <module>themall-model</module>
     </modules>
 
     <build>

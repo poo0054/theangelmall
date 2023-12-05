@@ -32,7 +32,7 @@ public class MemberStatisticsInfoController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = memberStatisticsInfoService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return R.httpStatus().put("page", page);
     }
 
 
@@ -44,7 +44,7 @@ public class MemberStatisticsInfoController {
     public R info(@PathVariable("id") Long id) {
             MemberStatisticsInfoEntity memberStatisticsInfo = memberStatisticsInfoService.getById(id);
 
-        return R.ok().put("memberStatisticsInfo", memberStatisticsInfo);
+        return R.httpStatus().put("memberStatisticsInfo", memberStatisticsInfo);
     }
 
     /**
@@ -55,7 +55,7 @@ public class MemberStatisticsInfoController {
     public R save(@RequestBody MemberStatisticsInfoEntity memberStatisticsInfo) {
             memberStatisticsInfoService.save(memberStatisticsInfo);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -66,7 +66,7 @@ public class MemberStatisticsInfoController {
     public R update(@RequestBody MemberStatisticsInfoEntity memberStatisticsInfo) {
             memberStatisticsInfoService.updateById(memberStatisticsInfo);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -77,7 +77,7 @@ public class MemberStatisticsInfoController {
     public R delete(@RequestBody Long[] ids) {
             memberStatisticsInfoService.removeByIds(Arrays.asList(ids));
 
-        return R.ok();
+        return R.httpStatus();
     }
 
 }

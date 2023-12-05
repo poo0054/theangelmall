@@ -32,7 +32,7 @@ public class ProductAttrValueController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = productAttrValueService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return R.httpStatus().put("page", page);
     }
 
 
@@ -44,7 +44,7 @@ public class ProductAttrValueController {
     public R info(@PathVariable("id") Long id) {
             ProductAttrValueEntity productAttrValue = productAttrValueService.getById(id);
 
-        return R.ok().put("productAttrValue", productAttrValue);
+        return R.httpStatus().put("productAttrValue", productAttrValue);
     }
 
     /**
@@ -55,7 +55,7 @@ public class ProductAttrValueController {
     public R save(@RequestBody ProductAttrValueEntity productAttrValue) {
             productAttrValueService.save(productAttrValue);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -66,7 +66,7 @@ public class ProductAttrValueController {
     public R update(@RequestBody ProductAttrValueEntity productAttrValue) {
             productAttrValueService.updateById(productAttrValue);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -77,7 +77,7 @@ public class ProductAttrValueController {
     public R delete(@RequestBody Long[] ids) {
             productAttrValueService.removeByIds(Arrays.asList(ids));
 
-        return R.ok();
+        return R.httpStatus();
     }
 
 }

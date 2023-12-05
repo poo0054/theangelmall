@@ -62,7 +62,7 @@ public class SeckillServiceImpl implements SeckillService {
     public void uploadSeckillSku() {
         //数据库扫描3天需要参加的库存
         R r = couponFeignService.getLates3DaySession();
-        if (0 == r.getCode()) {
+        if (r.isSuccess()) {
             List<SeckillSessionTo> data = r.getData(new TypeReference<List<SeckillSessionTo>>() {
             });
             //缓存活动信息
@@ -103,7 +103,7 @@ public class SeckillServiceImpl implements SeckillService {
                     SeckillSkuRedisTo seckillSkuRedisTo = new SeckillSkuRedisTo();
                     //sku基本信息
                     R info = productFeignService.info(skuRelationTo.getSkuId());
-                    if (0 == info.getCode()) {
+                    if (info.isSuccess()) {
                         SkuInfoTo skuInfo = info.getData("skuInfo", new TypeReference<SkuInfoTo>() {
                         });
                         seckillSkuRedisTo.setSkuInfoTo(skuInfo);

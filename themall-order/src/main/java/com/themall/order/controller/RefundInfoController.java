@@ -32,7 +32,7 @@ public class RefundInfoController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = refundInfoService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return R.httpStatus().put("page", page);
     }
 
 
@@ -44,7 +44,7 @@ public class RefundInfoController {
     public R info(@PathVariable("id") Long id) {
             RefundInfoEntity refundInfo = refundInfoService.getById(id);
 
-        return R.ok().put("refundInfo", refundInfo);
+        return R.httpStatus().put("refundInfo", refundInfo);
     }
 
     /**
@@ -55,7 +55,7 @@ public class RefundInfoController {
     public R save(@RequestBody RefundInfoEntity refundInfo) {
             refundInfoService.save(refundInfo);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -66,7 +66,7 @@ public class RefundInfoController {
     public R update(@RequestBody RefundInfoEntity refundInfo) {
             refundInfoService.updateById(refundInfo);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -77,7 +77,7 @@ public class RefundInfoController {
     public R delete(@RequestBody Long[] ids) {
             refundInfoService.removeByIds(Arrays.asList(ids));
 
-        return R.ok();
+        return R.httpStatus();
     }
 
 }

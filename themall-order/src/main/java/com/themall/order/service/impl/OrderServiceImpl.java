@@ -234,7 +234,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
          * 也可以让库存自动解锁，
          */
         R r = wareFeignService.OrderLock(wareSkuLockTo);
-        if (0 != r.getCode()) {
+        if (r.isSuccess()) {
             //锁定失败
             responseVo.setCode(3);
             return responseVo;
@@ -341,7 +341,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
      */
     private List<OrderItemEntity> buildOrderItems(String orderSn) {
         R cartItem = cartService.getCartItem();
-        if (0 == cartItem.getCode()) {
+        if (cartItem.isSuccess()) {
             //所有购物项
             List<OrderItemVo> data = cartItem.getData(new TypeReference<List<OrderItemVo>>() {
             });
@@ -368,7 +368,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         //spu信息
         Long skuId = orderItemVo.getSkuId();
         R spuInfo = productFeignService.getSpuInfo(skuId);
-        if (0 == spuInfo.getCode()) {
+        if (spuInfo.isSuccess()) {
             SpuInfoTo data = spuInfo.getData(new TypeReference<SpuInfoTo>() {
             });
             if (!ObjectUtils.isEmpty(data)) {
@@ -426,7 +426,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         orderEntity.setOrderSn(orderSn);
         //获取收货信息
         R fare = wareFeignService.getFare(vo.getAddrId());
-        if (0 == fare.getCode()) {
+        if (fare.isSuccess()) {
             FareVo data = fare.getData(new TypeReference<FareVo>() {
             });
             //邮费
@@ -475,7 +475,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         CompletableFuture<Void> future1 = CompletableFuture.runAsync(() -> {
             RequestContextHolder.setRequestAttributes(requestAttributes);
             R address = memberService.getAddress(memberVo.getId());
-            if (address.getCode() == 0) {
+            if (address.isSuccess()) {
                 List<MemberAddressVo> data = address.getData(new TypeReference<List<MemberAddressVo>>() {
                 });
                 orderConfirmVo.setAddress(data);
@@ -486,7 +486,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
             RequestContextHolder.setRequestAttributes(requestAttributes);
             R address = cartService.getCartItem();
-            if (address.getCode() == 0) {
+            if (address.isSuccess()) {
                 List<OrderItemVo> data = address.getData(new TypeReference<List<OrderItemVo>>() {
                 });
                 orderConfirmVo.setItem(data);
@@ -495,7 +495,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
             List<OrderItemVo> itemVos = orderConfirmVo.getItem();
             List<Long> collect = itemVos.stream().map(item -> item.getSkuId()).collect(Collectors.toList());
             R hasStock = wareFeignService.getHasStock(collect);
-            if (hasStock.getCode() == 0) {
+            if (hasStock.isSuccess()) {
                 List<SkuHasStockVo> data = hasStock.getData(new TypeReference<List<SkuHasStockVo>>() {
                 });
                 Map<Long, Boolean> collect1 = data.stream().collect(Collectors.toMap((SkuHasStockVo::getSkuId), (SkuHasStockVo::getHasStock)));
@@ -598,7 +598,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     public void buildPayInfo(PayAsyncVo payAsyncVo) {
 
         PaymentInfoEntity order_sn = paymentInfoService.getOne(
-            new QueryWrapper<PaymentInfoEntity>().eq("order_sn", payAsyncVo.getOut_trade_no()));
+                new QueryWrapper<PaymentInfoEntity>().eq("order_sn", payAsyncVo.getOut_trade_no()));
         if (ObjectUtils.isEmpty(order_sn)) {
             PaymentInfoEntity paymentInfoEntity = new PaymentInfoEntity();
             paymentInfoEntity.setOrderSn(payAsyncVo.getOut_trade_no());

@@ -32,7 +32,7 @@ public class OrderReturnApplyController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = orderReturnApplyService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return R.httpStatus().put("page", page);
     }
 
 
@@ -44,7 +44,7 @@ public class OrderReturnApplyController {
     public R info(@PathVariable("id") Long id) {
             OrderReturnApplyEntity orderReturnApply = orderReturnApplyService.getById(id);
 
-        return R.ok().put("orderReturnApply", orderReturnApply);
+        return R.httpStatus().put("orderReturnApply", orderReturnApply);
     }
 
     /**
@@ -55,7 +55,7 @@ public class OrderReturnApplyController {
     public R save(@RequestBody OrderReturnApplyEntity orderReturnApply) {
             orderReturnApplyService.save(orderReturnApply);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -66,7 +66,7 @@ public class OrderReturnApplyController {
     public R update(@RequestBody OrderReturnApplyEntity orderReturnApply) {
             orderReturnApplyService.updateById(orderReturnApply);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -77,7 +77,7 @@ public class OrderReturnApplyController {
     public R delete(@RequestBody Long[] ids) {
             orderReturnApplyService.removeByIds(Arrays.asList(ids));
 
-        return R.ok();
+        return R.httpStatus();
     }
 
 }

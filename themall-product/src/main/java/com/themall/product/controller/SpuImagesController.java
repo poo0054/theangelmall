@@ -32,7 +32,7 @@ public class SpuImagesController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = spuImagesService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return R.httpStatus().put("page", page);
     }
 
 
@@ -44,7 +44,7 @@ public class SpuImagesController {
     public R info(@PathVariable("id") Long id) {
             SpuImagesEntity spuImages = spuImagesService.getById(id);
 
-        return R.ok().put("spuImages", spuImages);
+        return R.httpStatus().put("spuImages", spuImages);
     }
 
     /**
@@ -55,7 +55,7 @@ public class SpuImagesController {
     public R save(@RequestBody SpuImagesEntity spuImages) {
             spuImagesService.save(spuImages);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -66,7 +66,7 @@ public class SpuImagesController {
     public R update(@RequestBody SpuImagesEntity spuImages) {
             spuImagesService.updateById(spuImages);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -77,7 +77,7 @@ public class SpuImagesController {
     public R delete(@RequestBody Long[] ids) {
             spuImagesService.removeByIds(Arrays.asList(ids));
 
-        return R.ok();
+        return R.httpStatus();
     }
 
 }

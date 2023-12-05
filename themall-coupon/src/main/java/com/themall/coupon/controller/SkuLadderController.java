@@ -32,7 +32,7 @@ public class SkuLadderController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = skuLadderService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return R.httpStatus().put("page", page);
     }
 
 
@@ -44,7 +44,7 @@ public class SkuLadderController {
     public R info(@PathVariable("id") Long id) {
             SkuLadderEntity skuLadder = skuLadderService.getById(id);
 
-        return R.ok().put("skuLadder", skuLadder);
+        return R.httpStatus().put("skuLadder", skuLadder);
     }
 
     /**
@@ -55,7 +55,7 @@ public class SkuLadderController {
     public R save(@RequestBody SkuLadderEntity skuLadder) {
             skuLadderService.save(skuLadder);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -66,7 +66,7 @@ public class SkuLadderController {
     public R update(@RequestBody SkuLadderEntity skuLadder) {
             skuLadderService.updateById(skuLadder);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -77,7 +77,7 @@ public class SkuLadderController {
     public R delete(@RequestBody Long[] ids) {
             skuLadderService.removeByIds(Arrays.asList(ids));
 
-        return R.ok();
+        return R.httpStatus();
     }
 
 }

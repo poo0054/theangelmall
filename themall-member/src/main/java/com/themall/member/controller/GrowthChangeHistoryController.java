@@ -32,7 +32,7 @@ public class GrowthChangeHistoryController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = growthChangeHistoryService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return R.httpStatus().put("page", page);
     }
 
 
@@ -44,7 +44,7 @@ public class GrowthChangeHistoryController {
     public R info(@PathVariable("id") Long id) {
             GrowthChangeHistoryEntity growthChangeHistory = growthChangeHistoryService.getById(id);
 
-        return R.ok().put("growthChangeHistory", growthChangeHistory);
+        return R.httpStatus().put("growthChangeHistory", growthChangeHistory);
     }
 
     /**
@@ -55,7 +55,7 @@ public class GrowthChangeHistoryController {
     public R save(@RequestBody GrowthChangeHistoryEntity growthChangeHistory) {
             growthChangeHistoryService.save(growthChangeHistory);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -66,7 +66,7 @@ public class GrowthChangeHistoryController {
     public R update(@RequestBody GrowthChangeHistoryEntity growthChangeHistory) {
             growthChangeHistoryService.updateById(growthChangeHistory);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -77,7 +77,7 @@ public class GrowthChangeHistoryController {
     public R delete(@RequestBody Long[] ids) {
             growthChangeHistoryService.removeByIds(Arrays.asList(ids));
 
-        return R.ok();
+        return R.httpStatus();
     }
 
 }

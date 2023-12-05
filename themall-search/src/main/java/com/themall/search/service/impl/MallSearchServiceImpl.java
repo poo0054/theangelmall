@@ -194,7 +194,7 @@ public class MallSearchServiceImpl implements MallSearchService {
                 navVo.setNavValue(s[1]);
                 searchResult.getAttrIds().add(Long.valueOf(s[0]));
                 R r = themallProduct.attrInfo(Long.parseLong(s[0]));
-                if (r.getCode() == 0) {
+                if (r.isSuccess()) {
                     AttrResponseVo attr1 = r.getData("attr", new TypeReference<AttrResponseVo>() {
                     });
                     navVo.setNavName(attr1.getAttrName());
@@ -213,7 +213,7 @@ public class MallSearchServiceImpl implements MallSearchService {
             navVo.setNavName("品牌");
 
             R r = themallProduct.brandsByIds(searchParam.getBrandId());
-            if (r.getCode() == 0) {
+            if (r.isSuccess()) {
                 List<BrandVo> data = r.getData(new TypeReference<List<BrandVo>>() {
                 });
                 String replace = null;

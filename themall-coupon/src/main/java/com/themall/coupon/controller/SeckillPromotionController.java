@@ -32,7 +32,7 @@ public class SeckillPromotionController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = seckillPromotionService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return R.httpStatus().put("page", page);
     }
 
 
@@ -44,7 +44,7 @@ public class SeckillPromotionController {
     public R info(@PathVariable("id") Long id) {
             SeckillPromotionEntity seckillPromotion = seckillPromotionService.getById(id);
 
-        return R.ok().put("seckillPromotion", seckillPromotion);
+        return R.httpStatus().put("seckillPromotion", seckillPromotion);
     }
 
     /**
@@ -55,7 +55,7 @@ public class SeckillPromotionController {
     public R save(@RequestBody SeckillPromotionEntity seckillPromotion) {
             seckillPromotionService.save(seckillPromotion);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -66,7 +66,7 @@ public class SeckillPromotionController {
     public R update(@RequestBody SeckillPromotionEntity seckillPromotion) {
             seckillPromotionService.updateById(seckillPromotion);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -77,7 +77,7 @@ public class SeckillPromotionController {
     public R delete(@RequestBody Long[] ids) {
             seckillPromotionService.removeByIds(Arrays.asList(ids));
 
-        return R.ok();
+        return R.httpStatus();
     }
 
 }

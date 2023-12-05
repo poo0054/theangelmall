@@ -1,8 +1,8 @@
 /**
  * Copyright (c) 2016-2019 人人开源 All rights reserved.
- *
+ * <p>
  * https://www.renren.io
- *
+ * <p>
  * 版权所有，侵权必究！
  */
 
@@ -11,6 +11,7 @@ package io.renren.modules.app.utils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -25,6 +26,7 @@ import java.util.Date;
  */
 @ConfigurationProperties(prefix = "renren.jwt")
 @Component
+@Getter
 public class JwtUtils {
     private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -42,7 +44,7 @@ public class JwtUtils {
 
         return Jwts.builder()
                 .setHeaderParam("typ", "JWT")
-                .setSubject(userId+"")
+                .setSubject(userId + "")
                 .setIssuedAt(nowDate)
                 .setExpiration(expireDate)
                 .signWith(SignatureAlgorithm.HS512, secret)
@@ -55,7 +57,7 @@ public class JwtUtils {
                     .setSigningKey(secret)
                     .parseClaimsJws(token)
                     .getBody();
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.debug("validate is token error ", e);
             return null;
         }
@@ -63,30 +65,19 @@ public class JwtUtils {
 
     /**
      * token是否过期
-     * @return  true：过期
+     *
+     * @return true：过期
      */
     public boolean isTokenExpired(Date expiration) {
         return expiration.before(new Date());
-    }
-
-    public String getSecret() {
-        return secret;
     }
 
     public void setSecret(String secret) {
         this.secret = secret;
     }
 
-    public long getExpire() {
-        return expire;
-    }
-
     public void setExpire(long expire) {
         this.expire = expire;
-    }
-
-    public String getHeader() {
-        return header;
     }
 
     public void setHeader(String header) {

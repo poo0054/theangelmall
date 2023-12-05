@@ -49,7 +49,7 @@ public class LoginController {
     @PostMapping("/login")
     public String login(LoginUserVo loginUserVo, RedirectAttributes attributes, HttpSession httpResponse) {
         R login = themallmemberFerign.login(loginUserVo);
-        if (login.getCode() == 0) {
+        if (login.isSuccess()) {
             //添加入ression的redis中
             MemberVo data = login.getData(new TypeReference<MemberVo>() {
             });

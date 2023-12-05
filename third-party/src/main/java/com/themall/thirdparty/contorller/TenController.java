@@ -34,7 +34,7 @@ public class TenController {
         JSONObject tempKey = tencentUploadUtil.getTempKey();
         HashMap<String, Object> objectObjectHashMap = new HashMap<>();
         objectObjectHashMap.put("data", tempKey.toString());
-        return R.ok(objectObjectHashMap);
+        return R.httpStatus(objectObjectHashMap);
     }
 
 //    @PostMapping("/cosGoodsLogo")
@@ -65,7 +65,7 @@ public class TenController {
         String s = tencentUploadUtil.uploadFile("/t/t.jpg", new File("C:\\Users\\一个小小卒\\Pictures\\Saved Pictures\\theangel.top.png"));
         HashMap<String, Object> objectObjectHashMap = new HashMap<>();
         objectObjectHashMap.put("data", s);
-        return R.ok(objectObjectHashMap);
+        return R.httpStatus(objectObjectHashMap);
     }
 
 }

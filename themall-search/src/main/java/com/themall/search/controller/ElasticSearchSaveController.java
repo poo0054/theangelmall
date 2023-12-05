@@ -1,8 +1,9 @@
 package com.themall.search.controller;
 
-import com.themall.common.exception.BizCodeEnum;
+import com.themall.common.constant.HttpStatusEnum;
 import com.themall.common.to.es.SkuEsModel;
 import com.themall.common.utils.R;
+import com.themall.search.service.productSaveService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,26 +14,29 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * @author poo0054
+ */
 @RestController
 @RequestMapping("/search/save")
 @Slf4j
 public class ElasticSearchSaveController {
+
     @Autowired
-    com.themall.search.service.productSaveService productSaveService;
+    productSaveService productSaveService;
 
     @PostMapping("/product")
     public R productStatusUp(@RequestBody List<SkuEsModel> skuEsModels) {
         try {
             boolean b = productSaveService.productStatusUp(skuEsModels);
             if (b) {
-                return R.ok();
+                return R.httpStatus();
             } else {
-                return R.error(BizCodeEnum.PRODUCT_UP_EXCEPTION.getCode(), BizCodeEnum.PRODUCT_UP_EXCEPTION.getMsg());
+                return R.error(HttpStatusEnum.SYSTEM_ERROR_B0100);
             }
         } catch (IOException e) {
-            e.printStackTrace();
-            log.error("ElasticSearchSaveController------->商品商家错误{}", e);
-            return R.error(BizCodeEnum.PRODUCT_UP_EXCEPTION.getCode(), BizCodeEnum.PRODUCT_UP_EXCEPTION.getMsg());
+            log.error("ElasticSearchSaveController------->商品商家错误:{}", e.getMessage(), e);
+            return R.error(HttpStatusEnum.SYSTEM_ERROR_B0100);
         }
 
     }

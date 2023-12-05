@@ -31,7 +31,7 @@ public class WareInfoController {
     @GetMapping("/fare/{addrId}")
     public R getFare(@PathVariable("addrId") Long addrId) {
         FareVo Farevo = wareInfoService.getFare(addrId);
-        return R.ok().put("data", Farevo);
+        return R.httpStatus().put("data", Farevo);
     }
 
     /**
@@ -42,7 +42,7 @@ public class WareInfoController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = wareInfoService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return R.httpStatus().put("page", page);
     }
 
 
@@ -54,7 +54,7 @@ public class WareInfoController {
     public R info(@PathVariable("id") Long id) {
         WareInfoEntity wareInfo = wareInfoService.getById(id);
 
-        return R.ok().put("wareInfo", wareInfo);
+        return R.httpStatus().put("wareInfo", wareInfo);
     }
 
     /**
@@ -65,7 +65,7 @@ public class WareInfoController {
     public R save(@RequestBody WareInfoEntity wareInfo) {
         wareInfoService.save(wareInfo);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -76,7 +76,7 @@ public class WareInfoController {
     public R update(@RequestBody WareInfoEntity wareInfo) {
         wareInfoService.updateById(wareInfo);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -87,7 +87,7 @@ public class WareInfoController {
     public R delete(@RequestBody Long[] ids) {
         wareInfoService.removeByIds(Arrays.asList(ids));
 
-        return R.ok();
+        return R.httpStatus();
     }
 
 }

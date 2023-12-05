@@ -71,7 +71,7 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
             //根据订单号，查询订单状态
             R orderStock = orderFeignService.getOrderStock(orderSn);
             //查询成功
-            if (0 == orderStock.getCode()) {
+            if (orderStock.isSuccess()) {
                 OrderVo orderVo = orderStock.getData(new TypeReference<OrderVo>() {
                 });
                 //订单不存在或者订单已经被取消，都应该取消库存
@@ -153,7 +153,7 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
             //  查询远程sku名称  事务不需要回滚
             try {
                 R r = productFeignService.info(skuId);
-                if (r.getCode() == 0) {
+                if (r.isSuccess()) {
                     Map<String, Object> data = (Map) r.get("skuInfo");
                     wareSkuEntity.setSkuName((String) data.get("skuName"));
                 }

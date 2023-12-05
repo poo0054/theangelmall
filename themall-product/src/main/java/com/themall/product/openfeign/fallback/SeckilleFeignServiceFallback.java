@@ -1,6 +1,6 @@
 package com.themall.product.openfeign.fallback;
 
-import com.themall.common.exception.BizCodeEnum;
+import com.themall.common.constant.HttpStatusEnum;
 import com.themall.common.utils.R;
 import com.themall.product.openfeign.SeckillFeignService;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +26,6 @@ public class SeckilleFeignServiceFallback implements SeckillFeignService {
     @Override
     public R getSkuSeckillInfo(Long skuId) {
         log.error("getSkuSeckillInfo方法调用熔断");
-        return R.error(BizCodeEnum.TO_MANY_REQUEST.getCode(), BizCodeEnum.TO_MANY_REQUEST.getMsg());
+        return R.error(HttpStatusEnum.SYSTEM_ERROR_B0210);
     }
 }

@@ -161,7 +161,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
         CompletableFuture<Void> future = supplyAsync.thenRunAsync(() -> {
             R r = seckillFeignService.getSkuSeckillInfo(skuItemVo.getSkuInfo().getSkuId());
             System.out.println(JSON.toJSONString(r));
-            if (0 == r.getCode()) {
+            if (r.isSuccess()) {
                 SeckillSkuRedisTo data = r.getData(new TypeReference<SeckillSkuRedisTo>() {
                 });
                 //不为空才是有

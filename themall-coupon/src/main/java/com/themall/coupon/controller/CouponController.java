@@ -31,7 +31,7 @@ public class CouponController {
     public R memberList() {
         CouponEntity couponEntity = new CouponEntity();
         couponEntity.setCouponName("满100减10");
-        return R.ok().put("coupons", Arrays.asList(couponEntity));
+        return R.httpStatus().put("coupons", Arrays.asList(couponEntity));
     }
 
     /**
@@ -41,7 +41,7 @@ public class CouponController {
     //@RequiresPermissions("coupon:coupon:list")
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = couponService.queryPage(params);
-        return R.ok().put("page", page);
+        return R.httpStatus().put("page", page);
     }
 
     /**
@@ -52,7 +52,7 @@ public class CouponController {
     public R info(@PathVariable("id") Long id) {
         CouponEntity coupon = couponService.getById(id);
 
-        return R.ok().put("coupon", coupon);
+        return R.httpStatus().put("coupon", coupon);
     }
 
     /**
@@ -63,7 +63,7 @@ public class CouponController {
     public R save(@RequestBody CouponEntity coupon) {
         couponService.save(coupon);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -74,7 +74,7 @@ public class CouponController {
     public R update(@RequestBody CouponEntity coupon) {
         couponService.updateById(coupon);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -85,7 +85,7 @@ public class CouponController {
     public R delete(@RequestBody Long[] ids) {
         couponService.removeByIds(Arrays.asList(ids));
 
-        return R.ok();
+        return R.httpStatus();
     }
 
 }

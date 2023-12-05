@@ -28,7 +28,7 @@ public class SkuFullReductionController {
     @PostMapping("/saveinfo")
     public R saveInfo(@RequestBody SkuReductionTo skuReductionTo) {
         skuFullReductionService.saveInfo(skuReductionTo);
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -39,7 +39,7 @@ public class SkuFullReductionController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = skuFullReductionService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return R.httpStatus().put("page", page);
     }
 
 
@@ -51,7 +51,7 @@ public class SkuFullReductionController {
     public R info(@PathVariable("id") Long id) {
         SkuFullReductionEntity skuFullReduction = skuFullReductionService.getById(id);
 
-        return R.ok().put("skuFullReduction", skuFullReduction);
+        return R.httpStatus().put("skuFullReduction", skuFullReduction);
     }
 
     /**
@@ -62,7 +62,7 @@ public class SkuFullReductionController {
     public R save(@RequestBody SkuFullReductionEntity skuFullReduction) {
         skuFullReductionService.save(skuFullReduction);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -73,7 +73,7 @@ public class SkuFullReductionController {
     public R update(@RequestBody SkuFullReductionEntity skuFullReduction) {
         skuFullReductionService.updateById(skuFullReduction);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -84,7 +84,7 @@ public class SkuFullReductionController {
     public R delete(@RequestBody Long[] ids) {
         skuFullReductionService.removeByIds(Arrays.asList(ids));
 
-        return R.ok();
+        return R.httpStatus();
     }
 
 }

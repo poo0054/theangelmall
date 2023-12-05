@@ -1,7 +1,7 @@
 package com.themall.product.exception;
 
+import com.themall.common.constant.HttpStatusEnum;
 import com.themall.common.utils.R;
-import org.apache.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -25,14 +25,14 @@ public class GlobalException {
         fieldErrors.forEach(k -> {
             map.put(k.getField(), k.getDefaultMessage());
         });
-        return R.error(HttpStatus.SC_BAD_REQUEST, "提交数据不合法").put("data", map);
+        return R.error(HttpStatusEnum.SERVICE_ERROR_C0134).put("data", map);
     }
 
 
     @ExceptionHandler(value = Exception.class)
     public R exception(Exception e) {
         LinkedHashMap<String, String> map = new LinkedHashMap<>();
-        return R.error(10000, "未知异常").put("data", map.put(e.getClass().getSimpleName(), e.getMessage()));
+        return R.error().put("data", map.put(e.getClass().getSimpleName(), e.getMessage()));
     }
 
 

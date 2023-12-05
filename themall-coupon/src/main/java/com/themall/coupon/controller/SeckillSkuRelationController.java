@@ -32,7 +32,7 @@ public class SeckillSkuRelationController {
     //@RequiresPermissions("coupon:seckillskurelation:list")
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = seckillSkuRelationService.queryPage(params);
-        return R.ok().put("page", page);
+        return R.httpStatus().put("page", page);
     }
 
 
@@ -44,7 +44,7 @@ public class SeckillSkuRelationController {
     public R info(@PathVariable("id") Long id) {
         SeckillSkuRelationEntity seckillSkuRelation = seckillSkuRelationService.getById(id);
 
-        return R.ok().put("seckillSkuRelation", seckillSkuRelation);
+        return R.httpStatus().put("seckillSkuRelation", seckillSkuRelation);
     }
 
     /**
@@ -55,7 +55,7 @@ public class SeckillSkuRelationController {
     public R save(@RequestBody SeckillSkuRelationEntity seckillSkuRelation) {
         seckillSkuRelationService.save(seckillSkuRelation);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -66,7 +66,7 @@ public class SeckillSkuRelationController {
     public R update(@RequestBody SeckillSkuRelationEntity seckillSkuRelation) {
         seckillSkuRelationService.updateById(seckillSkuRelation);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -77,7 +77,7 @@ public class SeckillSkuRelationController {
     public R delete(@RequestBody Long[] ids) {
         seckillSkuRelationService.removeByIds(Arrays.asList(ids));
 
-        return R.ok();
+        return R.httpStatus();
     }
 
 }

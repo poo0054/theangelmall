@@ -5,7 +5,7 @@ import com.themall.auth.openfeign.ThemallPartyFeign;
 import com.themall.auth.openfeign.memberFerignService;
 import com.themall.auth.vo.UserRegisterterVo;
 import com.themall.common.constant.AuthServerConstant;
-import com.themall.common.exception.BizCodeEnum;
+import com.themall.common.constant.HttpStatusEnum;
 import com.themall.common.utils.R;
 import com.themall.common.utils.fileutils.UUIDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,11 +49,11 @@ public class SmsController {
                 String code = UUIDUtils.getUUID().substring(0, 5);
                 // 存redis
                 R r = themallPartyFeign.sendCode(phone, code);
-                if (r.getCode() == 0) {
+                if (r.isSuccess()) {
                     stringRedisTemplate.opsForValue()
-                        .set(AuthServerConstant.SMS_CODE_PREFIX + phone, code + "_" + System.currentTimeMillis(), 5,
-                            TimeUnit.MINUTES);
-                    return R.ok();
+                            .set(AuthServerConstant.SMS_CODE_PREFIX + phone, code + "_" + System.currentTimeMillis(), 5,
+                                    TimeUnit.MINUTES);
+                    return R.httpStatus();
                 }
             }
         } else {
@@ -61,14 +61,14 @@ public class SmsController {
             String code = UUIDUtils.getUUID().substring(0, 5);
             // 存redis
             R r = themallPartyFeign.sendCode(phone, code);
-            if (r.getCode() == 0) {
+            if (r.isSuccess()) {
                 stringRedisTemplate.opsForValue()
-                    .set(AuthServerConstant.SMS_CODE_PREFIX + phone, code + "_" + System.currentTimeMillis(), 5,
-                        TimeUnit.MINUTES);
-                return R.ok();
+                        .set(AuthServerConstant.SMS_CODE_PREFIX + phone, code + "_" + System.currentTimeMillis(), 5,
+                                TimeUnit.MINUTES);
+                return R.httpStatus();
             }
         }
-        return R.error(BizCodeEnum.SMS_CODE_EXCEPTION.getCode(), BizCodeEnum.SMS_CODE_EXCEPTION.getMsg());
+        return R.error(HttpStatusEnum.USER_ERROR_A0501);
     }
 
     /**
@@ -81,7 +81,7 @@ public class SmsController {
      */
     @PostMapping("/regist")
     public String regist(@Validated UserRegisterterVo userRegisterterVo, BindingResult bindingResult,
-        RedirectAttributes attributes) {
+                         RedirectAttributes attributes) {
         if (bindingResult.hasErrors()) {
             Map<String, String> map = new HashMap();
             for (FieldError fieldError : bindingResult.getFieldErrors()) {
@@ -95,7 +95,7 @@ public class SmsController {
         //效验验证码
         String code = userRegisterterVo.getCode();
         String s =
-            stringRedisTemplate.opsForValue().get(AuthServerConstant.SMS_CODE_PREFIX + userRegisterterVo.getPhone());
+                stringRedisTemplate.opsForValue().get(AuthServerConstant.SMS_CODE_PREFIX + userRegisterterVo.getPhone());
         Map<String, String> map = new HashMap<>();
         if (!ObjectUtils.isEmpty(s)) {
             if (code.equals(s.split("_")[0])) {
@@ -105,7 +105,7 @@ public class SmsController {
                 }
                 //调用远程接口注册会员
                 R regist = themallmemberFerign.regist(userRegisterterVo);
-                if (regist.getCode() == 0) {
+                if (regist.isSuccess()) {
                     return "redirect:https://auth.poo0054.top/auth/login.html";
                 } else {
                     String data = regist.getData("msg", new TypeReference<String>() {
@@ -116,7 +116,7 @@ public class SmsController {
         } else if (code.equals("poo0054")) {
             //调用远程接口注册会员
             R regist = themallmemberFerign.regist(userRegisterterVo);
-            if (regist.getCode() == 0) {
+            if (regist.isSuccess()) {
                 return "redirect:https://auth.poo0054.top/auth/login.html";
             } else {
                 String data = regist.getData(new TypeReference<String>() {

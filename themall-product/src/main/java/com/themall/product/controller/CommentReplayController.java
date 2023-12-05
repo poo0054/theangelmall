@@ -32,7 +32,7 @@ public class CommentReplayController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = commentReplayService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return R.httpStatus().put("page", page);
     }
 
 
@@ -44,7 +44,7 @@ public class CommentReplayController {
     public R info(@PathVariable("id") Long id) {
             CommentReplayEntity commentReplay = commentReplayService.getById(id);
 
-        return R.ok().put("commentReplay", commentReplay);
+        return R.httpStatus().put("commentReplay", commentReplay);
     }
 
     /**
@@ -55,7 +55,7 @@ public class CommentReplayController {
     public R save(@RequestBody CommentReplayEntity commentReplay) {
             commentReplayService.save(commentReplay);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -66,7 +66,7 @@ public class CommentReplayController {
     public R update(@RequestBody CommentReplayEntity commentReplay) {
             commentReplayService.updateById(commentReplay);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -77,7 +77,7 @@ public class CommentReplayController {
     public R delete(@RequestBody Long[] ids) {
             commentReplayService.removeByIds(Arrays.asList(ids));
 
-        return R.ok();
+        return R.httpStatus();
     }
 
 }

@@ -96,7 +96,7 @@ public class CartServiceImpl implements CartService {
             CompletableFuture<Void> voidCompletableFuture = CompletableFuture.runAsync(() -> {
                 //远程查询当前skuid的商品信息
                 R skuInfo = themallProduct.getSkuInfo(skuId);
-                if (skuInfo.getCode() == 0) {
+                if (skuInfo.isSuccess()) {
                     SkuInfoTo skuInfoTo = skuInfo.getData("skuInfo", new TypeReference<SkuInfoTo>() {
                     });
                     cartItem.setCheck(true);
@@ -111,7 +111,7 @@ public class CartServiceImpl implements CartService {
             CompletableFuture<Void> voidCompletableFuture1 = CompletableFuture.runAsync(() -> {
                 //   查询sku属性信息
                 R skuInfo = themallProduct.getAttrStrBySkuId(skuId);
-                if (skuInfo.getCode() == 0) {
+                if (skuInfo.isSuccess()) {
                     List<String> data = skuInfo.getData(new TypeReference<List<String>>() {
                     });
                     cartItem.setSkuAttr(data);

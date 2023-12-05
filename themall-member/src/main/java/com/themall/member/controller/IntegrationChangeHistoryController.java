@@ -32,7 +32,7 @@ public class IntegrationChangeHistoryController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = integrationChangeHistoryService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return R.httpStatus().put("page", page);
     }
 
     /**
@@ -43,7 +43,7 @@ public class IntegrationChangeHistoryController {
     public R info(@PathVariable("id") Long id) {
         IntegrationChangeHistoryEntity integrationChangeHistory = integrationChangeHistoryService.getById(id);
 
-        return R.ok().put("integrationChangeHistory", integrationChangeHistory);
+        return R.httpStatus().put("integrationChangeHistory", integrationChangeHistory);
     }
 
     /**
@@ -54,7 +54,7 @@ public class IntegrationChangeHistoryController {
     public R save(@RequestBody IntegrationChangeHistoryEntity integrationChangeHistory) {
         integrationChangeHistoryService.save(integrationChangeHistory);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -65,7 +65,7 @@ public class IntegrationChangeHistoryController {
     public R update(@RequestBody IntegrationChangeHistoryEntity integrationChangeHistory) {
         integrationChangeHistoryService.updateById(integrationChangeHistory);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -76,7 +76,7 @@ public class IntegrationChangeHistoryController {
     public R delete(@RequestBody Long[] ids) {
         integrationChangeHistoryService.removeByIds(Arrays.asList(ids));
 
-        return R.ok();
+        return R.httpStatus();
     }
 
 }

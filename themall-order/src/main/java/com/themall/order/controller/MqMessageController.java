@@ -32,7 +32,7 @@ public class MqMessageController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = mqMessageService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return R.httpStatus().put("page", page);
     }
 
 
@@ -44,7 +44,7 @@ public class MqMessageController {
     public R info(@PathVariable("messageId") String messageId) {
             MqMessageEntity mqMessage = mqMessageService.getById(messageId);
 
-        return R.ok().put("mqMessage", mqMessage);
+        return R.httpStatus().put("mqMessage", mqMessage);
     }
 
     /**
@@ -55,7 +55,7 @@ public class MqMessageController {
     public R save(@RequestBody MqMessageEntity mqMessage) {
             mqMessageService.save(mqMessage);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -66,7 +66,7 @@ public class MqMessageController {
     public R update(@RequestBody MqMessageEntity mqMessage) {
             mqMessageService.updateById(mqMessage);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -77,7 +77,7 @@ public class MqMessageController {
     public R delete(@RequestBody String[] messageIds) {
             mqMessageService.removeByIds(Arrays.asList(messageIds));
 
-        return R.ok();
+        return R.httpStatus();
     }
 
 }

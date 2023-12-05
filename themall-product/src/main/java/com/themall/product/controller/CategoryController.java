@@ -1,17 +1,13 @@
 package com.themall.product.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.themall.common.utils.R;
 import com.themall.product.entity.CategoryEntity;
 import com.themall.product.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -38,7 +34,7 @@ public class CategoryController {
     //@RequiresPermissions("product:category:list")
     public R list() {
         List<CategoryEntity> categoryEntityList = categoryService.listCategoryTree();
-        return R.ok().put("data", categoryEntityList);
+        return R.httpStatus().put("data", categoryEntityList);
     }
 
 
@@ -50,7 +46,7 @@ public class CategoryController {
     public R info(@PathVariable("catId") Long catId) {
         CategoryEntity category = categoryService.getById(catId);
 
-        return R.ok().put("data", category);
+        return R.httpStatus().put("data", category);
     }
 
     /**
@@ -60,7 +56,7 @@ public class CategoryController {
     //@RequiresPermissions("product:category:save")
     public R save(@RequestBody CategoryEntity category) {
         categoryService.addCategory(category);
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -70,7 +66,7 @@ public class CategoryController {
     //@RequiresPermissions("product:category:update")
     public R update(@RequestBody CategoryEntity category) {
         categoryService.updateDetail(category);
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -80,7 +76,7 @@ public class CategoryController {
     //@RequiresPermissions("product:category:update")
     public R updateList(@RequestBody List<CategoryEntity> category) {
         categoryService.updateBatchById(category);
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -91,23 +87,7 @@ public class CategoryController {
     public R delete(@RequestBody Long[] catIds) {
 //        categoryService.removeByIds(Arrays.asList(catIds));
         categoryService.removeMenuById(Arrays.asList(catIds));
-        return R.ok();
-    }
-
-    //    @RequestMapping(value = "/files", method = RequestMethod.POST)
-    public R files(@RequestParam("file") MultipartFile[] files) {
-        Map map = new HashMap<>();
-        boolean b = false;
-        for (MultipartFile file : files) {
-//            Map<String, String> stringStringMap = thirdPartyService.cosTenGoodsLogo(file);
-        }
-        JSONObject json = new JSONObject();
-        json.putAll(map);
-        if (b) {
-            return R.ok(json);
-        } else {
-            return R.error(json.toJSONString());
-        }
+        return R.httpStatus();
     }
 
 }

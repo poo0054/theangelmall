@@ -15,7 +15,6 @@ import io.renren.modules.sys.service.SysCaptchaService;
 import io.renren.modules.sys.service.SysUserService;
 import io.renren.modules.sys.service.SysUserTokenService;
 import org.apache.commons.io.IOUtils;
-import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -72,8 +71,8 @@ public class SysLoginController extends AbstractController {
         //用户信息
         SysUserEntity user = sysUserService.queryByUserName(form.getUsername());
 
-        //账号不存在、密码错误
-        if (user == null || !user.getPassword().equals(new Sha256Hash(form.getPassword(), user.getSalt()).toHex())) {
+        //TODO 账号不存在、密码错误
+        if (user == null || !user.getPassword().equals(form.getPassword())) {
             return R.error("账号或密码不正确");
         }
 

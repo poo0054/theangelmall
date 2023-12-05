@@ -19,11 +19,6 @@
 
 
     <dependencies>
-        <!--链路追踪-->
-        <!--  <dependency>
-              <groupId>org.springframework.cloud</groupId>
-              <artifactId>spring-cloud-starter-sleuth</artifactId>
-          </dependency>-->
 
         <!--        可视化,内部已经引用了sleuth，就不需要再次引用-->
         <dependency>

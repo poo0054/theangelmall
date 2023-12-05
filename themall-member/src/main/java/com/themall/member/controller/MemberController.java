@@ -1,6 +1,6 @@
 package com.themall.member.controller;
 
-import com.themall.common.exception.BizCodeEnum;
+import com.themall.common.constant.HttpStatusEnum;
 import com.themall.common.exception.RRException;
 import com.themall.common.utils.PageUtils;
 import com.themall.common.utils.R;
@@ -42,9 +42,9 @@ public class MemberController {
     public R login(@RequestBody LoginUserVo loginUserVo) {
         try {
             MemberEntity login = memberService.login(loginUserVo);
-            return R.ok().setData(login);
+            return R.httpStatus().setData(login);
         } catch (RRException e) {
-            return R.error(BizCodeEnum.USER_PASSWORD_EXCEPTION.getCode(), BizCodeEnum.USER_PASSWORD_EXCEPTION.getMsg());
+            return R.error(HttpStatusEnum.USER_ERROR_A0120);
         }
     }
 
@@ -58,9 +58,9 @@ public class MemberController {
         try {
             memberService.regist(memberRegistVo);
         } catch (MemberExection e) {
-            return R.error(BizCodeEnum.USER_EXCEPTION.getCode(), e.getMessage());
+            return R.error(HttpStatusEnum.USER_ERROR_A0120);
         }
-        return R.ok();
+        return R.httpStatus();
     }
 
 
@@ -68,7 +68,7 @@ public class MemberController {
     public R getMemberCoupon() {
         MemberEntity memberEntity = new MemberEntity();
         memberEntity.setNickname("张三");
-        return R.ok().put("member", memberEntity).put("coupon", couponOpenFeignService.memberList().get("coupons"));
+        return R.httpStatus().put("member", memberEntity).put("coupon", couponOpenFeignService.memberList().get("coupons"));
     }
 
     /**
@@ -78,7 +78,7 @@ public class MemberController {
     //@RequiresPermissions("member:member:list")
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = memberService.queryPage(params);
-        return R.ok().put("page", page);
+        return R.httpStatus().put("page", page);
     }
 
 
@@ -89,7 +89,7 @@ public class MemberController {
     //@RequiresPermissions("member:member:info")
     public R info(@PathVariable("id") Long id) {
         MemberEntity member = memberService.getById(id);
-        return R.ok().put("member", member);
+        return R.httpStatus().put("member", member);
     }
 
     /**
@@ -99,7 +99,7 @@ public class MemberController {
     //@RequiresPermissions("member:member:save")
     public R save(@RequestBody MemberEntity member) {
         memberService.save(member);
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -110,7 +110,7 @@ public class MemberController {
     public R update(@RequestBody MemberEntity member) {
         memberService.updateById(member);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -121,7 +121,7 @@ public class MemberController {
     public R delete(@RequestBody Long[] ids) {
         memberService.removeByIds(Arrays.asList(ids));
 
-        return R.ok();
+        return R.httpStatus();
     }
 
 }

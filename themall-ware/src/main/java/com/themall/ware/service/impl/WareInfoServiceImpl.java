@@ -45,7 +45,7 @@ public class WareInfoServiceImpl extends ServiceImpl<WareInfoDao, WareInfoEntity
     @Override
     public FareVo getFare(Long addrId) {
         R address = memberFeignService.getAddrInfo(addrId);
-        if (address.getCode() == 0) {
+        if (address.isSuccess()) {
             MemberReceiveAddressVo data = address.getData("memberReceiveAddress", new TypeReference<MemberReceiveAddressVo>() {
             });
             //TODO 調用第三方物流接口  查詢物流的價格返回

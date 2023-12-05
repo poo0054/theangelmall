@@ -29,6 +29,6 @@ public class CartItemController {
     @GetMapping("/cartitem")
     public R getCartItemById() {
         List<CartItem> list = cartService.getCartItemBy();
-        return R.ok().setData(list);
+        return R.httpStatus().setData(list);
     }
 }

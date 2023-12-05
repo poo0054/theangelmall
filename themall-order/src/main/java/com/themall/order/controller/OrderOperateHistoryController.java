@@ -32,7 +32,7 @@ public class OrderOperateHistoryController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = orderOperateHistoryService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return R.httpStatus().put("page", page);
     }
 
 
@@ -44,7 +44,7 @@ public class OrderOperateHistoryController {
     public R info(@PathVariable("id") Long id) {
             OrderOperateHistoryEntity orderOperateHistory = orderOperateHistoryService.getById(id);
 
-        return R.ok().put("orderOperateHistory", orderOperateHistory);
+        return R.httpStatus().put("orderOperateHistory", orderOperateHistory);
     }
 
     /**
@@ -55,7 +55,7 @@ public class OrderOperateHistoryController {
     public R save(@RequestBody OrderOperateHistoryEntity orderOperateHistory) {
             orderOperateHistoryService.save(orderOperateHistory);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -66,7 +66,7 @@ public class OrderOperateHistoryController {
     public R update(@RequestBody OrderOperateHistoryEntity orderOperateHistory) {
             orderOperateHistoryService.updateById(orderOperateHistory);
 
-        return R.ok();
+        return R.httpStatus();
     }
 
     /**
@@ -77,7 +77,7 @@ public class OrderOperateHistoryController {
     public R delete(@RequestBody Long[] ids) {
             orderOperateHistoryService.removeByIds(Arrays.asList(ids));
 
-        return R.ok();
+        return R.httpStatus();
     }
 
 }

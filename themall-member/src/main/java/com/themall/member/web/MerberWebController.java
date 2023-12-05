@@ -75,7 +75,7 @@ public class MerberWebController {
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("page", page);
         R r = orderFeignService.listWithItem(hashMap);
-        if (0 == r.getCode()) {
+        if (r.isSuccess()) {
             System.out.println(JSON.toJSONString(r));
             model.addAttribute("orders", r);
         }
