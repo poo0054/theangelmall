@@ -70,11 +70,10 @@ public class SysLoginController extends AbstractController {
      */
     @PostMapping("/sys/login")
     public R login(@RequestBody @Validated SysLoginForm form) {
-       /* boolean captcha = sysCaptchaService.validate(form.getUuid(), form.getCaptcha());
+        boolean captcha = sysCaptchaService.validate(form.getUuid(), form.getCaptcha());
         if (!captcha) {
             return R.error("验证码不正确");
-        }*/
-
+        }
         //用户信息
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(form.getUsername(), form.getPassword());
         Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);

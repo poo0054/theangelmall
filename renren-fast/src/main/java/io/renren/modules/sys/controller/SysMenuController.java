@@ -11,12 +11,12 @@ package io.renren.modules.sys.controller;
 import io.renren.annotation.SysLog;
 import io.renren.exception.RRException;
 import io.renren.modules.sys.entity.SysMenuEntity;
-import io.renren.modules.sys.service.ShiroService;
 import io.renren.modules.sys.service.SysMenuService;
 import io.renren.utils.Constant;
 import io.renren.utils.R;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -33,13 +33,12 @@ import java.util.List;
 public class SysMenuController extends AbstractController {
     @Autowired
     private SysMenuService sysMenuService;
-    @Autowired
-    private ShiroService shiroService;
 
     /**
      * 导航菜单
      */
     @GetMapping("/nav")
+    @PreAuthorize("hasAuthority('sys:menu:list')")
     public R nav() {
         List<SysMenuEntity> menuList = sysMenuService.getUserMenuList(getUserId());
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -50,7 +49,7 @@ public class SysMenuController extends AbstractController {
      * 所有菜单列表
      */
     @GetMapping("/list")
-//	@RequiresPermissions("sys:menu:list")
+    @PreAuthorize("hasAuthority('sys:menu:list')")
     public List<SysMenuEntity> list() {
         List<SysMenuEntity> menuList = sysMenuService.list();
         for (SysMenuEntity sysMenuEntity : menuList) {

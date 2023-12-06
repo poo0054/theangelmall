@@ -66,6 +66,7 @@ public class SysUserController extends AbstractController {
      * 获取登录的用户信息
      */
     @GetMapping("/info")
+    @PreAuthorize("hasAuthority('sys:user:list')")
     public R info() {
         return R.ok().put("user", getUser());
     }
@@ -75,6 +76,7 @@ public class SysUserController extends AbstractController {
      */
     @SysLog("修改密码")
     @PostMapping("/password")
+    @PreAuthorize("hasAuthority('sys:user:update')")
     public R password(@RequestBody PasswordForm form) {
         Assert.isBlank(form.getNewPassword(), "新密码不为能空");
         String password = passwordEncoder.encode(form.getPassword());
@@ -92,7 +94,7 @@ public class SysUserController extends AbstractController {
      * 用户信息
      */
     @GetMapping("/info/{userId}")
-//	@RequiresPermissions("sys:user:info")
+    @PreAuthorize("hasAuthority('sys:user:list')")
     public R info(@PathVariable("userId") Long userId) {
         SysUserEntity user = sysUserService.getById(userId);
 
@@ -108,7 +110,7 @@ public class SysUserController extends AbstractController {
      */
     @SysLog("保存用户")
     @PostMapping("/save")
-//	@RequiresPermissions("sys:user:save")
+    @PreAuthorize("hasAuthority('sys:user:update')")
     public R save(@RequestBody SysUserEntity user) {
         ValidatorUtils.validateEntity(user, AddGroup.class);
 
@@ -123,13 +125,11 @@ public class SysUserController extends AbstractController {
      */
     @SysLog("修改用户")
     @PostMapping("/update")
-//	@RequiresPermissions("sys:user:update")
+    @PreAuthorize("hasAuthority('sys:user:update')")
     public R update(@RequestBody SysUserEntity user) {
         ValidatorUtils.validateEntity(user, UpdateGroup.class);
-
         user.setCreateUserId(getUserId());
         sysUserService.update(user);
-
         return R.ok();
     }
 
@@ -138,18 +138,15 @@ public class SysUserController extends AbstractController {
      */
     @SysLog("删除用户")
     @PostMapping("/delete")
-//	@RequiresPermissions("sys:user:delete")
+    @PreAuthorize("hasAuthority('sys:user:update')")
     public R delete(@RequestBody Long[] userIds) {
         if (ArrayUtils.contains(userIds, 1L)) {
             return R.error("系统管理员不能删除");
         }
-
         if (ArrayUtils.contains(userIds, getUserId())) {
             return R.error("当前用户不能删除");
         }
-
         sysUserService.deleteBatch(userIds);
-
         return R.ok();
     }
 }
