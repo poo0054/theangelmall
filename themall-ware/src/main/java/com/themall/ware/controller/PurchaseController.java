@@ -1,7 +1,7 @@
 package com.themall.ware.controller;
 
 import com.themall.common.utils.PageUtils;
-import com.themall.common.utils.R;
+import com.themall.model.entity.R;
 import com.themall.ware.entity.PurchaseEntity;
 import com.themall.ware.service.PurchaseService;
 import com.themall.ware.vo.MergeVo;

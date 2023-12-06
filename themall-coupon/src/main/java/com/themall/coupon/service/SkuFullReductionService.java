@@ -1,9 +1,9 @@
 package com.themall.coupon.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.themall.common.to.SkuReductionTo;
 import com.themall.common.utils.PageUtils;
 import com.themall.coupon.entity.SkuFullReductionEntity;
+import com.themall.model.to.SkuReductionTo;
 
 import java.util.Map;
 

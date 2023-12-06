@@ -17,10 +17,11 @@ import io.renren.utils.Constant;
 import io.renren.utils.R;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * 系统菜单
@@ -41,8 +42,8 @@ public class SysMenuController extends AbstractController {
     @GetMapping("/nav")
     public R nav() {
         List<SysMenuEntity> menuList = sysMenuService.getUserMenuList(getUserId());
-        Set<String> permissions = shiroService.getUserPermissions(getUserId());
-        return R.ok().put("menuList", menuList).put("permissions", permissions);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return R.ok().put("menuList", menuList).put("permissions", authentication.getAuthorities());
     }
 
     /**

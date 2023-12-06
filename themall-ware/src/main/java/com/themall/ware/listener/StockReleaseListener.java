@@ -1,8 +1,8 @@
 package com.themall.ware.listener;
 
 import com.rabbitmq.client.Channel;
-import com.themall.common.to.mq.OrderTo;
-import com.themall.common.to.mq.StockLockedTo;
+import com.themall.model.to.mq.OrderTo;
+import com.themall.model.to.mq.StockLockedTo;
 import com.themall.ware.service.WareSkuService;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;

@@ -1,10 +1,10 @@
 package com.themall.coupon.controller;
 
-import com.themall.common.to.SkuReductionTo;
 import com.themall.common.utils.PageUtils;
-import com.themall.common.utils.R;
 import com.themall.coupon.entity.SkuFullReductionEntity;
 import com.themall.coupon.service.SkuFullReductionService;
+import com.themall.model.entity.R;
+import com.themall.model.to.SkuReductionTo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

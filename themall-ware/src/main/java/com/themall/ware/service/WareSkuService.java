@@ -1,10 +1,10 @@
 package com.themall.ware.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.themall.common.to.SkuHasStockVo;
-import com.themall.common.to.mq.OrderTo;
-import com.themall.common.to.mq.StockLockedTo;
 import com.themall.common.utils.PageUtils;
+import com.themall.model.to.SkuHasStockVo;
+import com.themall.model.to.mq.OrderTo;
+import com.themall.model.to.mq.StockLockedTo;
 import com.themall.ware.entity.WareSkuEntity;
 import com.themall.ware.to.WareSkuLockTo;
 

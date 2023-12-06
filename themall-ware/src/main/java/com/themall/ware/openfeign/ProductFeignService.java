@@ -1,6 +1,6 @@
 package com.themall.ware.openfeign;
 
-import com.themall.common.utils.R;
+import com.themall.model.entity.R;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

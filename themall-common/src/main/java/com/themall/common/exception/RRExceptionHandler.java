@@ -8,8 +8,8 @@
 
 package com.themall.common.exception;
 
-import com.themall.common.constant.HttpStatusEnum;
-import com.themall.common.utils.R;
+import com.themall.model.constants.HttpStatusEnum;
+import com.themall.model.entity.R;
 import com.themall.model.exception.RRException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
@@ -24,8 +24,8 @@ import org.springframework.web.servlet.NoHandlerFoundException;
  *
  * @author Mark sunlightcs@gmail.com
  */
-@Slf4j
 @RestControllerAdvice
+@Slf4j
 public class RRExceptionHandler {
 
     /**

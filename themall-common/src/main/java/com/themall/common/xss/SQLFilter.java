@@ -9,7 +9,7 @@
 package com.themall.common.xss;
 
 import com.themall.model.exception.RRException;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * SQL过滤

@@ -1,8 +1,8 @@
 package com.themall.product.openfeign;
 
-import com.themall.common.to.SkuReductionTo;
-import com.themall.common.to.SpuBoundTo;
-import com.themall.common.utils.R;
+import com.themall.model.entity.R;
+import com.themall.model.to.SkuReductionTo;
+import com.themall.model.to.SpuBoundTo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

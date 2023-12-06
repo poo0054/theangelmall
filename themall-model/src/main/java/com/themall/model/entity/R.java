@@ -6,11 +6,12 @@
  * 版权所有，侵权必究！
  */
 
-package com.themall.common.utils;
+package com.themall.model.entity;
+
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.themall.common.constant.HttpStatusEnum;
+import com.themall.model.constants.HttpStatusEnum;
 
 import java.util.HashMap;
 import java.util.Map;

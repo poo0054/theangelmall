@@ -1,7 +1,7 @@
 package com.themall.product.controller;
 
 import com.themall.common.utils.PageUtils;
-import com.themall.common.utils.R;
+import com.themall.model.entity.R;
 import com.themall.product.entity.AttrAttrgroupRelationEntity;
 import com.themall.product.entity.AttrEntity;
 import com.themall.product.entity.AttrGroupEntity;

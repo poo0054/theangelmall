@@ -1,4 +1,4 @@
-package com.themall.common.to.es;
+package com.themall.model.to.es;
 
 import lombok.Data;
 

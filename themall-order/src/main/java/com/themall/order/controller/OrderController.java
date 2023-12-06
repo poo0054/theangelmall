@@ -1,7 +1,7 @@
 package com.themall.order.controller;
 
 import com.themall.common.utils.PageUtils;
-import com.themall.common.utils.R;
+import com.themall.model.entity.R;
 import com.themall.order.entity.OrderEntity;
 import com.themall.order.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,9 +1,9 @@
 package com.themall.member.controller;
 
 import com.themall.common.utils.PageUtils;
-import com.themall.common.utils.R;
 import com.themall.member.entity.MemberCollectSpuEntity;
 import com.themall.member.service.MemberCollectSpuService;
+import com.themall.model.entity.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

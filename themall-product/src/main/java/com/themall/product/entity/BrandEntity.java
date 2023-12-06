@@ -2,9 +2,9 @@ package com.themall.product.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.themall.common.valid.ListVlaue;
-import com.themall.common.valid.addGro;
-import com.themall.common.valid.updateGro;
+import com.themall.model.valid.ListVlaue;
+import com.themall.model.valid.addGro;
+import com.themall.model.valid.updateGro;
 import lombok.Data;
 import org.hibernate.validator.constraints.URL;
 

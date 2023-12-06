@@ -1,4 +1,4 @@
-package com.themall.common.to;
+package com.themall.model.to;
 
 import lombok.Data;
 import lombok.ToString;

@@ -2,8 +2,8 @@ package com.themall.order.service;
 
 import com.alipay.api.AlipayApiException;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.themall.common.to.mq.SeckillOrderTo;
 import com.themall.common.utils.PageUtils;
+import com.themall.model.to.mq.SeckillOrderTo;
 import com.themall.order.entity.OrderEntity;
 import com.themall.order.vo.*;
 

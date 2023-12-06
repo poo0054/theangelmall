@@ -1,7 +1,7 @@
 package com.themall.product.exception;
 
-import com.themall.common.constant.HttpStatusEnum;
-import com.themall.common.utils.R;
+import com.themall.model.constants.HttpStatusEnum;
+import com.themall.model.entity.R;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;

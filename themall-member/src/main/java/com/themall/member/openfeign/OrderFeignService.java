@@ -1,6 +1,6 @@
 package com.themall.member.openfeign;
 
-import com.themall.common.utils.R;
+import com.themall.model.entity.R;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

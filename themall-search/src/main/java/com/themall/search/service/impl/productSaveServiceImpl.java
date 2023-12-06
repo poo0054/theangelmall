@@ -1,7 +1,7 @@
 package com.themall.search.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.themall.common.to.es.SkuEsModel;
+import com.themall.model.to.es.SkuEsModel;
 import com.themall.search.config.ElasticSearchConfig;
 import com.themall.search.constant.EsConstant;
 import com.themall.search.service.productSaveService;

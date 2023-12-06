@@ -1,6 +1,6 @@
 package com.themall.product.controller;
 
-import com.themall.common.utils.R;
+import com.themall.model.entity.R;
 import com.themall.product.entity.CategoryEntity;
 import com.themall.product.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;

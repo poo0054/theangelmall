@@ -1,6 +1,6 @@
 package com.themall.product.openfeign;
 
-import com.themall.common.utils.R;
+import com.themall.model.entity.R;
 import com.themall.product.openfeign.fallback.SeckilleFeignServiceFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;

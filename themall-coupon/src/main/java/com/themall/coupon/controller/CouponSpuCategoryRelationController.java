@@ -1,9 +1,9 @@
 package com.themall.coupon.controller;
 
 import com.themall.common.utils.PageUtils;
-import com.themall.common.utils.R;
 import com.themall.coupon.entity.CouponSpuCategoryRelationEntity;
 import com.themall.coupon.service.CouponSpuCategoryRelationService;
+import com.themall.model.entity.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

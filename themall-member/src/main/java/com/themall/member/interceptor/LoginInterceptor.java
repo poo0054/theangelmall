@@ -1,7 +1,7 @@
 package com.themall.member.interceptor;
 
-import com.themall.common.constant.AuthServerConstant;
-import com.themall.common.to.MemberVo;
+import com.themall.model.constants.AuthServerConstant;
+import com.themall.model.to.MemberVo;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.ObjectUtils;

@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.themall.common.utils.PageUtils;
 import com.themall.common.utils.Query;
-import com.themall.common.utils.R;
+import com.themall.model.entity.R;
 import com.themall.ware.dao.WareInfoDao;
 import com.themall.ware.entity.WareInfoEntity;
 import com.themall.ware.openfeign.MemberFeignService;

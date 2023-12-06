@@ -2,8 +2,8 @@ package com.themall.search.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.themall.common.to.es.SkuEsModel;
-import com.themall.common.utils.R;
+import com.themall.model.entity.R;
+import com.themall.model.to.es.SkuEsModel;
 import com.themall.search.config.ElasticSearchConfig;
 import com.themall.search.constant.EsConstant;
 import com.themall.search.openfeign.ThemallProduct;

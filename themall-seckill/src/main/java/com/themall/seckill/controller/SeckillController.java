@@ -1,7 +1,7 @@
 package com.themall.seckill.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.themall.common.utils.R;
+import com.themall.model.entity.R;
 import com.themall.seckill.service.SeckillService;
 import com.themall.seckill.to.SeckillSkuRedisTo;
 import org.springframework.beans.factory.annotation.Autowired;

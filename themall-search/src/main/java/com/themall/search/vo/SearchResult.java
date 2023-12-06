@@ -1,6 +1,6 @@
 package com.themall.search.vo;
 
-import com.themall.common.to.es.SkuEsModel;
+import com.themall.model.to.es.SkuEsModel;
 import lombok.Data;
 
 import java.util.ArrayList;

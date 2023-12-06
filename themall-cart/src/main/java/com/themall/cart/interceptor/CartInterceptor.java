@@ -1,10 +1,10 @@
 package com.themall.cart.interceptor;
 
 import com.themall.cart.to.CartUserTo;
-import com.themall.common.constant.AuthServerConstant;
-import com.themall.common.constant.CartConstant;
-import com.themall.common.to.MemberVo;
 import com.themall.common.utils.fileutils.UUIDUtils;
+import com.themall.model.constants.AuthServerConstant;
+import com.themall.model.constants.CartConstant;
+import com.themall.model.to.MemberVo;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;

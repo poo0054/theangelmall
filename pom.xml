@@ -16,9 +16,10 @@
         <revision>1.1-Beta</revision>
         <java.version>1.8</java.version>
         <json.version>1.2.72</json.version>
-        <spring-boot-alibaba.version>2.2.1.RELEASE</spring-boot-alibaba.version>
-        <spring-cloud.version>Hoxton.SR3</spring-cloud.version>
-        <spring-boot.version>2.2.5.RELEASE</spring-boot.version>
+        <spring-cloud-alibaba.version>2.2.9.RELEASE</spring-cloud-alibaba.version>
+        <spring-cloud.version>Hoxton.SR12</spring-cloud.version>
+        <spring-boot.version>2.3.12.RELEASE</spring-boot.version>
+
         <httpcore.version>4.4.14</httpcore.version>
         <commons-lang.version>2.6</commons-lang.version>
         <mysql-connector.version>8.0.25</mysql-connector.version>
@@ -49,6 +50,41 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.elasticsearch.client</groupId>
+                        <artifactId>elasticsearch-rest-client</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.elasticsearch</groupId>
+                        <artifactId>elasticsearch</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
 
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>
@@ -69,14 +105,12 @@
                 <version>${redisson.version}</version>
             </dependency>
 
-
             <!-- https://mvnrepository.com/artifact/org.redisson/redisson-spring-boot-starter -->
             <dependency>
                 <groupId>org.redisson</groupId>
                 <artifactId>redisson-spring-boot-starter</artifactId>
                 <version>${redisson.version}</version>
             </dependency>
-
 
             <dependency>
                 <groupId>cn.hutool</groupId>
@@ -111,13 +145,6 @@
                 <version>${alicloud-oss.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>com.alibaba.cloud</groupId>
-                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
-                <version>${spring-boot-alibaba.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
 
             <!-- mybatis-plus -->
             <dependency>
@@ -148,37 +175,6 @@
                 <version>${json.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-                <exclusions>
-                    <exclusion>
-                        <groupId>com.alibaba.nacos</groupId>
-                        <artifactId>nacos-client</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.elasticsearch.client</groupId>
-                        <artifactId>elasticsearch-rest-client</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring-boot.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.elasticsearch</groupId>
-                        <artifactId>elasticsearch</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
 
             <dependency>
                 <groupId>junit</groupId>
@@ -250,6 +246,12 @@
                 <artifactId>themall-model</artifactId>
                 <version>${revision}</version>
             </dependency>
+            <dependency>
+                <groupId>com.theangel.themall</groupId>
+                <artifactId>themall-common-pom</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
         </dependencies>
 
     </dependencyManagement>
@@ -272,6 +274,7 @@
         <module>themall-model</module>
         <module>themall-oauth2-server</module>
         <module>themall-oauth2-resource</module>
+        <module>themall-common-pom</module>
 
     </modules>
 

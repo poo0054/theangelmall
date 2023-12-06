@@ -1,4 +1,4 @@
-package com.themall.common.valid;
+package com.themall.model.valid;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

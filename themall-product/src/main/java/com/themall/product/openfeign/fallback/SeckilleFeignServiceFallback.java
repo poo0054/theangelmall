@@ -1,7 +1,7 @@
 package com.themall.product.openfeign.fallback;
 
-import com.themall.common.constant.HttpStatusEnum;
-import com.themall.common.utils.R;
+import com.themall.model.constants.HttpStatusEnum;
+import com.themall.model.entity.R;
 import com.themall.product.openfeign.SeckillFeignService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

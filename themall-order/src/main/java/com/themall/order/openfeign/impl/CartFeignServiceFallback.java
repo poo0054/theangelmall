@@ -1,7 +1,7 @@
 package com.themall.order.openfeign.impl;
 
-import com.themall.common.constant.HttpStatusEnum;
-import com.themall.common.utils.R;
+import com.themall.model.constants.HttpStatusEnum;
+import com.themall.model.entity.R;
 import com.themall.order.openfeign.CartFeignService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

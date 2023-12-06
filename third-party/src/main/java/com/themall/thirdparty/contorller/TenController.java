@@ -1,8 +1,8 @@
 package com.themall.thirdparty.contorller;
 
-import com.themall.common.utils.R;
 import com.themall.common.utils.fileutils.FileUtils;
 import com.themall.common.utils.fileutils.UUIDUtils;
+import com.themall.model.entity.R;
 import com.themall.thirdparty.utils.TencentUploadUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;

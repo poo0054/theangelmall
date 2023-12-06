@@ -1,4 +1,4 @@
-package com.themall.common.constant;
+package com.themall.model.constants;
 
 /**
  * @ProjectName: theangelmall

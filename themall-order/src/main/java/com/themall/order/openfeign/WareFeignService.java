@@ -1,6 +1,6 @@
 package com.themall.order.openfeign;
 
-import com.themall.common.utils.R;
+import com.themall.model.entity.R;
 import com.themall.order.to.WareSkuLockTo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;

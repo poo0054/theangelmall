@@ -1,7 +1,7 @@
 package com.themall.ware.controller;
 
 import com.themall.common.utils.PageUtils;
-import com.themall.common.utils.R;
+import com.themall.model.entity.R;
 import com.themall.ware.entity.UndoLogEntity;
 import com.themall.ware.service.UndoLogService;
 import org.springframework.beans.factory.annotation.Autowired;

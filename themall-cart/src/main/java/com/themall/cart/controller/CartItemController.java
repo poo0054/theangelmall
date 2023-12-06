@@ -2,7 +2,7 @@ package com.themall.cart.controller;
 
 import com.themall.cart.service.CartService;
 import com.themall.cart.vo.CartItem;
-import com.themall.common.utils.R;
+import com.themall.model.entity.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

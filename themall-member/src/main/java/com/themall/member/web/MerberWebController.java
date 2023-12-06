@@ -1,9 +1,9 @@
 package com.themall.member.web;
 
 import com.alibaba.fastjson.JSON;
-import com.themall.common.utils.R;
 import com.themall.member.config.ThreadConfig;
 import com.themall.member.openfeign.OrderFeignService;
+import com.themall.model.entity.R;
 import jodd.util.ThreadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

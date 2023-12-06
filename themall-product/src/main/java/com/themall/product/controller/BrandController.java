@@ -1,9 +1,9 @@
 package com.themall.product.controller;
 
 import com.themall.common.utils.PageUtils;
-import com.themall.common.utils.R;
-import com.themall.common.valid.addGro;
-import com.themall.common.valid.updateGro;
+import com.themall.model.entity.R;
+import com.themall.model.valid.addGro;
+import com.themall.model.valid.updateGro;
 import com.themall.product.entity.BrandEntity;
 import com.themall.product.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;

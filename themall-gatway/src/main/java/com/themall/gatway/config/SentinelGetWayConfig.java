@@ -2,8 +2,8 @@ package com.themall.gatway.config;
 
 import com.alibaba.csp.sentinel.adapter.gateway.sc.callback.GatewayCallbackManager;
 import com.alibaba.fastjson.JSON;
-import com.themall.common.constant.HttpStatusEnum;
-import com.themall.common.utils.R;
+import com.themall.model.constants.HttpStatusEnum;
+import com.themall.model.entity.R;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
@@ -19,13 +19,11 @@ import reactor.core.publisher.Mono;
 @Configuration
 public class SentinelGetWayConfig {
 
-
     public SentinelGetWayConfig() {
         //网关限流了请求
         GatewayCallbackManager.setBlockHandler((exchange, t) -> {
             R error = R.error(HttpStatusEnum.SYSTEM_ERROR_B0210);
-            Mono<ServerResponse> body = ServerResponse.ok().body(Mono.just(JSON.toJSONString(error)), String.class);
-            return body;
+            return ServerResponse.ok().body(Mono.just(JSON.toJSONString(error)), String.class);
         });
     }
 

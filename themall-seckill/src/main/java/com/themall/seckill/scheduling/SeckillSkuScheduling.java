@@ -1,6 +1,6 @@
 package com.themall.seckill.scheduling;
 
-import com.themall.common.constant.SeckillConstant;
+import com.themall.model.constants.SeckillConstant;
 import com.themall.seckill.service.SeckillService;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;

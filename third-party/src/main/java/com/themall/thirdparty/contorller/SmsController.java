@@ -1,6 +1,6 @@
 package com.themall.thirdparty.contorller;
 
-import com.themall.common.utils.R;
+import com.themall.model.entity.R;
 import com.themall.thirdparty.component.SmsComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

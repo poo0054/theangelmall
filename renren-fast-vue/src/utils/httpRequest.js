@@ -4,7 +4,6 @@ import router from '@/router'
 import qs from 'qs'
 import merge from 'lodash/merge'
 import {clearLoginInfo} from '@/utils'
-import {Message} from 'element-ui'
 
 const http = axios.create({
   timeout: 1000 * 30,
@@ -18,7 +17,7 @@ const http = axios.create({
  * 请求拦截
  */
 http.interceptors.request.use(config => {
-  config.headers['token'] = Vue.cookie.get('token') // 请求头带上token
+  config.headers['Authorization'] = 'Basic ' + Vue.cookie.get('token') // 请求头带上token
   return config
 }, error => {
   return Promise.reject(error)

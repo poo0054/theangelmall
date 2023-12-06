@@ -1,7 +1,7 @@
 package com.themall.order.listener;
 
 import com.rabbitmq.client.Channel;
-import com.themall.common.to.mq.SeckillOrderTo;
+import com.themall.model.to.mq.SeckillOrderTo;
 import com.themall.order.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;

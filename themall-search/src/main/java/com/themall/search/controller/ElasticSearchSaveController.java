@@ -1,8 +1,8 @@
 package com.themall.search.controller;
 
-import com.themall.common.constant.HttpStatusEnum;
-import com.themall.common.to.es.SkuEsModel;
-import com.themall.common.utils.R;
+import com.themall.model.constants.HttpStatusEnum;
+import com.themall.model.entity.R;
+import com.themall.model.to.es.SkuEsModel;
 import com.themall.search.service.productSaveService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

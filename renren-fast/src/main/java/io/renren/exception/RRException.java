@@ -8,7 +8,7 @@
 
 package io.renren.exception;
 
-import com.themall.common.constant.HttpStatusEnum;
+import com.themall.model.constants.HttpStatusEnum;
 
 /**
  * 自定义异常
