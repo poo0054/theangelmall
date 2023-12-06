@@ -9,8 +9,8 @@
 package io.renren.modules.sys.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import io.renren.common.utils.PageUtils;
-import io.renren.modules.sys.entity.SysUserEntity;
+import com.themall.model.entity.SysUserEntity;
+import io.renren.utils.PageUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;

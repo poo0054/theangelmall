@@ -8,13 +8,11 @@
 
 package io.renren.modules.sys.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import io.renren.common.utils.MapUtils;
 import io.renren.modules.sys.dao.SysUserRoleDao;
 import io.renren.modules.sys.entity.SysUserRoleEntity;
 import io.renren.modules.sys.service.SysUserRoleService;
+import io.renren.utils.MapUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -57,10 +55,4 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleDao, SysUserR
         return baseMapper.deleteBatch(roleIds);
     }
 
-    @Override
-    public List<SysUserRoleEntity> getByUserId(Long userId) {
-        LambdaQueryWrapper<SysUserRoleEntity> wrapper = Wrappers.lambdaQuery(SysUserRoleEntity.class);
-        wrapper.eq(SysUserRoleEntity::getUserId, userId);
-        return this.list(wrapper);
-    }
 }

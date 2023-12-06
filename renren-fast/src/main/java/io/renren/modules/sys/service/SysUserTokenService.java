@@ -9,8 +9,9 @@
 package io.renren.modules.sys.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import io.renren.common.utils.R;
 import io.renren.modules.sys.entity.SysUserTokenEntity;
+import io.renren.utils.R;
+import org.springframework.security.core.Authentication;
 
 /**
  * 用户Token
@@ -21,9 +22,11 @@ public interface SysUserTokenService extends IService<SysUserTokenEntity> {
 
 	/**
 	 * 生成token
-	 * @param userId  用户ID
+     *
+     * @param userId       用户ID
+     * @param authenticate
 	 */
-	R createToken(long userId);
+    R createToken(String userId, Authentication authenticate);
 
 	/**
 	 * 退出，修改token值

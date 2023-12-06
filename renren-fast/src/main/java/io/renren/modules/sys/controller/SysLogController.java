@@ -8,9 +8,9 @@
 
 package io.renren.modules.sys.controller;
 
-import io.renren.common.utils.PageUtils;
-import io.renren.common.utils.R;
 import io.renren.modules.sys.service.SysLogService;
+import io.renren.utils.PageUtils;
+import io.renren.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,6 +1,6 @@
 package io.renren.config;
 
-import io.renren.common.filter.JWTBasicAuthenticationFilter;
+import io.renren.filter.JWTBasicAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    AuthenticationConfiguration authenticationConfiguration;
+    private AuthenticationConfiguration authenticationConfiguration;
     @Autowired
     private JWTBasicAuthenticationFilter jwtBasicAuthenticationFilter;
 

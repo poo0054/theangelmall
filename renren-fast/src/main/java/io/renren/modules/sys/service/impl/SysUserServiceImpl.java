@@ -13,33 +13,29 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import io.renren.common.exception.RRException;
-import io.renren.common.utils.Constant;
-import io.renren.common.utils.PageUtils;
-import io.renren.common.utils.Query;
+import com.themall.model.entity.SysUserEntity;
+import io.renren.exception.RRException;
 import io.renren.modules.sys.dao.SysUserDao;
 import io.renren.modules.sys.entity.SysMenuEntity;
 import io.renren.modules.sys.entity.SysRoleEntity;
-import io.renren.modules.sys.entity.SysUserEntity;
-import io.renren.modules.sys.entity.SysUserRoleEntity;
 import io.renren.modules.sys.service.SysMenuService;
 import io.renren.modules.sys.service.SysRoleService;
 import io.renren.modules.sys.service.SysUserRoleService;
 import io.renren.modules.sys.service.SysUserService;
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.StringUtils;
+import io.renren.utils.Constant;
+import io.renren.utils.PageUtils;
+import io.renren.utils.Query;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -91,11 +87,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
     @Transactional
     public void saveUser(SysUserEntity user) {
         user.setCreateTime(new Date());
-        //sha256加密
-        String salt = RandomStringUtils.randomAlphanumeric(20);
         //TODO 密码
+
 //        user.setPassword(idu  .getMD5(user.getPassword(), salt));
-        user.setSalt(salt);
         this.save(user);
 
         //检查角色是否越权
@@ -154,24 +148,27 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         User.UserBuilder builder = User.builder();
         builder.username(sysUserEntity.getUsername());
         builder.password(sysUserEntity.getPassword());
-        List<SysUserRoleEntity> roleEntities = sysUserRoleService.getByUserId(sysUserEntity.getUserId());
         builder.authorities(AuthorityUtils.NO_AUTHORITIES);
-        if (ObjectUtils.isNotEmpty(roleEntities)) {
-            List<SysRoleEntity> byRoleIdIsIn = sysRoleService.getByRoleIdIsIn(roleEntities.stream().map(SysUserRoleEntity::getRoleId).collect(Collectors.toList()));
-            if (ObjectUtils.isNotEmpty(byRoleIdIsIn)) {
-                //角色
-                List<String> auth = byRoleIdIsIn.stream().map(SysRoleEntity::getRoleName).collect(Collectors.toList());
-                //根据角色查询权限 只能用角色绑定用户
-                List<SysMenuEntity> SysMenuEntitys = sysMenuService.getByRoleIds(byRoleIdIsIn.stream().map(SysRoleEntity::getRoleId).toArray(String[]::new));
-                if (ObjectUtils.isNotEmpty(SysMenuEntitys)) {
-                    List<String> collect = SysMenuEntitys.stream().map(SysMenuEntity::getPerms).collect(Collectors.toList());
-                    auth.addAll(collect);
-                }
-                builder.authorities(auth.toArray(new String[0]));
-            }
+        Set<String> auth = new HashSet<>();
+        //权限
+        List<SysRoleEntity> roleServiceAll = sysRoleService.listByUserId(sysUserEntity.getUserId());
+        if (ObjectUtils.isNotEmpty(roleServiceAll)) {
+            List<String> roles = roleServiceAll.stream().map(SysRoleEntity::getRoleName).collect(Collectors.toList());
+            auth.addAll(roles);
         }
+        //菜单
+        List<SysMenuEntity> sysMenuEntities = sysMenuService.listByUserId(sysUserEntity.getUserId());
+        if (ObjectUtils.isNotEmpty(sysMenuEntities)) {
+            auth.addAll(sysMenuEntities.stream().map(SysMenuEntity::getPerms).filter(ObjectUtils::isNotEmpty).collect(Collectors.toList()));
+        }
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        for (String s : auth) {
+            authorities.addAll(AuthorityUtils.commaSeparatedStringToAuthorityList(s));
+        }
+        builder.authorities(authorities);
         return builder.build();
     }
+
 
     /**
      * 检查角色是否越权
@@ -180,8 +177,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         if (user.getRoleIdList() == null || user.getRoleIdList().isEmpty()) {
             return;
         }
+
         //如果不是超级管理员，则需要判断用户的角色是否自己创建
-        if (user.getCreateUserId() == Constant.SUPER_ADMIN) {
+        if (Objects.equals(Constant.SUPER_ADMIN, user.getCreateUserId())) {
             return;
         }
 

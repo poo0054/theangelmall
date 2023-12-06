@@ -414,7 +414,7 @@ public enum HttpStatusEnum {
 
     SERVICE_ERROR_C0312("C0312", "列不存在"),
 
-    SERVICE_ERROR_C0321("C0321", "多表关联中存在多个相同名称的列"),
+    SERVICE_ERROR_C0321("C0321", "重复数据"),
 
     SERVICE_ERROR_C0331("C0331", "数据库死锁"),
 

@@ -34,6 +34,7 @@
         <hutool-all.version>4.1.1</hutool-all.version>
         <redisson.version>3.15.6</redisson.version>
         <alipay-sdk.version>4.9.28.ALL</alipay-sdk.version>
+        <jjwt.version>0.12.3</jjwt.version>
 
         <!-- <sonar.jacoco.reportPaths>${PWD}/./target/jacoco.exec</sonar.jacoco.reportPaths>
          <sonar.groovy.binaries>target/classes</sonar.groovy.binaries>-->
@@ -48,6 +49,12 @@
 
     <dependencyManagement>
         <dependencies>
+
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>com.alipay.sdk</groupId>
@@ -110,6 +117,29 @@
                 <version>${spring-boot-alibaba.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <!-- mybatis-plus -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-annotation</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-core</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-extension</artifactId>
+                <version>${mybatis-plus.version}</version>
             </dependency>
 
             <dependency>
@@ -184,24 +214,12 @@
                 <scope>provided</scope>
             </dependency>
 
-            <!-- mybatis-plus -->
-            <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-boot-starter</artifactId>
-                <version>${mybatis-plus.version}</version>
-            </dependency>
-
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>com.theangel.themall</groupId>
-                <artifactId>themall-common</artifactId>
-                <version>${revision}</version>
-            </dependency>
 
             <dependency>
                 <groupId>com.qcloud</groupId>
@@ -221,7 +239,17 @@
                 <artifactId>validation-api</artifactId>
                 <version>${valedatetion.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.theangel.themall</groupId>
+                <artifactId>themall-common</artifactId>
+                <version>${revision}</version>
+            </dependency>
 
+            <dependency>
+                <groupId>com.theangel.themall</groupId>
+                <artifactId>themall-model</artifactId>
+                <version>${revision}</version>
+            </dependency>
         </dependencies>
 
     </dependencyManagement>
@@ -241,9 +269,10 @@
         <module>themall-auth-server</module>
         <module>themall-cart</module>
         <module>themall-seckill</module>
+        <module>themall-model</module>
         <module>themall-oauth2-server</module>
         <module>themall-oauth2-resource</module>
-        <module>themall-model</module>
+
     </modules>
 
     <build>

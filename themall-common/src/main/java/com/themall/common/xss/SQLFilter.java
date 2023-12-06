@@ -8,7 +8,7 @@
 
 package com.themall.common.xss;
 
-import com.themall.common.exception.RRException;
+import com.themall.model.exception.RRException;
 import org.apache.commons.lang.StringUtils;
 
 /**

@@ -8,11 +8,12 @@
 
 package io.renren.modules.sys.controller;
 
-import io.renren.common.utils.R;
+import io.renren.filter.JWTBasicAuthenticationFilter;
 import io.renren.modules.sys.form.SysLoginForm;
 import io.renren.modules.sys.service.SysCaptchaService;
 import io.renren.modules.sys.service.SysUserService;
 import io.renren.modules.sys.service.SysUserTokenService;
+import io.renren.utils.R;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -45,6 +47,7 @@ public class SysLoginController extends AbstractController {
     private SysCaptchaService sysCaptchaService;
     @Autowired
     private AuthenticationManager authenticationManager;
+
 
     /**
      * 验证码
@@ -66,7 +69,7 @@ public class SysLoginController extends AbstractController {
      * 登录
      */
     @PostMapping("/sys/login")
-    public R login(@RequestBody @Validated SysLoginForm form) throws Exception {
+    public R login(@RequestBody @Validated SysLoginForm form) {
        /* boolean captcha = sysCaptchaService.validate(form.getUuid(), form.getCaptcha());
         if (!captcha) {
             return R.error("验证码不正确");
@@ -76,10 +79,9 @@ public class SysLoginController extends AbstractController {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(form.getUsername(), form.getPassword());
         Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         //如果authenticate对象为空，表示用户名或密码错误，抛出一个运行时异常。
+        //登陆成功
 
-
-        //生成token，并保存到数据库
-        return null;
+        return sysUserTokenService.createToken(form.getUsername(), authenticate);
     }
 
 
@@ -87,8 +89,8 @@ public class SysLoginController extends AbstractController {
      * 退出
      */
     @PostMapping("/sys/logout")
-    public R logout() {
-        sysUserTokenService.logout(getUserId());
+    public R logout(HttpServletRequest request) {
+        sysUserTokenService.logout((Long) request.getAttribute(JWTBasicAuthenticationFilter.class.getSimpleName()));
         return R.ok();
     }
 

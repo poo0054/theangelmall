@@ -8,13 +8,13 @@
 
 package io.renren.modules.sys.controller;
 
-import io.renren.common.annotation.SysLog;
-import io.renren.common.exception.RRException;
-import io.renren.common.utils.Constant;
-import io.renren.common.utils.R;
+import io.renren.annotation.SysLog;
+import io.renren.exception.RRException;
 import io.renren.modules.sys.entity.SysMenuEntity;
 import io.renren.modules.sys.service.ShiroService;
 import io.renren.modules.sys.service.SysMenuService;
+import io.renren.utils.Constant;
+import io.renren.utils.R;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

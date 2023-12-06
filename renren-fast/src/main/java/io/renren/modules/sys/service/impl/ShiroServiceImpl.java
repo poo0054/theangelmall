@@ -8,14 +8,14 @@
 
 package io.renren.modules.sys.service.impl;
 
-import io.renren.common.utils.Constant;
+import com.themall.model.entity.SysUserEntity;
 import io.renren.modules.sys.dao.SysMenuDao;
 import io.renren.modules.sys.dao.SysUserDao;
 import io.renren.modules.sys.dao.SysUserTokenDao;
 import io.renren.modules.sys.entity.SysMenuEntity;
-import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.sys.entity.SysUserTokenEntity;
 import io.renren.modules.sys.service.ShiroService;
+import io.renren.utils.Constant;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,7 +36,7 @@ public class ShiroServiceImpl implements ShiroService {
         List<String> permsList;
 
         //系统管理员，拥有最高权限
-        if(userId == Constant.SUPER_ADMIN){
+        if (Objects.equals(Constant.SUPER_ADMIN, userId)) {
             List<SysMenuEntity> menuList = sysMenuDao.selectList(null);
             permsList = new ArrayList<>(menuList.size());
             for(SysMenuEntity menu : menuList){

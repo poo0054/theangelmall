@@ -8,7 +8,7 @@
 
 package io.renren.modules.sys.service;
 
-import io.renren.modules.sys.entity.SysUserEntity;
+import com.themall.model.entity.SysUserEntity;
 import io.renren.modules.sys.entity.SysUserTokenEntity;
 
 import java.util.Set;

@@ -1,10 +1,10 @@
 package com.themall.ware.controller;
 
 import com.themall.common.constant.HttpStatusEnum;
-import com.themall.common.exception.NoStockException;
 import com.themall.common.to.SkuHasStockVo;
 import com.themall.common.utils.PageUtils;
 import com.themall.common.utils.R;
+import com.themall.model.exception.NoStockException;
 import com.themall.ware.entity.WareSkuEntity;
 import com.themall.ware.service.WareSkuService;
 import com.themall.ware.to.WareSkuLockTo;

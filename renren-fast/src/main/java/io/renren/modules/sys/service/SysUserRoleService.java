@@ -34,5 +34,4 @@ public interface SysUserRoleService extends IService<SysUserRoleEntity> {
 	 */
 	int deleteBatch(Long[] roleIds);
 
-    List<SysUserRoleEntity> getByUserId(Long userId);
 }

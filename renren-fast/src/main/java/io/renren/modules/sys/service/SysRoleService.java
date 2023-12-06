@@ -1,16 +1,16 @@
 /**
  * Copyright (c) 2016-2019 人人开源 All rights reserved.
- *
+ * <p>
  * https://www.renren.io
- *
+ * <p>
  * 版权所有，侵权必究！
  */
 
 package io.renren.modules.sys.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import io.renren.common.utils.PageUtils;
 import io.renren.modules.sys.entity.SysRoleEntity;
+import io.renren.utils.PageUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -23,19 +23,19 @@ import java.util.Map;
  */
 public interface SysRoleService extends IService<SysRoleEntity> {
 
-	PageUtils queryPage(Map<String, Object> params);
+    PageUtils queryPage(Map<String, Object> params);
 
-	void saveRole(SysRoleEntity role);
+    void saveRole(SysRoleEntity role);
 
-	void update(SysRoleEntity role);
+    void update(SysRoleEntity role);
 
-	void deleteBatch(Long[] roleIds);
+    void deleteBatch(Long[] roleIds);
+
+    /**
+     * 查询用户创建的角色ID列表
+     */
+    List<Long> queryRoleIdList(Long createUserId);
 
 
-	/**
-	 * 查询用户创建的角色ID列表
-	 */
-	List<Long> queryRoleIdList(Long createUserId);
-
-    List<SysRoleEntity> getByRoleIdIsIn(List<Long> roleIds);
+    List<SysRoleEntity> listByUserId(Long userId);
 }

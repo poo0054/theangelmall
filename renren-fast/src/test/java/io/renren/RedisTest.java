@@ -1,7 +1,7 @@
 package io.renren;
 
-import io.renren.common.utils.RedisUtils;
-import io.renren.modules.sys.entity.SysUserEntity;
+import com.themall.model.entity.SysUserEntity;
+import io.renren.utils.RedisUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -9,10 +9,10 @@
 package io.renren.modules.oss.cloud;
 
 
-import io.renren.common.utils.ConfigConstant;
-import io.renren.common.utils.Constant;
-import io.renren.common.utils.SpringContextUtils;
 import io.renren.modules.sys.service.SysConfigService;
+import io.renren.utils.ConfigConstant;
+import io.renren.utils.Constant;
+import io.renren.utils.SpringContextUtils;
 
 /**
  * 文件上传Factory

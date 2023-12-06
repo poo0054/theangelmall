@@ -8,25 +8,27 @@
 
 package io.renren.modules.sys.controller;
 
-import io.renren.common.annotation.SysLog;
-import io.renren.common.utils.Constant;
-import io.renren.common.utils.PageUtils;
-import io.renren.common.utils.R;
-import io.renren.common.validator.Assert;
-import io.renren.common.validator.ValidatorUtils;
-import io.renren.common.validator.group.AddGroup;
-import io.renren.common.validator.group.UpdateGroup;
-import io.renren.modules.sys.entity.SysUserEntity;
+import com.themall.model.entity.SysUserEntity;
+import com.themall.model.validator.Assert;
+import com.themall.model.validator.ValidatorUtils;
+import com.themall.model.validator.group.AddGroup;
+import com.themall.model.validator.group.UpdateGroup;
+import io.renren.annotation.SysLog;
 import io.renren.modules.sys.form.PasswordForm;
 import io.renren.modules.sys.service.SysUserRoleService;
 import io.renren.modules.sys.service.SysUserService;
+import io.renren.utils.Constant;
+import io.renren.utils.PageUtils;
+import io.renren.utils.R;
 import org.apache.commons.lang.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 系统用户
@@ -41,16 +43,18 @@ public class SysUserController extends AbstractController {
     @Autowired
     private SysUserRoleService sysUserRoleService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     /**
      * 所有用户列表
      */
     @GetMapping("/list")
-    @PreAuthorize("hasAuthority()")
+    @PreAuthorize("hasAuthority('sys:user:list')")
 //	@RequiresPermissions("sys:user:list")
     public R list(@RequestParam Map<String, Object> params) {
         //只有超级管理员，才能查看所有管理员列表
-        if (getUserId() != Constant.SUPER_ADMIN) {
+        if (Objects.equals(Constant.SUPER_ADMIN, getUserId())) {
             params.put("createUserId", getUserId());
         }
         PageUtils page = sysUserService.queryPage(params);
@@ -74,13 +78,13 @@ public class SysUserController extends AbstractController {
     public R password(@RequestBody PasswordForm form) {
         Assert.isBlank(form.getNewPassword(), "新密码不为能空");
 
-        //TODO sha256加密
-//		String password = new Sha256Hash(form.getPassword(), getUser().getSalt()).toHex();
+
+        String password = passwordEncoder.encode(form.getPassword());
 //		//sha256加密
-//		String newPassword = new Sha256Hash(form.getNewPassword(), getUser().getSalt()).toHex();
+        String newPassword = passwordEncoder.encode(form.getNewPassword());
 
         //更新密码
-        boolean flag = sysUserService.updatePassword(getUserId(), form.getPassword(), form.getNewPassword());
+        boolean flag = sysUserService.updatePassword(getUserId(), password, newPassword);
         if (!flag) {
             return R.error("原密码不正确");
         }

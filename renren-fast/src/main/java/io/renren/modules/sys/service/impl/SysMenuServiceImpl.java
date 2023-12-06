@@ -9,17 +9,14 @@
 package io.renren.modules.sys.service.impl;
 
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import io.renren.common.utils.Constant;
-import io.renren.common.utils.MapUtils;
 import io.renren.modules.sys.dao.SysMenuDao;
 import io.renren.modules.sys.entity.SysMenuEntity;
-import io.renren.modules.sys.entity.SysRoleMenuEntity;
 import io.renren.modules.sys.service.SysMenuService;
 import io.renren.modules.sys.service.SysRoleMenuService;
 import io.renren.modules.sys.service.SysUserService;
+import io.renren.utils.Constant;
+import io.renren.utils.MapUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +24,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 
 @Service("sysMenuService")
@@ -66,7 +63,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
     @Override
     public List<SysMenuEntity> getUserMenuList(Long userId) {
         //系统管理员，拥有最高权限
-        if (userId == Constant.SUPER_ADMIN) {
+        if (Objects.equals(Constant.SUPER_ADMIN, userId)) {
             return getAllMenuList(null);
         }
 
@@ -84,15 +81,26 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
     }
 
     @Override
-    public List<SysMenuEntity> getByRoleIds(String[] roleIds) {
-        List<SysRoleMenuEntity> byRoleId = sysRoleMenuService.getByRoleId(roleIds);
-        if (ObjectUtils.isNotEmpty(byRoleId)) {
-            return Collections.emptyList();
+    public List<SysMenuEntity> listByUserId(Long userId) {
+        if (Objects.equals(userId, Constant.SUPER_ADMIN)) {
+            return this.list();
         }
-        LambdaQueryWrapper<SysMenuEntity> queryWrapper = Wrappers.lambdaQuery(SysMenuEntity.class);
-        List<Long> menuIds = byRoleId.stream().map(SysRoleMenuEntity::getMenuId).collect(Collectors.toList());
-        queryWrapper.in(SysMenuEntity::getMenuId, menuIds);
-        return this.list(queryWrapper);
+        //用户菜单列表
+        List<Long> menuIdList = sysUserService.queryAllMenuId(userId);
+        return listById(menuIdList);
+    }
+
+    private List<SysMenuEntity> listById(List<Long> menuIdList) {
+        List<SysMenuEntity> sysMenuEntities = this.listByIds(menuIdList);
+        if (ObjectUtils.isNotEmpty(sysMenuEntities)) {
+            for (SysMenuEntity sysMenuEntity : sysMenuEntities) {
+                //
+                if (sysMenuEntity.getType() <= Constant.MenuType.BUTTON.getValue()) {
+                    sysMenuEntities.addAll(listById(Collections.singletonList(sysMenuEntity.getParentId())));
+                }
+            }
+        }
+        return sysMenuEntities;
     }
 
     /**
