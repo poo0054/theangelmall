@@ -67,7 +67,7 @@ public class SysMenuController extends AbstractController {
      * 选择菜单(添加、修改菜单)
      */
     @GetMapping("/select")
-//	@RequiresPermissions("sys:menu:select")
+    @PreAuthorize("hasAuthority('sys:menu:update')")
     public R select() {
         //查询列表数据
         List<SysMenuEntity> menuList = sysMenuService.queryNotButtonList();
@@ -87,7 +87,7 @@ public class SysMenuController extends AbstractController {
      * 菜单信息
      */
     @GetMapping("/info/{menuId}")
-//	@RequiresPermissions("sys:menu:info")
+    @PreAuthorize("hasAuthority('sys:menu:list')")
     public R info(@PathVariable("menuId") Long menuId) {
         SysMenuEntity menu = sysMenuService.getById(menuId);
         return R.ok().put("menu", menu);
@@ -98,7 +98,7 @@ public class SysMenuController extends AbstractController {
      */
     @SysLog("保存菜单")
     @PostMapping("/save")
-//	@RequiresPermissions("sys:menu:save")
+    @PreAuthorize("hasAuthority('sys:menu:inset')")
     public R save(@RequestBody SysMenuEntity menu) {
         //数据校验
         verifyForm(menu);
@@ -113,7 +113,7 @@ public class SysMenuController extends AbstractController {
      */
     @SysLog("修改菜单")
     @PostMapping("/update")
-//	@RequiresPermissions("sys:menu:update")
+    @PreAuthorize("hasAuthority('sys:menu:update')")
     public R update(@RequestBody SysMenuEntity menu) {
         //数据校验
         verifyForm(menu);
@@ -128,7 +128,7 @@ public class SysMenuController extends AbstractController {
      */
     @SysLog("删除菜单")
     @PostMapping("/delete/{menuId}")
-//	@RequiresPermissions("sys:menu:delete")
+    @PreAuthorize("hasAuthority('sys:menu:delete')")
     public R delete(@PathVariable("menuId") long menuId) {
         if (menuId <= 31) {
             return R.error(HttpStatusEnum.USER_ERROR_A0440.getCode(), "系统菜单，不能删除");
@@ -185,7 +185,6 @@ public class SysMenuController extends AbstractController {
             if (parentType != Constant.MenuType.MENU.getValue()) {
                 throw new RRException("上级菜单只能为菜单类型");
             }
-            return;
         }
     }
 }

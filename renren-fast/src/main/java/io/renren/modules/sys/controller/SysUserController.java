@@ -52,7 +52,6 @@ public class SysUserController extends AbstractController {
      */
     @GetMapping("/list")
     @PreAuthorize("hasAuthority('sys:user:list')")
-//	@RequiresPermissions("sys:user:list")
     public R list(@RequestParam Map<String, Object> params) {
         //只有超级管理员，才能查看所有管理员列表
         if (Objects.equals(Constant.SUPER_ADMIN, getUserId())) {
@@ -111,7 +110,7 @@ public class SysUserController extends AbstractController {
      */
     @SysLog("保存用户")
     @PostMapping("/save")
-    @PreAuthorize("hasAuthority('sys:user:update')")
+    @PreAuthorize("hasAuthority('sys:user:inset')")
     public R save(@RequestBody SysUserEntity user) {
         ValidatorUtils.validateEntity(user, AddGroup.class);
 
@@ -139,7 +138,7 @@ public class SysUserController extends AbstractController {
      */
     @SysLog("删除用户")
     @PostMapping("/delete")
-    @PreAuthorize("hasAuthority('sys:user:update')")
+    @PreAuthorize("hasAuthority('sys:user:delete')")
     public R delete(@RequestBody Long[] userIds) {
         if (ArrayUtils.contains(userIds, 1L)) {
             return R.error(HttpStatusEnum.USER_ERROR_A0440.getCode(), "系统管理员不能删除");

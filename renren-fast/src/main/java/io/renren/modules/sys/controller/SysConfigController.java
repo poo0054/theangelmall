@@ -16,6 +16,7 @@ import io.renren.modules.sys.entity.SysConfigEntity;
 import io.renren.modules.sys.service.SysConfigService;
 import io.renren.utils.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -35,10 +36,9 @@ public class SysConfigController extends AbstractController {
      * 所有配置列表
      */
     @GetMapping("/list")
-//	@RequiresPermissions("sys:config:list")
+    @PreAuthorize("hasAuthority('sys:config:list')")
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = sysConfigService.queryPage(params);
-
         return R.ok().put("page", page);
     }
 
@@ -47,7 +47,7 @@ public class SysConfigController extends AbstractController {
      * 配置信息
      */
     @GetMapping("/info/{id}")
-//	@RequiresPermissions("sys:config:info")
+    @PreAuthorize("hasAuthority('sys:config:info')")
     public R info(@PathVariable("id") Long id) {
         SysConfigEntity config = sysConfigService.getById(id);
 
@@ -59,7 +59,7 @@ public class SysConfigController extends AbstractController {
      */
     @SysLog("保存配置")
     @PostMapping("/save")
-//	@RequiresPermissions("sys:config:save")
+    @PreAuthorize("hasAuthority('sys:config:inset')")
     public R save(@RequestBody SysConfigEntity config) {
         ValidatorUtils.validateEntity(config);
 
@@ -73,7 +73,7 @@ public class SysConfigController extends AbstractController {
      */
     @SysLog("修改配置")
     @PostMapping("/update")
-//	@RequiresPermissions("sys:config:update")
+    @PreAuthorize("hasAuthority('sys:config:update')")
     public R update(@RequestBody SysConfigEntity config) {
         ValidatorUtils.validateEntity(config);
 
@@ -87,7 +87,7 @@ public class SysConfigController extends AbstractController {
      */
     @SysLog("删除配置")
     @PostMapping("/delete")
-//	@RequiresPermissions("sys:config:delete")
+    @PreAuthorize("hasAuthority('sys:config:delete')")
     public R delete(@RequestBody Long[] ids) {
         sysConfigService.deleteBatch(ids);
         return R.ok();

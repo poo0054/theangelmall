@@ -13,7 +13,6 @@ import com.themall.model.entity.R;
 import io.renren.filter.JWTBasicAuthenticationFilter;
 import io.renren.modules.sys.form.SysLoginForm;
 import io.renren.modules.sys.service.SysCaptchaService;
-import io.renren.modules.sys.service.SysUserService;
 import io.renren.modules.sys.service.SysUserTokenService;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +39,6 @@ import java.io.IOException;
  */
 @RestController
 public class SysLoginController extends AbstractController {
-    @Autowired
-    private SysUserService sysUserService;
     @Autowired
     private SysUserTokenService sysUserTokenService;
     @Autowired

@@ -66,7 +66,7 @@ public class SysRoleController extends AbstractController {
         if (Objects.equals(Constant.SUPER_ADMIN, getUserId())) {
             map.put("create_user_id", getUserId());
         }
-        List<SysRoleEntity> list = (List<SysRoleEntity>) sysRoleService.listByMap(map);
+        List<SysRoleEntity> list = sysRoleService.listByMap(map);
 
         return R.ok().put("list", list);
     }
@@ -89,9 +89,9 @@ public class SysRoleController extends AbstractController {
     /**
      * 保存角色
      */
-    @SysLog("保存角色")
+    @SysLog("新增")
     @PostMapping("/save")
-    @PreAuthorize("hasAuthority('sys:role:update')")
+    @PreAuthorize("hasAuthority('sys:role:inset')")
     public R save(@RequestBody SysRoleEntity role) {
         ValidatorUtils.validateEntity(role);
 
@@ -121,10 +121,9 @@ public class SysRoleController extends AbstractController {
      */
     @SysLog("删除角色")
     @PostMapping("/delete")
-    @PreAuthorize("hasAuthority('sys:role:update')")
+    @PreAuthorize("hasAuthority('sys:role:delete')")
     public R delete(@RequestBody Long[] roleIds) {
         sysRoleService.deleteBatch(roleIds);
-
         return R.ok();
     }
 }
