@@ -54,4 +54,6 @@ public interface SysMenuService extends IService<SysMenuEntity> {
 
 
     List<SysMenuEntity> listByUserId(Long userId);
+
+    List<Long> queryAllMenuId(Long createUserId);
 }

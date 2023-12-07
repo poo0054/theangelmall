@@ -19,8 +19,9 @@ import java.util.Map;
  * @date 2021-06-09 20:47:30
  */
 @RestController
-@RequestMapping("product/attrattrgrouprelation")
+@RequestMapping("/attrattrgrouprelation")
 public class AttrAttrgroupRelationController {
+
     @Autowired
     private AttrAttrgroupRelationService attrAttrgroupRelationService;
 

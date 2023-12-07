@@ -3,3 +3,7 @@ spring:
     active: dev
   application:
     name: themall-product
+  mvc:
+    servlet:
+      path: /product
+

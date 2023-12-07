@@ -2,8 +2,8 @@ package com.themall.seckill.service.impl;
 
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.TypeReference;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.themall.common.utils.fileutils.UUIDUtils;
 import com.themall.model.constants.SeckillConstant;
@@ -104,7 +104,7 @@ public class SeckillServiceImpl implements SeckillService {
                     //sku基本信息
                     R info = productFeignService.info(skuRelationTo.getSkuId());
                     if (info.isSuccess()) {
-                        SkuInfoTo skuInfo = info.getData("skuInfo", new TypeReference<SkuInfoTo>() {
+                        SkuInfoTo skuInfo = info.getData("skuInfo", new com.alibaba.fastjson2.TypeReference<SkuInfoTo>() {
                         });
                         seckillSkuRedisTo.setSkuInfoTo(skuInfo);
                     }

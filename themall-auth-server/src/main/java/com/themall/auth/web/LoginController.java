@@ -1,6 +1,6 @@
 package com.themall.auth.web;
 
-import com.alibaba.fastjson.TypeReference;
+import com.alibaba.fastjson2.TypeReference;
 import com.themall.auth.openfeign.memberFerignService;
 import com.themall.auth.vo.LoginUserVo;
 import com.themall.model.constants.AuthServerConstant;

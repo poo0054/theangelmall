@@ -1,8 +1,8 @@
 /**
  * Copyright (c) 2016-2019 人人开源 All rights reserved.
- *
+ * <p>
  * https://www.renren.io
- *
+ * <p>
  * 版权所有，侵权必究！
  */
 
@@ -14,7 +14,9 @@ package io.renren.utils;
  * @author Mark sunlightcs@gmail.com
  */
 public class Constant {
-	/** 超级管理员ID */
+    /**
+     * 超级管理员ID
+     */
     public static final Long SUPER_ADMIN = 1L;
     /**
      * 当前页码
@@ -33,21 +35,22 @@ public class Constant {
      */
     public static final String ORDER = "order";
     /**
-     *  升序
+     * 升序
      */
     public static final String ASC = "asc";
-	/**
-	 * 菜单类型
+
+    /**
+     * 菜单类型
      *
-	 * @author chenshun
-	 * @email sunlightcs@gmail.com
-	 * @date 2016年11月15日 下午1:24:29
-	 */
+     * @author chenshun
+     * @email sunlightcs@gmail.com
+     * @date 2016年11月15日 下午1:24:29
+     */
     public enum MenuType {
         /**
          * 目录
          */
-    	CATALOG(0),
+        CATALOG(0),
         /**
          * 菜单
          */
@@ -60,34 +63,6 @@ public class Constant {
         private final int value;
 
         MenuType(int value) {
-            this.value = value;
-        }
-
-        public int getValue() {
-            return value;
-        }
-    }
-
-    /**
-     * 定时任务状态
-     *
-     * @author chenshun
-     * @email sunlightcs@gmail.com
-     * @date 2016年12月3日 上午12:07:22
-     */
-    public enum ScheduleStatus {
-        /**
-         * 正常
-         */
-    	NORMAL(0),
-        /**
-         * 暂停
-         */
-    	PAUSE(1);
-
-        private int value;
-
-        ScheduleStatus(int value) {
             this.value = value;
         }
 

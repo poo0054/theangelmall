@@ -31,8 +31,13 @@ import java.util.Date;
  */
 @Service("sysCaptchaService")
 public class SysCaptchaServiceImpl extends ServiceImpl<SysCaptchaDao, SysCaptchaEntity> implements SysCaptchaService {
-    @Autowired
+
     private Producer producer;
+
+    @Autowired
+    public void setProducer(Producer producer) {
+        this.producer = producer;
+    }
 
     @Override
     public BufferedImage getCaptcha(String uuid) {

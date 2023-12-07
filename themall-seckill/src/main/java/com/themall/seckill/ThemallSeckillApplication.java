@@ -32,7 +32,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  */
 @SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
 @EnableDiscoveryClient
-@EnableFeignClients(basePackages = "com.theangel.themall.seckill.openfeign")
+@EnableFeignClients(basePackages = "com.themall.seckill.openfeign")
 public class ThemallSeckillApplication {
 
     public static void main(String[] args) {

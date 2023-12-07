@@ -1,7 +1,7 @@
 package com.themall.cart.service.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.TypeReference;
 import com.themall.cart.interceptor.CartInterceptor;
 import com.themall.cart.openfeign.ProductService;
 import com.themall.cart.service.CartService;

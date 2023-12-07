@@ -46,12 +46,27 @@ import java.util.stream.Collectors;
  */
 @Service("sysUserService")
 public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> implements SysUserService {
-    @Autowired
+
     private SysUserRoleService sysUserRoleService;
-    @Autowired
+
     private SysRoleService sysRoleService;
+
+    private SysMenuService sysMenuService;
+
     @Autowired
-    SysMenuService sysMenuService;
+    public void setSysUserRoleService(SysUserRoleService sysUserRoleService) {
+        this.sysUserRoleService = sysUserRoleService;
+    }
+
+    @Autowired
+    public void setSysRoleService(SysRoleService sysRoleService) {
+        this.sysRoleService = sysRoleService;
+    }
+
+    @Autowired
+    public void setSysMenuService(SysMenuService sysMenuService) {
+        this.sysMenuService = sysMenuService;
+    }
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {

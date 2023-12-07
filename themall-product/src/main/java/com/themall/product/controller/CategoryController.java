@@ -23,10 +23,6 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-  /*  @Autowired
-    private ThirdPartyService thirdPartyService;
-*/
-
     /**
      * 查出所有分类,以树形菜单展示
      */

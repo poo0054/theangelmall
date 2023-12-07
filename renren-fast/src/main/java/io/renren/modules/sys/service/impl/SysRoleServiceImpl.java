@@ -14,10 +14,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.themall.model.exception.RRException;
 import io.renren.modules.sys.dao.SysRoleDao;
 import io.renren.modules.sys.entity.SysRoleEntity;
+import io.renren.modules.sys.service.SysMenuService;
 import io.renren.modules.sys.service.SysRoleMenuService;
 import io.renren.modules.sys.service.SysRoleService;
 import io.renren.modules.sys.service.SysUserRoleService;
-import io.renren.modules.sys.service.SysUserService;
 import io.renren.utils.Constant;
 import io.renren.utils.PageUtils;
 import io.renren.utils.Query;
@@ -35,12 +35,26 @@ import java.util.*;
  */
 @Service("sysRoleService")
 public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRoleEntity> implements SysRoleService {
-    @Autowired
+
     private SysRoleMenuService sysRoleMenuService;
-    @Autowired
-    private SysUserService sysUserService;
-    @Autowired
+
+    private SysMenuService sysMenuService;
     private SysUserRoleService sysUserRoleService;
+
+    @Autowired
+    public void setSysRoleMenuService(SysRoleMenuService sysRoleMenuService) {
+        this.sysRoleMenuService = sysRoleMenuService;
+    }
+
+    @Autowired
+    public void setSysMenuService(SysMenuService sysMenuService) {
+        this.sysMenuService = sysMenuService;
+    }
+
+    @Autowired
+    public void setSysUserRoleService(SysUserRoleService sysUserRoleService) {
+        this.sysUserRoleService = sysUserRoleService;
+    }
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -120,7 +134,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRoleEntity> i
         }
 
         //查询用户所拥有的菜单列表
-        List<Long> menuIdList = sysUserService.queryAllMenuId(role.getCreateUserId());
+        List<Long> menuIdList = sysMenuService.queryAllMenuId(role.getCreateUserId());
 
         //判断是否越权
         if (!menuIdList.containsAll(role.getMenuIdList())) {

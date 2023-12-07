@@ -103,9 +103,10 @@ export default {
             data: this.$http.adornData()
           }).then(({data}) => {
             if (data && data.code === '00000') {
-              clearLoginInfo()
-              this.$router.push({ name: 'login' })
+              console.log(data);
             }
+            clearLoginInfo()
+              this.$router.push({ name: 'login' })
           })
         }).catch(() => {})
       }

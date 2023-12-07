@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * @author poo0054
@@ -38,16 +39,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling(exceptionHandling -> {
                     exceptionHandling.accessDeniedHandler(defaultAccessDeniedHandler).authenticationEntryPoint(defaultAuthenticationEntryPoint);
                 })
-                .addFilterBefore(jwtBasicAuthenticationFilter, JWTBasicAuthenticationFilter.class)
                 .authorizeRequests(authorizeRequests -> {
                     authorizeRequests.mvcMatchers("/sys/login", "/sys/logout", "/captcha.jpg").permitAll().anyRequest().authenticated();
                 })
+                .addFilterBefore(jwtBasicAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .cors().disable()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         ;
-
-
     }
 
     @Bean

@@ -1,7 +1,12 @@
 package com.themall.product.vo;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+/**
+ * @author poo0054
+ */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class AttrResVo extends AttrVo {
     /*  "catelogName":"手机/数码/手机", //所属分类名字

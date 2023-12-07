@@ -63,7 +63,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         this.save(attrEntity);
         //保存分组属性
         if (attrVo.getAttrType() == ProductConstant.AttrEnum.ATTR_TYPE_ABSE.getCode() && !ObjectUtils.isEmpty(
-            attrVo.getAttrGroupId())) {
+                attrVo.getAttrGroupId())) {
             AttrAttrgroupRelationEntity relationEntity = new AttrAttrgroupRelationEntity();
             relationEntity.setAttrGroupId(attrVo.getAttrGroupId());
             relationEntity.setAttrId(attrEntity.getAttrId());
@@ -75,9 +75,9 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
     @Override
     public PageUtils queryBaseAttrPage(Map<String, Object> params, Long catelogId, String type) {
         QueryWrapper<AttrEntity> queryWrapper = new QueryWrapper<AttrEntity>().eq("attr_type",
-            "base".equalsIgnoreCase(type) ? ProductConstant.AttrEnum.ATTR_TYPE_ABSE.getCode()
-                : ProductConstant.AttrEnum.ATTR_TYPE_SALE.getCode());
-        String key = (String)params.get("key");
+                "base".equalsIgnoreCase(type) ? ProductConstant.AttrEnum.ATTR_TYPE_ABSE.getCode()
+                        : ProductConstant.AttrEnum.ATTR_TYPE_SALE.getCode());
+        String key = (String) params.get("key");
         if (0 != catelogId) {
             queryWrapper.eq("catelog_id", catelogId);
         }
@@ -95,7 +95,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
 
             //根据属性id在关联表  查询属性分组id
             AttrAttrgroupRelationEntity attr_id = attrAttrgroupRelationDao.selectOne(
-                new QueryWrapper<AttrAttrgroupRelationEntity>().eq("attr_id", attrEntity.getAttrId()));
+                    new QueryWrapper<AttrAttrgroupRelationEntity>().eq("attr_id", attrEntity.getAttrId()));
             //属性分组id
             if (!StringUtils.isEmpty(attr_id)) {
                 AttrGroupEntity attrGroupEntity = attrGroupDao.selectById(attr_id.getAttrGroupId());
@@ -125,7 +125,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         if (byId.getAttrType() == ProductConstant.AttrEnum.ATTR_TYPE_ABSE.getCode()) {
             //查询分组信息
             AttrAttrgroupRelationEntity relationEntity = attrAttrgroupRelationDao.selectOne(
-                new QueryWrapper<AttrAttrgroupRelationEntity>().eq("attr_id", byId.getAttrId()));
+                    new QueryWrapper<AttrAttrgroupRelationEntity>().eq("attr_id", byId.getAttrId()));
             if (!ObjectUtils.isEmpty(relationEntity)) {
                 attrResVo.setAttrGroupId(relationEntity.getAttrGroupId());
                 AttrGroupEntity attrGroupEntity = attrGroupDao.selectById(relationEntity.getAttrGroupId());
@@ -158,11 +158,10 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
             AttrAttrgroupRelationEntity attrAttrgroupRelationEntity = new AttrAttrgroupRelationEntity();
             attrAttrgroupRelationEntity.setAttrGroupId(attr.getAttrGroupId());
             attrAttrgroupRelationEntity.setAttrId(attr.getAttrId());
-            Integer attr_id = attrAttrgroupRelationDao.selectCount(
-                new QueryWrapper<AttrAttrgroupRelationEntity>().eq("attr_id", attr.getAttrId()));
-            if (attr_id > 0) {
+            Long attrId = attrAttrgroupRelationDao.selectCount(new QueryWrapper<AttrAttrgroupRelationEntity>().eq("attr_id", attr.getAttrId()));
+            if (attrId > 0) {
                 attrAttrgroupRelationDao.update(attrAttrgroupRelationEntity,
-                    new UpdateWrapper<AttrAttrgroupRelationEntity>().eq("attr_id", attr.getAttrId()));
+                        new UpdateWrapper<AttrAttrgroupRelationEntity>().eq("attr_id", attr.getAttrId()));
             } else {
                 attrAttrgroupRelationDao.insert(attrAttrgroupRelationEntity);
             }
@@ -178,10 +177,10 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
     @Override
     public List<AttrEntity> attrRelation(Long attrgroupId) {
         List<AttrAttrgroupRelationEntity> attr_group_id = attrAttrgroupRelationDao.selectList(
-            new QueryWrapper<AttrAttrgroupRelationEntity>().eq("attr_group_id", attrgroupId));
+                new QueryWrapper<AttrAttrgroupRelationEntity>().eq("attr_group_id", attrgroupId));
         List<Long> collect =
-            attr_group_id.stream().map(attrAttrgroupRelationEntity -> attrAttrgroupRelationEntity.getAttrId())
-                .collect(Collectors.toList());
+                attr_group_id.stream().map(attrAttrgroupRelationEntity -> attrAttrgroupRelationEntity.getAttrId())
+                        .collect(Collectors.toList());
         List<AttrEntity> attrEntities = this.listByIds(collect);
         if (ObjectUtils.isEmpty(attrEntities)) {
             return null;
@@ -215,25 +214,25 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         //当前分组只能关联别的分组没有引用的属性
         //  当前分类下所有的分组
         List<AttrGroupEntity> attrGroupEntities =
-            attrGroupDao.selectList(new QueryWrapper<AttrGroupEntity>().eq("catelog_id", catelogId));
+                attrGroupDao.selectList(new QueryWrapper<AttrGroupEntity>().eq("catelog_id", catelogId));
         // 当前分类下所有的分组Id
         List<Long> collect = attrGroupEntities.stream().map(item -> item.getAttrGroupId()).collect(Collectors.toList());
 
         // 当前分类下所有分组的属性
         List<AttrAttrgroupRelationEntity> attr_group_id = attrAttrgroupRelationDao.selectList(
-            new QueryWrapper<AttrAttrgroupRelationEntity>().in("attr_group_id", collect));
+                new QueryWrapper<AttrAttrgroupRelationEntity>().in("attr_group_id", collect));
         // 当前分类下面所有属性的id
         List<Long> longStream = attr_group_id.stream().map(item -> item.getAttrId()).collect(Collectors.toList());
 
         // 当前分类下 没有绑定分组的所有属性
         QueryWrapper<AttrEntity> queryWrapper = new QueryWrapper<AttrEntity>().eq("catelog_id", catelogId)
-            .eq("attr_type", ProductConstant.AttrEnum.ATTR_TYPE_ABSE.getCode());
+                .eq("attr_type", ProductConstant.AttrEnum.ATTR_TYPE_ABSE.getCode());
 
         if (!ObjectUtils.isEmpty(longStream)) {
             queryWrapper.notIn("attr_id", longStream);
         }
 
-        String key = (String)params.get("key");
+        String key = (String) params.get("key");
         if (!StringUtils.isEmpty(key)) {
             queryWrapper.and(wrapper -> {
                 wrapper.like("attr_id", key).or().like("attr_name", key);

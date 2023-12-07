@@ -14,7 +14,6 @@ import io.renren.modules.sys.dao.SysMenuDao;
 import io.renren.modules.sys.entity.SysMenuEntity;
 import io.renren.modules.sys.service.SysMenuService;
 import io.renren.modules.sys.service.SysRoleMenuService;
-import io.renren.modules.sys.service.SysUserService;
 import io.renren.utils.Constant;
 import io.renren.utils.MapUtils;
 import org.apache.commons.lang3.ObjectUtils;
@@ -29,10 +28,16 @@ import java.util.Objects;
 
 @Service("sysMenuService")
 public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> implements SysMenuService {
-    @Autowired
-    private SysUserService sysUserService;
-    @Autowired
+
+//    private SysUserService sysUserService;
+
     private SysRoleMenuService sysRoleMenuService;
+
+    @Autowired
+    public void setSysRoleMenuService(SysRoleMenuService sysRoleMenuService) {
+        this.sysRoleMenuService = sysRoleMenuService;
+    }
+
 
     @Override
     public List<SysMenuEntity> queryListParentId(Long parentId, List<Long> menuIdList) {
@@ -68,7 +73,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
         }
 
         //用户菜单列表
-        List<Long> menuIdList = sysUserService.queryAllMenuId(userId);
+        List<Long> menuIdList = this.queryAllMenuId(userId);
         return getAllMenuList(menuIdList);
     }
 
@@ -86,8 +91,13 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
             return this.list();
         }
         //用户菜单列表
-        List<Long> menuIdList = sysUserService.queryAllMenuId(userId);
+        List<Long> menuIdList = this.queryAllMenuId(userId);
         return listById(menuIdList);
+    }
+
+    @Override
+    public List<Long> queryAllMenuId(Long createUserId) {
+        return baseMapper.queryAllMenuId(createUserId);
     }
 
     private List<SysMenuEntity> listById(List<Long> menuIdList) {

@@ -5,7 +5,7 @@ import com.themall.common.utils.fileutils.UUIDUtils;
 import com.themall.model.entity.R;
 import com.themall.thirdparty.utils.TencentUploadUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +37,7 @@ public class TenController {
         return R.httpStatus(objectObjectHashMap);
     }
 
-//    @PostMapping("/cosGoodsLogo")
+    //    @PostMapping("/cosGoodsLogo")
     public Map<String, String> cosTenGoodsLogo(MultipartFile file) {
         HashMap<String, String> map = new HashMap<>();
         try {
@@ -60,7 +60,7 @@ public class TenController {
     }
 
 
-//    @GetMapping("/getkey")
+    //    @GetMapping("/getkey")
     public R t() {
         String s = tencentUploadUtil.uploadFile("/t/t.jpg", new File("C:\\Users\\一个小小卒\\Pictures\\Saved Pictures\\theangel.top.png"));
         HashMap<String, Object> objectObjectHashMap = new HashMap<>();

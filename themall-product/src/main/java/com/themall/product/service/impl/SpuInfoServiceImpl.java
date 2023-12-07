@@ -1,6 +1,6 @@
 package com.themall.product.service.impl;
 
-import com.alibaba.fastjson.TypeReference;
+import com.alibaba.fastjson2.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -152,12 +152,12 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
 
                 //5.2  sku 图片   pms_sku_images
                 List<SkuImagesEntity> imagesEntities = item.getImages().stream().map(img -> {
-                    SkuImagesEntity skuImagesEntity = new SkuImagesEntity();
-                    skuImagesEntity.setImgUrl(img.getImgUrl());
-                    skuImagesEntity.setDefaultImg(img.getDefaultImg());
-                    skuImagesEntity.setSkuId(skuId);
-                    return skuImagesEntity;
-                })
+                            SkuImagesEntity skuImagesEntity = new SkuImagesEntity();
+                            skuImagesEntity.setImgUrl(img.getImgUrl());
+                            skuImagesEntity.setDefaultImg(img.getDefaultImg());
+                            skuImagesEntity.setSkuId(skuId);
+                            return skuImagesEntity;
+                        })
                         .filter(entity -> !StringUtils.isEmpty(entity))
                         .collect(Collectors.toList());
                 //TODO 没有图片路径不保存
@@ -245,9 +245,7 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
          */
         List<ProductAttrValueEntity> productAttrValueEntities = productAttrValueService.baseListForSpu(spuId);
         //获取所有属性id
-        List<Long> attrId = productAttrValueEntities.stream().map(item -> {
-            return item.getAttrId();
-        }).collect(Collectors.toList());
+        List<Long> attrId = productAttrValueEntities.stream().map(ProductAttrValueEntity::getAttrId).collect(Collectors.toList());
         List<Long> attrIds = attrService.listSearchAttrIds(attrId);
         HashSet<Long> longs = new HashSet<>(attrIds);
         //所有能被检索的属性
@@ -263,18 +261,17 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
         /**
          * 查询所有sku库存状态
          */
-        List<Long> collect1 = skus.stream().map(item -> item.getSkuId()).collect(Collectors.toList());
+        List<Long> collect1 = skus.stream().map(SkuInfoEntity::getSkuId).collect(Collectors.toList());
 
         Map<Long, Boolean> stockMap = null;
         try {
             R hasStock = theamgelWareFeign.getHasStock(collect1);
             stockMap = hasStock.getData(new TypeReference<List<SkuHasStockVo>>() {
-            })
+                    })
                     .stream()
                     .collect(Collectors.toMap(SkuHasStockVo::getSkuId, SkuHasStockVo::getHasStock));
         } catch (Exception e) {
-            e.printStackTrace();
-            log.error("库存服务查询异常，原因{}", e);
+            log.error("库存服务查询异常:", e);
         }
         //2. 封装sku信息
         Map<Long, Boolean> finalStockMap = stockMap;

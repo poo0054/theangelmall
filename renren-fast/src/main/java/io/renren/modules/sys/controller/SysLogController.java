@@ -29,8 +29,12 @@ import java.util.Map;
 @RestController
 @RequestMapping("/sys/log")
 public class SysLogController {
-    @Autowired
     private SysLogService sysLogService;
+
+    @Autowired
+    public void setSysLogService(SysLogService sysLogService) {
+        this.sysLogService = sysLogService;
+    }
 
     /**
      * 列表

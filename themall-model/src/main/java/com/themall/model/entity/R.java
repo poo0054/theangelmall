@@ -9,8 +9,8 @@
 package com.themall.model.entity;
 
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.TypeReference;
 import com.themall.model.constants.HttpStatusEnum;
 
 import java.util.HashMap;

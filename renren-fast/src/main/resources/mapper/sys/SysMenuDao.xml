@@ -11,4 +11,11 @@
 		select * from sys_menu where type != 2 order by order_num asc
 	</select>
 
+    <select id="queryAllMenuId" resultType="java.lang.Long">
+        select distinct rm.menu_id
+        from sys_user_role ur
+                 LEFT JOIN sys_role_menu rm on ur.role_id = rm.role_id
+        where ur.user_id = #{userId}
+    </select>
+
 </mapper>

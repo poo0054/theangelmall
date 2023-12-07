@@ -29,8 +29,12 @@ import java.util.Map;
 @RestController
 @RequestMapping("/sys/config")
 public class SysConfigController extends AbstractController {
-    @Autowired
     private SysConfigService sysConfigService;
+
+    @Autowired
+    public void setSysConfigService(SysConfigService sysConfigService) {
+        this.sysConfigService = sysConfigService;
+    }
 
     /**
      * 所有配置列表

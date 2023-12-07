@@ -1,6 +1,6 @@
 package com.themall.ware.service.impl;
 
-import com.alibaba.fastjson.TypeReference;
+import com.alibaba.fastjson2.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -21,6 +21,9 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 
+/**
+ * @author poo0054
+ */
 @Service("wareInfoService")
 public class WareInfoServiceImpl extends ServiceImpl<WareInfoDao, WareInfoEntity> implements WareInfoService {
     @Autowired
@@ -52,7 +55,7 @@ public class WareInfoServiceImpl extends ServiceImpl<WareInfoDao, WareInfoEntity
             //模拟使用手机号位数2位数作为物流价格
             FareVo fareVo = new FareVo();
             String phone = data.getPhone();
-            String charSequence = phone.substring(phone.length() - 2, phone.length());
+            String charSequence = phone.substring(phone.length() - 2);
             fareVo.setFare(new BigDecimal(charSequence));
             fareVo.setMemberReceiveAddressVo(data);
             return fareVo;

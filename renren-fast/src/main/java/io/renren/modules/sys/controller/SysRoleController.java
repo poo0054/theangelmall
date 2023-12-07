@@ -33,10 +33,18 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/sys/role")
 public class SysRoleController extends AbstractController {
-    @Autowired
     private SysRoleService sysRoleService;
-    @Autowired
     private SysRoleMenuService sysRoleMenuService;
+
+    @Autowired
+    public void setSysRoleService(SysRoleService sysRoleService) {
+        this.sysRoleService = sysRoleService;
+    }
+
+    @Autowired
+    public void setSysRoleMenuService(SysRoleMenuService sysRoleMenuService) {
+        this.sysRoleMenuService = sysRoleMenuService;
+    }
 
     /**
      * 角色列表

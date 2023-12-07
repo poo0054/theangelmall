@@ -32,8 +32,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/sys/menu")
 public class SysMenuController extends AbstractController {
-    @Autowired
     private SysMenuService sysMenuService;
+
+    @Autowired
+    public void setSysMenuService(SysMenuService sysMenuService) {
+        this.sysMenuService = sysMenuService;
+    }
 
     /**
      * 导航菜单

@@ -1,7 +1,7 @@
 package com.themall.order.service.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
@@ -33,6 +33,7 @@ import com.themall.order.to.SpuInfoTo;
 import com.themall.order.to.WareSkuLockTo;
 import com.themall.order.vo.*;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
@@ -44,7 +45,6 @@ import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
@@ -384,7 +384,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         orderItemEntity.setSkuName(orderItemVo.getTitle());
         orderItemEntity.setSkuPrice(orderItemVo.getPrice());
         orderItemEntity.setSkuPic(orderItemVo.getImage());
-        String skuAttr = StringUtils.collectionToDelimitedString(orderItemVo.getSkuAttr(), ";");
+        String skuAttr = org.springframework.util.StringUtils.collectionToDelimitedString(orderItemVo.getSkuAttr(), ";");
         orderItemEntity.setSkuAttrsVals(skuAttr);
         orderItemEntity.setSkuQuantity(orderItemVo.getCount());
 

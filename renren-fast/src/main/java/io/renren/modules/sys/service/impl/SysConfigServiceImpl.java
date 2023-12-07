@@ -29,8 +29,13 @@ import java.util.Map;
 
 @Service
 public class SysConfigServiceImpl extends ServiceImpl<SysConfigDao, SysConfigEntity> implements SysConfigService {
-    @Autowired
+
     private SysConfigRedis sysConfigRedis;
+
+    @Autowired
+    public void setSysConfigRedis(SysConfigRedis sysConfigRedis) {
+        this.sysConfigRedis = sysConfigRedis;
+    }
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {

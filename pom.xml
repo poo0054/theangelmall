@@ -13,18 +13,18 @@
     <packaging>pom</packaging>
 
     <properties>
-        <revision>1.1-Beta</revision>
+        <revision>2.0-Beta</revision>
         <java.version>1.8</java.version>
-        <json.version>1.2.72</json.version>
-        <spring-cloud-alibaba.version>2.2.9.RELEASE</spring-cloud-alibaba.version>
-        <spring-cloud.version>Hoxton.SR12</spring-cloud.version>
-        <spring-boot.version>2.3.12.RELEASE</spring-boot.version>
+        <spring-cloud-alibaba.version>2021.0.5.0</spring-cloud-alibaba.version>
+        <spring-cloud.version>2021.0.8</spring-cloud.version>
+        <spring-boot.version>2.7.18</spring-boot.version>
 
+        <spring-authorization-server.version>0.4.4</spring-authorization-server.version>
+        <redisson.version>3.25.0</redisson.version>
         <httpcore.version>4.4.14</httpcore.version>
-        <commons-lang.version>2.6</commons-lang.version>
+        <commons-lang3.version>3.14.0</commons-lang3.version>
         <mysql-connector.version>8.0.25</mysql-connector.version>
-        <servlet-api.version>2.5</servlet-api.version>
-        <mybatis-plus.version>3.3.1</mybatis-plus.version>
+        <mybatis-plus.version>3.5.4.1</mybatis-plus.version>
         <lombok.version>1.18.10</lombok.version>
         <junit.version>4.13.2</junit.version>
         <qcloud.version>5.6.38</qcloud.version>
@@ -32,10 +32,10 @@
         <valedatetion.version>2.0.1.Final</valedatetion.version>
         <alicloud-oss.version>2.1.1.RELEASE</alicloud-oss.version>
         <elasticsearch.version>7.4.2</elasticsearch.version>
-        <hutool-all.version>4.1.1</hutool-all.version>
-        <redisson.version>3.15.6</redisson.version>
+        <hutool-all.version>5.8.16</hutool-all.version>
         <alipay-sdk.version>4.9.28.ALL</alipay-sdk.version>
         <jjwt.version>0.12.3</jjwt.version>
+        <fastjson2.version>2.0.43</fastjson2.version>
 
         <!-- <sonar.jacoco.reportPaths>${PWD}/./target/jacoco.exec</sonar.jacoco.reportPaths>
          <sonar.groovy.binaries>target/classes</sonar.groovy.binaries>-->
@@ -84,6 +84,24 @@
                         <artifactId>elasticsearch</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-oauth2-authorization-server</artifactId>
+                <version>${spring-authorization-server.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba.fastjson2</groupId>
+                <artifactId>fastjson2</artifactId>
+                <version>${fastjson2.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba.fastjson2</groupId>
+                <artifactId>fastjson2-extension-spring5</artifactId>
+                <version>${fastjson2.version}</version>
             </dependency>
 
             <dependency>
@@ -145,6 +163,13 @@
                 <version>${alicloud-oss.version}</version>
             </dependency>
 
+            <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+
 
             <!-- mybatis-plus -->
             <dependency>
@@ -169,20 +194,6 @@
                 <version>${mybatis-plus.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>fastjson</artifactId>
-                <version>${json.version}</version>
-            </dependency>
-
-
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
-                <scope>test</scope>
-            </dependency>
-
             <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpcore -->
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
@@ -190,24 +201,11 @@
                 <version>${httpcore.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>commons-lang</groupId>
-                <artifactId>commons-lang</artifactId>
-                <version>${commons-lang.version}</version>
-            </dependency>
-
             <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql-connector.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>servlet-api</artifactId>
-                <version>${servlet-api.version}</version>
-                <scope>provided</scope>
             </dependency>
 
             <dependency>
@@ -246,11 +244,6 @@
                 <artifactId>themall-model</artifactId>
                 <version>${revision}</version>
             </dependency>
-            <dependency>
-                <groupId>com.theangel.themall</groupId>
-                <artifactId>themall-common-pom</artifactId>
-                <version>${revision}</version>
-            </dependency>
 
         </dependencies>
 
@@ -274,8 +267,6 @@
         <module>themall-model</module>
         <module>themall-oauth2-server</module>
         <module>themall-oauth2-resource</module>
-        <module>themall-common-pom</module>
-
     </modules>
 
     <build>

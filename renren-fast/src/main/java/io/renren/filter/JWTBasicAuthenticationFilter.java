@@ -43,7 +43,7 @@ public class JWTBasicAuthenticationFilter extends BasicAuthenticationFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         try {
             String header = request.getHeader(AUTHORIZATION);
             if (null != header) {
@@ -53,12 +53,14 @@ public class JWTBasicAuthenticationFilter extends BasicAuthenticationFilter {
                     Jws<Claims> claimsJws = JwtUtils.getClaimsJws(token);
                     if (null != claimsJws) {
                         String subject = claimsJws.getPayload().getSubject();
-                        redisTemplate.expire(JwtUtils.REDIS_PREFIX + subject, JwtUtils.EXPIRE, TimeUnit.SECONDS);
-                        Authentication authenticate = (Authentication) redisTemplate.opsForValue().get(JwtUtils.REDIS_PREFIX + subject);
-                        SecurityContextHolder.getContext().setAuthentication(authenticate);
-                        JwsHeader jwsHeader = claimsJws.getHeader();
-                        request.setAttribute(JWTBasicAuthenticationFilter.class.getSimpleName() + "subject", subject);
-                        request.setAttribute(JWTBasicAuthenticationFilter.class.getSimpleName() + JwtUtils.HEADER_NAME, jwsHeader.get(JwtUtils.HEADER_NAME));
+                        if (Boolean.TRUE.equals(redisTemplate.hasKey(JwtUtils.REDIS_PREFIX + subject))) {
+                            redisTemplate.expire(JwtUtils.REDIS_PREFIX + subject, JwtUtils.EXPIRE, TimeUnit.SECONDS);
+                            Authentication authenticate = (Authentication) redisTemplate.opsForValue().get(JwtUtils.REDIS_PREFIX + subject);
+                            SecurityContextHolder.getContext().setAuthentication(authenticate);
+                            JwsHeader jwsHeader = claimsJws.getHeader();
+                            request.setAttribute(JWTBasicAuthenticationFilter.class.getSimpleName() + "subject", subject);
+                            request.setAttribute(JWTBasicAuthenticationFilter.class.getSimpleName() + JwtUtils.HEADER_NAME, jwsHeader.get(JwtUtils.HEADER_NAME));
+                        }
                     }
                 }
             }

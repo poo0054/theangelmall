@@ -39,13 +39,25 @@ import java.io.IOException;
  */
 @RestController
 public class SysLoginController extends AbstractController {
-    @Autowired
     private SysUserTokenService sysUserTokenService;
-    @Autowired
     private SysCaptchaService sysCaptchaService;
-    @Autowired
+
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    public void setSysUserTokenService(SysUserTokenService sysUserTokenService) {
+        this.sysUserTokenService = sysUserTokenService;
+    }
+
+    @Autowired
+    public void setSysCaptchaService(SysCaptchaService sysCaptchaService) {
+        this.sysCaptchaService = sysCaptchaService;
+    }
+
+    @Autowired
+    public void setAuthenticationManager(AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
+    }
 
     /**
      * 验证码

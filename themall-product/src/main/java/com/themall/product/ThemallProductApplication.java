@@ -19,7 +19,7 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 @EnableCaching
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableFeignClients(basePackages = "com.theangel.themall.product.openfeign")
+@EnableFeignClients(basePackages = "com.themall.product.openfeign")
 @EnableRedisHttpSession
 public class ThemallProductApplication {
     public static void main(String[] args) {

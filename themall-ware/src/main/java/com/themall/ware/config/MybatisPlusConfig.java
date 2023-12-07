@@ -1,27 +1,30 @@
 package com.themall.ware.config;
 
-import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.pagination.optimize.JsqlParserCountOptimize;
+import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-//Spring boot方式
+/**
+ * @author poo0054
+ */ //Spring boot方式
 @Configuration
-@MapperScan("com.theangel.themall.ware.dao")
+@MapperScan("com.themall.ware.dao")
 @EnableTransactionManagement
 public class MybatisPlusConfig {
-    // 旧版
+    /**
+     * 添加分页插件
+     */
     @Bean
-    public PaginationInterceptor paginationInterceptor() {
-        PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
-        // 设置请求的页面大于最大页后操作， true调回到首页，false 继续请求  默认false
-        paginationInterceptor.setOverflow(false);
-        // 设置最大单页限制数量，默认 500 条，-1 不受限制
-        paginationInterceptor.setLimit(500);
-        // 开启 count 的 join 优化,只针对部分 left join
-        paginationInterceptor.setCountSqlParser(new JsqlParserCountOptimize(true));
-        return paginationInterceptor;
+    public MybatisPlusInterceptor mybatisPlusInterceptor() {
+        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));//如果配置多个插件,切记分页最后添加
+        //interceptor.addInnerInterceptor(new PaginationInnerInterceptor()); 如果有多数据源可以不配具体类型 否则都建议配上具体的DbType
+        return interceptor;
     }
+
+
 }

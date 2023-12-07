@@ -1,6 +1,7 @@
 package io.renren.filter;
 
 import cn.hutool.http.ContentType;
+import com.alibaba.fastjson2.JSON;
 import com.themall.model.constants.HttpStatusEnum;
 import com.themall.model.entity.R;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,6 @@ public class DefaultAuthenticationEntryPoint implements AuthenticationEntryPoint
         log.warn("认证失败。", authException);
         response.setCharacterEncoding("utf-8");
         response.setContentType(ContentType.JSON.toString());
-        response.getWriter().print(R.error(HttpStatusEnum.USER_ERROR_A0301));
+        response.getWriter().print(JSON.toJSONString(R.error(HttpStatusEnum.USER_ERROR_A0301)));
     }
 }

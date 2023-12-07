@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Slf4j
 @Configuration
-@EnableFeignClients("com.theangel.themall.order.openfeign")
+@EnableFeignClients("com.themall.order.config.openfeign")
 public class FeignConfig {
 
     @Bean

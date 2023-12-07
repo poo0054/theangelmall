@@ -45,7 +45,7 @@ public class indexController {
 
     @ResponseBody
     @GetMapping("/lock")
-    public String lock(Model model) {
+    public String lock() {
         //获得锁
         RLock lock = redissonClient.getLock("lock");
         /**

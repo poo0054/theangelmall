@@ -18,6 +18,9 @@ const http = axios.create({
  */
 http.interceptors.request.use(config => {
   config.headers['Authorization'] = 'Basic ' + Vue.cookie.get('token') // 请求头带上token
+  if (Vue.cookie.get('token') == null) {
+    router.push({name: 'login'})
+  }
   return config
 }, error => {
   return Promise.reject(error)
@@ -27,7 +30,7 @@ http.interceptors.request.use(config => {
  * 响应拦截
  */
 http.interceptors.response.use(response => {
-  if (response.data && response.data.code === 401) { // 401, token失效
+  if (response.data && response.data.code === 'A0301') { // 401, token失效
     clearLoginInfo()
     router.push({name: 'login'})
   }

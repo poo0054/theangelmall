@@ -39,13 +39,24 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/sys/user")
 public class SysUserController extends AbstractController {
-    @Autowired
     private SysUserService sysUserService;
-    @Autowired
     private SysUserRoleService sysUserRoleService;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    public void setSysUserService(SysUserService sysUserService) {
+        this.sysUserService = sysUserService;
+    }
+
+    @Autowired
+    public void setSysUserRoleService(SysUserRoleService sysUserRoleService) {
+        this.sysUserRoleService = sysUserRoleService;
+    }
+
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     /**
      * 所有用户列表
