@@ -95,7 +95,7 @@ export default {
             method: "get",
             params: this.$http.adornParams()
           }).then(({ data }) => {
-            if (data && data.code === 0) {
+            if (data && data.code === '00000') {
               this.dataForm.purchaseId = data.purchaseDetail.purchaseId;
               this.dataForm.skuId = data.purchaseDetail.skuId;
               this.dataForm.skuNum = data.purchaseDetail.skuNum;
@@ -126,7 +126,7 @@ export default {
               status: this.dataForm.status
             })
           }).then(({ data }) => {
-            if (data && data.code === 0) {
+            if (data && data.code === '00000') {
               this.$message({
                 message: "操作成功",
                 type: "success",

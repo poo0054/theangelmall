@@ -8,6 +8,7 @@
 
 package io.renren.modules.sys.controller;
 
+import com.themall.model.entity.R;
 import com.themall.model.validator.ValidatorUtils;
 import io.renren.annotation.SysLog;
 import io.renren.modules.sys.entity.SysRoleEntity;
@@ -15,7 +16,6 @@ import io.renren.modules.sys.service.SysRoleMenuService;
 import io.renren.modules.sys.service.SysRoleService;
 import io.renren.utils.Constant;
 import io.renren.utils.PageUtils;
-import io.renren.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;

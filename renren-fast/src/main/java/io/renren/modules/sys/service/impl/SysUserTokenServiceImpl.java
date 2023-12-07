@@ -10,17 +10,18 @@ package io.renren.modules.sys.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.themall.common.utils.JwtUtils;
+import com.themall.model.entity.R;
 import com.themall.model.entity.SysUserEntity;
 import io.renren.modules.sys.dao.SysUserTokenDao;
 import io.renren.modules.sys.entity.SysUserTokenEntity;
 import io.renren.modules.sys.service.SysUserService;
 import io.renren.modules.sys.service.SysUserTokenService;
-import io.renren.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 
@@ -39,13 +40,14 @@ public class SysUserTokenServiceImpl extends ServiceImpl<SysUserTokenDao, SysUse
     public R createToken(String userName, Authentication authenticate) {
         SysUserEntity byUserName = sysUserService.getByUserName(userName);
         byUserName.setPassword(null);
-        String token = JwtUtils.generateToken(byUserName);
-        redisTemplate.opsForValue().set(JwtUtils.REDIS_PREFIX + userName, authenticate, EXPIRE, TimeUnit.SECONDS);
+        String subject = UUID.randomUUID().toString();
+        String token = JwtUtils.generateToken(subject, byUserName);
+        redisTemplate.opsForValue().set(JwtUtils.REDIS_PREFIX + subject, authenticate, EXPIRE, TimeUnit.SECONDS);
         return R.ok().put("token", token).put("expire", EXPIRE);
     }
 
     @Override
-    public void logout(long userId) {
+    public void logout(String userId) {
         redisTemplate.delete(JwtUtils.REDIS_PREFIX + userId);
     }
 }

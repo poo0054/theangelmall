@@ -94,7 +94,7 @@ export default {
             method: "get",
             params: this.$http.adornParams()
           }).then(({data}) => {
-            if (data && data.code === 0) {
+            if (data && data.code === '00000') {
               this.dataForm.name = data.homeSubject.name;
               this.dataForm.title = data.homeSubject.title;
               this.dataForm.subTitle = data.homeSubject.subTitle;
@@ -127,7 +127,7 @@ export default {
               img: this.dataForm.img
             })
           }).then(({data}) => {
-            if (data && data.code === 0) {
+            if (data && data.code === '00000') {
               this.$message({
                 message: "操作成功",
                 type: "success",

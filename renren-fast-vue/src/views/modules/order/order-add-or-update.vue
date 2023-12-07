@@ -323,7 +323,7 @@
               method: 'get',
               params: this.$http.adornParams()
             }).then(({data}) => {
-              if (data && data.code === 0) {
+              if (data && data.code === '00000') {
                 this.dataForm.memberId = data.order.memberId
                 this.dataForm.orderSn = data.order.orderSn
                 this.dataForm.couponId = data.order.couponId
@@ -422,7 +422,7 @@
                 'modifyTime': this.dataForm.modifyTime
               })
             }).then(({data}) => {
-              if (data && data.code === 0) {
+              if (data && data.code === '00000') {
                 this.$message({
                   message: '操作成功',
                   type: 'success',

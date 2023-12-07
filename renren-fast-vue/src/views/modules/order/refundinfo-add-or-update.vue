@@ -78,7 +78,7 @@
               method: 'get',
               params: this.$http.adornParams()
             }).then(({data}) => {
-              if (data && data.code === 0) {
+              if (data && data.code === '00000') {
                 this.dataForm.orderReturnId = data.refundInfo.orderReturnId
                 this.dataForm.refund = data.refundInfo.refund
                 this.dataForm.refundSn = data.refundInfo.refundSn
@@ -107,7 +107,7 @@
                 'refundContent': this.dataForm.refundContent
               })
             }).then(({data}) => {
-              if (data && data.code === 0) {
+              if (data && data.code === '00000') {
                 this.$message({
                   message: '操作成功',
                   type: 'success',

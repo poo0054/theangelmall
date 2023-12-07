@@ -54,7 +54,7 @@
               method: 'get',
               params: this.$http.adornParams()
             }).then(({data}) => {
-              if (data && data.code === 0) {
+              if (data && data.code === '00000') {
                 this.dataForm.paramKey = data.config.paramKey
                 this.dataForm.paramValue = data.config.paramValue
                 this.dataForm.remark = data.config.remark
@@ -77,7 +77,7 @@
                 'remark': this.dataForm.remark
               })
             }).then(({data}) => {
-              if (data && data.code === 0) {
+              if (data && data.code === '00000') {
                 this.$message({
                   message: '操作成功',
                   type: 'success',

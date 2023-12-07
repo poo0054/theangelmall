@@ -65,7 +65,7 @@
               method: 'get',
               params: this.$http.adornParams()
             }).then(({data}) => {
-              if (data && data.code === 0) {
+              if (data && data.code === '00000') {
                 this.dataForm.spuId = data.spuBounds.spuId
                 this.dataForm.growBounds = data.spuBounds.growBounds
                 this.dataForm.buyBounds = data.spuBounds.buyBounds
@@ -90,7 +90,7 @@
                 'work': this.dataForm.work
               })
             }).then(({data}) => {
-              if (data && data.code === 0) {
+              if (data && data.code === '00000') {
                 this.$message({
                   message: '操作成功',
                   type: 'success',

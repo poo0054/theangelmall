@@ -92,7 +92,7 @@ export default {
             method: "get",
             params: this.$http.adornParams()
           }).then(({ data }) => {
-            if (data && data.code === 0) {
+            if (data && data.code === '00000') {
               this.dataForm.memberId = data.seckillSkuNotice.memberId;
               this.dataForm.skuId = data.seckillSkuNotice.skuId;
               this.dataForm.sessionId = data.seckillSkuNotice.sessionId;
@@ -125,7 +125,7 @@ export default {
               noticeType: this.dataForm.noticeType
             })
           }).then(({ data }) => {
-            if (data && data.code === 0) {
+            if (data && data.code === '00000') {
               this.$message({
                 message: "操作成功",
                 type: "success",

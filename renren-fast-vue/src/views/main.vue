@@ -15,10 +15,11 @@
 </template>
 
 <script>
-  import MainNavbar from './main-navbar'
-  import MainSidebar from './main-sidebar'
-  import MainContent from './main-content'
-  export default {
+import MainNavbar from './main-navbar'
+import MainSidebar from './main-sidebar'
+import MainContent from './main-content'
+
+export default {
     provide () {
       return {
         // 刷新
@@ -78,7 +79,7 @@
           method: 'get',
           params: this.$http.adornParams()
         }).then(({data}) => {
-          if (data && data.code === 0) {
+          if (data && data.code === '00000') {
             this.loading = false
             this.userId = data.user.userId
             this.userName = data.user.username

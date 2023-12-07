@@ -92,6 +92,7 @@
 
 <script>
 import SingleUpload from "@/components/upload/singleUpload";
+
 export default {
   components: { SingleUpload },
   data() {
@@ -209,7 +210,7 @@ export default {
             method: "get",
             params: this.$http.adornParams()
           }).then(({ data }) => {
-            if (data && data.code === 0) {
+            if (data && data.code === '00000') {
               this.dataForm.couponType = data.coupon.couponType;
               this.dataForm.couponImg = data.coupon.couponImg;
               this.dataForm.couponName = data.coupon.couponName;
@@ -270,7 +271,7 @@ export default {
               publish: this.dataForm.publish
             })
           }).then(({ data }) => {
-            if (data && data.code === 0) {
+            if (data && data.code === '00000') {
               this.$message({
                 message: "操作成功",
                 type: "success",

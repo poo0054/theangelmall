@@ -8,6 +8,8 @@
 
 package io.renren.modules.sys.controller;
 
+import com.themall.model.constants.HttpStatusEnum;
+import com.themall.model.entity.R;
 import com.themall.model.entity.SysUserEntity;
 import com.themall.model.validator.Assert;
 import com.themall.model.validator.ValidatorUtils;
@@ -19,7 +21,6 @@ import io.renren.modules.sys.service.SysUserRoleService;
 import io.renren.modules.sys.service.SysUserService;
 import io.renren.utils.Constant;
 import io.renren.utils.PageUtils;
-import io.renren.utils.R;
 import org.apache.commons.lang.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -84,7 +85,7 @@ public class SysUserController extends AbstractController {
         //更新密码
         boolean flag = sysUserService.updatePassword(getUserId(), password, newPassword);
         if (!flag) {
-            return R.error("原密码不正确");
+            return R.error(HttpStatusEnum.USER_ERROR_A0130.getCode(), "原密码不正确");
         }
 
         return R.ok();
@@ -141,10 +142,10 @@ public class SysUserController extends AbstractController {
     @PreAuthorize("hasAuthority('sys:user:update')")
     public R delete(@RequestBody Long[] userIds) {
         if (ArrayUtils.contains(userIds, 1L)) {
-            return R.error("系统管理员不能删除");
+            return R.error(HttpStatusEnum.USER_ERROR_A0440.getCode(), "系统管理员不能删除");
         }
         if (ArrayUtils.contains(userIds, getUserId())) {
-            return R.error("当前用户不能删除");
+            return R.error(HttpStatusEnum.USER_ERROR_A0440.getCode(), "当前用户不能删除");
         }
         sysUserService.deleteBatch(userIds);
         return R.ok();

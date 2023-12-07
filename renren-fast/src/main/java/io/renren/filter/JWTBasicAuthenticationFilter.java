@@ -52,21 +52,21 @@ public class JWTBasicAuthenticationFilter extends BasicAuthenticationFilter {
                     String token = header.substring(6);
                     Jws<Claims> claimsJws = JwtUtils.getClaimsJws(token);
                     if (null != claimsJws) {
-                        String userName = claimsJws.getBody().getSubject();
-                        redisTemplate.expire(JwtUtils.REDIS_PREFIX + userName, JwtUtils.EXPIRE, TimeUnit.SECONDS);
-                        Authentication authenticate = (Authentication) redisTemplate.opsForValue().get(JwtUtils.REDIS_PREFIX + userName);
+                        String subject = claimsJws.getPayload().getSubject();
+                        redisTemplate.expire(JwtUtils.REDIS_PREFIX + subject, JwtUtils.EXPIRE, TimeUnit.SECONDS);
+                        Authentication authenticate = (Authentication) redisTemplate.opsForValue().get(JwtUtils.REDIS_PREFIX + subject);
                         SecurityContextHolder.getContext().setAuthentication(authenticate);
                         JwsHeader jwsHeader = claimsJws.getHeader();
-                        request.setAttribute(JWTBasicAuthenticationFilter.class.getSimpleName(), userName);
+                        request.setAttribute(JWTBasicAuthenticationFilter.class.getSimpleName() + "subject", subject);
                         request.setAttribute(JWTBasicAuthenticationFilter.class.getSimpleName() + JwtUtils.HEADER_NAME, jwsHeader.get(JwtUtils.HEADER_NAME));
                     }
                 }
             }
             chain.doFilter(request, response);
         } finally {
-            SecurityContextHolder.clearContext();
             request.removeAttribute(JWTBasicAuthenticationFilter.class.getSimpleName());
             request.removeAttribute(JWTBasicAuthenticationFilter.class.getSimpleName() + JwtUtils.HEADER_NAME);
+            SecurityContextHolder.clearContext();
         }
     }
 }

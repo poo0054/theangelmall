@@ -8,12 +8,13 @@
 
 package io.renren.modules.sys.controller;
 
+import com.themall.model.constants.HttpStatusEnum;
+import com.themall.model.entity.R;
+import com.themall.model.exception.RRException;
 import io.renren.annotation.SysLog;
-import io.renren.exception.RRException;
 import io.renren.modules.sys.entity.SysMenuEntity;
 import io.renren.modules.sys.service.SysMenuService;
 import io.renren.utils.Constant;
-import io.renren.utils.R;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -130,13 +131,13 @@ public class SysMenuController extends AbstractController {
 //	@RequiresPermissions("sys:menu:delete")
     public R delete(@PathVariable("menuId") long menuId) {
         if (menuId <= 31) {
-            return R.error("系统菜单，不能删除");
+            return R.error(HttpStatusEnum.USER_ERROR_A0440.getCode(), "系统菜单，不能删除");
         }
 
         //判断是否有子菜单或按钮
         List<SysMenuEntity> menuList = sysMenuService.queryListParentId(menuId);
         if (menuList.size() > 0) {
-            return R.error("请先删除子菜单或按钮");
+            return R.error(HttpStatusEnum.USER_ERROR_A0440.getCode(), "请先删除子菜单或按钮");
         }
 
         sysMenuService.delete(menuId);

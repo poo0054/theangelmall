@@ -52,16 +52,14 @@ public class R extends HashMap<String, Object> {
         return r;
     }
 
-    public static R httpStatus(String msg) {
-        R r = new R();
-        r.put(MSG_NAME, msg);
-        return r;
+
+    public static R ok() {
+        return new R();
     }
 
-    public static R ok(String code, String msg) {
+    public static R ok(String msg) {
         R r = new R();
         r.put(MSG_NAME, msg);
-        r.put(CODE_NAME, code);
         return r;
     }
 

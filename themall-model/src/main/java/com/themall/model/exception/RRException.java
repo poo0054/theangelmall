@@ -8,6 +8,8 @@
 
 package com.themall.model.exception;
 
+import com.themall.model.constants.HttpStatusEnum;
+
 /**
  * 自定义异常
  *
@@ -18,6 +20,16 @@ public class RRException extends RuntimeException {
 
     private String msg;
     private int code = 500;
+
+    public RRException(HttpStatusEnum httpStatusEnum) {
+        super(httpStatusEnum.getCode());
+        this.msg = httpStatusEnum.getMsg();
+    }
+
+    public RRException(HttpStatusEnum httpStatusEnum, Throwable e) {
+        super(httpStatusEnum.getCode(), e);
+        this.msg = httpStatusEnum.getMsg();
+    }
 
     public RRException(String msg) {
         super(msg);

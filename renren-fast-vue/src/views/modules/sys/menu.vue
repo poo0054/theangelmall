@@ -83,9 +83,10 @@
 </template>
 
 <script>
-  import AddOrUpdate from './menu-add-or-update'
-  import { treeDataTranslate } from '@/utils'
-  export default {
+import AddOrUpdate from './menu-add-or-update'
+import {treeDataTranslate} from '@/utils'
+
+export default {
     data () {
       return {
         dataForm: {},
@@ -132,7 +133,7 @@
             method: 'post',
             data: this.$http.adornData()
           }).then(({data}) => {
-            if (data && data.code === 0) {
+            if (data && data.code === '00000') {
               this.$message({
                 message: '操作成功',
                 type: 'success',

@@ -9,12 +9,12 @@
 package io.renren.modules.sys.controller;
 
 
+import com.themall.model.entity.R;
 import com.themall.model.validator.ValidatorUtils;
 import io.renren.annotation.SysLog;
 import io.renren.modules.sys.entity.SysConfigEntity;
 import io.renren.modules.sys.service.SysConfigService;
 import io.renren.utils.PageUtils;
-import io.renren.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

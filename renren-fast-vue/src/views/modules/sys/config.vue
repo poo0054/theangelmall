@@ -74,8 +74,9 @@
 </template>
 
 <script>
-  import AddOrUpdate from './config-add-or-update'
-  export default {
+import AddOrUpdate from './config-add-or-update'
+
+export default {
     data () {
       return {
         dataForm: {
@@ -109,7 +110,7 @@
             'paramKey': this.dataForm.paramKey
           })
         }).then(({data}) => {
-          if (data && data.code === 0) {
+          if (data && data.code === '00000') {
             this.dataList = data.page.list
             this.totalPage = data.page.totalCount
           } else {
@@ -156,7 +157,7 @@
             method: 'post',
             data: this.$http.adornData(ids, false)
           }).then(({data}) => {
-            if (data && data.code === 0) {
+            if (data && data.code === '00000') {
               this.$message({
                 message: '操作成功',
                 type: 'success',

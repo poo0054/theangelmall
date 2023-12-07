@@ -121,7 +121,7 @@ export default {
             method: "get",
             params: this.$http.adornParams()
           }).then(({data}) => {
-            if (data && data.code === 0) {
+            if (data && data.code === '00000') {
               this.dataForm.name = data.brand.name;
               this.dataForm.logo = data.brand.logo;
               this.dataForm.descript = data.brand.descript;
@@ -152,7 +152,7 @@ export default {
               sort: this.dataForm.sort
             })
           }).then(({data}) => {
-            if (data && data.code === 0) {
+            if (data && data.code === '00000') {
               this.$message({
                 message: "操作成功",
                 type: "success",

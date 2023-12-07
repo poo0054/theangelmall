@@ -184,7 +184,7 @@ export default {
           method: "get",
           params: this.$http.adornParams({page: 1, limit: 10000000})
         }).then(({data}) => {
-          if (data && data.code === 0) {
+          if (data && data.code === '00000') {
             console.log(data)
             this.attrGroups = data.page.list;
           } else {
@@ -215,7 +215,7 @@ export default {
             method: "get",
             params: this.$http.adornParams()
           }).then(({data}) => {
-            if (data && data.code === 0) {
+            if (data && data.code === '00000') {
               this.dataForm.attrName = data.attr.attrName;
               this.dataForm.searchType = data.attr.searchType;
               this.dataForm.valueType = data.attr.valueType;
@@ -261,7 +261,7 @@ export default {
               showDesc: this.dataForm.showDesc
             })
           }).then(({data}) => {
-            if (data && data.code === 0) {
+            if (data && data.code === '00000') {
               this.$message({
                 message: "操作成功",
                 type: "success",

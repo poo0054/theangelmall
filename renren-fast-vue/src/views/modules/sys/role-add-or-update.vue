@@ -29,8 +29,9 @@
 </template>
 
 <script>
-  import { treeDataTranslate } from '@/utils'
-  export default {
+import {treeDataTranslate} from '@/utils'
+
+export default {
     data () {
       return {
         visible: false,
@@ -74,7 +75,7 @@
               method: 'get',
               params: this.$http.adornParams()
             }).then(({data}) => {
-              if (data && data.code === 0) {
+              if (data && data.code === '00000') {
                 this.dataForm.roleName = data.role.roleName
                 this.dataForm.remark = data.role.remark
                 var idx = data.role.menuIdList.indexOf(this.tempKey)
@@ -101,7 +102,7 @@
                 'menuIdList': [].concat(this.$refs.menuListTree.getCheckedKeys(), [this.tempKey], this.$refs.menuListTree.getHalfCheckedKeys())
               })
             }).then(({data}) => {
-              if (data && data.code === 0) {
+              if (data && data.code === '00000') {
                 this.$message({
                   message: '操作成功',
                   type: 'success',

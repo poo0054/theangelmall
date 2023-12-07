@@ -113,7 +113,7 @@
               method: 'get',
               params: this.$http.adornParams()
             }).then(({data}) => {
-              if (data && data.code === 0) {
+              if (data && data.code === '00000') {
                 this.dataForm.name = data.homeAdv.name
                 this.dataForm.pic = data.homeAdv.pic
                 this.dataForm.startTime = data.homeAdv.startTime
@@ -152,7 +152,7 @@
                 'authId': this.dataForm.authId
               })
             }).then(({data}) => {
-              if (data && data.code === 0) {
+              if (data && data.code === '00000') {
                 this.$message({
                   message: '操作成功',
                   type: 'success',

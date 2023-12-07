@@ -54,9 +54,10 @@
 </template>
 
 <script>
-  import UpdatePassword from './main-navbar-update-password'
-  import { clearLoginInfo } from '@/utils'
-  export default {
+import UpdatePassword from './main-navbar-update-password'
+import {clearLoginInfo} from '@/utils'
+
+export default {
     data () {
       return {
         updatePassowrdVisible: false
@@ -101,7 +102,7 @@
             method: 'post',
             data: this.$http.adornData()
           }).then(({data}) => {
-            if (data && data.code === 0) {
+            if (data && data.code === '00000') {
               clearLoginInfo()
               this.$router.push({ name: 'login' })
             }

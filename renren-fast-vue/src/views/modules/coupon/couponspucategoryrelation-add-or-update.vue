@@ -57,7 +57,7 @@
               method: 'get',
               params: this.$http.adornParams()
             }).then(({data}) => {
-              if (data && data.code === 0) {
+              if (data && data.code === '00000') {
                 this.dataForm.couponId = data.couponSpuCategoryRelation.couponId
                 this.dataForm.categoryId = data.couponSpuCategoryRelation.categoryId
                 this.dataForm.categoryName = data.couponSpuCategoryRelation.categoryName
@@ -80,7 +80,7 @@
                 'categoryName': this.dataForm.categoryName
               })
             }).then(({data}) => {
-              if (data && data.code === 0) {
+              if (data && data.code === '00000') {
                 this.$message({
                   message: '操作成功',
                   type: 'success',

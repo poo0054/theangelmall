@@ -14,7 +14,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.themall.model.entity.SysUserEntity;
-import io.renren.exception.RRException;
+import com.themall.model.exception.RRException;
 import io.renren.modules.sys.dao.SysUserDao;
 import io.renren.modules.sys.entity.SysMenuEntity;
 import io.renren.modules.sys.entity.SysRoleEntity;

@@ -106,7 +106,7 @@
               method: 'get',
               params: this.$http.adornParams()
             }).then(({data}) => {
-              if (data && data.code === 0) {
+              if (data && data.code === '00000') {
                 this.dataForm.orderSn = data.paymentInfo.orderSn
                 this.dataForm.orderId = data.paymentInfo.orderId
                 this.dataForm.alipayTradeNo = data.paymentInfo.alipayTradeNo
@@ -143,7 +143,7 @@
                 'callbackTime': this.dataForm.callbackTime
               })
             }).then(({data}) => {
-              if (data && data.code === 0) {
+              if (data && data.code === '00000') {
                 this.$message({
                   message: '操作成功',
                   type: 'success',

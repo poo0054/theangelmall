@@ -1,7 +1,5 @@
 import COS from "cos-js-sdk-v5";
 import httpRequest from '@/utils/httpRequest' // api: https://github.com/axios/axios
-import {Message} from 'element-ui';
-import log from "../views/modules/sys/log";
 
 
 export function generateUUID() {
@@ -20,7 +18,7 @@ export function cospush(name, file) {
     url: httpRequest.adornUrl(`/third-party/ten/getTempKey`),
     method: 'get',
   }).then(({data}) => {
-    if (data && data.code === 0) {
+    if (data && data.code === '00000') {
       let d = JSON.parse(data.data)
       let cos = new COS({
         SecretId: d.credentials.tmpSecretId,

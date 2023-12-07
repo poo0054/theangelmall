@@ -37,8 +37,9 @@
 </template>
 
 <script>
-  import { getUUID } from '@/utils'
-  export default {
+import {getUUID} from '@/utils'
+
+export default {
     data () {
       return {
         dataForm: {
@@ -79,7 +80,7 @@
                 'captcha': this.dataForm.captcha
               })
             }).then(({data}) => {
-              if (data && data.code === 0) {
+              if (data && data.code === '00000') {
                 this.$cookie.set('token', data.token)
                 this.$router.replace({ name: 'home' })
               } else {

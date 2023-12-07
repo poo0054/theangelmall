@@ -78,7 +78,7 @@ export default {
             method: "get",
             params: this.$http.adornParams()
           }).then(({ data }) => {
-            if (data && data.code === 0) {
+            if (data && data.code === '00000') {
               this.dataForm.skuId = data.skuFullReduction.skuId;
               this.dataForm.fullPrice = data.skuFullReduction.fullPrice;
               this.dataForm.reducePrice = data.skuFullReduction.reducePrice;
@@ -107,7 +107,7 @@ export default {
               addOther: this.dataForm.addOther
             })
           }).then(({ data }) => {
-            if (data && data.code === 0) {
+            if (data && data.code === '00000') {
               this.$message({
                 message: "操作成功",
                 type: "success",

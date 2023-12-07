@@ -8,12 +8,13 @@
 
 package io.renren.modules.sys.controller;
 
+import com.themall.model.constants.HttpStatusEnum;
+import com.themall.model.entity.R;
 import io.renren.filter.JWTBasicAuthenticationFilter;
 import io.renren.modules.sys.form.SysLoginForm;
 import io.renren.modules.sys.service.SysCaptchaService;
 import io.renren.modules.sys.service.SysUserService;
 import io.renren.modules.sys.service.SysUserTokenService;
-import io.renren.utils.R;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -72,7 +73,7 @@ public class SysLoginController extends AbstractController {
     public R login(@RequestBody @Validated SysLoginForm form) {
         boolean captcha = sysCaptchaService.validate(form.getUuid(), form.getCaptcha());
         if (!captcha) {
-            return R.error("验证码不正确");
+            return R.error(HttpStatusEnum.USER_ERROR_A0240);
         }
         //用户信息
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(form.getUsername(), form.getPassword());
@@ -89,7 +90,7 @@ public class SysLoginController extends AbstractController {
      */
     @PostMapping("/sys/logout")
     public R logout(HttpServletRequest request) {
-        sysUserTokenService.logout((Long) request.getAttribute(JWTBasicAuthenticationFilter.class.getSimpleName()));
+        sysUserTokenService.logout((String) request.getAttribute(JWTBasicAuthenticationFilter.class.getSimpleName() + "subject"));
         return R.ok();
     }
 

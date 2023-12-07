@@ -1,5 +1,7 @@
 package io.renren.config;
 
+import io.renren.filter.DefaultAccessDeniedHandler;
+import io.renren.filter.DefaultAuthenticationEntryPoint;
 import io.renren.filter.JWTBasicAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,23 +19,35 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @author poo0054
  */
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private JWTBasicAuthenticationFilter jwtBasicAuthenticationFilter;
+    JWTBasicAuthenticationFilter jwtBasicAuthenticationFilter;
+
+    @Autowired
+    DefaultAccessDeniedHandler defaultAccessDeniedHandler;
+
+    @Autowired
+    DefaultAuthenticationEntryPoint defaultAuthenticationEntryPoint;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().disable()
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().authorizeRequests(authorizeRequests -> {
-                    authorizeRequests.mvcMatchers("/sys/login", "/sys/logout", "/captcha.jpg").permitAll().anyRequest().authenticated();
+        http
+                .exceptionHandling(exceptionHandling -> {
+                    exceptionHandling.accessDeniedHandler(defaultAccessDeniedHandler).authenticationEntryPoint(defaultAuthenticationEntryPoint);
                 })
                 .addFilterBefore(jwtBasicAuthenticationFilter, JWTBasicAuthenticationFilter.class)
+                .authorizeRequests(authorizeRequests -> {
+                    authorizeRequests.mvcMatchers("/sys/login", "/sys/logout", "/captcha.jpg").permitAll().anyRequest().authenticated();
+                })
+                .cors().disable()
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         ;
+
+
     }
 
     @Bean

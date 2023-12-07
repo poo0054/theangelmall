@@ -74,7 +74,7 @@ export default {
             method: "get",
             params: this.$http.adornParams()
           }).then(({ data }) => {
-            if (data && data.code === 0) {
+            if (data && data.code === '00000') {
               this.dataForm.name = data.seckillSession.name;
               this.dataForm.startTime = data.seckillSession.startTime;
               this.dataForm.endTime = data.seckillSession.endTime;
@@ -103,7 +103,7 @@ export default {
               createTime: new Date()
             })
           }).then(({ data }) => {
-            if (data && data.code === 0) {
+            if (data && data.code === '00000') {
               this.$message({
                 message: "操作成功",
                 type: "success",

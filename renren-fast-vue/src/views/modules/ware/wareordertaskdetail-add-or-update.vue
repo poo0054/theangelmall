@@ -64,7 +64,7 @@
               method: 'get',
               params: this.$http.adornParams()
             }).then(({data}) => {
-              if (data && data.code === 0) {
+              if (data && data.code === '00000') {
                 this.dataForm.skuId = data.wareOrderTaskDetail.skuId
                 this.dataForm.skuName = data.wareOrderTaskDetail.skuName
                 this.dataForm.skuNum = data.wareOrderTaskDetail.skuNum
@@ -89,7 +89,7 @@
                 'taskId': this.dataForm.taskId
               })
             }).then(({data}) => {
-              if (data && data.code === 0) {
+              if (data && data.code === '00000') {
                 this.$message({
                   message: '操作成功',
                   type: 'success',

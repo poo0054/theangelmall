@@ -40,7 +40,7 @@ public class RRExceptionHandler {
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)
-    public R handlerNoFoundException(Exception e) {
+    public R handlerNoFoundException(NoHandlerFoundException e) {
         log.error(e.getMessage(), e);
         return R.error("404", "路径不存在，请检查路径是否正确");
     }

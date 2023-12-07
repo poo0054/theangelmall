@@ -9,11 +9,12 @@
 package io.renren.modules.oss.controller;
 
 import com.google.gson.Gson;
+import com.themall.model.entity.R;
+import com.themall.model.exception.RRException;
 import com.themall.model.validator.ValidatorUtils;
 import com.themall.model.validator.group.AliyunGroup;
 import com.themall.model.validator.group.QcloudGroup;
 import com.themall.model.validator.group.QiniuGroup;
-import io.renren.exception.RRException;
 import io.renren.modules.oss.cloud.CloudStorageConfig;
 import io.renren.modules.oss.cloud.OSSFactory;
 import io.renren.modules.oss.entity.SysOssEntity;
@@ -22,7 +23,6 @@ import io.renren.modules.sys.service.SysConfigService;
 import io.renren.utils.ConfigConstant;
 import io.renren.utils.Constant;
 import io.renren.utils.PageUtils;
-import io.renren.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

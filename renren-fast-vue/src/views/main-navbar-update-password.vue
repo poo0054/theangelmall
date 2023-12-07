@@ -25,8 +25,9 @@
 </template>
 
 <script>
-  import { clearLoginInfo } from '@/utils'
-  export default {
+import {clearLoginInfo} from '@/utils'
+
+export default {
     data () {
       var validateConfirmPassword = (rule, value, callback) => {
         if (this.dataForm.newPassword !== value) {
@@ -85,7 +86,7 @@
                 'newPassword': this.dataForm.newPassword
               })
             }).then(({data}) => {
-              if (data && data.code === 0) {
+              if (data && data.code === '00000') {
                 this.$message({
                   message: '操作成功',
                   type: 'success',

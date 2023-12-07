@@ -78,9 +78,10 @@
 </template>
 
 <script>
-  import { treeDataTranslate } from '@/utils'
-  import Icon from '@/icons'
-  export default {
+import {treeDataTranslate} from '@/utils'
+import Icon from '@/icons'
+
+export default {
     data () {
       var validateUrl = (rule, value, callback) => {
         if (this.dataForm.type === 1 && !/\S/.test(value)) {
@@ -195,7 +196,7 @@
                 'icon': this.dataForm.icon
               })
             }).then(({data}) => {
-              if (data && data.code === 0) {
+              if (data && data.code === '00000') {
                 this.$message({
                   message: '操作成功',
                   type: 'success',

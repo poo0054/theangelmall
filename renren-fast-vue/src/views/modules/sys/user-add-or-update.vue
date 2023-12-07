@@ -39,8 +39,9 @@
 </template>
 
 <script>
-  import { isEmail, isMobile } from '@/utils/validate'
-  export default {
+import {isEmail, isMobile} from '@/utils/validate'
+
+export default {
     data () {
       var validatePassword = (rule, value, callback) => {
         if (!this.dataForm.id && !/\S/.test(value)) {
@@ -115,7 +116,7 @@
           method: 'get',
           params: this.$http.adornParams()
         }).then(({data}) => {
-          this.roleList = data && data.code === 0 ? data.list : []
+          this.roleList = data && data.code === '00000' ? data.list : []
         }).then(() => {
           this.visible = true
           this.$nextTick(() => {
@@ -128,7 +129,7 @@
               method: 'get',
               params: this.$http.adornParams()
             }).then(({data}) => {
-              if (data && data.code === 0) {
+              if (data && data.code === '00000') {
                 this.dataForm.userName = data.user.username
                 this.dataForm.salt = data.user.salt
                 this.dataForm.email = data.user.email
@@ -158,7 +159,7 @@
                 'roleIdList': this.dataForm.roleIdList
               })
             }).then(({data}) => {
-              if (data && data.code === 0) {
+              if (data && data.code === '00000') {
                 this.$message({
                   message: '操作成功',
                   type: 'success',

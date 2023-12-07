@@ -9,10 +9,7 @@
 package com.themall.common.utils;
 
 import com.themall.model.entity.SysUserEntity;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwsHeader;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
@@ -43,7 +40,7 @@ public class JwtUtils {
     /**
      * 生成jwt token
      */
-    public static String generateToken(SysUserEntity userName) {
+    public static String generateToken(String subject, SysUserEntity userName) {
         Date nowDate = new Date();
         //过期时间
         Date expireDate = new Date(nowDate.getTime() + EXPIRE * 1000);
@@ -51,7 +48,7 @@ public class JwtUtils {
         return Jwts.builder()
                 .header().add(HEADER_NAME, userName)
                 .and()
-                .subject(userName.getUsername())
+                .subject(subject)
                 .expiration(expireDate)
                 .issuedAt(nowDate)
                 .signWith(key)
@@ -80,10 +77,15 @@ public class JwtUtils {
     }
 
     public static Jws<Claims> getClaimsJws(String token) {
-        SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64URL.decode(SECRET));
-        return Jwts.parser().verifyWith(key)
-                .build()
-                .parseSignedClaims(token);
+        try {
+            SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64URL.decode(SECRET));
+            return Jwts.parser().verifyWith(key)
+                    .build()
+                    .parseSignedClaims(token);
+        } catch (JwtException | IllegalArgumentException e) {
+            log.warn("token校验失败", e);
+            return null;
+        }
     }
 
     /**

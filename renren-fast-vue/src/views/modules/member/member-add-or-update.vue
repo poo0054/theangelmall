@@ -155,7 +155,7 @@
               method: 'get',
               params: this.$http.adornParams()
             }).then(({data}) => {
-              if (data && data.code === 0) {
+              if (data && data.code === '00000') {
                 this.dataForm.levelId = data.member.levelId
                 this.dataForm.username = data.member.username
                 this.dataForm.password = data.member.password
@@ -206,7 +206,7 @@
                 'createTime': this.dataForm.createTime
               })
             }).then(({data}) => {
-              if (data && data.code === 0) {
+              if (data && data.code === '00000') {
                 this.$message({
                   message: '操作成功',
                   type: 'success',

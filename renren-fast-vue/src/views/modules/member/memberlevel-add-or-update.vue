@@ -99,7 +99,7 @@
               method: 'get',
               params: this.$http.adornParams()
             }).then(({data}) => {
-              if (data && data.code === 0) {
+              if (data && data.code === '00000') {
                 this.dataForm.name = data.memberLevel.name
                 this.dataForm.growthPoint = data.memberLevel.growthPoint||0
                 this.dataForm.defaultStatus = data.memberLevel.defaultStatus||0
@@ -134,7 +134,7 @@
                 'note': this.dataForm.note
               })
             }).then(({data}) => {
-              if (data && data.code === 0) {
+              if (data && data.code === '00000') {
                 this.$message({
                   message: '操作成功',
                   type: 'success',

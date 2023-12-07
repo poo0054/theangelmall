@@ -8,7 +8,7 @@
 
 package io.renren.aspect;
 
-import io.renren.exception.RRException;
+import com.themall.model.exception.RRException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;

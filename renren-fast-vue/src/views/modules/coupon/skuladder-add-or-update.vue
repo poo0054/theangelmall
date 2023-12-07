@@ -83,7 +83,7 @@ export default {
             method: "get",
             params: this.$http.adornParams()
           }).then(({ data }) => {
-            if (data && data.code === 0) {
+            if (data && data.code === '00000') {
               this.dataForm.skuId = data.skuLadder.skuId;
               this.dataForm.fullCount = data.skuLadder.fullCount;
               this.dataForm.discount = data.skuLadder.discount;
@@ -112,7 +112,7 @@ export default {
               addOther: this.dataForm.addOther
             })
           }).then(({ data }) => {
-            if (data && data.code === 0) {
+            if (data && data.code === '00000') {
               this.$message({
                 message: "操作成功",
                 type: "success",
