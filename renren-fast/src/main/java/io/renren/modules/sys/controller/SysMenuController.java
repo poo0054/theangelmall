@@ -8,13 +8,13 @@
 
 package io.renren.modules.sys.controller;
 
+import com.themall.model.constants.Constant;
 import com.themall.model.constants.HttpStatusEnum;
 import com.themall.model.entity.R;
 import com.themall.model.exception.RRException;
 import io.renren.annotation.SysLog;
 import io.renren.modules.sys.entity.SysMenuEntity;
 import io.renren.modules.sys.service.SysMenuService;
-import io.renren.utils.Constant;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;

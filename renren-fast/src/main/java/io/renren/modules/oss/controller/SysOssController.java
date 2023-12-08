@@ -9,6 +9,7 @@
 package io.renren.modules.oss.controller;
 
 import com.google.gson.Gson;
+import com.themall.model.constants.Constant;
 import com.themall.model.entity.R;
 import com.themall.model.exception.RRException;
 import com.themall.model.validator.ValidatorUtils;
@@ -21,7 +22,6 @@ import io.renren.modules.oss.entity.SysOssEntity;
 import io.renren.modules.oss.service.SysOssService;
 import io.renren.modules.sys.service.SysConfigService;
 import io.renren.utils.ConfigConstant;
-import io.renren.utils.Constant;
 import io.renren.utils.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -39,6 +39,7 @@ import java.util.Map;
 //@RestController
 @RequestMapping("sys/oss")
 public class SysOssController {
+
     @Autowired
     private SysOssService sysOssService;
     @Autowired

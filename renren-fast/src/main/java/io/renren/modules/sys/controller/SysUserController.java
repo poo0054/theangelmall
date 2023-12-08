@@ -8,6 +8,7 @@
 
 package io.renren.modules.sys.controller;
 
+import com.themall.model.constants.Constant;
 import com.themall.model.constants.HttpStatusEnum;
 import com.themall.model.entity.R;
 import com.themall.model.entity.SysUserEntity;
@@ -19,7 +20,6 @@ import io.renren.annotation.SysLog;
 import io.renren.modules.sys.form.PasswordForm;
 import io.renren.modules.sys.service.SysUserRoleService;
 import io.renren.modules.sys.service.SysUserService;
-import io.renren.utils.Constant;
 import io.renren.utils.PageUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;

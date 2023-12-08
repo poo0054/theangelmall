@@ -9,8 +9,8 @@
 package io.renren.modules.sys.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.themall.model.entity.SysUserRoleEntity;
 import io.renren.modules.sys.dao.SysUserRoleDao;
-import io.renren.modules.sys.entity.SysUserRoleEntity;
 import io.renren.modules.sys.service.SysUserRoleService;
 import io.renren.utils.MapUtils;
 import org.springframework.stereotype.Service;

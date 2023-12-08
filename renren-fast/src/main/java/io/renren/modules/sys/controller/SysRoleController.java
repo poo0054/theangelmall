@@ -8,13 +8,13 @@
 
 package io.renren.modules.sys.controller;
 
+import com.themall.model.constants.Constant;
 import com.themall.model.entity.R;
+import com.themall.model.entity.SysRoleEntity;
 import com.themall.model.validator.ValidatorUtils;
 import io.renren.annotation.SysLog;
-import io.renren.modules.sys.entity.SysRoleEntity;
 import io.renren.modules.sys.service.SysRoleMenuService;
 import io.renren.modules.sys.service.SysRoleService;
-import io.renren.utils.Constant;
 import io.renren.utils.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;

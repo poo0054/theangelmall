@@ -1,13 +1,14 @@
 /**
  * Copyright (c) 2016-2019 人人开源 All rights reserved.
- *
+ * <p>
  * https://www.renren.io
- *
+ * <p>
  * 版权所有，侵权必究！
  */
 
 package io.renren.modules.sys.service.impl;
 
+import com.themall.model.constants.Constant;
 import com.themall.model.entity.SysUserEntity;
 import io.renren.modules.sys.dao.SysMenuDao;
 import io.renren.modules.sys.dao.SysUserDao;
@@ -15,7 +16,6 @@ import io.renren.modules.sys.dao.SysUserTokenDao;
 import io.renren.modules.sys.entity.SysMenuEntity;
 import io.renren.modules.sys.entity.SysUserTokenEntity;
 import io.renren.modules.sys.service.ShiroService;
-import io.renren.utils.Constant;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,16 +39,16 @@ public class ShiroServiceImpl implements ShiroService {
         if (Objects.equals(Constant.SUPER_ADMIN, userId)) {
             List<SysMenuEntity> menuList = sysMenuDao.selectList(null);
             permsList = new ArrayList<>(menuList.size());
-            for(SysMenuEntity menu : menuList){
+            for (SysMenuEntity menu : menuList) {
                 permsList.add(menu.getPerms());
             }
-        }else{
+        } else {
             permsList = sysUserDao.queryAllPerms(userId);
         }
         //用户权限列表
         Set<String> permsSet = new HashSet<>();
-        for(String perms : permsList){
-            if(StringUtils.isBlank(perms)){
+        for (String perms : permsList) {
+            if (StringUtils.isBlank(perms)) {
                 continue;
             }
             permsSet.addAll(Arrays.asList(perms.trim().split(",")));

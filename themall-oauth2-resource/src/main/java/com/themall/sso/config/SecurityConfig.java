@@ -20,9 +20,6 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        // 所有请求都进行拦截
-        //        httpSecurity.authorizeRequests().anyRequest().authenticated();
-        // 关闭session
         http.
                 authorizeHttpRequests(authorize -> authorize
                         .anyRequest().authenticated()
@@ -30,6 +27,10 @@ public class SecurityConfig {
                 .oauth2ResourceServer((oauth2) ->
                         oauth2.jwt(Customizer.withDefaults()
                         ))
+                .logout((logout) -> logout
+                        .logoutSuccessUrl("/logout/success/endpoint")
+                        .permitAll()
+                )
         ;
 
 

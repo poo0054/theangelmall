@@ -1,0 +1,36 @@
+server:
+  port: 9000
+
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.98.11:30848
+        namespace: c6efdd0f-1682-4586-9812-75b5b4e381bd
+        password: "005400"
+        group: ${spring.profiles.active}
+      config:
+        server-addr: 192.168.98.11:30848
+        namespace: c6efdd0f-1682-4586-9812-75b5b4e381bd
+        password: "005400"
+        group: ${spring.profiles.active}
+        file-extension: yaml
+        shared-configs:
+          - dataId: common.yaml
+            group: ${spring.profiles.active}
+            refresh: true
+
+
+
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          github:
+#            client-id: 162f2f2ef75cc236d6f1
+#            client-secret: d43ff1248dad544c5c61f9b48642551e0e00f668
+#        provider:
+#          google:
+#            user-name-attribute: email
+#          github:
+#            user-name-attribute: login

@@ -9,7 +9,7 @@
 package io.renren.modules.sys.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import io.renren.modules.sys.entity.SysRoleEntity;
+import com.themall.model.entity.SysRoleEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

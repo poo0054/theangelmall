@@ -9,7 +9,7 @@
 package io.renren.modules.sys.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import io.renren.modules.sys.entity.SysUserRoleEntity;
+import com.themall.model.entity.SysUserRoleEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -21,8 +21,8 @@ import java.util.List;
  */
 @Mapper
 public interface SysUserRoleDao extends BaseMapper<SysUserRoleEntity> {
-	
-	/**
+
+    /**
 	 * 根据用户ID，获取角色ID列表
 	 */
 	List<Long> queryRoleIdList(Long userId);

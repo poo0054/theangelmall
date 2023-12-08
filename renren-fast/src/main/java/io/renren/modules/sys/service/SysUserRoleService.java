@@ -9,7 +9,7 @@
 package io.renren.modules.sys.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import io.renren.modules.sys.entity.SysUserRoleEntity;
+import com.themall.model.entity.SysUserRoleEntity;
 
 import java.util.List;
 
