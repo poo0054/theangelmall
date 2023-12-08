@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
 
     @GetMapping("test")
-    @PreAuthorize("hasAuthority('SCOPE_read:user')")
+    @PreAuthorize("hasAuthority('SCOPE_read:user') or hasAuthority('ROLE_USER') ")
     public String test() {
         return "你好";
     }

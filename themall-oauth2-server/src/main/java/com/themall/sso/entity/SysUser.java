@@ -1,6 +1,5 @@
 package com.themall.sso.entity;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.springframework.data.annotation.Id;
 
 import java.io.Serializable;
@@ -12,7 +11,6 @@ import java.util.Date;
  * @author makejava
  * @since 2023-11-29 15:25:27
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
 public class SysUser implements Serializable {
     private static final long serialVersionUID = 517669006861286069L;
 

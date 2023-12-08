@@ -1,6 +1,7 @@
 package com.themall.sso.web;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * @author poo0054
@@ -8,5 +9,9 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class LoginWebController {
 
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
 
 }

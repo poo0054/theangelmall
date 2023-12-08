@@ -3,6 +3,7 @@ package com.themall.sso.config;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,17 +19,21 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         // 所有请求都进行拦截
         //        httpSecurity.authorizeRequests().anyRequest().authenticated();
         // 关闭session
-        httpSecurity.sessionManagement().disable();
-        // 配置资源服务器的无权限，无认证拦截器等 以及JWT验证
-        httpSecurity.oauth2ResourceServer().accessDeniedHandler((request, response, accessDeniedException) -> {
-            log.info("{}---------------{}------------{}", request, response, accessDeniedException);
-        }).jwt();
+        http.
+                authorizeHttpRequests(authorize -> authorize
+                        .anyRequest().authenticated()
+                )
+                .oauth2ResourceServer((oauth2) ->
+                        oauth2.jwt(Customizer.withDefaults()
+                        ))
+        ;
 
-        return httpSecurity.build();
+
+        return http.build();
     }
 
 }

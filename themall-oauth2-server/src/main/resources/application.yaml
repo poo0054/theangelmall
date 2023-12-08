@@ -11,13 +11,13 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   security:
     oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://127.0.0.1:8080
-#  security:
-#    oauth2:
-#      client:
-#        registration:
-#          github:
-#            client-id: 162f2f2ef75cc236d6f1
-#            client-secret: d43ff1248dad544c5c61f9b48642551e0e00f668
+      client:
+        registration:
+          github:
+            client-id: 162f2f2ef75cc236d6f1
+            client-secret: d43ff1248dad544c5c61f9b48642551e0e00f668
+        provider:
+          google:
+            user-name-attribute: email
+          github:
+            user-name-attribute: login

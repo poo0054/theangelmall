@@ -20,14 +20,26 @@ import java.util.stream.Collectors;
  */
 public class SysUserDetailsManager implements UserDetailsService {
 
-    @Autowired
     SysUserService userService;
 
-    @Autowired
     SysRoleService sysRoleService;
 
-    @Autowired
     SysUserRoleService sysUserRoleService;
+
+    @Autowired
+    public void setUserService(SysUserService userService) {
+        this.userService = userService;
+    }
+
+    @Autowired
+    public void setSysRoleService(SysRoleService sysRoleService) {
+        this.sysRoleService = sysRoleService;
+    }
+
+    @Autowired
+    public void setSysUserRoleService(SysUserRoleService sysUserRoleService) {
+        this.sysUserRoleService = sysUserRoleService;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -42,7 +54,7 @@ public class SysUserDetailsManager implements UserDetailsService {
         List<SysUserRole> byUserId = sysUserRoleService.getByUserId(sysUser.getUserId());
         if (null != byUserId) {
             List<SysRole> byRoleIdIsIn = sysRoleService.getByRoleIdIsIn(
-                byUserId.stream().map(SysUserRole::getRoleId).collect(Collectors.toList()));
+                    byUserId.stream().map(SysUserRole::getRoleId).collect(Collectors.toList()));
             if (null != byRoleIdIsIn) {
                 String[] array = byRoleIdIsIn.stream().map(SysRole::getRoleName).toArray(String[]::new);
                 builder.authorities(array);
