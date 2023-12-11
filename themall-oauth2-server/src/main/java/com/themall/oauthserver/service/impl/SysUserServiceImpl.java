@@ -8,12 +8,18 @@
 
 package com.themall.oauthserver.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.themall.model.entity.SysMenuEntity;
 import com.themall.model.entity.SysRoleEntity;
 import com.themall.model.entity.SysUserEntity;
+import com.themall.oauthserver.dao.SysUserDao;
+import com.themall.oauthserver.service.SysMenuService;
+import com.themall.oauthserver.service.SysRoleService;
 import com.themall.oauthserver.service.SysUserService;
 import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
@@ -34,6 +40,21 @@ import java.util.stream.Collectors;
  */
 @Service("sysUserService")
 public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> implements SysUserService {
+
+
+    private SysRoleService sysRoleService;
+
+    private SysMenuService sysMenuService;
+
+    @Autowired
+    public void setSysRoleService(SysRoleService sysRoleService) {
+        this.sysRoleService = sysRoleService;
+    }
+
+    @Autowired
+    public void setSysMenuService(SysMenuService sysMenuService) {
+        this.sysMenuService = sysMenuService;
+    }
 
 
     @Override
@@ -69,5 +90,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         return builder.build();
     }
 
-
+    @Override
+    public SysUserEntity getByUserName(String username) {
+        LambdaQueryWrapper<SysUserEntity> lambdaQuery = Wrappers.lambdaQuery(SysUserEntity.class);
+        lambdaQuery.eq(SysUserEntity::getUsername, username);
+        return getOne(lambdaQuery);
+    }
 }

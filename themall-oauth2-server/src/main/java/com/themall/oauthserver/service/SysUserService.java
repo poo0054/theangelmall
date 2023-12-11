@@ -30,4 +30,11 @@ public interface SysUserService extends IService<SysUserEntity> {
     UserDetails getUserDetails(String username);
 
 
+    /**
+     * 根据name查询
+     *
+     * @param username name
+     * @return 结果
+     */
+    SysUserEntity getByUserName(String username);
 }

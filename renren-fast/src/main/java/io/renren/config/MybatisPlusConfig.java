@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Configuration;
  *
  * @author Mark sunlightcs@gmail.com
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class MybatisPlusConfig {
 
     /**

@@ -3,7 +3,8 @@ spring:
     active: dev
   application:
     name: themall-oauthserver
-  mvc:
-    servlet:
-      path: /oauthserver
+
+#server:
+#  servlet:
+#    context-path: /oauthserver
 
