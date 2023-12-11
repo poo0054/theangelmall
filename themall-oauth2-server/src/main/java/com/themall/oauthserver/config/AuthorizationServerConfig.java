@@ -7,6 +7,7 @@ import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.themall.oauthserver.security.FederatedIdentityConfigurer;
 import com.themall.oauthserver.security.FederatedIdentityIdTokenCustomizer;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -43,6 +44,7 @@ import java.util.UUID;
 /**
  * @author poo0054
  */
+@Slf4j
 @Configuration(proxyBeanMethods = false)
 public class AuthorizationServerConfig {
 

@@ -16,11 +16,14 @@
 package com.themall.oauthserver.security;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.endpoint.OidcParameterNames;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 
@@ -55,16 +58,36 @@ public final class FederatedIdentityIdTokenCustomizer implements OAuth2TokenCust
         if (OidcParameterNames.ID_TOKEN.equals(context.getTokenType().getValue())) {
             Map<String, Object> thirdPartyClaims = extractClaims(context.getPrincipal());
             context.getClaims().claims(existingClaims -> {
-                // Remove conflicting claims set by this authorization server
+                // remove conflicting claims set by this authorization server
+                //删除此授权服务器设置的冲突声明
                 existingClaims.keySet().forEach(thirdPartyClaims::remove);
 
                 // Remove standard id_token claims that could cause problems with clients
+                //删除可能导致客户端出现问题的标准 id_token 声明
                 ID_TOKEN_CLAIMS.forEach(thirdPartyClaims::remove);
 
                 // Add all other claims directly to id_token
+                //将所有其他声明直接添加到 id_token
                 existingClaims.putAll(thirdPartyClaims);
             });
         }
+
+        if (Objects.equals(OAuth2TokenType.ACCESS_TOKEN.getValue(), context.getTokenType().getValue())) {
+            //权限添加
+            System.out.println(context);
+            if (context.getPrincipal().getPrincipal() instanceof DefaultOAuth2User) {
+                DefaultOAuth2User oAuth2User = (DefaultOAuth2User) context.getPrincipal().getPrincipal();
+                String id = (String) oAuth2User.getAttributes().get("id");
+                //todo 根据id查询所有权限
+                Collection<? extends GrantedAuthority> authorities = oAuth2User.getAuthorities();
+                //添加权限
+//                authorities.add();
+                Collection<? extends GrantedAuthority> grantedAuthorities = context.getPrincipal().getAuthorities();
+                //添加权限
+//                grantedAuthorities.add();
+            }
+        }
+
     }
 
     private Map<String, Object> extractClaims(Authentication principal) {
