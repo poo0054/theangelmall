@@ -15,13 +15,15 @@
  */
 package com.themall.oauthserver.security;
 
+import com.themall.oauthserver.service.SysUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.endpoint.OidcParameterNames;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
@@ -37,6 +39,9 @@ import java.util.*;
  * @since 0.2.3
  */
 public final class FederatedIdentityIdTokenCustomizer implements OAuth2TokenCustomizer<JwtEncodingContext> {
+
+    @Autowired
+    private SysUserService userService;
 
     private static final Set<String> ID_TOKEN_CLAIMS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
             IdTokenClaimNames.ISS,
@@ -74,20 +79,16 @@ public final class FederatedIdentityIdTokenCustomizer implements OAuth2TokenCust
 
         if (Objects.equals(OAuth2TokenType.ACCESS_TOKEN.getValue(), context.getTokenType().getValue())) {
             //权限添加
-            System.out.println(context);
-            if (context.getPrincipal().getPrincipal() instanceof DefaultOAuth2User) {
-                DefaultOAuth2User oAuth2User = (DefaultOAuth2User) context.getPrincipal().getPrincipal();
-                String id = (String) oAuth2User.getAttributes().get("id");
-                //todo 根据id查询所有权限
-                Collection<? extends GrantedAuthority> authorities = oAuth2User.getAuthorities();
-                //添加权限
-//                authorities.add();
-                Collection<? extends GrantedAuthority> grantedAuthorities = context.getPrincipal().getAuthorities();
-                //添加权限
-//                grantedAuthorities.add();
-            }
-        }
+            Set<GrantedAuthority> auth = userService.getAuth(userService.getByUserName(context.getPrincipal().getName()).getUserId());
+            Collection<? extends GrantedAuthority> grantedAuthorities = context.getPrincipal().getAuthorities();
+            Set<String> authorizedScopes = context.getAuthorizedScopes();
 
+            for (String string : authorizedScopes) {
+                auth.addAll(AuthorityUtils.commaSeparatedStringToAuthorityList(string));
+            }
+            auth.addAll(grantedAuthorities);
+            context.getClaims().claim("authorities", auth);
+        }
     }
 
     private Map<String, Object> extractClaims(Authentication principal) {

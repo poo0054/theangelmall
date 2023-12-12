@@ -26,7 +26,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -70,24 +69,30 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         builder.username(sysUserEntity.getUsername());
         builder.password(sysUserEntity.getPassword());
         builder.authorities(AuthorityUtils.NO_AUTHORITIES);
+        Long userId = sysUserEntity.getUserId();
+
+        builder.authorities(getAuth(userId));
+        return builder.build();
+    }
+
+    public Set<GrantedAuthority> getAuth(Long userId) {
         Set<String> auth = new HashSet<>();
         //权限
-        List<SysRoleEntity> roleServiceAll = sysRoleService.listByUserId(sysUserEntity.getUserId());
+        List<SysRoleEntity> roleServiceAll = sysRoleService.listByUserId(userId);
         if (ObjectUtils.isNotEmpty(roleServiceAll)) {
             List<String> roles = roleServiceAll.stream().map(SysRoleEntity::getRoleName).collect(Collectors.toList());
             auth.addAll(roles);
         }
         //菜单
-        List<SysMenuEntity> sysMenuEntities = sysMenuService.listByUserId(sysUserEntity.getUserId());
+        List<SysMenuEntity> sysMenuEntities = sysMenuService.listByUserId(userId);
         if (ObjectUtils.isNotEmpty(sysMenuEntities)) {
             auth.addAll(sysMenuEntities.stream().map(SysMenuEntity::getPerms).filter(ObjectUtils::isNotEmpty).collect(Collectors.toList()));
         }
-        List<GrantedAuthority> authorities = new ArrayList<>();
+        Set<GrantedAuthority> authorities = new HashSet<>();
         for (String s : auth) {
             authorities.addAll(AuthorityUtils.commaSeparatedStringToAuthorityList(s));
         }
-        builder.authorities(authorities);
-        return builder.build();
+        return authorities;
     }
 
     @Override

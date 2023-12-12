@@ -10,7 +10,10 @@ package com.themall.oauthserver.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.themall.model.entity.SysUserEntity;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Set;
 
 
 /**
@@ -37,4 +40,12 @@ public interface SysUserService extends IService<SysUserEntity> {
      * @return 结果
      */
     SysUserEntity getByUserName(String username);
+
+    /**
+     * 根据id查询所有权限
+     *
+     * @param userId 用户id
+     * @return 所有权限
+     */
+    Set<GrantedAuthority> getAuth(Long userId);
 }

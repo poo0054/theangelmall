@@ -3,6 +3,7 @@ package com.themall.oauthserver.config;
 import com.themall.oauthserver.security.FederatedIdentityConfigurer;
 import com.themall.oauthserver.security.UserRepositoryOAuth2UserHandler;
 import com.themall.oauthserver.userdetails.SysUserDetailsManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.Customizer;
@@ -28,13 +29,14 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity(debug = true)
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
-
+    @Autowired
+    UserRepositoryOAuth2UserHandler userRepositoryOAuth2UserHandler;
 
     // @formatter:off
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         FederatedIdentityConfigurer federatedIdentityConfigurer = new FederatedIdentityConfigurer()
-                .oauth2UserHandler(new UserRepositoryOAuth2UserHandler());
+                .oauth2UserHandler(userRepositoryOAuth2UserHandler);
 
         http
                 .authorizeRequests(authorizeRequests ->
@@ -63,7 +65,7 @@ public class SecurityConfig {
 
     @Bean
     public ClientRegistrationRepository clientRegistrationRepository() {
-        return new InMemoryClientRegistrationRepository(this.githubClientRegistration());
+        return new InMemoryClientRegistrationRepository(this.githubClientRegistration(),this.googleClientRegistration());
     }
 
     @Bean
@@ -79,9 +81,20 @@ public class SecurityConfig {
     }
 
     private ClientRegistration githubClientRegistration() {
-        return CommonOAuth2Provider.GITHUB.getBuilder("github")
-                .clientId("162f2f2ef75cc236d6f1").clientSecret("d43ff1248dad544c5c61f9b48642551e0e00f668")
-                .redirectUri("http://127.0.0.1:9000/login/oauth2/code/github").build();
+        return CommonOAuth2Provider.GITHUB
+                .getBuilder("github")
+                .clientId("162f2f2ef75cc236d6f1")
+                .clientSecret("d43ff1248dad544c5c61f9b48642551e0e00f668")
+                .redirectUri("http://127.0.0.1:9000/login/oauth2/code/github")
+               .build();
+    }
+    private ClientRegistration googleClientRegistration() {
+        return CommonOAuth2Provider.GOOGLE
+                .getBuilder("google")
+                .clientId("237327413162-542qg7pjo4esi81mbuo9s27lrd6rp9i5.apps.googleusercontent.com")
+                .clientSecret("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")
+                .redirectUri("http://127.0.0.1:9000/login/oauth2/code/google")
+               .build();
     }
 
 

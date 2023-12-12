@@ -15,10 +15,15 @@
  */
 package com.themall.oauthserver.security;
 
+import com.themall.model.entity.SysUserEntity;
+import com.themall.model.entity.SysUserRoleEntity;
+import com.themall.oauthserver.service.SysUserRoleService;
+import com.themall.oauthserver.service.SysUserService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.stereotype.Component;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 /**
@@ -27,31 +32,33 @@ import java.util.function.Consumer;
  * @author Steve Riesenberg
  * @since 0.2.3
  */
+@Slf4j
+@Component
 public final class UserRepositoryOAuth2UserHandler implements Consumer<OAuth2User> {
 
-    private final UserRepository userRepository = new UserRepository();
+    @Autowired
+    private SysUserService userService;
+
+    @Autowired
+    private SysUserRoleService sysUserRoleService;
 
     @Override
     public void accept(OAuth2User user) {
         // Capture user in a local data store on first authentication
-        if (this.userRepository.findByName(user.getName()) == null) {
-            System.out.println("Saving first-time user: name=" + user.getName() + ", claims=" + user.getAttributes() + ", authorities=" + user.getAuthorities());
-            this.userRepository.save(user);
+        if (this.userService.getByUserName(user.getName()) == null) {
+            log.info("Saving user: name=" + user.getName() + ", claims=" + user.getAttributes() + ", authorities=" + user.getAuthorities());
+            SysUserEntity sysUserEntity = new SysUserEntity();
+            sysUserEntity.setEmail(user.getAttribute("email"));
+            sysUserEntity.setUsername(user.getName());
+            //给予默认权限
+            this.userService.save(sysUserEntity);
+
+            SysUserRoleEntity sysUserRoleEntity = new SysUserRoleEntity();
+            sysUserRoleEntity.setUserId(sysUserEntity.getUserId());
+            //默认用户读取权限
+            sysUserRoleEntity.setRoleId(1L);
+            sysUserRoleService.save(sysUserRoleEntity);
         }
-    }
-
-    static class UserRepository {
-
-        private final Map<String, OAuth2User> userCache = new ConcurrentHashMap<>();
-
-        public OAuth2User findByName(String name) {
-            return this.userCache.get(name);
-        }
-
-        public void save(OAuth2User oauth2User) {
-            this.userCache.put(oauth2User.getName(), oauth2User);
-        }
-
     }
 
 }
