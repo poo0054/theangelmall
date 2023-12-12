@@ -18,8 +18,6 @@ package com.themall.oauthserver.security;
 import com.themall.oauthserver.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.endpoint.OidcParameterNames;
@@ -78,16 +76,19 @@ public final class FederatedIdentityIdTokenCustomizer implements OAuth2TokenCust
         }
 
         if (Objects.equals(OAuth2TokenType.ACCESS_TOKEN.getValue(), context.getTokenType().getValue())) {
-            //权限添加
-            Set<GrantedAuthority> auth = userService.getAuth(userService.getByUserName(context.getPrincipal().getName()).getUserId());
-            Collection<? extends GrantedAuthority> grantedAuthorities = context.getPrincipal().getAuthorities();
-            Set<String> authorizedScopes = context.getAuthorizedScopes();
+            //只有授权所有权限
+         /*   if (context.getAuthorizedScopes().contains("all")) {
+                //权限添加
+                Set<GrantedAuthority> auth = userService.getAuth(userService.getByUserName(context.getPrincipal().getName()).getUserId());
+                Collection<? extends GrantedAuthority> grantedAuthorities = context.getPrincipal().getAuthorities();
+                Set<String> authorizedScopes = context.getAuthorizedScopes();
 
-            for (String string : authorizedScopes) {
-                auth.addAll(AuthorityUtils.commaSeparatedStringToAuthorityList(string));
-            }
-            auth.addAll(grantedAuthorities);
-            context.getClaims().claim("authorities", auth);
+                for (String string : authorizedScopes) {
+                    auth.addAll(AuthorityUtils.commaSeparatedStringToAuthorityList(string));
+                }
+                auth.addAll(grantedAuthorities);
+                context.getClaims().claim("authorities", auth);
+            }*/
         }
     }
 
