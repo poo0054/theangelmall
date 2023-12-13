@@ -14,7 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.http.*;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
@@ -22,7 +25,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -72,18 +74,9 @@ public class SysLoginController extends AbstractController {
                 .post(issuerUri + "/oauth2/token")
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .accept(MediaType.ALL)
-                .header("X-XSS-Protection", "0")
                 .header(HttpHeaders.AUTHORIZATION, "Basic dGhlbWFsbDpyZW5yZW4tZmFzdC10aGVtYWxs")
-                .header("Accept-Encoding", "gzip, deflate, br")
                 .body(bodyParams);
-//        ResponseEntity<Map> response = rest.exchange(body, Map.class);
-
-        HttpHeaders headers = new HttpHeaders();
-        HttpEntity httpEntity = new HttpEntity(bodyParams, headers);
-        headers.setAccept(Collections.singletonList(MediaType.ALL));
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-        headers.set(HttpHeaders.AUTHORIZATION, "Basic dGhlbWFsbDpyZW5yZW4tZmFzdC10aGVtYWxs");
-        ResponseEntity<Map> response = rest.postForEntity(issuerUri + "/oauth2/token", httpEntity, Map.class);
+        ResponseEntity<Map> response = rest.exchange(body, Map.class);
 
         if (response.getStatusCode().is2xxSuccessful()) {
             return R.ok().put("token", response.getBody().get("access_token")).put("expire", response.getBody().get("expires_in"));
