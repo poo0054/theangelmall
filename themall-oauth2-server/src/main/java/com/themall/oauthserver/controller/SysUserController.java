@@ -6,14 +6,16 @@
  * 版权所有，侵权必究！
  */
 
-package com.themall.oauthserver.conrtoller;
+package com.themall.oauthserver.controller;
 
 import com.themall.oauthserver.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Set;
 
 /**
  * 系统用户
@@ -28,8 +30,9 @@ public class SysUserController {
 
 
     @GetMapping("/getUserDetails")
-    public UserDetails getUserDetails() {
-        return sysUserService.getUserDetails(SecurityContextHolder.getContext().getAuthentication().getName());
+    public Set<GrantedAuthority> getUserDetails() {
+        Long userId = sysUserService.getByUserName(SecurityContextHolder.getContext().getAuthentication().getName()).getUserId();
+        return sysUserService.getAuth(userId);
     }
 
 

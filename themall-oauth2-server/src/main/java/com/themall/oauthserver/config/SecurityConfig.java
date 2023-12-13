@@ -44,6 +44,9 @@ public class SecurityConfig {
                                 .mvcMatchers("/assets/**", "/webjars/**", "/login").permitAll()
                                 .anyRequest().authenticated()
                 )
+                .oauth2ResourceServer((oauth2) ->
+                        oauth2.jwt(Customizer.withDefaults()
+                        ))
                 .formLogin(Customizer.withDefaults())
 //                .logout(Customizer.withDefaults())
                 .apply(federatedIdentityConfigurer)

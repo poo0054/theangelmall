@@ -1,5 +1,6 @@
-package com.themall.sso.authentication;
+package com.themall.common.authentication;
 
+import lombok.Data;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
@@ -24,6 +25,7 @@ import java.util.Set;
  *
  * @author poo0054
  */
+@Data
 @EnableConfigurationProperties(OAuth2ResourceServerProperties.class)
 public class CustomAuthenticationConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
     /**

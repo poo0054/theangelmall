@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.themall.common.exception.RRExceptionHandler,\
-com.themall.common.utils.SpringContextUtils

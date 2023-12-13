@@ -10,7 +10,6 @@ package io.renren.modules.sys.controller;
 
 import com.themall.model.constants.HttpStatusEnum;
 import com.themall.model.entity.R;
-import io.renren.filter.JWTBasicAuthenticationFilter;
 import io.renren.modules.sys.form.SysLoginForm;
 import io.renren.modules.sys.service.SysCaptchaService;
 import io.renren.modules.sys.service.SysUserTokenService;
@@ -19,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -98,8 +97,8 @@ public class SysLoginController extends AbstractController {
      * 退出
      */
     @PostMapping("/sys/logout")
-    public R logout(HttpServletRequest request) {
-        sysUserTokenService.logout((String) request.getAttribute(JWTBasicAuthenticationFilter.class.getSimpleName() + "subject"));
+    public R logout() {
+        SecurityContextHolder.clearContext();
         return R.ok();
     }
 

@@ -9,7 +9,6 @@
 package io.renren.modules.sys.controller;
 
 import com.themall.common.utils.JwtUtils;
-import io.renren.filter.JWTBasicAuthenticationFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.web.context.request.RequestAttributes;

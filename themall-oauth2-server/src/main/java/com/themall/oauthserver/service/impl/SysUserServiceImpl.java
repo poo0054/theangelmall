@@ -67,7 +67,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         }
         User.UserBuilder builder = User.builder();
         builder.username(sysUserEntity.getUsername());
-        builder.password(sysUserEntity.getPassword());
+        if (null != sysUserEntity.getPassword()) {
+            builder.password(sysUserEntity.getPassword());
+        }
         builder.authorities(AuthorityUtils.NO_AUTHORITIES);
         Long userId = sysUserEntity.getUserId();
 

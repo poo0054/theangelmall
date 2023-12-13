@@ -1,10 +1,12 @@
-package com.themall.sso.config;
+package com.themall.common.config;
 
 import com.alibaba.fastjson2.JSONReader;
 import com.alibaba.fastjson2.JSONWriter;
 import com.alibaba.fastjson2.support.config.FastJsonConfig;
 import com.alibaba.fastjson2.support.spring.http.converter.FastJsonHttpMessageConverter;
-import com.themall.sso.authentication.CustomAuthenticationConverter;
+import com.themall.common.authentication.CustomAuthenticationConverter;
+import com.themall.common.filter.DefaultAccessDeniedHandler;
+import com.themall.common.filter.DefaultAuthenticationEntryPoint;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -28,9 +30,9 @@ import java.util.List;
  * @author poo0054
  */
 @Slf4j
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfig {
+public class ResourceSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -98,5 +100,15 @@ public class SecurityConfig {
         return new CustomAuthenticationConverter();
     }
 
+
+    @Bean
+    public DefaultAuthenticationEntryPoint defaultAuthenticationEntryPoint() {
+        return new DefaultAuthenticationEntryPoint();
+    }
+
+    @Bean
+    public DefaultAccessDeniedHandler defaultAccessDeniedHandler() {
+        return new DefaultAccessDeniedHandler();
+    }
 
 }

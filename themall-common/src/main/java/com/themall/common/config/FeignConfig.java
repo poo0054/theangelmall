@@ -1,14 +1,12 @@
-package com.themall.cart.config;
+package com.themall.common.config;
 
 import feign.RequestInterceptor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,18 +22,14 @@ import javax.servlet.http.HttpServletRequest;
  * @Date: 2021/9/6 21:48
  */
 @Slf4j
-@Configuration
-@EnableFeignClients("com.themall.cart.openfeign")
+@Configuration(proxyBeanMethods = false)
+//@EnableFeignClients("com.themall.cart.openfeign")
 public class FeignConfig {
+
     @Bean
     public RequestInterceptor requestInterceptor() {
         return template -> {
-            log.info("远程之前，调用====================");
-            //获取当前请求参数，进来的requert
-            /**
-             * RequestContextHolder   Request上下文，mvc封装的
-             * ServletRequestAttributes是RequestAttributess的实现类
-             */
+            log.info("远程之前，调用=========添加权限");
             ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
             if (!ObjectUtils.isEmpty(requestAttributes)) {
                 //获取当前request的cookie,放入新cookie
@@ -46,14 +40,4 @@ public class FeignConfig {
         };
     }
 
-    /**
-     * 监听器：监听HTTP请求事件
-     * 解决RequestContextHolder.getRequestAttributes()空指针问题
-     *
-     * @return
-     */
-//    @Bean
-    public RequestContextListener requestContextListener() {
-        return new RequestContextListener();
-    }
 }
