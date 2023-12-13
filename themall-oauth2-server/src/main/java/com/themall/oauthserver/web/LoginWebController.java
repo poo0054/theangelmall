@@ -11,7 +11,7 @@ public class LoginWebController {
 
     @GetMapping("/login")
     public String login() {
-        return "login";
+        return "/login.html";
     }
 
 }

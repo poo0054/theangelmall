@@ -37,143 +37,176 @@
 </template>
 
 <script>
-import {getUUID} from '@/utils'
 
 export default {
-    data () {
-      return {
-        dataForm: {
-          userName: '',
-          password: '',
-          uuid: '',
-          captcha: ''
-        },
-        dataRule: {
-          userName: [
-            { required: true, message: '帐号不能为空', trigger: 'blur' }
-          ],
-          password: [
-            { required: true, message: '密码不能为空', trigger: 'blur' }
-          ],
-          captcha: [
-            { required: true, message: '验证码不能为空', trigger: 'blur' }
-          ]
-        },
-        captchaPath: ''
-      }
-    },
-    created () {
-      this.getCaptcha()
-    },
-    methods: {
-      // 提交表单
-      dataFormSubmit () {
-        this.$refs['dataForm'].validate((valid) => {
-          if (valid) {
-            this.$http({
-              url: this.$http.adornUrl('/sys/login'),
-              method: 'post',
-              data: this.$http.adornData({
-                'username': this.dataForm.userName,
-                'password': this.dataForm.password,
-                'uuid': this.dataForm.uuid,
-                'captcha': this.dataForm.captcha
-              })
-            }).then(({data}) => {
-              if (data && data.code === '00000') {
-                this.$cookie.set('token', data.token)
-                this.$router.replace({ name: 'home' })
-              } else {
-                this.getCaptcha()
-                this.$message.error(data.msg)
-              }
-            })
-          }
-        })
+  data() {
+    return {
+      dataForm: {
+        userName: '',
+        password: '',
+        uuid: '',
+        captcha: ''
       },
-      // 获取验证码
-      getCaptcha () {
-        this.dataForm.uuid = getUUID()
-        this.captchaPath = this.$http.adornUrl(`/captcha.jpg?uuid=${this.dataForm.uuid}`)
+      dataRule: {
+        userName: [
+          {required: true, message: '帐号不能为空', trigger: 'blur'}
+        ],
+        password: [
+          {required: true, message: '密码不能为空', trigger: 'blur'}
+        ],
+        captcha: [
+          {required: true, message: '验证码不能为空', trigger: 'blur'}
+        ]
+      },
+      captchaPath: ''
+    }
+  },
+  created() {
+    this.getCaptcha()
+  },
+  methods: {
+    // 提交表单
+    dataFormSubmit() {
+      this.$refs['dataForm'].validate((valid) => {
+        if (valid) {
+          this.$http({
+            url: this.$http.adornUrl('/sys/login'),
+            method: 'post',
+            data: this.$http.adornData({
+              'username': this.dataForm.userName,
+              'password': this.dataForm.password,
+              'uuid': this.dataForm.uuid,
+              'captcha': this.dataForm.captcha
+            })
+          }).then(({data}) => {
+            if (data && data.code === '00000') {
+              this.$cookie.set('token', data.token)
+              this.$router.replace({name: 'home'})
+            } else {
+              this.getCaptcha()
+              this.$message.error(data.msg)
+            }
+          })
+        }
+      })
+    },
+    // 获取验证码
+    getCaptcha() {
+      console.log(window.location.href);
+      if (window.location.href.indexOf("?") != -1) {
+        var token = this.getQueryVariable("token")
+        var expire = this.getQueryVariable("expire")
+        this.$cookie.set('token', token)
+        console.log("token", token);
+        // this.$router.replace({ name: 'home' })
+      } else {
+        var url = process.env.NODE_ENV !== 'production' && process.env.OPEN_PROXY ? '/proxyApi/' : window.SITE_CONFIG.baseUrl
+        console.log(url);
+        window.location.href = url + "/sys/login";
       }
+    },
+    getQueryVariable(variable) {
+      var query = window.location.href.split('?')[1];
+      console.log("q", query);
+      var vars = query.split("&");
+      console.log("vars", vars);
+      for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split("=");
+        if (pair[0] == variable) {
+          return pair[1];
+        }
+      }
+      return (false);
     }
   }
+}
 </script>
 
 <style lang="scss">
-  .site-wrapper.site-page--login {
+.site-wrapper.site-page--login {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(38, 50, 56, .6);
+  overflow: hidden;
+
+  &:before {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    content: "";
+    background-image: url(~@/assets/img/login_bg.jpg);
+    background-size: cover;
+  }
+
+  .site-content__wrapper {
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-    background-color: rgba(38, 50, 56, .6);
+    padding: 0;
+    margin: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-color: transparent;
+  }
+
+  .site-content {
+    min-height: 100%;
+    padding: 30px 500px 30px 30px;
+  }
+
+  .brand-info {
+    margin: 220px 100px 0 90px;
+    color: #fff;
+  }
+
+  .brand-info__text {
+    margin: 0 0 22px 0;
+    font-size: 48px;
+    font-weight: 400;
+    text-transform: uppercase;
+  }
+
+  .brand-info__intro {
+    margin: 10px 0;
+    font-size: 16px;
+    line-height: 1.58;
+    opacity: .6;
+  }
+
+  .login-main {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 150px 60px 180px;
+    width: 470px;
+    min-height: 100%;
+    background-color: #fff;
+  }
+
+  .login-title {
+    font-size: 16px;
+  }
+
+  .login-captcha {
     overflow: hidden;
-    &:before {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: -1;
+
+    > img {
       width: 100%;
-      height: 100%;
-      content: "";
-      background-image: url(~@/assets/img/login_bg.jpg);
-      background-size: cover;
-    }
-    .site-content__wrapper {
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      padding: 0;
-      margin: 0;
-      overflow-x: hidden;
-      overflow-y: auto;
-      background-color: transparent;
-    }
-    .site-content {
-      min-height: 100%;
-      padding: 30px 500px 30px 30px;
-    }
-    .brand-info {
-      margin: 220px 100px 0 90px;
-      color: #fff;
-    }
-    .brand-info__text {
-      margin:  0 0 22px 0;
-      font-size: 48px;
-      font-weight: 400;
-      text-transform : uppercase;
-    }
-    .brand-info__intro {
-      margin: 10px 0;
-      font-size: 16px;
-      line-height: 1.58;
-      opacity: .6;
-    }
-    .login-main {
-      position: absolute;
-      top: 0;
-      right: 0;
-      padding: 150px 60px 180px;
-      width: 470px;
-      min-height: 100%;
-      background-color: #fff;
-    }
-    .login-title {
-      font-size: 16px;
-    }
-    .login-captcha {
-      overflow: hidden;
-      > img {
-        width: 100%;
-        cursor: pointer;
-      }
-    }
-    .login-btn-submit {
-      width: 100%;
-      margin-top: 38px;
+      cursor: pointer;
     }
   }
+
+  .login-btn-submit {
+    width: 100%;
+    margin-top: 38px;
+  }
+}
 </style>

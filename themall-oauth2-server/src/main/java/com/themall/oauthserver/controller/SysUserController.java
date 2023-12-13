@@ -32,7 +32,9 @@ public class SysUserController {
     @GetMapping("/getUserDetails")
     public Set<GrantedAuthority> getUserDetails() {
         Long userId = sysUserService.getByUserName(SecurityContextHolder.getContext().getAuthentication().getName()).getUserId();
-        return sysUserService.getAuth(userId);
+        Set<GrantedAuthority> auth = sysUserService.getAuth(userId);
+
+        return auth;
     }
 
 

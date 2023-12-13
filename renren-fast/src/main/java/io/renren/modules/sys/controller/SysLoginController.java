@@ -19,12 +19,17 @@ import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -52,23 +57,21 @@ public class SysLoginController extends AbstractController {
      * 登录
      */
     @GetMapping("/login")
-    public String login() {
+    public void login(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String issuerUri = oAuth2ResourceServerProperties.getJwt().getIssuerUri();
         String url = issuerUri + "/oauth2/authorize?client_id=themall&response_type=code&scope=all&redirect_uri=" + messagesBaseUri;
-        return "redirect:" + url;
+//        request.getRequestDispatcher(url).forward(request, response);
+        response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+        response.sendRedirect(url);
     }
 
     @GetMapping("/authorized")
     @ResponseBody
-    public R authorized(@RequestParam("code") String code) {
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-//        headers.setConnection("keep-alive");
-//        HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(headers);
+    public void authorized(@RequestParam("code") String code, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         MultiValueMap<String, Object> bodyParams = new LinkedMultiValueMap<>();
-        bodyParams.add("code", code);
-        bodyParams.add("grant_type", "authorization_code");
-        bodyParams.add("redirect_uri", messagesBaseUri);
+        bodyParams.add(OAuth2ParameterNames.CODE, code);
+        bodyParams.add(OAuth2ParameterNames.GRANT_TYPE, "authorization_code");
+        bodyParams.add(OAuth2ParameterNames.REDIRECT_URI, messagesBaseUri);
         String issuerUri = oAuth2ResourceServerProperties.getJwt().getIssuerUri();
         RequestEntity<MultiValueMap<String, Object>> body = RequestEntity
                 .post(issuerUri + "/oauth2/token")
@@ -76,13 +79,15 @@ public class SysLoginController extends AbstractController {
                 .accept(MediaType.ALL)
                 .header(HttpHeaders.AUTHORIZATION, "Basic dGhlbWFsbDpyZW5yZW4tZmFzdC10aGVtYWxs")
                 .body(bodyParams);
-        ResponseEntity<Map> response = rest.exchange(body, Map.class);
-
-        if (response.getStatusCode().is2xxSuccessful()) {
-            return R.ok().put("token", response.getBody().get("access_token")).put("expire", response.getBody().get("expires_in"));
+        ResponseEntity<Map> responseEntity = rest.exchange(body, Map.class);
+        if (responseEntity.getStatusCode().is2xxSuccessful()) {
+            response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+            response.sendRedirect("http://127.0.0.1:8001/#/login?token=" + responseEntity.getBody().get("access_token") + "&expire=" + responseEntity.getBody().get("expires_in"));
+            return;
         }
-        log.warn(response.toString());
-        return R.error();
+        log.warn(responseEntity.toString());
+        response.sendRedirect("/sys/login");
+//        return R.ok().put("token", response.getBody().get("access_token")).put("expire", response.getBody().get("expires_in"));
     }
 
     /**

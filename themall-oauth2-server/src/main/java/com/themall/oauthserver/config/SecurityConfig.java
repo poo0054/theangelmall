@@ -39,6 +39,8 @@ public class SecurityConfig {
                 .oauth2UserHandler(userRepositoryOAuth2UserHandler);
 
         http
+                .cors().disable()
+                .csrf().disable()
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
                                 .mvcMatchers("/assets/**", "/webjars/**", "/login").permitAll()
@@ -50,8 +52,6 @@ public class SecurityConfig {
                 .formLogin(Customizer.withDefaults())
 //                .logout(Customizer.withDefaults())
                 .apply(federatedIdentityConfigurer)
-                .and().cors().disable()
-                .csrf().disable()
         ;
         return http.build();
     }
@@ -88,7 +88,6 @@ public class SecurityConfig {
                 .getBuilder("github")
                 .clientId("162f2f2ef75cc236d6f1")
                 .clientSecret("d43ff1248dad544c5c61f9b48642551e0e00f668")
-                .redirectUri("http://127.0.0.1:9000/login/oauth2/code/github")
                .build();
     }
     private ClientRegistration googleClientRegistration() {
@@ -96,7 +95,6 @@ public class SecurityConfig {
                 .getBuilder("google")
                 .clientId("237327413162-542qg7pjo4esi81mbuo9s27lrd6rp9i5.apps.googleusercontent.com")
                 .clientSecret("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")
-                .redirectUri("http://127.0.0.1:9000/login/oauth2/code/google")
                .build();
     }
 

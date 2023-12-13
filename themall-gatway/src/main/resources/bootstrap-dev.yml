@@ -82,6 +82,13 @@ spring:
           filters:
             - RewritePath=/api/?(?<the>.*), /renren-fast/$\{the}
 
+        #
+        - id: themall-oauthserver
+          uri: lb://themall-oauthserver
+          predicates:
+            - Path=/themall-oauthserver/**,
+          filters:
+            - RewritePath=/themall-oauthserver/?(?<the>.*), /$\{the}
 
         # 商品详情页
         - id: item
