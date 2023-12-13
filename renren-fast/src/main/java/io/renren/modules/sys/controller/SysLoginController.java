@@ -8,95 +8,95 @@
 
 package io.renren.modules.sys.controller;
 
-import com.themall.model.constants.HttpStatusEnum;
 import com.themall.model.entity.R;
-import io.renren.modules.sys.form.SysLoginForm;
-import io.renren.modules.sys.service.SysCaptchaService;
-import io.renren.modules.sys.service.SysUserTokenService;
-import org.apache.commons.io.IOUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.http.*;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
-import javax.imageio.ImageIO;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * 登录相关
  *
  * @author Mark sunlightcs@gmail.com
  */
-@RestController
+@Slf4j
+@Controller
+@RequestMapping("/sys")
+@EnableConfigurationProperties(OAuth2ResourceServerProperties.class)
 public class SysLoginController extends AbstractController {
-    private SysUserTokenService sysUserTokenService;
-    private SysCaptchaService sysCaptchaService;
-
-    private AuthenticationManager authenticationManager;
+    String messagesBaseUri;
 
     @Autowired
-    public void setSysUserTokenService(SysUserTokenService sysUserTokenService) {
-        this.sysUserTokenService = sysUserTokenService;
-    }
-
+    OAuth2ResourceServerProperties oAuth2ResourceServerProperties;
     @Autowired
-    public void setSysCaptchaService(SysCaptchaService sysCaptchaService) {
-        this.sysCaptchaService = sysCaptchaService;
-    }
+    RestTemplate rest;
 
-    @Autowired
-    public void setAuthenticationManager(AuthenticationManager authenticationManager) {
-        this.authenticationManager = authenticationManager;
-    }
-
-    /**
-     * 验证码
-     */
-    @GetMapping("captcha.jpg")
-    public void captcha(HttpServletResponse response, String uuid) throws IOException {
-        response.setHeader("Cache-Control", "no-store, no-cache");
-        response.setContentType("image/jpeg");
-
-        //获取图片验证码
-        BufferedImage image = sysCaptchaService.getCaptcha(uuid);
-
-        ServletOutputStream out = response.getOutputStream();
-        ImageIO.write(image, "jpg", out);
-        IOUtils.closeQuietly(out);
+    public SysLoginController(@Value("${messages.base-uri}") String messagesBaseUri) {
+        this.messagesBaseUri = messagesBaseUri;
     }
 
     /**
      * 登录
      */
-    @PostMapping("/sys/login")
-    public R login(@RequestBody @Validated SysLoginForm form) {
-        boolean captcha = sysCaptchaService.validate(form.getUuid(), form.getCaptcha());
-        if (!captcha) {
-            return R.error(HttpStatusEnum.USER_ERROR_A0240);
-        }
-        //用户信息
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(form.getUsername(), form.getPassword());
-        Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-        //如果authenticate对象为空，表示用户名或密码错误，抛出一个运行时异常。
-        //登陆成功
-
-        return sysUserTokenService.createToken(form.getUsername(), authenticate);
+    @GetMapping("/login")
+    public String login() {
+        String issuerUri = oAuth2ResourceServerProperties.getJwt().getIssuerUri();
+        String url = issuerUri + "/oauth2/authorize?client_id=themall&response_type=code&scope=all&redirect_uri=" + messagesBaseUri;
+        return "redirect:" + url;
     }
 
+    @GetMapping("/authorized")
+    @ResponseBody
+    public R authorized(@RequestParam("code") String code) {
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+//        headers.setConnection("keep-alive");
+//        HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(headers);
+        MultiValueMap<String, Object> bodyParams = new LinkedMultiValueMap<>();
+        bodyParams.add("code", code);
+        bodyParams.add("grant_type", "authorization_code");
+        bodyParams.add("redirect_uri", messagesBaseUri);
+        String issuerUri = oAuth2ResourceServerProperties.getJwt().getIssuerUri();
+        RequestEntity<MultiValueMap<String, Object>> body = RequestEntity
+                .post(issuerUri + "/oauth2/token")
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .accept(MediaType.ALL)
+                .header("X-XSS-Protection", "0")
+                .header(HttpHeaders.AUTHORIZATION, "Basic dGhlbWFsbDpyZW5yZW4tZmFzdC10aGVtYWxs")
+                .header("Accept-Encoding", "gzip, deflate, br")
+                .body(bodyParams);
+//        ResponseEntity<Map> response = rest.exchange(body, Map.class);
+
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity httpEntity = new HttpEntity(bodyParams, headers);
+        headers.setAccept(Collections.singletonList(MediaType.ALL));
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers.set(HttpHeaders.AUTHORIZATION, "Basic dGhlbWFsbDpyZW5yZW4tZmFzdC10aGVtYWxs");
+        ResponseEntity<Map> response = rest.postForEntity(issuerUri + "/oauth2/token", httpEntity, Map.class);
+
+        if (response.getStatusCode().is2xxSuccessful()) {
+            return R.ok().put("token", response.getBody().get("access_token")).put("expire", response.getBody().get("expires_in"));
+        }
+        log.warn(response.toString());
+        return R.error();
+    }
 
     /**
      * 退出
      */
-    @PostMapping("/sys/logout")
+    @PostMapping("/logout")
+    @ResponseBody
     public R logout() {
         SecurityContextHolder.clearContext();
         return R.ok();

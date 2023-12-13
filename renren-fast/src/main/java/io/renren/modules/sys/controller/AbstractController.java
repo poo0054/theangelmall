@@ -8,7 +8,6 @@
 
 package io.renren.modules.sys.controller;
 
-import com.themall.common.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.web.context.request.RequestAttributes;
@@ -33,10 +32,10 @@ public abstract class AbstractController {
         if (ObjectUtils.isEmpty(request)) {
             return Collections.emptyMap();
         }
-        Object attribute = request.getAttribute(JWTBasicAuthenticationFilter.class.getSimpleName() + JwtUtils.HEADER_NAME);
-        if (attribute instanceof Map) {
-            return (Map) attribute;
-        }
+//        Object attribute = request.getAttribute(JWTBasicAuthenticationFilter.class.getSimpleName() + JwtUtils.HEADER_NAME);
+//        if (attribute instanceof Map) {
+//            return (Map) attribute;
+//        }
         return Collections.emptyMap();
     }
 

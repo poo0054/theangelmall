@@ -266,7 +266,6 @@
         <module>themall-seckill</module>
         <module>themall-model</module>
         <module>themall-oauth2-server</module>
-        <module>themall-oauth2-resource</module>
     </modules>
 
     <build>
