@@ -111,7 +111,7 @@ spring:
         #            - Path=/auth/**
 
         # 认证
-        - id: auth-server
+        - id: oauthserver
           uri: lb://themall-oauthserver
           predicates:
             - Host=auth.poo0054.top
