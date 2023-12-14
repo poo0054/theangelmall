@@ -79,7 +79,7 @@ public class SysLoginController extends AbstractController {
                 .body(bodyParams);
         ResponseEntity<Map> responseEntity = rest.exchange(body, Map.class);
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
-            response.sendRedirect("http://127.0.0.1:8001/#/login?token=" + responseEntity.getBody().get("access_token") + "&expire=" + responseEntity.getBody().get("expires_in"));
+            response.sendRedirect("https://poo0054.top/web/#/login?token=" + responseEntity.getBody().get("access_token") + "&expire=" + responseEntity.getBody().get("expires_in"));
             return;
         }
         log.warn(responseEntity.toString());
