@@ -20,7 +20,7 @@
         <spring-boot.version>2.7.18</spring-boot.version>
 
         <spring-authorization-server.version>0.4.4</spring-authorization-server.version>
-        <redisson.version>3.25.0</redisson.version>
+        <redisson.version>3.24.3</redisson.version>
         <httpcore.version>4.4.14</httpcore.version>
         <commons-lang3.version>3.14.0</commons-lang3.version>
         <mysql-connector.version>8.0.25</mysql-connector.version>
