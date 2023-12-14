@@ -90,7 +90,7 @@ export default {
         }
       })
     },
-    // 获取验证码
+    // 登陆请求
     getCaptcha() {
       console.log(window.location.href);
       if (window.location.href.indexOf("?") != -1) {
@@ -103,6 +103,7 @@ export default {
         var url = process.env.NODE_ENV !== 'production' && process.env.OPEN_PROXY ? '/proxyApi/' : window.SITE_CONFIG.baseUrl
         console.log(url);
         window.location.href = url + "/sys/login";
+
       }
     },
     getQueryVariable(variable) {

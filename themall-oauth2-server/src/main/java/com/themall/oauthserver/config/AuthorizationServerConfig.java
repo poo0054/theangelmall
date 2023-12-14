@@ -111,7 +111,16 @@ public class AuthorizationServerConfig {
 
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
-        return AuthorizationServerSettings.builder().build();
+        return AuthorizationServerSettings.builder()
+//                .issuer("http://127.0.0.1:8085/themall-oauthserver/")
+//                .authorizationEndpoint("/themall-oauthserver/oauth2/authorize")
+//                .tokenEndpoint("/themall-oauthserver/oauth2/token")
+//                .jwkSetEndpoint("/themall-oauthserver/oauth2/jwks")
+//                .tokenRevocationEndpoint("/themall-oauthserver/oauth2/revoke")
+//                .tokenIntrospectionEndpoint("/themall-oauthserver/oauth2/introspect")
+//                .oidcClientRegistrationEndpoint("/themall-oauthserver/connect/register")
+//                .oidcUserInfoEndpoint("/themall-oauthserver/userinfo")
+                .build();
     }
 
     @Bean

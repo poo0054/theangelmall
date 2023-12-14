@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
@@ -57,17 +56,16 @@ public class SysLoginController extends AbstractController {
      * 登录
      */
     @GetMapping("/login")
-    public void login(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    public void login(HttpServletResponse response) throws IOException, ServletException {
         String issuerUri = oAuth2ResourceServerProperties.getJwt().getIssuerUri();
         String url = issuerUri + "/oauth2/authorize?client_id=themall&response_type=code&scope=all&redirect_uri=" + messagesBaseUri;
 //        request.getRequestDispatcher(url).forward(request, response);
-        response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
         response.sendRedirect(url);
     }
 
     @GetMapping("/authorized")
     @ResponseBody
-    public void authorized(@RequestParam("code") String code, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    public void authorized(@RequestParam("code") String code, HttpServletResponse response) throws IOException, ServletException {
         MultiValueMap<String, Object> bodyParams = new LinkedMultiValueMap<>();
         bodyParams.add(OAuth2ParameterNames.CODE, code);
         bodyParams.add(OAuth2ParameterNames.GRANT_TYPE, "authorization_code");
@@ -81,7 +79,6 @@ public class SysLoginController extends AbstractController {
                 .body(bodyParams);
         ResponseEntity<Map> responseEntity = rest.exchange(body, Map.class);
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
-            response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
             response.sendRedirect("http://127.0.0.1:8001/#/login?token=" + responseEntity.getBody().get("access_token") + "&expire=" + responseEntity.getBody().get("expires_in"));
             return;
         }
