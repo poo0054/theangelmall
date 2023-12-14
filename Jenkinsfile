@@ -17,7 +17,7 @@ pipeline {
                 name: 'PROJECT',
                 choices: ['renren-fast', 'themall-auth-server', 'themall-cart', 'themall-coupon', 'themall-gatway',
                           'themall-member', 'themall-order', 'themall-product', 'themall-search', 'themall-seckill',
-                          'themall-ware']
+                          'themall-ware','themall-oauth2-server']
 //                , 'third-party'
         )
     }
