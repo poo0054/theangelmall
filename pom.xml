@@ -20,7 +20,7 @@
         <spring-boot.version>2.7.18</spring-boot.version>
 
         <spring-authorization-server.version>0.4.4</spring-authorization-server.version>
-        <redisson.version>3.24.3</redisson.version>
+        <redisson.version>3.18.0</redisson.version>
         <httpcore.version>4.4.14</httpcore.version>
         <commons-lang3.version>3.14.0</commons-lang3.version>
         <mysql-connector.version>8.0.25</mysql-connector.version>
@@ -111,13 +111,6 @@
                 <groupId>com.alipay.sdk</groupId>
                 <artifactId>alipay-sdk-java</artifactId>
                 <version>${alipay-sdk.version}</version>
-            </dependency>
-
-            <!-- https://mvnrepository.com/artifact/org.redisson/redisson -->
-            <dependency>
-                <groupId>org.redisson</groupId>
-                <artifactId>redisson</artifactId>
-                <version>${redisson.version}</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/org.redisson/redisson-spring-boot-starter -->
