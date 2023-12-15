@@ -24,5 +24,5 @@ spring:
 
 messages:
   base-uri: http://127.0.0.1:8085/renren-fast/sys/authorized
-  vue-uri: https://127.0.0.1:8001/web/#/login?token=
+  vue-uri: http://127.0.0.1:8001/web/#/login?token=
   basic: dGhlbWFsbC10ZXN0OnJlbnJlbi1mYXN0LXRoZW1hbGwtdGVzdA==
