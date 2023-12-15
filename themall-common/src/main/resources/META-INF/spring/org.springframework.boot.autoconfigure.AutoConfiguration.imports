@@ -1,4 +1,1 @@
-com.themall.common.exception.RRExceptionHandler
-com.themall.common.utils.SpringContextUtils
-com.themall.common.config.ResourceSecurityConfig
-com.themall.common.config.WebMvcLocaleConfig
+com.themall.common.config.Config

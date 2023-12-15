@@ -2,9 +2,7 @@ package com.themall.common.authentication;
 
 import lombok.Data;
 import org.apache.commons.lang3.ObjectUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.*;
@@ -26,18 +24,20 @@ import java.util.Set;
  * @author poo0054
  */
 @Data
-@EnableConfigurationProperties(OAuth2ResourceServerProperties.class)
 public class CustomAuthenticationConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
     /**
      * 获取当前用户的权限
      */
     private static final String PATH = "/getUserDetails";
 
-    @Autowired
     RestTemplate rest;
 
-    @Autowired
     OAuth2ResourceServerProperties oAuth2ResourceServerProperties;
+
+    public CustomAuthenticationConverter(RestTemplate rest, OAuth2ResourceServerProperties oAuth2ResourceServerProperties) {
+        this.rest = rest;
+        this.oAuth2ResourceServerProperties = oAuth2ResourceServerProperties;
+    }
 
     @Override
     public Collection<GrantedAuthority> convert(Jwt source) {
@@ -70,4 +70,6 @@ public class CustomAuthenticationConverter implements Converter<Jwt, Collection<
         }
         return null;
     }
+
+
 }

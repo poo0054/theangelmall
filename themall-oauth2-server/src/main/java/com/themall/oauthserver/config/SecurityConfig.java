@@ -32,10 +32,16 @@ import java.util.Objects;
 @EnableWebSecurity(debug = true)
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
+
+    private boolean isDev;
+
+    public SecurityConfig(@Value("${spring.profiles.active}") String active) {
+        this.isDev = Objects.equals(active, "dev");
+    }
+
     @Autowired
     UserRepositoryOAuth2UserHandler userRepositoryOAuth2UserHandler;
-    @Value("spring.profiles.active")
-    private String active;
+
 
     // @formatter:off
     @Bean
@@ -92,7 +98,7 @@ public class SecurityConfig {
 
     private ClientRegistration githubClientRegistration() {
         String clientSecret ;
-        if(Objects.equals(active,"dev")){
+        if(isDev){
             clientSecret="http://127.0.0.1:9000/login/oauth2/code/{registrationId}";
         }else{
             clientSecret = "https://auth.poo0054.top/login/oauth2/code/{registrationId}";
@@ -107,7 +113,7 @@ public class SecurityConfig {
     }
     private ClientRegistration googleClientRegistration() {
         String clientSecret ;
-        if(Objects.equals(active,"dev")){
+        if(isDev){
             clientSecret="http://127.0.0.1:9000/login/oauth2/code/{registrationId}";
         }else{
             clientSecret = "https://auth.poo0054.top/login/oauth2/code/{registrationId}";

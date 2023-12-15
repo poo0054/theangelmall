@@ -14,7 +14,6 @@ import java.util.Locale;
 public class WebMvcLocaleConfig extends WebMvcConfigurationSupport {
 
     public LocaleResolver localeResolver() {
-        FixedLocaleResolver fixedLocaleResolver = new FixedLocaleResolver(Locale.SIMPLIFIED_CHINESE);
-        return fixedLocaleResolver;
+        return new FixedLocaleResolver(Locale.SIMPLIFIED_CHINESE);
     }
 }

@@ -4,6 +4,12 @@ spring:
   application:
     name: renren-fast
 
+  security:
+    antPatterns:
+      - /sys/login
+      - /sys/authorized
+
+
 server:
   servlet:
     context-path: /renren-fast

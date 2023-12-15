@@ -11,10 +11,12 @@ package com.themall.oauthserver.controller;
 import com.themall.oauthserver.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.Set;
 
 /**
@@ -32,8 +34,12 @@ public class SysUserController {
     @GetMapping("/getUserDetails")
     public Set<GrantedAuthority> getUserDetails() {
         Long userId = sysUserService.getByUserName(SecurityContextHolder.getContext().getAuthentication().getName()).getUserId();
+        if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("SCOPE_all"))) {
+            //只有获取所有权限才加入
+            return sysUserService.getAuth(userId);
+        }
+        return Collections.emptySet();
 
-        return sysUserService.getAuth(userId);
     }
 
 

@@ -1,4 +1,4 @@
-package com.themall.common.filter;
+package com.themall.common.exception;
 
 import cn.hutool.http.ContentType;
 import com.alibaba.fastjson2.JSON;

@@ -24,8 +24,8 @@ import org.springframework.web.servlet.NoHandlerFoundException;
  *
  * @author Mark sunlightcs@gmail.com
  */
-@RestControllerAdvice
 @Slf4j
+@RestControllerAdvice
 public class RRExceptionHandler {
 
     /**

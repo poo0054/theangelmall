@@ -1,7 +1,11 @@
 package io.renren.config;
 
+import com.themall.common.config.ResourceSecurityConfig;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -12,20 +16,19 @@ import org.springframework.security.web.SecurityFilterChain;
 /**
  * @author poo0054
  */
+@Configuration(proxyBeanMethods = false)
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfig {
+public class SecurityConfig extends ResourceSecurityConfig {
 
     @Bean
+    @Order(Ordered.HIGHEST_PRECEDENCE)
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.
-                authorizeHttpRequests(authorize ->
-                        authorize.antMatchers("/sys/login", "/sys/authorized").permitAll()
-                )
-        ;
-
-
-        return http.build();
+        http.authorizeHttpRequests(authorize -> authorize
+                .antMatchers("/sys/login", "/sys/authorized").permitAll()
+                .anyRequest().authenticated()
+        );
+        return httpSecurity(http).build();
     }
 
     @Bean
