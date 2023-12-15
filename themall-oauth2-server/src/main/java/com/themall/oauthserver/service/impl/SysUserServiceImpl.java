@@ -103,4 +103,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         lambdaQuery.eq(SysUserEntity::getUsername, username);
         return getOne(lambdaQuery);
     }
+
+    @Override
+    public SysUserEntity getPrincipalName(String principalName) {
+        SysUserEntity sysUserEntity = this.getById(principalName);
+        if (ObjectUtils.isNotEmpty(sysUserEntity)) {
+            return sysUserEntity;
+        }
+        return this.getByUserName(principalName);
+    }
 }

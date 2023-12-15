@@ -48,4 +48,12 @@ public interface SysUserService extends IService<SysUserEntity> {
      * @return 所有权限
      */
     Set<GrantedAuthority> getAuth(Long userId);
+
+    /**
+     * 可能是id 和 name
+     *
+     * @param principalName id 或者 name
+     * @return 结果
+     */
+    SysUserEntity getPrincipalName(String principalName);
 }

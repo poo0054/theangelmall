@@ -17,6 +17,7 @@ package com.themall.oauthserver.security;
 
 import com.themall.model.entity.SysUserEntity;
 import com.themall.oauthserver.service.SysUserService;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
@@ -78,8 +79,13 @@ public final class FederatedIdentityIdTokenCustomizer implements OAuth2TokenCust
 
         if (Objects.equals(OAuth2TokenType.ACCESS_TOKEN.getValue(), context.getTokenType().getValue()) || Objects.equals(OAuth2TokenType.REFRESH_TOKEN.getValue(), context.getTokenType().getValue())) {
             //只有授权所有权限
-            SysUserEntity sysUserEntity = userService.getById(context.getAuthorization().getPrincipalName());
-            context.getClaims().claim("login", sysUserEntity.getUsername()).claim("email", sysUserEntity.getEmail()).claim("id", sysUserEntity.getUserId());
+            SysUserEntity sysUserEntity = userService.getPrincipalName(context.getAuthorization().getPrincipalName());
+            if (ObjectUtils.isNotEmpty(sysUserEntity)) {
+                //邮件忽略
+//            .claim("email", sysUserEntity.getEmail())
+                context.getClaims().claim("login", sysUserEntity.getUsername()).claim("id", sysUserEntity.getUserId());
+            }
+
         }
     }
 
