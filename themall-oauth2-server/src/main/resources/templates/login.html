@@ -11,7 +11,7 @@
 </head>
 <body>
 <div class="container">
-    <form class="form-signin" method="post" th:action="@{/themall-oauthserver/login}">
+    <form class="form-signin" method="post" th:action="@{/login}">
         <div class="alert alert-danger" role="alert" th:if="${param.error}">
             Invalid username or password.
         </div>
@@ -29,7 +29,7 @@
             <input class="form-control" id="password" name="password" placeholder="Password" required type="password">
         </p>
         <button class="btn btn-lg btn-primary btn-block" type="submit">登陆</button>
-        <a class="btn btn-light btn-block bg-white" href="/themall-oauthserver/oauth2/authorization/google" role="link"
+        <a class="btn btn-light btn-block bg-white" href="/oauth2/authorization/google" role="link"
            style="text-transform: none;">
             <img alt="Sign in with Google"
                  src="https://www.google.com/logos/doodles/2023/seasonal-holidays-2023-6753651837110165-sdrk.png"
@@ -37,7 +37,7 @@
                  width="20"/>
             Google
         </a>
-        <a class="btn btn-light btn-block bg-white" href="/themall-oauthserver/oauth2/authorization/github" role="link"
+        <a class="btn btn-light btn-block bg-white" href="/oauth2/authorization/github" role="link"
            style="text-transform: none;">
             <img alt="Sign in with GitHub"
                  src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"

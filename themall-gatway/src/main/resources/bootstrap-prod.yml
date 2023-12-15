@@ -104,11 +104,17 @@ spring:
 
 
         # 认证
-        - id: auth-server
-          uri: lb://themall-auth-server
+        #        - id: auth-server
+        #          uri: lb://themall-auth-server
+        #          predicates:
+        #            - Host=auth.poo0054.top
+        #            - Path=/auth/**
+
+        # 认证
+        - id: oauthserver
+          uri: lb://themall-oauthserver
           predicates:
             - Host=auth.poo0054.top
-        #            - Path=/auth/**
 
         # 购物车
         - id: themall-cart

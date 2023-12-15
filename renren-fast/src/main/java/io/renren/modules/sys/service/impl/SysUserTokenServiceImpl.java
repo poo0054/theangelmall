@@ -35,12 +35,13 @@ public class SysUserTokenServiceImpl extends ServiceImpl<SysUserTokenDao, SysUse
      * 12小时后过期
      */
     private final static int EXPIRE = 3600 * 12;
+
     private SysUserService sysUserService;
 
-    private RedisTemplate<String, Object> redisTemplate;
+    private RedisTemplate<Object, Object> redisTemplate;
 
     @Autowired
-    public void setRedisTemplate(RedisTemplate<String, Object> redisTemplate) {
+    public void setRedisTemplate(RedisTemplate<Object, Object> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
@@ -56,7 +57,7 @@ public class SysUserTokenServiceImpl extends ServiceImpl<SysUserTokenDao, SysUse
         String subject = userName + ":" + UUIDUtils.getUUID();
         String token = JwtUtils.generateToken(subject, byUserName);
         //删除以前token
-        Set<String> keys = redisTemplate.keys(JwtUtils.REDIS_PREFIX + userName + ":*");
+        Set<Object> keys = redisTemplate.keys(JwtUtils.REDIS_PREFIX + userName + ":*");
         if (keys != null) {
             redisTemplate.delete(keys);
         }

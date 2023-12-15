@@ -9,10 +9,7 @@
 package io.renren.modules.oss.cloud;
 
 
-import com.themall.model.constants.Constant;
 import io.renren.modules.sys.service.SysConfigService;
-import io.renren.utils.ConfigConstant;
-import io.renren.utils.SpringContextUtils;
 
 /**
  * 文件上传Factory
@@ -22,7 +19,7 @@ import io.renren.utils.SpringContextUtils;
 public final class OSSFactory {
     private static SysConfigService sysConfigService;
 
-    static {
+/*    static {
         OSSFactory.sysConfigService = (SysConfigService) SpringContextUtils.getBean("sysConfigService");
     }
 
@@ -39,6 +36,6 @@ public final class OSSFactory {
         }
 
         return null;
-    }
+    }*/
 
 }

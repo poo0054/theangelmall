@@ -90,7 +90,7 @@ public class SecurityConfig {
                 .getBuilder("github")
                 .clientId("162f2f2ef75cc236d6f1")
                 .clientSecret("d43ff1248dad544c5c61f9b48642551e0e00f668")
-                .redirectUri("http://127.0.0.1:8085/themall-oauthserver/oauth2/code/{registrationId}")
+                .redirectUri("https://auth.poo0054.top/login/oauth2/code/{registrationId}")
                .build();
     }
     private ClientRegistration googleClientRegistration() {
@@ -98,7 +98,7 @@ public class SecurityConfig {
                 .getBuilder("google")
                 .clientId("237327413162-542qg7pjo4esi81mbuo9s27lrd6rp9i5.apps.googleusercontent.com")
                 .clientSecret("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")
-                .redirectUri("http://127.0.0.1:8085/themall-oauthserver/oauth2/code/{registrationId}")
+                .redirectUri("https://auth.poo0054.top/login/oauth2/code/{registrationId}")
                .build();
     }
 
