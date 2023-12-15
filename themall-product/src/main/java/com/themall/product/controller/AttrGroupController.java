@@ -29,7 +29,7 @@ import java.util.Map;
  */
 @Slf4j
 @RestController
-@RequestMapping("product/attrgroup")
+@RequestMapping("attrgroup")
 public class AttrGroupController {
     @Autowired
     private AttrGroupService attrGroupService;

@@ -19,7 +19,7 @@ import java.util.Map;
  * @date 2021-06-09 20:47:29
  */
 @RestController
-@RequestMapping("product/undolog")
+@RequestMapping("/undolog")
 public class UndoLogController {
     @Autowired
     private UndoLogService undoLogService;

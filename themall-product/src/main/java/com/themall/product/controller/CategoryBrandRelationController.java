@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  * @date 2021-06-09 20:47:30
  */
 @RestController
-@RequestMapping("product/categorybrandrelation")
+@RequestMapping("/categorybrandrelation")
 public class CategoryBrandRelationController {
     @Autowired
     private CategoryBrandRelationService categoryBrandRelationService;

@@ -22,7 +22,7 @@ import java.util.Map;
  * @date 2021-06-09 20:47:30
  */
 @RestController
-@RequestMapping("product/brand")
+@RequestMapping("/brand")
 public class BrandController {
     @Autowired
     private BrandService brandService;

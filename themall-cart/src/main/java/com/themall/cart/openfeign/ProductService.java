@@ -19,7 +19,7 @@ public interface ProductService {
     /**
      * 根据skuid获取商品详细信息
      */
-    @RequestMapping("product/skuinfo/info/{skuId}")
+    @RequestMapping("/skuinfo/info/{skuId}")
     public R getSkuInfo(@PathVariable("skuId") Long skuId);
 
     /**
