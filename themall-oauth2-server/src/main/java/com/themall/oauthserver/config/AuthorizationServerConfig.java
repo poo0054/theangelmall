@@ -31,6 +31,7 @@ import org.springframework.security.oauth2.server.authorization.config.annotatio
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
+import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
@@ -39,6 +40,7 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.time.Duration;
 import java.util.UUID;
 
 /**
@@ -90,6 +92,8 @@ public class AuthorizationServerConfig {
 
     @Bean
     public RegisteredClientRepository registeredClientRepository(JdbcTemplate jdbcTemplate) {
+        TokenSettings tokenSettings = TokenSettings.builder().accessTokenTimeToLive(Duration.ofDays(7))
+                .refreshTokenTimeToLive(Duration.ofDays(15)).build();
         //正式环境
         RegisteredClient registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
                 .clientId("themall")
@@ -103,6 +107,7 @@ public class AuthorizationServerConfig {
                 .scope(OidcScopes.PROFILE)
                 .scope("all")
                 .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
+                .tokenSettings(tokenSettings)
                 .build();
 //测试环境
         RegisteredClient test = RegisteredClient.withId(UUID.randomUUID().toString())
@@ -117,6 +122,7 @@ public class AuthorizationServerConfig {
                 .scope(OidcScopes.PROFILE)
                 .scope("all")
                 .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
+                .tokenSettings(tokenSettings)
                 .build();
 
         // Save registered client in db as if in-memory
@@ -128,14 +134,6 @@ public class AuthorizationServerConfig {
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
         return AuthorizationServerSettings.builder()
-//                .issuer("http://127.0.0.1:8085/themall-oauthserver/")
-//                .authorizationEndpoint("/themall-oauthserver/oauth2/authorize")
-//                .tokenEndpoint("/themall-oauthserver/oauth2/token")
-//                .jwkSetEndpoint("/themall-oauthserver/oauth2/jwks")
-//                .tokenRevocationEndpoint("/themall-oauthserver/oauth2/revoke")
-//                .tokenIntrospectionEndpoint("/themall-oauthserver/oauth2/introspect")
-//                .oidcClientRegistrationEndpoint("/themall-oauthserver/connect/register")
-//                .oidcUserInfoEndpoint("/themall-oauthserver/userinfo")
                 .build();
     }
 
