@@ -45,15 +45,19 @@ public class SysLoginController extends AbstractController {
 
     String messagesBaseUri;
     String vueUri;
+    String basic;
 
     @Autowired
     OAuth2ResourceServerProperties oAuth2ResourceServerProperties;
     @Autowired
     RestTemplate rest;
 
-    public SysLoginController(@Value("${messages.base-uri}") String messagesBaseUri, @Value("${messages.vue-uri}") String vueUri) {
+    public SysLoginController(@Value("${messages.base-uri}") String messagesBaseUri,
+                              @Value("${messages.vue-uri}") String vueUri,
+                              @Value("${messages.basic}") String basic) {
         this.messagesBaseUri = messagesBaseUri;
         this.vueUri = vueUri;
+        this.basic = basic;
     }
 
     /**
@@ -79,7 +83,7 @@ public class SysLoginController extends AbstractController {
                 .post(issuerUri + "/oauth2/token")
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .accept(MediaType.ALL)
-                .header(HttpHeaders.AUTHORIZATION, "Basic dGhlbWFsbDpyZW5yZW4tZmFzdC10aGVtYWxs")
+                .header(HttpHeaders.AUTHORIZATION, "Basic " + basic)
                 .body(bodyParams);
         ResponseEntity<Map> responseEntity = rest.exchange(body, Map.class);
         if (responseEntity.getStatusCode().is2xxSuccessful()) {

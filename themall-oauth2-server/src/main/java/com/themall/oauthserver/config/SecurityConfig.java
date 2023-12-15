@@ -4,6 +4,7 @@ import com.themall.oauthserver.security.FederatedIdentityConfigurer;
 import com.themall.oauthserver.security.UserRepositoryOAuth2UserHandler;
 import com.themall.oauthserver.userdetails.SysUserDetailsManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.Customizer;
@@ -23,6 +24,8 @@ import org.springframework.security.oauth2.client.web.AuthenticatedPrincipalOAut
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.util.Objects;
+
 /**
  * @author poo0054
  */
@@ -31,6 +34,8 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
     @Autowired
     UserRepositoryOAuth2UserHandler userRepositoryOAuth2UserHandler;
+    @Value("spring.profiles.active")
+    private String active;
 
     // @formatter:off
     @Bean
@@ -86,19 +91,33 @@ public class SecurityConfig {
     }
 
     private ClientRegistration githubClientRegistration() {
+        String clientSecret ;
+        if(Objects.equals(active,"dev")){
+            clientSecret="http://127.0.0.1:9000/login/oauth2/code/{registrationId}";
+        }else{
+            clientSecret = "https://auth.poo0054.top/login/oauth2/code/{registrationId}";
+        }
         return CommonOAuth2Provider.GITHUB
                 .getBuilder("github")
                 .clientId("162f2f2ef75cc236d6f1")
                 .clientSecret("d43ff1248dad544c5c61f9b48642551e0e00f668")
-                .redirectUri("https://auth.poo0054.top/login/oauth2/code/{registrationId}")
+//                .redirectUri("https://auth.poo0054.top/login/oauth2/code/{registrationId}")
+                .redirectUri(clientSecret)
                .build();
     }
     private ClientRegistration googleClientRegistration() {
+        String clientSecret ;
+        if(Objects.equals(active,"dev")){
+            clientSecret="http://127.0.0.1:9000/login/oauth2/code/{registrationId}";
+        }else{
+            clientSecret = "https://auth.poo0054.top/login/oauth2/code/{registrationId}";
+        }
         return CommonOAuth2Provider.GOOGLE
                 .getBuilder("google")
                 .clientId("237327413162-542qg7pjo4esi81mbuo9s27lrd6rp9i5.apps.googleusercontent.com")
                 .clientSecret("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")
-                .redirectUri("https://auth.poo0054.top/login/oauth2/code/{registrationId}")
+//                .redirectUri("https://auth.poo0054.top/login/oauth2/code/{registrationId}")
+                .redirectUri(clientSecret)
                .build();
     }
 
