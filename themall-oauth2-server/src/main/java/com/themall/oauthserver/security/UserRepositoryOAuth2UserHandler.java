@@ -58,7 +58,11 @@ public final class UserRepositoryOAuth2UserHandler implements Consumer<OAuth2Use
             sysUserRoleEntity.setUserId(sysUserEntity.getUserId());
             //默认用户读取权限
             sysUserRoleEntity.setRoleId(1L);
-            sysUserRoleService.save(sysUserRoleEntity);
+            try {
+                sysUserRoleService.save(sysUserRoleEntity);
+            } catch (Exception ignored) {
+                //忽略权限新增
+            }
         }
     }
 

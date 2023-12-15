@@ -1,6 +1,8 @@
 package com.themall.common.config;
 
 import com.themall.common.authentication.CustomAuthenticationConverter;
+import com.themall.common.exception.DefaultAccessDeniedHandler;
+import com.themall.common.exception.DefaultAuthenticationEntryPoint;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
@@ -19,20 +21,22 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 @EnableConfigurationProperties(OAuth2ResourceServerProperties.class)
 public class ResourceSecurityConfig {
-
-    protected HttpSecurity httpSecurity(HttpSecurity http) throws Exception {
-        return http
-                .oauth2ResourceServer((oauth2) ->
-                        oauth2.jwt(Customizer.withDefaults()
-                        ))
-                .logout(Customizer.withDefaults());
-    }
-
     @Autowired
     OAuth2ResourceServerProperties oAuth2ResourceServerProperties;
 
     @Autowired
     RestTemplate rest;
+
+    protected HttpSecurity httpSecurity(HttpSecurity http) throws Exception {
+        return http
+                .oauth2ResourceServer((oauth2) ->
+                        oauth2.jwt(Customizer.withDefaults())
+                                .accessDeniedHandler(new DefaultAccessDeniedHandler()).authenticationEntryPoint(new DefaultAuthenticationEntryPoint())
+                )
+                .logout(Customizer.withDefaults())
+                ;
+    }
+
 
     @Bean
     public CustomAuthenticationConverter customAuthenticationConverter() {

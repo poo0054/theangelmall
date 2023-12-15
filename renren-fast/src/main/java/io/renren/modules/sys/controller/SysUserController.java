@@ -77,7 +77,6 @@ public class SysUserController extends AbstractController {
      * 获取登录的用户信息
      */
     @GetMapping("/info")
-    @PreAuthorize("hasAuthority('sys:user:list')")
     public R info() {
         return R.ok().put("user", getUser());
     }
