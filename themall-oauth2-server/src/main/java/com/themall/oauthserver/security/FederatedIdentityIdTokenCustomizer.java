@@ -15,6 +15,7 @@
  */
 package com.themall.oauthserver.security;
 
+import com.themall.model.entity.SysUserEntity;
 import com.themall.oauthserver.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -75,20 +76,10 @@ public final class FederatedIdentityIdTokenCustomizer implements OAuth2TokenCust
             });
         }
 
-        if (Objects.equals(OAuth2TokenType.ACCESS_TOKEN.getValue(), context.getTokenType().getValue())) {
+        if (Objects.equals(OAuth2TokenType.ACCESS_TOKEN.getValue(), context.getTokenType().getValue()) || Objects.equals(OAuth2TokenType.REFRESH_TOKEN.getValue(), context.getTokenType().getValue())) {
             //只有授权所有权限
-         /*   if (context.getAuthorizedScopes().contains("all")) {
-                //权限添加
-                Set<GrantedAuthority> auth = userService.getAuth(userService.getByUserName(context.getPrincipal().getName()).getUserId());
-                Collection<? extends GrantedAuthority> grantedAuthorities = context.getPrincipal().getAuthorities();
-                Set<String> authorizedScopes = context.getAuthorizedScopes();
-
-                for (String string : authorizedScopes) {
-                    auth.addAll(AuthorityUtils.commaSeparatedStringToAuthorityList(string));
-                }
-                auth.addAll(grantedAuthorities);
-                context.getClaims().claim("authorities", auth);
-            }*/
+            SysUserEntity sysUserEntity = userService.getById(context.getAuthorization().getPrincipalName());
+            context.getClaims().claim("login", sysUserEntity.getUsername()).claim("email", sysUserEntity.getEmail()).claim("id", sysUserEntity.getUserId());
         }
     }
 

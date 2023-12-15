@@ -33,7 +33,7 @@ public class SysUserController {
 
     @GetMapping("/getUserDetails")
     public Set<GrantedAuthority> getUserDetails() {
-        Long userId = sysUserService.getByUserName(SecurityContextHolder.getContext().getAuthentication().getName()).getUserId();
+        Long userId = sysUserService.getById(SecurityContextHolder.getContext().getAuthentication().getName()).getUserId();
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("SCOPE_all"))) {
             //只有获取所有权限才加入
             return sysUserService.getAuth(userId);

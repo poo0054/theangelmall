@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Import;
 /**
  * @author poo0054
  */
-@Import({FeignConfig.class, WebMvcLocaleConfig.class, ExceptionConfig.class, AuthenticationConfig.class, FastJsonConfig.class})
+@Import({FeignConfig.class, WebMvcLocaleConfig.class, ExceptionConfig.class, FastJsonConfig.class})
 @Configuration
 public class Config {
 

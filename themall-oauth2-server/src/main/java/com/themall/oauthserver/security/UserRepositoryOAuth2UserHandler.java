@@ -45,11 +45,12 @@ public final class UserRepositoryOAuth2UserHandler implements Consumer<OAuth2Use
     @Override
     public void accept(OAuth2User user) {
         // Capture user in a local data store on first authentication
-        if (this.userService.getByUserName(user.getName()) == null) {
+        if (this.userService.getById(user.getName()) == null) {
             log.info("Saving user: name=" + user.getName() + ", claims=" + user.getAttributes() + ", authorities=" + user.getAuthorities());
             SysUserEntity sysUserEntity = new SysUserEntity();
             sysUserEntity.setEmail(user.getAttribute("email"));
-            sysUserEntity.setUsername(user.getName());
+            sysUserEntity.setUserId(Long.valueOf(user.getAttribute("id").toString()));
+            sysUserEntity.setUsername(user.getAttribute("login"));
             //给予默认权限
             this.userService.save(sysUserEntity);
 
