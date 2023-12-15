@@ -41,15 +41,19 @@ import java.util.Map;
 @RequestMapping("/sys")
 @EnableConfigurationProperties(OAuth2ResourceServerProperties.class)
 public class SysLoginController extends AbstractController {
+
+
     String messagesBaseUri;
+    String vueUri;
 
     @Autowired
     OAuth2ResourceServerProperties oAuth2ResourceServerProperties;
     @Autowired
     RestTemplate rest;
 
-    public SysLoginController(@Value("${messages.base-uri}") String messagesBaseUri) {
+    public SysLoginController(@Value("${messages.base-uri}") String messagesBaseUri, @Value("${messages.vue-uri}") String vueUri) {
         this.messagesBaseUri = messagesBaseUri;
+        this.vueUri = vueUri;
     }
 
     /**
@@ -58,14 +62,14 @@ public class SysLoginController extends AbstractController {
     @GetMapping("/login")
     public void login(HttpServletResponse response) throws IOException, ServletException {
         String issuerUri = oAuth2ResourceServerProperties.getJwt().getIssuerUri();
+
         String url = issuerUri + "/oauth2/authorize?client_id=themall&response_type=code&scope=all&redirect_uri=" + messagesBaseUri;
-//        request.getRequestDispatcher(url).forward(request, response);
         response.sendRedirect(url);
     }
 
     @GetMapping("/authorized")
     @ResponseBody
-    public void authorized(@RequestParam("code") String code, HttpServletResponse response) throws IOException, ServletException {
+    public void authorized(@RequestParam("code") String code, HttpServletResponse response) throws IOException {
         MultiValueMap<String, Object> bodyParams = new LinkedMultiValueMap<>();
         bodyParams.add(OAuth2ParameterNames.CODE, code);
         bodyParams.add(OAuth2ParameterNames.GRANT_TYPE, "authorization_code");
@@ -79,12 +83,11 @@ public class SysLoginController extends AbstractController {
                 .body(bodyParams);
         ResponseEntity<Map> responseEntity = rest.exchange(body, Map.class);
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
-            response.sendRedirect("https://poo0054.top/web/#/login?token=" + responseEntity.getBody().get("access_token") + "&expire=" + responseEntity.getBody().get("expires_in"));
+            response.sendRedirect(vueUri + responseEntity.getBody().get("access_token") + "&expire=" + responseEntity.getBody().get("expires_in"));
             return;
         }
         log.warn(responseEntity.toString());
         response.sendRedirect("/sys/login");
-//        return R.ok().put("token", response.getBody().get("access_token")).put("expire", response.getBody().get("expires_in"));
     }
 
     /**

@@ -23,3 +23,4 @@ spring:
 
 messages:
   base-uri: https://poo0054.top/renren-fast/sys/authorized
+  vue-uri: https://poo0054.top/web/#/login?token=
