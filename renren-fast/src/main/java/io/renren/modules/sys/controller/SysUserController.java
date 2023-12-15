@@ -120,7 +120,7 @@ public class SysUserController extends AbstractController {
      */
     @SysLog("保存用户")
     @PostMapping("/save")
-    @PreAuthorize("hasAuthority('sys:user:inset')")
+    @PreAuthorize("hasAuthority('sys:user:save')")
     public R save(@RequestBody SysUserEntity user) {
         ValidatorUtils.validateEntity(user, AddGroup.class);
 

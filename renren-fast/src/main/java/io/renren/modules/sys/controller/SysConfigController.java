@@ -51,7 +51,7 @@ public class SysConfigController extends AbstractController {
      * 配置信息
      */
     @GetMapping("/info/{id}")
-    @PreAuthorize("hasAuthority('sys:config:info')")
+    @PreAuthorize("hasAuthority('sys:config:list')")
     public R info(@PathVariable("id") Long id) {
         SysConfigEntity config = sysConfigService.getById(id);
 
@@ -63,7 +63,7 @@ public class SysConfigController extends AbstractController {
      */
     @SysLog("保存配置")
     @PostMapping("/save")
-    @PreAuthorize("hasAuthority('sys:config:inset')")
+    @PreAuthorize("hasAuthority('sys:config:save')")
     public R save(@RequestBody SysConfigEntity config) {
         ValidatorUtils.validateEntity(config);
 
