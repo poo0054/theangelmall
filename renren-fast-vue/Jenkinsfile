@@ -88,19 +88,19 @@ pipeline {
       }
     }
 
-    stage('git标签') {
-      steps {
-        input(id: 'tag to git', message: 'git是否标记标签?')
-        container('nodejs') {
-          withCredentials([usernamePassword(credentialsId: "$GIT_ID", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-            sh 'git config --global user.email "poo0054@outlook.com" '
-            sh 'git config --global user.name "poo0054" '
-            sh 'git tag -a $TAG_NAME -m "$TAG_NAME" '
-            sh 'git push http://$GIT_USERNAME:$GIT_PASSWORD@github.com/poo0054/theangelmall.git   --tags --ipv4'
-          }
-        }
-      }
-    }
+//    stage('git标签') {
+//      steps {
+//        input(id: 'tag to git', message: 'git是否标记标签?')
+//        container('nodejs') {
+//          withCredentials([usernamePassword(credentialsId: "$GIT_ID", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+//            sh 'git config --global user.email "poo0054@outlook.com" '
+//            sh 'git config --global user.name "poo0054" '
+//            sh 'git tag -a $TAG_NAME -m "$TAG_NAME" '
+//            sh 'git push http://$GIT_USERNAME:$GIT_PASSWORD@github.com/poo0054/theangelmall.git   --tags --ipv4'
+//          }
+//        }
+//      }
+//    }
 
   }
 
