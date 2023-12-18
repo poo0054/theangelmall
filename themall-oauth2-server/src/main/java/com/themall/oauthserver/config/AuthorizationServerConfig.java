@@ -8,6 +8,7 @@ import com.nimbusds.jose.proc.SecurityContext;
 import com.themall.oauthserver.security.FederatedIdentityConfigurer;
 import com.themall.oauthserver.security.FederatedIdentityIdTokenCustomizer;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -41,6 +42,7 @@ import java.security.KeyPairGenerator;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.time.Duration;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -49,6 +51,11 @@ import java.util.UUID;
 @Slf4j
 @Configuration(proxyBeanMethods = false)
 public class AuthorizationServerConfig {
+    private boolean isDev;
+
+    public AuthorizationServerConfig(@Value("${spring.profiles.active}") String active) {
+        this.isDev = Objects.equals(active, "dev");
+    }
 
     private static KeyPair generateRsaKey() {
         KeyPair keyPair;
@@ -133,7 +140,14 @@ public class AuthorizationServerConfig {
 
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
+        String iss;
+        if (isDev) {
+            iss = "https://auth.poo0054.top";
+        } else {
+            iss = "https://127.0.0.1:8001";
+        }
         return AuthorizationServerSettings.builder()
+                .issuer(iss)
                 .build();
     }
 
