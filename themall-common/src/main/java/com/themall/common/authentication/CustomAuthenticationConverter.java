@@ -1,6 +1,7 @@
 package com.themall.common.authentication;
 
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.core.ParameterizedTypeReference;
@@ -23,6 +24,7 @@ import java.util.Set;
  *
  * @author poo0054
  */
+@Slf4j
 @Data
 public class CustomAuthenticationConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
     /**
@@ -50,13 +52,21 @@ public class CustomAuthenticationConverter implements Converter<Jwt, Collection<
                     .accept(MediaType.APPLICATION_JSON)
                     .header(HttpHeaders.AUTHORIZATION, request.getHeader(HttpHeaders.AUTHORIZATION))
                     .build();
-            ResponseEntity<Set<GrantedAuthority>> response = rest.exchange(requestEntity, new ParameterizedTypeReference<Set<GrantedAuthority>>() {
-            });
-            HttpStatus statusCode = response.getStatusCode();
-            if (statusCode.is2xxSuccessful()) {
-                Set<GrantedAuthority> body = response.getBody();
-                if (ObjectUtils.isNotEmpty(body)) {
-                    return Collections.unmodifiableSet(body);
+            ResponseEntity<Set<GrantedAuthority>> response = null;
+            try {
+                response = rest.exchange(requestEntity, new ParameterizedTypeReference<Set<GrantedAuthority>>() {
+                });
+            } catch (Exception e) {
+                log.warn("内部系统获取权限超时:", e);
+                log.warn("请求地址参数：{}", requestEntity);
+            }
+            if (null != response) {
+                HttpStatus statusCode = response.getStatusCode();
+                if (statusCode.is2xxSuccessful()) {
+                    Set<GrantedAuthority> body = response.getBody();
+                    if (ObjectUtils.isNotEmpty(body)) {
+                        return Collections.unmodifiableSet(body);
+                    }
                 }
             }
         }
