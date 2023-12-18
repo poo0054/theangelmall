@@ -57,8 +57,9 @@ public class CustomAuthenticationConverter implements Converter<Jwt, Collection<
                 response = rest.exchange(requestEntity, new ParameterizedTypeReference<Set<GrantedAuthority>>() {
                 });
             } catch (Exception e) {
-                log.warn("内部系统获取权限超时:", e);
+                log.warn("获取内部权限失败:", e);
                 log.warn("请求地址参数：{}", requestEntity);
+                throw new RuntimeException("获取内部权限失败", e);
             }
             if (null != response) {
                 HttpStatus statusCode = response.getStatusCode();
