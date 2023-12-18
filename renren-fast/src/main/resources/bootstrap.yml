@@ -7,7 +7,3 @@ spring:
 server:
   servlet:
     context-path: /renren-fast
-
-jwt:
-  public: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzZkjaavBe4nepQrYJ46RlvP9qBmNUe8fIPrUWQwONo+UKCzPBnIJzLV4mXlDaULM7PHnmS+sHwOFRAcQcsvS+CoSkJRuX6SAMv4CX0O66U7PKc0UvEA7h+RQKb6e87n0giQJxCy6DmlK21b1fmV1bdy1vqziw51L4uZp3fpqQNv71EuSCzLX2fiypIbaJcUtNsDkOPq7li1Bi5/+Yj5wW0w06ye1Cgk2NGXlrC+J+6T/iu+siW4kwzJoeyi2TadX6qjQwI5Sbj7QUu87LVihDFwFjqA1Z17+Mk4Q6nOwgOzFn/+r9ocjiyj5vSIdX+bYHkIF8zOsIj5MG9ib/kEaeQIDAQAB
-
