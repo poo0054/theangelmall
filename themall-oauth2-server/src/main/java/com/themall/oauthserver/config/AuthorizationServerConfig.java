@@ -142,9 +142,9 @@ public class AuthorizationServerConfig {
     public AuthorizationServerSettings authorizationServerSettings() {
         String iss;
         if (isDev) {
-            iss = "https://auth.poo0054.top";
-        } else {
             iss = "https://127.0.0.1:8001";
+        } else {
+            iss = "https://auth.poo0054.top";
         }
         return AuthorizationServerSettings.builder()
                 .issuer(iss)
