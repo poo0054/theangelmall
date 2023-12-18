@@ -19,8 +19,3 @@ spring:
           - dataId: common.yaml
             group: ${spring.profiles.active}
             refresh: true
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://127.0.0.1:8085/themall-oauthserver/

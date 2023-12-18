@@ -21,10 +21,3 @@ spring:
           - dataId: common.yaml
             group: ${spring.profiles.active}
             refresh: true
-
-
-resource:
-  base-uri: http://127.0.0.1:8085/renren-fast/sys/authorized
-  vue-uri: http://127.0.0.1:8001/#/login?token=
-  client_id: themall-test
-  client_secret: renren-fast-themall-test
