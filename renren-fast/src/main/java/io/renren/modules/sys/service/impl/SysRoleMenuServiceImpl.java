@@ -33,7 +33,7 @@ public class SysRoleMenuServiceImpl extends ServiceImpl<SysRoleMenuDao, SysRoleM
 		//先删除角色与菜单关系
 		deleteBatch(new Long[]{roleId});
 
-		if(menuIdList.size() == 0){
+		if (menuIdList.isEmpty()) {
 			return ;
 		}
 
