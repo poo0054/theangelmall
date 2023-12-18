@@ -25,7 +25,7 @@ public @interface SysLog {
 	/**
 	 * 模块
 	 */
-	String title() default "";
+	String value() default "";
 
 	/**
 	 * 操作人

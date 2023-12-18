@@ -29,6 +29,7 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.NamedThreadLocal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -52,6 +53,11 @@ import java.util.Map;
 @Aspect
 @Component
 public class SysLogAspect {
+
+    @Value("${spring.profiles.active}")
+    String active;
+
+
     /**
      * 排除敏感属性字段
      */
@@ -155,7 +161,7 @@ public class SysLogAspect {
         // 设置action动作
         sysLogEntity.setBusinessType(log.businessType().ordinal());
         // 设置标题
-        sysLogEntity.setLogTitle(log.title());
+        sysLogEntity.setLogTitle(log.value());
         // 设置操作人类别
         sysLogEntity.setOperatorType(log.operatorType().ordinal());
         // 是否需要保存request，参数和值
