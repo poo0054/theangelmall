@@ -8,7 +8,9 @@ import com.nimbusds.jose.proc.SecurityContext;
 import com.themall.oauthserver.security.FederatedIdentityConfigurer;
 import com.themall.oauthserver.security.FederatedIdentityIdTokenCustomizer;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -42,7 +44,6 @@ import java.security.KeyPairGenerator;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.time.Duration;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -50,11 +51,14 @@ import java.util.UUID;
  */
 @Slf4j
 @Configuration(proxyBeanMethods = false)
+@EnableConfigurationProperties(OAuth2ResourceServerProperties.class)
 public class AuthorizationServerConfig {
-    private boolean isDev;
 
-    public AuthorizationServerConfig(@Value("${spring.profiles.active}") String active) {
-        this.isDev = Objects.equals(active, "dev");
+    OAuth2ResourceServerProperties oAuth2ResourceServerProperties;
+
+    @Autowired
+    public void setoAuth2ResourceServerProperties(OAuth2ResourceServerProperties oAuth2ResourceServerProperties) {
+        this.oAuth2ResourceServerProperties = oAuth2ResourceServerProperties;
     }
 
     private static KeyPair generateRsaKey() {
@@ -140,14 +144,8 @@ public class AuthorizationServerConfig {
 
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
-        String iss;
-        if (isDev) {
-            iss = "http://127.0.0.1:8001";
-        } else {
-            iss = "https://auth.poo0054.top";
-        }
         return AuthorizationServerSettings.builder()
-                .issuer(iss)
+                .issuer(oAuth2ResourceServerProperties.getJwt().getIssuerUri())
                 .build();
     }
 
