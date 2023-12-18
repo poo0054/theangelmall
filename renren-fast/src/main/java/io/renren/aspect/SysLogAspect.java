@@ -138,7 +138,9 @@ public class SysLogAspect {
             operLog.setOperTime(new Date(TIME_THREADLOCAL.get()));
             operLog.setCreateBy(name);
             operLog.setUpdateBy(name);
-
+            Date createDate = new Date();
+            operLog.setCreateDate(createDate);
+            operLog.setUpdateDate(createDate);
             //  保存数据库
             iTabOpsOperLogService.save(operLog);
         } catch (Exception exp) {
