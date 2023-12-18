@@ -29,7 +29,7 @@ import java.util.Objects;
 /**
  * @author poo0054
  */
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 

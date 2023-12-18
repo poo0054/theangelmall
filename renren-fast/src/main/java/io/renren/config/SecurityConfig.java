@@ -15,7 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
  * @author poo0054
  */
 @Configuration(proxyBeanMethods = false)
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends ResourceSecurityConfig {
 
