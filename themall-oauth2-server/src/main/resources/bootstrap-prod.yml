@@ -20,3 +20,5 @@ spring:
           - dataId: common.yaml
             group: ${spring.profiles.active}
             refresh: true
+
+

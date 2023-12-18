@@ -5,10 +5,12 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import com.themall.common.utils.KeyUtils;
 import com.themall.oauthserver.security.FederatedIdentityConfigurer;
 import com.themall.oauthserver.security.FederatedIdentityIdTokenCustomizer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -41,7 +43,6 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
-import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.time.Duration;
 import java.util.UUID;
@@ -53,6 +54,12 @@ import java.util.UUID;
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(OAuth2ResourceServerProperties.class)
 public class AuthorizationServerConfig {
+
+    @Value("${jwt.private}")
+    String privateKey;
+
+    @Value("${jwt.public}")
+    String publicKey;
 
     OAuth2ResourceServerProperties oAuth2ResourceServerProperties;
 
@@ -139,11 +146,11 @@ public class AuthorizationServerConfig {
 
     @Bean
     public JWKSource<SecurityContext> jwkSource() {
-        KeyPair keyPair = generateRsaKey();
-        RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
-        RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
+//        KeyPair keyPair = generateRsaKey();
+//        RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
+//        RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
         RSAKey rsaKey =
-                new RSAKey.Builder(publicKey).privateKey(privateKey).keyID(UUID.randomUUID().toString()).build();
+                new RSAKey.Builder((RSAPublicKey) KeyUtils.getPublicKey(publicKey)).privateKey(KeyUtils.getPrivateKey(privateKey)).keyID(UUID.randomUUID().toString()).build();
         JWKSet jwkSet = new JWKSet(rsaKey);
         return new ImmutableJWKSet<>(jwkSet);
     }
@@ -164,4 +171,6 @@ public class AuthorizationServerConfig {
         }
         return keyPair;
     }
+
+
 }
