@@ -32,6 +32,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,6 +53,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
     private SysRoleService sysRoleService;
 
     private SysMenuService sysMenuService;
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Autowired
     public void setSysUserRoleService(SysUserRoleService sysUserRoleService) {
@@ -102,9 +109,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
     @Transactional
     public void saveUser(SysUserEntity user) {
         user.setCreateTime(new Date());
-        //TODO 密码
-
-//        user.setPassword(idu  .getMD5(user.getPassword(), salt));
+        if (StringUtils.isBlank(user.getPassword())) {
+            user.setPassword(null);
+        } else {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         this.save(user);
 
         //检查角色是否越权
@@ -120,7 +129,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         if (StringUtils.isBlank(user.getPassword())) {
             user.setPassword(null);
         } else {
-//            user.setPassword(new Sha256Hash(user.getPassword(), user.getSalt()).toHex());
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
         this.updateById(user);
 
@@ -138,8 +147,16 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 
     @Override
     public boolean updatePassword(Long userId, String password, String newPassword) {
+        SysUserEntity sysUserEntity = this.getById(userId);
+        if (ObjectUtils.isEmpty(sysUserEntity)) {
+            return false;
+        }
+        if (passwordEncoder.matches(sysUserEntity.getPassword(), password)) {
+            return false;
+        }
+
         SysUserEntity userEntity = new SysUserEntity();
-        userEntity.setPassword(newPassword);
+        userEntity.setPassword(passwordEncoder.encode(newPassword));
         return this.update(userEntity,
                 new QueryWrapper<SysUserEntity>().eq("user_id", userId).eq("password", password));
     }

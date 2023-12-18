@@ -24,7 +24,6 @@ import io.renren.utils.PageUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,7 +40,6 @@ import java.util.Objects;
 public class SysUserController extends AbstractController {
     private SysUserService sysUserService;
     private SysUserRoleService sysUserRoleService;
-    private PasswordEncoder passwordEncoder;
 
     @Autowired
     public void setSysUserService(SysUserService sysUserService) {
@@ -53,10 +51,6 @@ public class SysUserController extends AbstractController {
         this.sysUserRoleService = sysUserRoleService;
     }
 
-    @Autowired
-    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
 
     /**
      * 所有用户列表
@@ -86,13 +80,10 @@ public class SysUserController extends AbstractController {
      */
     @SysLog("修改密码")
     @PostMapping("/password")
-    @PreAuthorize("hasAuthority('sys:user:update')")
     public R password(@RequestBody PasswordForm form) {
         Assert.isBlank(form.getNewPassword(), "新密码不为能空");
-        String password = passwordEncoder.encode(form.getPassword());
-        String newPassword = passwordEncoder.encode(form.getNewPassword());
         //更新密码
-        boolean flag = sysUserService.updatePassword(getUserId(), password, newPassword);
+        boolean flag = sysUserService.updatePassword(getUserId(), form.getPassword(), form.getNewPassword());
         if (!flag) {
             return R.error(HttpStatusEnum.USER_ERROR_A0130.getCode(), "原密码不正确");
         }
