@@ -4,4 +4,5 @@ WORKDIR /home
 COPY target/*.jar /home
 # -Dspring.profiles.active=prod
 #ENTRYPOINT java -jar   *.jar
+ENV ACTIVE="prod"
 CMD ["sh","-c","java -jar  *.jar --spring.profiles.active=${ACTIVE} "]
