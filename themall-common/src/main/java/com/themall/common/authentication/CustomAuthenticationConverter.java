@@ -61,13 +61,11 @@ public class CustomAuthenticationConverter implements Converter<Jwt, Collection<
                 log.warn("请求地址参数：{}", requestEntity);
                 throw new RuntimeException("获取内部权限失败", e);
             }
-            if (null != response) {
-                HttpStatus statusCode = response.getStatusCode();
-                if (statusCode.is2xxSuccessful()) {
-                    Set<GrantedAuthority> body = response.getBody();
-                    if (ObjectUtils.isNotEmpty(body)) {
-                        return Collections.unmodifiableSet(body);
-                    }
+            HttpStatus statusCode = response.getStatusCode();
+            if (statusCode.is2xxSuccessful()) {
+                Set<GrantedAuthority> body = response.getBody();
+                if (ObjectUtils.isNotEmpty(body)) {
+                    return Collections.unmodifiableSet(body);
                 }
             }
         }
