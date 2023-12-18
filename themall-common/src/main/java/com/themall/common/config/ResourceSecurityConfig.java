@@ -21,11 +21,20 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 @EnableConfigurationProperties(OAuth2ResourceServerProperties.class)
 public class ResourceSecurityConfig {
-    @Autowired
+
     OAuth2ResourceServerProperties oAuth2ResourceServerProperties;
 
-    @Autowired
     RestTemplate rest;
+
+    @Autowired
+    public void setoAuth2ResourceServerProperties(OAuth2ResourceServerProperties oAuth2ResourceServerProperties) {
+        this.oAuth2ResourceServerProperties = oAuth2ResourceServerProperties;
+    }
+
+    @Autowired
+    public void setRest(RestTemplate rest) {
+        this.rest = rest;
+    }
 
     protected HttpSecurity httpSecurity(HttpSecurity http) throws Exception {
         return http
@@ -39,17 +48,16 @@ public class ResourceSecurityConfig {
 
 
     @Bean
-    public CustomAuthenticationConverter customAuthenticationConverter() {
-        return new CustomAuthenticationConverter(rest, oAuth2ResourceServerProperties);
-    }
-
-    @Bean
-    public JwtAuthenticationConverter jwtAuthenticationConverter(CustomAuthenticationConverter customAuthenticationConverter) {
+    public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-        DelegatingJwtGrantedAuthoritiesConverter delegatingJwtGrantedAuthoritiesConverter = new DelegatingJwtGrantedAuthoritiesConverter(customAuthenticationConverter, jwtGrantedAuthoritiesConverter);
+        DelegatingJwtGrantedAuthoritiesConverter delegatingJwtGrantedAuthoritiesConverter = new DelegatingJwtGrantedAuthoritiesConverter(customAuthenticationConverter(), jwtGrantedAuthoritiesConverter);
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(delegatingJwtGrantedAuthoritiesConverter);
         return jwtAuthenticationConverter;
+    }
+
+    private CustomAuthenticationConverter customAuthenticationConverter() {
+        return new CustomAuthenticationConverter(rest, oAuth2ResourceServerProperties);
     }
 
 /*
