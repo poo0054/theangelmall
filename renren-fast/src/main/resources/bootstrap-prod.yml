@@ -21,7 +21,8 @@ spring:
             group: ${spring.profiles.active}
             refresh: true
 
-messages:
+resource:
   base-uri: https://poo0054.top/renren-fast/sys/authorized
   vue-uri: https://poo0054.top/web/#/login?token=
-  basic: dGhlbWFsbDpyZW5yZW4tZmFzdC10aGVtYWxs
+  client_id: themall
+  client_secret: renren-fast-themall

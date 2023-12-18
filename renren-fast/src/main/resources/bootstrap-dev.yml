@@ -23,7 +23,8 @@ spring:
             refresh: true
 
 
-messages:
+resource:
   base-uri: http://127.0.0.1:8085/renren-fast/sys/authorized
   vue-uri: http://127.0.0.1:8001/#/login?token=
-  basic: dGhlbWFsbC10ZXN0OnJlbnJlbi1mYXN0LXRoZW1hbGwtdGVzdA==
+  client_id: themall-test
+  client_secret: renren-fast-themall-test

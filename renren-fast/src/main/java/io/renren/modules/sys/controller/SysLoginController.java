@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Base64Utils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,7 @@ import org.springframework.web.client.RestTemplate;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**
@@ -42,22 +44,24 @@ import java.util.Map;
 @EnableConfigurationProperties(OAuth2ResourceServerProperties.class)
 public class SysLoginController extends AbstractController {
 
-
     String messagesBaseUri;
     String vueUri;
-    String basic;
+    String clientId;
+    String clientSecret;
 
     @Autowired
     OAuth2ResourceServerProperties oAuth2ResourceServerProperties;
     @Autowired
     RestTemplate rest;
 
-    public SysLoginController(@Value("${messages.base-uri}") String messagesBaseUri,
-                              @Value("${messages.vue-uri}") String vueUri,
-                              @Value("${messages.basic}") String basic) {
+    public SysLoginController(@Value("${resource.base-uri}") String messagesBaseUri,
+                              @Value("${resource.vue-uri}") String vueUri,
+                              @Value("${resource.client_id}") String clientId,
+                              @Value("${resource.client_secret}") String clientSecret) {
         this.messagesBaseUri = messagesBaseUri;
         this.vueUri = vueUri;
-        this.basic = basic;
+        this.clientId = clientId;
+        this.clientSecret = clientSecret;
     }
 
     /**
@@ -67,7 +71,7 @@ public class SysLoginController extends AbstractController {
     public void login(HttpServletResponse response) throws IOException, ServletException {
         String issuerUri = oAuth2ResourceServerProperties.getJwt().getIssuerUri();
 
-        String url = issuerUri + "/oauth2/authorize?client_id=themall-test&response_type=code&scope=all&redirect_uri=" + messagesBaseUri;
+        String url = issuerUri + "/oauth2/authorize?client_id=" + clientId + "&response_type=code&scope=all&redirect_uri=" + messagesBaseUri;
         response.sendRedirect(url);
     }
 
@@ -79,6 +83,8 @@ public class SysLoginController extends AbstractController {
         bodyParams.add(OAuth2ParameterNames.GRANT_TYPE, "authorization_code");
         bodyParams.add(OAuth2ParameterNames.REDIRECT_URI, messagesBaseUri);
         String issuerUri = oAuth2ResourceServerProperties.getJwt().getIssuerUri();
+        String base64 = clientId + ":" + clientSecret;
+        String basic = Base64Utils.encodeToString(base64.getBytes(StandardCharsets.UTF_8));
         RequestEntity<MultiValueMap<String, Object>> body = RequestEntity
                 .post(issuerUri + "/oauth2/token")
                 .contentType(MediaType.MULTIPART_FORM_DATA)
