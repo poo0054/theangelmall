@@ -41,12 +41,15 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
     }
 
     private List<SysMenuEntity> listById(List<Long> menuIdList) {
-        List<SysMenuEntity> sysMenuEntities = this.listByIds(menuIdList);
-        if (ObjectUtils.isNotEmpty(sysMenuEntities)) {
-            for (SysMenuEntity sysMenuEntity : sysMenuEntities) {
-                //
-                if (sysMenuEntity.getType() <= Constant.MenuType.BUTTON.getValue()) {
-                    sysMenuEntities.addAll(listById(Collections.singletonList(sysMenuEntity.getParentId())));
+        List<SysMenuEntity> sysMenuEntities = null;
+        if (ObjectUtils.isNotEmpty(menuIdList)) {
+            sysMenuEntities = this.listByIds(menuIdList);
+            if (ObjectUtils.isNotEmpty(sysMenuEntities)) {
+                for (SysMenuEntity sysMenuEntity : sysMenuEntities) {
+                    //
+                    if (sysMenuEntity.getType() <= Constant.MenuType.BUTTON.getValue()) {
+                        sysMenuEntities.addAll(listById(Collections.singletonList(sysMenuEntity.getParentId())));
+                    }
                 }
             }
         }
