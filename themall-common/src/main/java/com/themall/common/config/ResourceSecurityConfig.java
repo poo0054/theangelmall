@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
@@ -76,5 +78,17 @@ public class ResourceSecurityConfig {
         return new CustomAuthenticationConverter(rest, oAuth2ResourceServerProperties);
     }
 
+    /**
+     * TODO 带扩充
+     *
+     * @return 上下级权限
+     */
+    public RoleHierarchy roleHierarchy() {
+        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+        roleHierarchy.setHierarchy("ROLE_A > ROLE_B \n" +
+                " ROLE_B > ROLE_AUTHENTICATED\n" +
+                " ROLE_AUTHENTICATED > ROLE_UNAUTHENTICATED");
+        return roleHierarchy;
+    }
 
 }
