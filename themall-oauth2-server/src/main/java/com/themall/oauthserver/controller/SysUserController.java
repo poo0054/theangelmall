@@ -27,9 +27,13 @@ import java.util.Set;
 @RestController
 public class SysUserController {
 
-    @Autowired
+
     private SysUserService sysUserService;
 
+    @Autowired
+    public void setSysUserService(SysUserService sysUserService) {
+        this.sysUserService = sysUserService;
+    }
 
     @GetMapping("/getUserDetails")
     public Set<GrantedAuthority> getUserDetails() {
