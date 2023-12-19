@@ -18,7 +18,6 @@ package com.themall.oauthserver.security;
 import com.themall.model.entity.SysUserEntity;
 import com.themall.oauthserver.service.SysUserService;
 import org.apache.commons.lang3.ObjectUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
@@ -43,9 +42,9 @@ public final class FederatedIdentityIdTokenCustomizer implements OAuth2TokenCust
 
     private SysUserService userService;
 
-    @Autowired
-    public SysUserService getUserService() {
-        return userService;
+
+    public FederatedIdentityIdTokenCustomizer(SysUserService userService) {
+        this.userService = userService;
     }
 
     private static final Set<String> ID_TOKEN_CLAIMS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
@@ -89,7 +88,7 @@ public final class FederatedIdentityIdTokenCustomizer implements OAuth2TokenCust
                 if (ObjectUtils.isNotEmpty(sysUserEntity)) {
                     //邮件忽略
 //            .claim("email", sysUserEntity.getEmail())
-                    context.getClaims().claim("login", sysUserEntity.getUsername()).claim("id", sysUserEntity.getUserId());
+                    context.getClaims().id(sysUserEntity.getUserId().toString()).claim("name", sysUserEntity.getUsername());
                 }
             }
         }
