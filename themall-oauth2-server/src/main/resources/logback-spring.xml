@@ -13,8 +13,8 @@
 
     <!-- 生产环境 -->
     <springProfile name="prod">
-        <logger name="org.springframework" level="WARN"/>
-        <logger name="org.springboot" level="WARN"/>
+        <logger name="org.springframework" level="INFO"/>
+        <logger name="org.springboot" level="INFO"/>
     </springProfile>
 
 </configuration>
