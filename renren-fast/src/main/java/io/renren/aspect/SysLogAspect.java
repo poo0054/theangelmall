@@ -29,7 +29,6 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.NamedThreadLocal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -53,10 +52,6 @@ import java.util.Map;
 @Aspect
 @Component
 public class SysLogAspect {
-
-    @Value("${spring.profiles.active}")
-    String active;
-
 
     /**
      * 排除敏感属性字段
