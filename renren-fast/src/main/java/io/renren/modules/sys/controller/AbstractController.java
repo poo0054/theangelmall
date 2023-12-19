@@ -32,7 +32,7 @@ public abstract class AbstractController {
             sysUserEntity.setUsername(principal.getClaims().get("name").toString());
             sysUserEntity.setOauthId(principal.getSubject());
             //邮件不放出去
-            //            sysUserEntity.setEmail(claims.getOrDefault("email", null).toString());
+            //            sysUserEntity.setEmail(claims.get("email").toString());
             return sysUserEntity;
         }
         return null;
