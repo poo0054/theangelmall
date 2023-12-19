@@ -34,14 +34,17 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     OAuth2ResourceServerProperties oAuth2ResourceServerProperties;
+    UserRepositoryOAuth2UserHandler userRepositoryOAuth2UserHandler;
 
     @Autowired
     public void setoAuth2ResourceServerProperties(OAuth2ResourceServerProperties oAuth2ResourceServerProperties) {
         this.oAuth2ResourceServerProperties = oAuth2ResourceServerProperties;
     }
-    @Autowired
-    UserRepositoryOAuth2UserHandler userRepositoryOAuth2UserHandler;
 
+    @Autowired
+    public void setUserRepositoryOAuth2UserHandler(UserRepositoryOAuth2UserHandler userRepositoryOAuth2UserHandler) {
+        this.userRepositoryOAuth2UserHandler = userRepositoryOAuth2UserHandler;
+    }
 
     // @formatter:off
     @Bean

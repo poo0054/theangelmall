@@ -38,11 +38,19 @@ import java.util.function.Consumer;
 @Component
 public class UserRepositoryOAuth2UserHandler implements Consumer<OAuth2User> {
 
-    @Autowired
     private SysUserService userService;
 
-    @Autowired
     private SysUserRoleService sysUserRoleService;
+
+    @Autowired
+    public void setUserService(SysUserService userService) {
+        this.userService = userService;
+    }
+
+    @Autowired
+    public void setSysUserRoleService(SysUserRoleService sysUserRoleService) {
+        this.sysUserRoleService = sysUserRoleService;
+    }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
