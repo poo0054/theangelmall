@@ -38,18 +38,26 @@ import java.util.function.Consumer;
 @Component
 public class UserRepositoryOAuth2UserHandler implements Consumer<OAuth2User> {
 
-    @Autowired
     private SysUserService userService;
 
-    @Autowired
     private SysUserRoleService sysUserRoleService;
+
+    @Autowired
+    public void setUserService(SysUserService userService) {
+        this.userService = userService;
+    }
+
+    @Autowired
+    public void setSysUserRoleService(SysUserRoleService sysUserRoleService) {
+        this.sysUserRoleService = sysUserRoleService;
+    }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void accept(OAuth2User user) {
         // Capture user in a local data store on first authentication
         //分为谷歌和github
-        if (ObjectUtils.isNotEmpty(this.userService.getByOauthId(user.getName()))) {
+        if (ObjectUtils.isEmpty(this.userService.getByOauthId(user.getName()))) {
             log.info("Saving user: name=" + user.getName() + ", claims=" + user.getAttributes() + ", authorities=" + user.getAuthorities());
             SysUserEntity sysUserEntity = new SysUserEntity();
             sysUserEntity.setEmail(user.getAttribute("email"));

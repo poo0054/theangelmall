@@ -105,15 +105,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
     }
 
     @Override
-    public SysUserEntity getPrincipalName(String principalName) {
-        SysUserEntity sysUserEntity = this.getById(principalName);
-        if (ObjectUtils.isNotEmpty(sysUserEntity)) {
-            return sysUserEntity;
-        }
-        return this.getByUserName(principalName);
-    }
-
-    @Override
     public SysUserEntity getByOauthId(String oauthId) {
         LambdaQueryWrapper<SysUserEntity> lambdaQuery = Wrappers.lambdaQuery(SysUserEntity.class);
         lambdaQuery.eq(SysUserEntity::getOauthId, oauthId);

@@ -40,8 +40,13 @@ import java.util.*;
  */
 public final class FederatedIdentityIdTokenCustomizer implements OAuth2TokenCustomizer<JwtEncodingContext> {
 
-    @Autowired
+
     private SysUserService userService;
+
+    @Autowired
+    public SysUserService getUserService() {
+        return userService;
+    }
 
     private static final Set<String> ID_TOKEN_CLAIMS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
             IdTokenClaimNames.ISS,
@@ -80,7 +85,7 @@ public final class FederatedIdentityIdTokenCustomizer implements OAuth2TokenCust
         if (Objects.equals(OAuth2TokenType.ACCESS_TOKEN.getValue(), context.getTokenType().getValue()) || Objects.equals(OAuth2TokenType.REFRESH_TOKEN.getValue(), context.getTokenType().getValue())) {
             if (ObjectUtils.isNotEmpty(context.getAuthorization())) {
                 //只有授权所有权限
-                SysUserEntity sysUserEntity = userService.getPrincipalName(context.getAuthorization().getPrincipalName());
+                SysUserEntity sysUserEntity = userService.getByOauthId(context.getAuthorization().getPrincipalName());
                 if (ObjectUtils.isNotEmpty(sysUserEntity)) {
                     //邮件忽略
 //            .claim("email", sysUserEntity.getEmail())
