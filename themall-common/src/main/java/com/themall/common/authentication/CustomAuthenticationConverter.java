@@ -8,7 +8,9 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -52,14 +54,14 @@ public class CustomAuthenticationConverter implements Converter<Jwt, Collection<
                     .accept(MediaType.APPLICATION_JSON)
                     .header(HttpHeaders.AUTHORIZATION, request.getHeader(HttpHeaders.AUTHORIZATION))
                     .build();
-            ResponseEntity<Set<GrantedAuthority>> response = null;
+            ResponseEntity<Set<GrantedAuthority>> response;
             try {
                 response = rest.exchange(requestEntity, new ParameterizedTypeReference<Set<GrantedAuthority>>() {
                 });
-            } catch (Exception e) {
+            } catch (HttpClientErrorException e) {
                 log.warn("获取内部权限失败:", e);
                 log.warn("请求地址参数：{}", requestEntity);
-                throw new RuntimeException("获取内部权限失败", e);
+                throw new OAuth2AuthenticationException(e.getMessage());
             }
             HttpStatus statusCode = response.getStatusCode();
             if (statusCode.is2xxSuccessful()) {
