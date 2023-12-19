@@ -16,8 +16,9 @@ export function getUUID() {
  * @param {*} key
  */
 export function isAuth(key) {
-  return true
-  // return JSON.parse(sessionStorage.getItem('permissions') || '[]').indexOf(key) !== -1 || false
+  // console.log(JSON.parse(sessionStorage.getItem('permissions') || '[]'));
+  // return true
+  return JSON.parse(sessionStorage.getItem('permissions') || '[]').indexOf(key) !== -1 || false
 }
 
 /**

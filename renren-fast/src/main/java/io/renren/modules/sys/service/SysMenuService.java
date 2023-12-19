@@ -53,7 +53,6 @@ public interface SysMenuService extends IService<SysMenuEntity> {
     void delete(Long menuId);
 
 
-    List<SysMenuEntity> listByUserId(Long userId);
 
     List<Long> queryAllMenuId(Long createUserId);
 }

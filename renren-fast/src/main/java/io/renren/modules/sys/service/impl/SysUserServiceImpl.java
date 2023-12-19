@@ -14,11 +14,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.themall.model.constants.Constant;
-import com.themall.model.entity.SysRoleEntity;
 import com.themall.model.entity.SysUserEntity;
 import com.themall.model.exception.RRException;
 import io.renren.modules.sys.dao.SysUserDao;
-import io.renren.modules.sys.entity.SysMenuEntity;
 import io.renren.modules.sys.service.SysMenuService;
 import io.renren.modules.sys.service.SysRoleService;
 import io.renren.modules.sys.service.SysUserRoleService;
@@ -28,16 +26,11 @@ import io.renren.utils.Query;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 /**
@@ -166,39 +159,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         LambdaQueryWrapper<SysUserEntity> queryWrapper = Wrappers.lambdaQuery(SysUserEntity.class);
         queryWrapper.eq(SysUserEntity::getUsername, username);
         return this.getOne(queryWrapper);
-    }
-
-    @Override
-    public UserDetails getUserDetails(String username) {
-        if (null == username) {
-            return null;
-        }
-        SysUserEntity sysUserEntity = this.getByUserName(username);
-        if (null == sysUserEntity) {
-            return null;
-        }
-        User.UserBuilder builder = User.builder();
-        builder.username(sysUserEntity.getUsername());
-        builder.password(sysUserEntity.getPassword());
-        builder.authorities(AuthorityUtils.NO_AUTHORITIES);
-        Set<String> auth = new HashSet<>();
-        //权限
-        List<SysRoleEntity> roleServiceAll = sysRoleService.listByUserId(sysUserEntity.getUserId());
-        if (ObjectUtils.isNotEmpty(roleServiceAll)) {
-            List<String> roles = roleServiceAll.stream().map(SysRoleEntity::getRoleName).collect(Collectors.toList());
-            auth.addAll(roles);
-        }
-        //菜单
-        List<SysMenuEntity> sysMenuEntities = sysMenuService.listByUserId(sysUserEntity.getUserId());
-        if (ObjectUtils.isNotEmpty(sysMenuEntities)) {
-            auth.addAll(sysMenuEntities.stream().map(SysMenuEntity::getPerms).filter(ObjectUtils::isNotEmpty).collect(Collectors.toList()));
-        }
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        for (String s : auth) {
-            authorities.addAll(AuthorityUtils.commaSeparatedStringToAuthorityList(s));
-        }
-        builder.authorities(authorities);
-        return builder.build();
     }
 
 

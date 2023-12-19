@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,7 +47,7 @@ public class SysMenuController extends AbstractController {
     public R nav() {
         List<SysMenuEntity> menuList = sysMenuService.getUserMenuList(getUserId());
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return R.ok().put("menuList", menuList).put("permissions", authentication.getAuthorities());
+        return R.ok().put("menuList", menuList).put("permissions", AuthorityUtils.authorityListToSet(authentication.getAuthorities()));
     }
 
     /**

@@ -11,7 +11,6 @@ package io.renren.modules.sys.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.themall.model.entity.SysUserEntity;
 import io.renren.utils.PageUtils;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 import java.util.Map;
@@ -67,13 +66,6 @@ public interface SysUserService extends IService<SysUserEntity> {
      */
     boolean updatePassword(Long userId, String password, String newPassword);
 
-    /**
-     * 获取当前用户信息
-     *
-     * @param username 用户名
-     * @return 结果
-     */
-    UserDetails getUserDetails(String username);
 
     SysUserEntity getByUserName(String username);
 

@@ -9,7 +9,8 @@
       </el-form-item>
       <el-form-item size="mini" label="授权">
         <el-tree ref="menuListTree" :data="menuList" :default-expand-all="true" :props="menuListTreeProps"
-                 check-strictly="true" node-key="menuId" show-checkbox>
+                 check-strictly
+                 node-key="menuId" show-checkbox>
         </el-tree>
       </el-form-item>
     </el-form>
