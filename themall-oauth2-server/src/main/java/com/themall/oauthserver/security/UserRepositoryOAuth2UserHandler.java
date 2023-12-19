@@ -49,7 +49,7 @@ public final class UserRepositoryOAuth2UserHandler implements Consumer<OAuth2Use
             log.info("Saving user: name=" + user.getName() + ", claims=" + user.getAttributes() + ", authorities=" + user.getAuthorities());
             SysUserEntity sysUserEntity = new SysUserEntity();
             sysUserEntity.setEmail(user.getAttribute("email"));
-            sysUserEntity.setUserId(Long.valueOf(user.getName()));
+            sysUserEntity.setOauthId(user.getName());
             sysUserEntity.setUsername(user.getAttribute("name"));
             //给予默认权限
             this.userService.save(sysUserEntity);
