@@ -57,7 +57,7 @@ public class UserRepositoryOAuth2UserHandler implements Consumer<OAuth2User> {
     public void accept(OAuth2User user) {
         // Capture user in a local data store on first authentication
         //分为谷歌和github
-        if (ObjectUtils.isNotEmpty(this.userService.getByOauthId(user.getName()))) {
+        if (ObjectUtils.isEmpty(this.userService.getByOauthId(user.getName()))) {
             log.info("Saving user: name=" + user.getName() + ", claims=" + user.getAttributes() + ", authorities=" + user.getAuthorities());
             SysUserEntity sysUserEntity = new SysUserEntity();
             sysUserEntity.setEmail(user.getAttribute("email"));
