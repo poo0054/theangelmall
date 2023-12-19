@@ -20,9 +20,11 @@ import com.themall.model.entity.SysUserRoleEntity;
 import com.themall.oauthserver.service.SysUserRoleService;
 import com.themall.oauthserver.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.function.Consumer;
 
@@ -34,7 +36,7 @@ import java.util.function.Consumer;
  */
 @Slf4j
 @Component
-public final class UserRepositoryOAuth2UserHandler implements Consumer<OAuth2User> {
+public class UserRepositoryOAuth2UserHandler implements Consumer<OAuth2User> {
 
     @Autowired
     private SysUserService userService;
@@ -43,28 +45,24 @@ public final class UserRepositoryOAuth2UserHandler implements Consumer<OAuth2Use
     private SysUserRoleService sysUserRoleService;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void accept(OAuth2User user) {
         // Capture user in a local data store on first authentication
-        if (this.userService.getById(user.getName()) == null) {
+        //分为谷歌和github
+        if (ObjectUtils.isNotEmpty(this.userService.getByOauthId(user.getName()))) {
             log.info("Saving user: name=" + user.getName() + ", claims=" + user.getAttributes() + ", authorities=" + user.getAuthorities());
             SysUserEntity sysUserEntity = new SysUserEntity();
             sysUserEntity.setEmail(user.getAttribute("email"));
             sysUserEntity.setOauthId(user.getName());
             sysUserEntity.setUsername(user.getAttribute("name"));
+
             //给予默认权限
             this.userService.save(sysUserEntity);
-
             SysUserRoleEntity sysUserRoleEntity = new SysUserRoleEntity();
             sysUserRoleEntity.setUserId(sysUserEntity.getUserId());
             //默认用户读取权限
             sysUserRoleEntity.setRoleId(1L);
-            try {
-                sysUserRoleService.save(sysUserRoleEntity);
-            } catch (Exception ignored) {
-                //忽略权限新增
-            }
-
-            //分为谷歌和github
+            sysUserRoleService.save(sysUserRoleEntity);
 
         }
     }
