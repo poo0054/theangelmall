@@ -28,7 +28,7 @@ import org.springframework.security.web.SecurityFilterChain;
 /**
  * @author poo0054
  */
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableConfigurationProperties(OAuth2ResourceServerProperties.class)
 public class SecurityConfig {

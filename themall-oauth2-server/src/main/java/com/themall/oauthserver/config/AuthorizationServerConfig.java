@@ -150,7 +150,7 @@ public class AuthorizationServerConfig {
 //        RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
 //        RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
         RSAKey rsaKey =
-                new RSAKey.Builder((RSAPublicKey) KeyUtils.getPublicKey(publicKey)).privateKey(KeyUtils.getPrivateKey(privateKey)).keyID(UUID.randomUUID().toString()).build();
+                new RSAKey.Builder((RSAPublicKey) KeyUtils.getPublicKey(publicKey)).privateKey(KeyUtils.getPrivateKey(privateKey)).keyID("b5da22e6-4a58-4c71-83cf-b717f41f89d1").build();
         JWKSet jwkSet = new JWKSet(rsaKey);
         return new ImmutableJWKSet<>(jwkSet);
     }
