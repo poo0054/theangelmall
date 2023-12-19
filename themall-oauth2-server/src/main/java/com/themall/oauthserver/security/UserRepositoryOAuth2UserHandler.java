@@ -49,8 +49,8 @@ public final class UserRepositoryOAuth2UserHandler implements Consumer<OAuth2Use
             log.info("Saving user: name=" + user.getName() + ", claims=" + user.getAttributes() + ", authorities=" + user.getAuthorities());
             SysUserEntity sysUserEntity = new SysUserEntity();
             sysUserEntity.setEmail(user.getAttribute("email"));
-            sysUserEntity.setUserId(Long.valueOf(user.getAttribute("id").toString()));
-            sysUserEntity.setUsername(user.getAttribute("login"));
+            sysUserEntity.setUserId(Long.valueOf(user.getName()));
+            sysUserEntity.setUsername(user.getAttribute("name"));
             //给予默认权限
             this.userService.save(sysUserEntity);
 
@@ -63,6 +63,9 @@ public final class UserRepositoryOAuth2UserHandler implements Consumer<OAuth2Use
             } catch (Exception ignored) {
                 //忽略权限新增
             }
+
+            //分为谷歌和github
+
         }
     }
 

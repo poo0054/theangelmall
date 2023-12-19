@@ -97,17 +97,14 @@ export default {
         var token = this.getQueryVariable("token")
         var expire = this.getQueryVariable("expire")
         this.$cookie.set('token', token)
-        console.log("token", token);
         this.$router.replace({name: 'home'})
       } else {
         var url = process.env.NODE_ENV !== 'production' && process.env.OPEN_PROXY ? '/proxyApi/' : window.SITE_CONFIG.baseUrl
-        console.log(url);
         window.location.href = url + "/sys/login";
       }
     },
     getQueryVariable(variable) {
       var query = window.location.href.split('?')[1];
-      console.log("q", query);
       var vars = query.split("&");
       console.log("vars", vars);
       for (var i = 0; i < vars.length; i++) {
