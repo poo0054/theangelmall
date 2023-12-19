@@ -16,12 +16,10 @@ import io.renren.modules.sys.entity.SysMenuEntity;
 import io.renren.modules.sys.service.SysMenuService;
 import io.renren.modules.sys.service.SysRoleMenuService;
 import io.renren.utils.MapUtils;
-import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -85,33 +83,12 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
         sysRoleMenuService.removeByMap(new MapUtils().put("menu_id", menuId));
     }
 
-    @Override
-    public List<SysMenuEntity> listByUserId(Long userId) {
-        if (Objects.equals(userId, Constant.SUPER_ADMIN)) {
-            return this.list();
-        }
-        //用户菜单列表
-        List<Long> menuIdList = this.queryAllMenuId(userId);
-        return listById(menuIdList);
-    }
 
     @Override
     public List<Long> queryAllMenuId(Long createUserId) {
         return baseMapper.queryAllMenuId(createUserId);
     }
 
-    private List<SysMenuEntity> listById(List<Long> menuIdList) {
-        List<SysMenuEntity> sysMenuEntities = this.listByIds(menuIdList);
-        if (ObjectUtils.isNotEmpty(sysMenuEntities)) {
-            for (SysMenuEntity sysMenuEntity : sysMenuEntities) {
-                //
-                if (sysMenuEntity.getType() <= Constant.MenuType.BUTTON.getValue()) {
-                    sysMenuEntities.addAll(listById(Collections.singletonList(sysMenuEntity.getParentId())));
-                }
-            }
-        }
-        return sysMenuEntities;
-    }
 
     /**
      * 获取所有菜单列表

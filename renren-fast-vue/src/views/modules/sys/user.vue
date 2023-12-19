@@ -12,66 +12,27 @@
         </el-button>
       </el-form-item>
     </el-form>
-    <el-table
-      v-loading="dataListLoading"
-      :data="dataList"
-      border
-      style="width: 100%;"
+    <el-table v-loading="dataListLoading" :data="dataList" border style="width: 100%;"
       @selection-change="selectionChangeHandle">
-      <el-table-column
-        align="center"
-        header-align="center"
-        type="selection"
-        width="50">
+      <el-table-column align="center" header-align="center" type="selection" width="50">
       </el-table-column>
-      <el-table-column
-        align="center"
-        header-align="center"
-        label="ID"
-        prop="userId"
-        width="80">
+      <el-table-column align="center" header-align="center" label="ID" prop="userId" width="80">
       </el-table-column>
-      <el-table-column
-        align="center"
-        header-align="center"
-        label="用户名"
-        prop="username">
+      <el-table-column align="center" header-align="center" label="用户名" prop="username">
       </el-table-column>
-      <el-table-column
-        align="center"
-        header-align="center"
-        label="邮箱"
-        prop="email">
+      <el-table-column align="center" header-align="center" label="邮箱" prop="email">
       </el-table-column>
-      <el-table-column
-        align="center"
-        header-align="center"
-        label="手机号"
-        prop="mobile">
+      <el-table-column align="center" header-align="center" label="手机号" prop="mobile">
       </el-table-column>
-      <el-table-column
-        align="center"
-        header-align="center"
-        label="状态"
-        prop="status">
+      <el-table-column align="center" header-align="center" label="状态" prop="status">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.status === 0" size="small" type="danger">禁用</el-tag>
           <el-tag v-else size="small">正常</el-tag>
         </template>
       </el-table-column>
-      <el-table-column
-        align="center"
-        header-align="center"
-        label="创建时间"
-        prop="createTime"
-        width="180">
+      <el-table-column align="center" header-align="center" label="创建时间" prop="createTime" width="180">
       </el-table-column>
-      <el-table-column
-        align="center"
-        fixed="right"
-        header-align="center"
-        label="操作"
-        width="150">
+      <el-table-column align="center" fixed="right" header-align="center" label="操作" width="150">
         <template slot-scope="scope">
           <el-button v-if="isAuth('sys:user:update')" size="small" type="text"
                      @click="addOrUpdateHandle(scope.row.userId)">修改
@@ -82,13 +43,8 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination
-      :current-page="pageIndex"
-      :page-size="pageSize"
-      :page-sizes="[10, 20, 50, 100]"
-      :total="totalPage"
-      layout="total, sizes, prev, pager, next, jumper"
-      @size-change="sizeChangeHandle"
+    <el-pagination :current-page="pageIndex" :page-size="pageSize" :page-sizes="[10, 20, 50, 100]" :total="totalPage"
+                   layout="total, sizes, prev, pager, next, jumper" @size-change="sizeChangeHandle"
       @current-change="currentChangeHandle">
     </el-pagination>
     <!-- 弹窗, 新增 / 修改 -->
