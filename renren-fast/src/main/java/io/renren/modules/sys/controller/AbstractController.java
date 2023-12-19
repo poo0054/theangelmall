@@ -15,8 +15,6 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 
-import java.util.Map;
-
 /**
  * Controller公共组件
  *
@@ -30,12 +28,11 @@ public abstract class AbstractController {
         SecurityContext context = SecurityContextHolder.getContext();
         if (context.getAuthentication().getPrincipal() instanceof Jwt) {
             Jwt principal = (Jwt) context.getAuthentication().getPrincipal();
-            Map<String, Object> claims = principal.getClaims();
-            Object id = claims.getOrDefault("id", null);
-            sysUserEntity.setUserId(Long.valueOf(id.toString()));
-            sysUserEntity.setUsername(claims.getOrDefault("login", null).toString());
+            sysUserEntity.setUserId(Long.valueOf(principal.getId()));
+            sysUserEntity.setUsername(principal.getClaims().get("name").toString());
+            sysUserEntity.setOauthId(principal.getSubject());
             //邮件不放出去
-            //            sysUserEntity.setEmail(claims.getOrDefault("email", null).toString());
+            //            sysUserEntity.setEmail(claims.get("email").toString());
             return sysUserEntity;
         }
         return null;
