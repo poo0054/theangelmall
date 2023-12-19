@@ -78,14 +78,15 @@ public final class FederatedIdentityIdTokenCustomizer implements OAuth2TokenCust
         }
 
         if (Objects.equals(OAuth2TokenType.ACCESS_TOKEN.getValue(), context.getTokenType().getValue()) || Objects.equals(OAuth2TokenType.REFRESH_TOKEN.getValue(), context.getTokenType().getValue())) {
-            //只有授权所有权限
-            SysUserEntity sysUserEntity = userService.getPrincipalName(context.getAuthorization().getPrincipalName());
-            if (ObjectUtils.isNotEmpty(sysUserEntity)) {
-                //邮件忽略
+            if (ObjectUtils.isNotEmpty(context.getAuthorization())) {
+                //只有授权所有权限
+                SysUserEntity sysUserEntity = userService.getPrincipalName(context.getAuthorization().getPrincipalName());
+                if (ObjectUtils.isNotEmpty(sysUserEntity)) {
+                    //邮件忽略
 //            .claim("email", sysUserEntity.getEmail())
-                context.getClaims().claim("login", sysUserEntity.getUsername()).claim("id", sysUserEntity.getUserId());
+                    context.getClaims().claim("login", sysUserEntity.getUsername()).claim("id", sysUserEntity.getUserId());
+                }
             }
-
         }
     }
 
