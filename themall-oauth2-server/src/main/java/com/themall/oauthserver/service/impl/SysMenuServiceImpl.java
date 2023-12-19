@@ -51,8 +51,8 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
             if (ObjectUtils.isNotEmpty(sysMenuEntities)) {
                 //获取下级菜单
                 List<Long> menuId = sysMenuEntities.stream().map(SysMenuEntity::getMenuId).collect(Collectors.toList());
-                //子集
-                sysMenuEntities.addAll(getChild(menuId));
+                //子集 当前权限必须为选中才能给予
+//                sysMenuEntities.addAll(getChild(menuId));
             }
         }
         return sysMenuEntities;
