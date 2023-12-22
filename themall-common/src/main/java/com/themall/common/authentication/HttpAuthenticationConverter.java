@@ -28,7 +28,7 @@ import java.util.Set;
  */
 @Slf4j
 @Data
-public class CustomAuthenticationConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
+public class HttpAuthenticationConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
     /**
      * 获取当前用户的权限
      */
@@ -38,7 +38,7 @@ public class CustomAuthenticationConverter implements Converter<Jwt, Collection<
 
     OAuth2ResourceServerProperties oAuth2ResourceServerProperties;
 
-    public CustomAuthenticationConverter(RestTemplate rest, OAuth2ResourceServerProperties oAuth2ResourceServerProperties) {
+    public HttpAuthenticationConverter(RestTemplate rest, OAuth2ResourceServerProperties oAuth2ResourceServerProperties) {
         this.rest = rest;
         this.oAuth2ResourceServerProperties = oAuth2ResourceServerProperties;
     }

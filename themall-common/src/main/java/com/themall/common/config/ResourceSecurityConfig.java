@@ -1,6 +1,5 @@
 package com.themall.common.config;
 
-import com.themall.common.authentication.CustomAuthenticationConverter;
 import com.themall.common.exception.DefaultAccessDeniedHandler;
 import com.themall.common.exception.DefaultAuthenticationEntryPoint;
 import com.themall.common.utils.KeyUtils;
@@ -16,7 +15,6 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-import org.springframework.security.oauth2.server.resource.authentication.DelegatingJwtGrantedAuthoritiesConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.web.client.RestTemplate;
@@ -60,23 +58,32 @@ public class ResourceSecurityConfig {
 
 
     @Bean
+    public JwtDecoder jwtDecoder() {
+        PublicKey publicKey1 = KeyUtils.getPublicKey(publicKey);
+        return NimbusJwtDecoder.withPublicKey((RSAPublicKey) publicKey1).build();
+    }
+
+    @Bean
+    public JwtAuthenticationConverter jwtAuthenticationConverter() {
+        JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
+        grantedAuthoritiesConverter.setAuthoritiesClaimName("authorities");
+        grantedAuthoritiesConverter.setAuthorityPrefix("");
+        JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
+        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
+        return jwtAuthenticationConverter;
+    }
+     /*  @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
         DelegatingJwtGrantedAuthoritiesConverter delegatingJwtGrantedAuthoritiesConverter = new DelegatingJwtGrantedAuthoritiesConverter(customAuthenticationConverter(), jwtGrantedAuthoritiesConverter);
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(delegatingJwtGrantedAuthoritiesConverter);
         return jwtAuthenticationConverter;
-    }
+    }*/
 
-    @Bean
-    public JwtDecoder jwtDecoder() {
-        PublicKey publicKey1 = KeyUtils.getPublicKey(publicKey);
-        return NimbusJwtDecoder.withPublicKey((RSAPublicKey) publicKey1).build();
-    }
-
-    private CustomAuthenticationConverter customAuthenticationConverter() {
-        return new CustomAuthenticationConverter(rest, oAuth2ResourceServerProperties);
-    }
+   /* private HttpAuthenticationConverter customAuthenticationConverter() {
+        return new HttpAuthenticationConverter(rest, oAuth2ResourceServerProperties);
+    }*/
 
     /**
      * TODO 带扩充

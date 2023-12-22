@@ -71,7 +71,7 @@ public class SysLoginController extends AbstractController {
     public void login(HttpServletResponse response) throws IOException, ServletException {
         String issuerUri = oAuth2ResourceServerProperties.getJwt().getIssuerUri();
 
-        String url = issuerUri + "/oauth2/authorize?client_id=" + clientId + "&response_type=code&scope=all&redirect_uri=" + messagesBaseUri;
+        String url = issuerUri + "/oauth2/authorize?client_id=" + clientId + "&response_type=code&scope=themall&redirect_uri=" + messagesBaseUri;
         response.sendRedirect(url);
     }
 

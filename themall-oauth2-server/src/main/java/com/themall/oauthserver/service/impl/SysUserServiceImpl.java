@@ -107,7 +107,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
     @Override
     public SysUserEntity getByOauthId(String oauthId) {
         LambdaQueryWrapper<SysUserEntity> lambdaQuery = Wrappers.lambdaQuery(SysUserEntity.class);
-        lambdaQuery.eq(SysUserEntity::getOauthId, oauthId);
+        lambdaQuery.eq(SysUserEntity::getOauthId, oauthId)
+                .or()
+                .eq(SysUserEntity::getUsername, oauthId);
         return getOne(lambdaQuery);
     }
 }

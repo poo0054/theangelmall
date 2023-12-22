@@ -19,6 +19,8 @@ import com.themall.model.entity.SysUserEntity;
 import com.themall.oauthserver.service.SysUserService;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.endpoint.OidcParameterNames;
@@ -83,12 +85,20 @@ public final class FederatedIdentityIdTokenCustomizer implements OAuth2TokenCust
 
         if (Objects.equals(OAuth2TokenType.ACCESS_TOKEN.getValue(), context.getTokenType().getValue()) || Objects.equals(OAuth2TokenType.REFRESH_TOKEN.getValue(), context.getTokenType().getValue())) {
             if (ObjectUtils.isNotEmpty(context.getAuthorization())) {
-                //只有授权所有权限
-                SysUserEntity sysUserEntity = userService.getByOauthId(context.getAuthorization().getPrincipalName());
-                if (ObjectUtils.isNotEmpty(sysUserEntity)) {
-                    //邮件忽略
-//            .claim("email", sysUserEntity.getEmail())
-                    context.getClaims().id(sysUserEntity.getUserId().toString()).claim("name", sysUserEntity.getUsername());
+                if (context.getAuthorizedScopes().contains("themall")) {
+                    //只有授权所有权限
+                    SysUserEntity sysUserEntity = userService.getByOauthId(context.getAuthorization().getPrincipalName());
+                    if (ObjectUtils.isNotEmpty(sysUserEntity)) {
+                        Set<GrantedAuthority> auth = userService.getAuth(sysUserEntity.getUserId());
+                        //邮件忽略
+                        context.getClaims().id(sysUserEntity.getUserId().toString())
+                                .claim("name", sysUserEntity.getUsername())
+                                .claim("email", sysUserEntity.getEmail())
+                                //提升权限
+                                .claim("authorities", AuthorityUtils.authorityListToSet(auth))
+                        ;
+
+                    }
                 }
             }
         }
