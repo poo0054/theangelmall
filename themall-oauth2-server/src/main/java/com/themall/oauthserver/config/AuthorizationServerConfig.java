@@ -94,25 +94,6 @@ public class AuthorizationServerConfig {
         return new JdbcOAuth2AuthorizationConsentService(jdbcTemplate, registeredClientRepository);
     }
 
-    private static RegisteredClient getRegisteredClient() {
-        TokenSettings tokenSettings = TokenSettings.builder().accessTokenTimeToLive(Duration.ofDays(7))
-                .refreshTokenTimeToLive(Duration.ofDays(15)).build();
-        return RegisteredClient.withId(UUID.randomUUID().toString())
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-                .redirectUri("https://poo0054.top/renren-fast/sys/authorized")
-                .redirectUri("http://127.0.0.1:8085/renren-fast/sys/authorized")
-                .scope(OidcScopes.OPENID)
-                .scope(OidcScopes.PROFILE)
-                .scope("themall")
-                .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
-                .tokenSettings(tokenSettings)
-                .build();
-    }
-
-
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
         return AuthorizationServerSettings.builder()
@@ -139,5 +120,23 @@ public class AuthorizationServerConfig {
         // Save registered client in db as if in-memory
         JdbcRegisteredClientRepository registeredClientRepository = new JdbcRegisteredClientRepository(jdbcTemplate);
         return registeredClientRepository;
+    }
+
+    private static RegisteredClient getRegisteredClient() {
+        TokenSettings tokenSettings = TokenSettings.builder().accessTokenTimeToLive(Duration.ofDays(7))
+                .refreshTokenTimeToLive(Duration.ofDays(15)).build();
+        return RegisteredClient.withId(UUID.randomUUID().toString())
+                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+                .redirectUri("https://poo0054.top/renren-fast/sys/authorized")
+                .redirectUri("http://127.0.0.1:8085/renren-fast/sys/authorized")
+                .scope(OidcScopes.OPENID)
+                .scope(OidcScopes.PROFILE)
+                .scope("themall")
+                .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
+                .tokenSettings(tokenSettings)
+                .build();
     }
 }
