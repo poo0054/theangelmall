@@ -48,6 +48,11 @@ public class SysUserEntity implements Serializable {
     private String username;
 
     /**
+     * 第三方用户名
+     */
+    private String oauthName;
+
+    /**
      * 密码
      */
     @NotBlank(message = "密码不能为空", groups = AddGroup.class)

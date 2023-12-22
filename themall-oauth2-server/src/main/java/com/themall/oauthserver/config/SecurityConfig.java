@@ -28,7 +28,7 @@ import org.springframework.security.web.SecurityFilterChain;
 /**
  * @author poo0054
  */
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableConfigurationProperties(OAuth2ResourceServerProperties.class)
 public class SecurityConfig {
@@ -66,8 +66,12 @@ public class SecurityConfig {
                         oauth2.jwt(Customizer.withDefaults()
                         ))
                 .formLogin(Customizer.withDefaults())
-//                .logout(Customizer.withDefaults())
                 .apply(federatedIdentityConfigurer)
+                .and()
+                .logout(logout -> {
+                    logout.logoutUrl("/logout")
+                    ;
+                })
         ;
         return http.build();
     }

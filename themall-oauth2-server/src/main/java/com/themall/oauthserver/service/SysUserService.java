@@ -55,5 +55,5 @@ public interface SysUserService extends IService<SysUserEntity> {
      * @param oauthId oauthId
      * @return 查询结果
      */
-    SysUserEntity getByOauthId(String oauthId);
+    SysUserEntity getByLoginName(String oauthId);
 }

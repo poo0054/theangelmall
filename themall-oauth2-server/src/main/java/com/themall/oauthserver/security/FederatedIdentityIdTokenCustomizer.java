@@ -18,6 +18,7 @@ package com.themall.oauthserver.security;
 import com.themall.model.entity.SysUserEntity;
 import com.themall.oauthserver.service.SysUserService;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -87,12 +88,16 @@ public final class FederatedIdentityIdTokenCustomizer implements OAuth2TokenCust
             if (ObjectUtils.isNotEmpty(context.getAuthorization())) {
                 if (context.getAuthorizedScopes().contains("themall")) {
                     //只有授权所有权限
-                    SysUserEntity sysUserEntity = userService.getByOauthId(context.getAuthorization().getPrincipalName());
+                    SysUserEntity sysUserEntity = userService.getByLoginName(context.getAuthorization().getPrincipalName());
                     if (ObjectUtils.isNotEmpty(sysUserEntity)) {
                         Set<GrantedAuthority> auth = userService.getAuth(sysUserEntity.getUserId());
-                        //邮件忽略
+                        String username = sysUserEntity.getUsername();
+                        if (StringUtils.isBlank(username)) {
+                            //使用第三方登陆用户
+                            username = sysUserEntity.getOauthName();
+                        }
                         context.getClaims().id(sysUserEntity.getUserId().toString())
-                                .claim("name", sysUserEntity.getUsername())
+                                .claim("name", username)
                                 .claim("email", sysUserEntity.getEmail())
                                 //提升权限
                                 .claim("authorities", AuthorityUtils.authorityListToSet(auth))

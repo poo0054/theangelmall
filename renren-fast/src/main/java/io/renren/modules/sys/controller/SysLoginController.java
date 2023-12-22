@@ -108,8 +108,9 @@ public class SysLoginController extends AbstractController {
     public R logout() {
         try {
             String issuerUri = oAuth2ResourceServerProperties.getJwt().getIssuerUri();
-            rest.getForEntity(issuerUri + "/logout", Object.class);
+            rest.postForObject(issuerUri + "/logout", null, Object.class);
         } catch (Exception ignored) {
+            log.error("退出oauth-server失败", ignored);
         }
         SecurityContextHolder.clearContext();
         return R.ok();
