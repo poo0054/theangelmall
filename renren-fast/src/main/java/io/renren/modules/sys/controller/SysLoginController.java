@@ -18,8 +18,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Base64Utils;
 import org.springframework.util.LinkedMultiValueMap;
@@ -28,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -64,20 +67,21 @@ public class SysLoginController extends AbstractController {
         this.clientSecret = clientSecret;
     }
 
+    SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
+
     /**
      * 登录
      */
     @GetMapping("/login")
-    public void login(HttpServletResponse response) throws IOException, ServletException {
+    public void login(HttpServletResponse response) throws IOException {
         String issuerUri = oAuth2ResourceServerProperties.getJwt().getIssuerUri();
-
         String url = issuerUri + "/oauth2/authorize?client_id=" + clientId + "&response_type=code&scope=themall&redirect_uri=" + messagesBaseUri;
         response.sendRedirect(url);
     }
 
     @GetMapping("/authorized")
     @ResponseBody
-    public void authorized(@RequestParam("code") String code, HttpServletResponse response) throws IOException {
+    public void authorized(@RequestParam("code") String code, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         MultiValueMap<String, Object> bodyParams = new LinkedMultiValueMap<>();
         bodyParams.add(OAuth2ParameterNames.CODE, code);
         bodyParams.add(OAuth2ParameterNames.GRANT_TYPE, "authorization_code");
@@ -97,7 +101,7 @@ public class SysLoginController extends AbstractController {
             return;
         }
         log.warn(responseEntity.toString());
-        response.sendRedirect("/sys/login");
+        request.getRequestDispatcher("/sys/login").forward(request, response);
     }
 
     /**
@@ -105,15 +109,11 @@ public class SysLoginController extends AbstractController {
      */
     @PostMapping("/logout")
     @ResponseBody
-    public R logout() {
-        try {
-            String issuerUri = oAuth2ResourceServerProperties.getJwt().getIssuerUri();
-            rest.postForObject(issuerUri + "/logout", null, Object.class);
-        } catch (Exception ignored) {
-            log.error("退出oauth-server失败", ignored);
-        }
+    public R logout(Authentication authentication, HttpServletRequest request, HttpServletResponse response) {
+        String issuerUri = oAuth2ResourceServerProperties.getJwt().getIssuerUri();
+        this.logoutHandler.logout(request, response, authentication);
         SecurityContextHolder.clearContext();
-        return R.ok();
+        return R.ok().put("logoutUrl", issuerUri + "/logout");
     }
 
 }

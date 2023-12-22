@@ -69,7 +69,8 @@ public class SecurityConfig {
                 .apply(federatedIdentityConfigurer)
                 .and()
                 .logout(logout -> {
-                    logout.logoutUrl("/logout")
+                    logout.logoutSuccessUrl("oauth2/logout")
+                            .permitAll()
                     ;
                 })
         ;
