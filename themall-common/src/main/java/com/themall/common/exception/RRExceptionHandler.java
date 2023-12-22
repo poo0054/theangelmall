@@ -37,6 +37,7 @@ public class RRExceptionHandler {
         R r = new R();
         r.put("code", e.getCode());
         r.put("msg", e.getMessage());
+        log.error(e.getMessage(), e);
         return r;
     }
 
