@@ -68,11 +68,7 @@ public class SecurityConfig {
                 .formLogin(Customizer.withDefaults())
                 .apply(federatedIdentityConfigurer)
                 .and()
-                .logout(logout -> {
-                    logout.logoutSuccessUrl("oauth2/logout")
-                            .permitAll()
-                    ;
-                })
+                .logout(Customizer.withDefaults())
         ;
         return http.build();
     }
