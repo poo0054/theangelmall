@@ -7,7 +7,7 @@ import java.security.KeyPairGenerator;
 /**
  * @author poo0054
  */
-public class KeyUtils {
+class KeyUtilsTest {
 
     private static KeyPair generateRsaKey() {
         KeyPair keyPair;
@@ -22,7 +22,7 @@ public class KeyUtils {
     }
 
     @Test
-    void test() {
+    void JwtGenerateTest() {
         KeyPair keyPair = generateRsaKey();
         System.out.println("*-----------------------------------*");
         System.out.println(Base64Utils.encodeToString(keyPair.getPublic().getEncoded()));
