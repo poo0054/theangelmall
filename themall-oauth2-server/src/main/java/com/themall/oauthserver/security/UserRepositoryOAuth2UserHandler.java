@@ -27,6 +27,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.function.Consumer;
 
 /**
@@ -69,6 +70,8 @@ public class UserRepositoryOAuth2UserHandler implements Consumer<OAuth2User> {
         //分为谷歌和github
         SysUserEntity userEntity = this.userService.getByLoginName(user.getName());
         if (ObjectUtils.isEmpty(userEntity)) {
+            userEntity.setCreateUserId(1L);
+            userEntity.setCreateTime(new Date());
             this.userService.save(sysUserEntity);
             SysUserRoleEntity sysUserRoleEntity = new SysUserRoleEntity();
             sysUserRoleEntity.setUserId(sysUserEntity.getUserId());
