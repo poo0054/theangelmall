@@ -21,6 +21,7 @@ import com.themall.oauthserver.service.SysUserRoleService;
 import com.themall.oauthserver.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
@@ -55,24 +56,31 @@ public class UserRepositoryOAuth2UserHandler implements Consumer<OAuth2User> {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void accept(OAuth2User user) {
-        // Capture user in a local data store on first authentication
+        log.info("Saving user: name=" + user.getName() + ", claims=" + user.getAttributes() + ", authorities=" + user.getAuthorities());
+        SysUserEntity sysUserEntity = new SysUserEntity();
+        sysUserEntity.setEmail(user.getAttribute("email"));
+        sysUserEntity.setOauthId(user.getName());
+        String name = user.getAttribute("name");
+        //github中name不存在就使用login
+        if (StringUtils.isBlank(name)) {
+            name = user.getAttribute("login");
+        }
+        sysUserEntity.setOauthName(name);
         //分为谷歌和github
-        if (ObjectUtils.isEmpty(this.userService.getByLoginName(user.getName()))) {
-            log.info("Saving user: name=" + user.getName() + ", claims=" + user.getAttributes() + ", authorities=" + user.getAuthorities());
-            SysUserEntity sysUserEntity = new SysUserEntity();
-            sysUserEntity.setEmail(user.getAttribute("email"));
-            sysUserEntity.setOauthId(user.getName());
-            sysUserEntity.setOauthName(user.getAttribute("name"));
-
-            //给予默认权限
+        SysUserEntity userEntity = this.userService.getByLoginName(user.getName());
+        if (ObjectUtils.isEmpty(userEntity)) {
             this.userService.save(sysUserEntity);
             SysUserRoleEntity sysUserRoleEntity = new SysUserRoleEntity();
             sysUserRoleEntity.setUserId(sysUserEntity.getUserId());
             //默认用户读取权限
             sysUserRoleEntity.setRoleId(1L);
+            //给予默认权限
             sysUserRoleService.save(sysUserRoleEntity);
-
+        } else {
+            //修改
+            sysUserEntity.setUserId(userEntity.getUserId());
+            this.userService.updateById(sysUserEntity);
         }
-    }
 
+    }
 }

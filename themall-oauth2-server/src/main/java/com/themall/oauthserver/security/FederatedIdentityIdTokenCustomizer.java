@@ -27,6 +27,7 @@ import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.endpoint.OidcParameterNames;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
@@ -96,12 +97,17 @@ public final class FederatedIdentityIdTokenCustomizer implements OAuth2TokenCust
                             //使用第三方登陆用户
                             username = sysUserEntity.getOauthName();
                         }
-                        context.getClaims().id(sysUserEntity.getUserId().toString())
+                        JwtClaimsSet.Builder claims = context.getClaims();
+                        claims.id(sysUserEntity.getUserId().toString())
                                 .claim("name", username)
-                                .claim("email", sysUserEntity.getEmail())
                                 //提升权限
                                 .claim("authorities", AuthorityUtils.authorityListToSet(auth))
                         ;
+                        if (StringUtils.isNotBlank(sysUserEntity.getEmail())) {
+
+                            claims.claim("email", sysUserEntity.getEmail())
+                            ;
+                        }
 
                     }
                 }
