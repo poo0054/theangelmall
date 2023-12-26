@@ -6,7 +6,7 @@
       </el-form-item>
     </el-form>
 
-    <el-table :data="dataList" border row-key="menuId" style="width: 100%; ">
+    <el-table :data="dataList" :tree-props="{ children: 'children' }" border row-key="menuId" style="width: 100%; ">
       <el-table-column header-align="center" label="名称" min-width="150" prop="name">
       </el-table-column>
       <el-table-column align="center" header-align="center" label="上级菜单" prop="parentName" width="120">
@@ -36,8 +36,8 @@
           <el-button v-if="isAuth('sys:menu:update')" size="small" type="text"
                      @click="addOrUpdateHandle(scope.row.menuId)">修改
           </el-button>
-          <el-button v-if="isAuth('sys:menu:delete')" size="small" type="text"
-                     @click="deleteHandle(scope.row.menuId)">删除
+          <el-button v-if="isAuth('sys:menu:delete')" size="small" type="text" @click="deleteHandle(scope.row.menuId)">
+            删除
           </el-button>
         </template>
       </el-table-column>
