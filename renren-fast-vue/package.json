@@ -19,7 +19,7 @@
     "babel-polyfill": "6.26.0",
     "cos-js-sdk-v5": "^1.2.15",
     "cos-nodejs-sdk-v5": "^2.9.21",
-    "element-ui": "2.8.2",
+    "element-ui": "2.15.14",
     "gulp": "4.0.2",
     "gulp-concat": "2.6.1",
     "gulp-load-plugins": "2.0.5",
@@ -32,7 +32,7 @@
     "scss": "^0.2.4",
     "scss-loader": "0.0.1",
     "svg-sprite-loader": "3.7.3",
-    "vue": "2.5.16",
+    "vue": "2.7",
     "vue-cookie": "1.1.4",
     "vue-router": "3.0.1",
     "vuex": "3.0.1"
