@@ -118,12 +118,12 @@ export default {
           data: this.$http.adornData()
         }).then(({data}) => {
           if (data && data.code === '00000') {
-            console.log(data);
-            window.open(data.logoutUrl, '_blank', 'width=600,height=300');
-            this.sleep(3000)
-            clearLoginInfo();
+            window.open(data.logoutUrl);
+            setTimeout(() => {
+              clearLoginInfo();
+              this.$router.push({name: 'login'})
+            }, 3000);
           }
-          this.$router.push({name: 'login'})
         })
       }).catch(() => {
       })
