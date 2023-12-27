@@ -10,7 +10,7 @@ package io.renren.modules.sys.dao;
 
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import io.renren.modules.sys.entity.SysLogEntity;
+import io.renren.modules.sys.entity.sysLog;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -19,6 +19,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @author Mark sunlightcs@gmail.com
  */
 @Mapper
-public interface SysLogDao extends BaseMapper<SysLogEntity> {
-	
+public interface SysLogDao extends BaseMapper<sysLog> {
+
 }

@@ -12,12 +12,15 @@ import com.themall.model.constants.Constant;
 import com.themall.model.entity.R;
 import com.themall.model.entity.SysRoleEntity;
 import com.themall.model.validator.ValidatorUtils;
+import com.themall.model.validator.group.AddGroup;
+import com.themall.model.validator.group.UpdateGroup;
 import io.renren.annotation.SysLog;
 import io.renren.modules.sys.service.SysRoleMenuService;
 import io.renren.modules.sys.service.SysRoleService;
 import io.renren.utils.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -33,6 +36,7 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/sys/role")
 public class SysRoleController extends AbstractController {
+
     private SysRoleService sysRoleService;
     private SysRoleMenuService sysRoleMenuService;
 
@@ -56,10 +60,8 @@ public class SysRoleController extends AbstractController {
         if (Objects.equals(Constant.SUPER_ADMIN, getUserId())) {
             params.put("createUserId", getUserId());
         }
-
         PageUtils page = sysRoleService.queryPage(params);
-
-        return R.ok().put("page", page);
+        return R.ok().setData(page);
     }
 
     /**
@@ -76,7 +78,7 @@ public class SysRoleController extends AbstractController {
         }
         List<SysRoleEntity> list = sysRoleService.listByMap(map);
 
-        return R.ok().put("list", list);
+        return R.ok().setData(list);
     }
 
     /**
@@ -86,12 +88,10 @@ public class SysRoleController extends AbstractController {
     @PreAuthorize("hasAuthority('sys:role:list')")
     public R info(@PathVariable("roleId") Long roleId) {
         SysRoleEntity role = sysRoleService.getById(roleId);
-
         //查询角色对应的菜单
         List<Long> menuIdList = sysRoleMenuService.queryMenuIdList(roleId);
         role.setMenuIdList(menuIdList);
-
-        return R.ok().put("role", role);
+        return R.ok().setData(role);
     }
 
     /**
@@ -100,12 +100,9 @@ public class SysRoleController extends AbstractController {
     @SysLog("新增")
     @PostMapping("/save")
     @PreAuthorize("hasAuthority('sys:role:inset')")
-    public R save(@RequestBody SysRoleEntity role) {
-        ValidatorUtils.validateEntity(role);
-
+    public R save(@RequestBody @Validated(AddGroup.class) SysRoleEntity role) {
         role.setCreateUserId(getUserId());
         sysRoleService.saveRole(role);
-
         return R.ok();
     }
 
@@ -115,12 +112,10 @@ public class SysRoleController extends AbstractController {
     @SysLog("修改角色")
     @PostMapping("/update")
     @PreAuthorize("hasAuthority('sys:role:update')")
-    public R update(@RequestBody SysRoleEntity role) {
+    public R update(@RequestBody @Validated(UpdateGroup.class) SysRoleEntity role) {
         ValidatorUtils.validateEntity(role);
-
         role.setCreateUserId(getUserId());
         sysRoleService.update(role);
-
         return R.ok();
     }
 

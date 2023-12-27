@@ -16,7 +16,7 @@ import com.alibaba.fastjson2.JSONWriter;
 import com.themall.common.utils.ServletUtils;
 import com.themall.model.constants.BusinessStatus;
 import io.renren.annotation.SysLog;
-import io.renren.modules.sys.entity.SysLogEntity;
+import io.renren.modules.sys.entity.sysLog;
 import io.renren.modules.sys.service.SysLogService;
 import io.renren.utils.IPUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -61,8 +61,13 @@ public class SysLogAspect {
      * 计算操作消耗时间
      */
     private static final ThreadLocal<Long> TIME_THREADLOCAL = new NamedThreadLocal<Long>("Cost Time");
+
+    private SysLogService sysLogService;
+
     @Autowired
-    private SysLogService iTabOpsOperLogService;
+    public void setSysLogService(SysLogService sysLogService) {
+        this.sysLogService = sysLogService;
+    }
 
     /**
      * 处理请求前执行
@@ -99,7 +104,7 @@ public class SysLogAspect {
             // 获取当前的用户
 
             // *========数据库日志=========*//
-            SysLogEntity operLog = new SysLogEntity();
+            io.renren.modules.sys.entity.sysLog operLog = new sysLog();
             operLog.setStatus(BusinessStatus.SUCCESS.ordinal());
             // 请求的地址
             HttpServletRequest request = ServletUtils.getRequest();
@@ -137,7 +142,7 @@ public class SysLogAspect {
             operLog.setCreateDate(createDate);
             operLog.setUpdateDate(createDate);
             //  保存数据库
-            iTabOpsOperLogService.save(operLog);
+            sysLogService.save(operLog);
         } catch (Exception exp) {
             // 记录本地异常日志
             log.error("异常信息: ", exp);
@@ -153,7 +158,7 @@ public class SysLogAspect {
      * @param sysLogEntity 操作日志
      * @throws Exception
      */
-    public void getControllerMethodDescription(JoinPoint joinPoint, SysLog log, SysLogEntity sysLogEntity,
+    public void getControllerMethodDescription(JoinPoint joinPoint, SysLog log, sysLog sysLogEntity,
                                                Object jsonResult) throws Exception {
         // 设置action动作
         sysLogEntity.setBusinessType(log.businessType().ordinal());
@@ -179,7 +184,7 @@ public class SysLogAspect {
      * @param operLog 操作日志
      * @throws Exception 异常
      */
-    private void setRequestValue(JoinPoint joinPoint, SysLogEntity operLog, String[] excludeParamNames)
+    private void setRequestValue(JoinPoint joinPoint, sysLog operLog, String[] excludeParamNames)
             throws Exception {
         Map<String, String[]> map = ServletUtils.getRequest().getParameterMap();
         if (ObjectUtils.isNotEmpty(map)) {

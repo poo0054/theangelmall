@@ -52,6 +52,13 @@ public class R extends HashMap<String, Object> {
         return r;
     }
 
+    public static R error(HttpStatusEnum statusEnum, String msg) {
+        R r = new R();
+        r.put(CODE_NAME, statusEnum.getCode());
+        r.put(MSG_NAME, msg);
+        return r;
+    }
+
 
     public static R ok() {
         return new R();

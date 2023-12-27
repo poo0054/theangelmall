@@ -12,6 +12,8 @@ import com.themall.model.constants.Constant;
 import com.themall.model.constants.HttpStatusEnum;
 import com.themall.model.entity.R;
 import com.themall.model.exception.RRException;
+import com.themall.model.validator.group.AddGroup;
+import com.themall.model.validator.group.UpdateGroup;
 import io.renren.annotation.SysLog;
 import io.renren.modules.sys.entity.SysMenuEntity;
 import io.renren.modules.sys.service.SysMenuService;
@@ -21,6 +23,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -84,7 +87,7 @@ public class SysMenuController extends AbstractController {
         root.setOpen(true);
         menuList.add(root);
 
-        return R.ok().put("menuList", menuList);
+        return R.ok().setData(menuList);
     }
 
     /**
@@ -94,7 +97,7 @@ public class SysMenuController extends AbstractController {
     @PreAuthorize("hasAuthority('sys:menu:list')")
     public R info(@PathVariable("menuId") Long menuId) {
         SysMenuEntity menu = sysMenuService.getById(menuId);
-        return R.ok().put("menu", menu);
+        return R.ok().setData(menu);
     }
 
     /**
@@ -103,7 +106,7 @@ public class SysMenuController extends AbstractController {
     @SysLog("保存菜单")
     @PostMapping("/save")
     @PreAuthorize("hasAuthority('sys:menu:save')")
-    public R save(@RequestBody SysMenuEntity menu) {
+    public R save(@RequestBody @Validated(AddGroup.class) SysMenuEntity menu) {
         //数据校验
         verifyForm(menu);
 
@@ -118,7 +121,7 @@ public class SysMenuController extends AbstractController {
     @SysLog("修改菜单")
     @PostMapping("/update")
     @PreAuthorize("hasAuthority('sys:menu:update')")
-    public R update(@RequestBody SysMenuEntity menu) {
+    public R update(@RequestBody @Validated(UpdateGroup.class) SysMenuEntity menu) {
         //数据校验
         verifyForm(menu);
 
@@ -153,13 +156,6 @@ public class SysMenuController extends AbstractController {
      * 验证参数是否正确
      */
     private void verifyForm(SysMenuEntity menu) {
-        if (StringUtils.isBlank(menu.getName())) {
-            throw new RRException("菜单名称不能为空");
-        }
-
-        if (menu.getParentId() == null) {
-            throw new RRException("上级菜单不能为空");
-        }
 
         //菜单
         if (menu.getType() == Constant.MenuType.MENU.getValue()) {

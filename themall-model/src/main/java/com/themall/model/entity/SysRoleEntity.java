@@ -11,10 +11,11 @@ package com.themall.model.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.themall.model.validator.group.UpdateGroup;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -33,7 +34,7 @@ public class SysRoleEntity implements Serializable {
      * 角色ID
      */
     @TableId
-    @Id
+    @NotNull(groups = UpdateGroup.class)
     private Long roleId;
 
     /**

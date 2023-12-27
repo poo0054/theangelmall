@@ -9,7 +9,6 @@
 package io.renren.modules.sys.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -70,16 +69,15 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        String username = (String) params.get("username");
-        Long createUserId = (Long) params.get("createUserId");
-
+        Object username = params.get("username");
+        Object createUserId = params.get("createUserId");
+        LambdaQueryWrapper<SysUserEntity> lambdaQueryWrapper = Wrappers.lambdaQuery(SysUserEntity.class);
+        lambdaQueryWrapper.like(ObjectUtils.isNotEmpty(username), SysUserEntity::getUsername, username);
+        lambdaQueryWrapper.eq(ObjectUtils.isNotEmpty(createUserId), SysUserEntity::getCreateUserId, createUserId);
         IPage<SysUserEntity> page = this.page(
                 new Query<SysUserEntity>().getPage(params),
-                new QueryWrapper<SysUserEntity>()
-                        .like(StringUtils.isNotBlank(username), "username", username)
-                        .eq(createUserId != null, "create_user_id", createUserId)
+                lambdaQueryWrapper
         );
-
         return new PageUtils(page);
     }
 
@@ -144,14 +142,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         if (ObjectUtils.isEmpty(sysUserEntity)) {
             return false;
         }
-        if (passwordEncoder.matches(sysUserEntity.getPassword(), password)) {
+        if (!passwordEncoder.matches(password, sysUserEntity.getPassword())) {
             return false;
         }
-
         SysUserEntity userEntity = new SysUserEntity();
         userEntity.setPassword(passwordEncoder.encode(newPassword));
-        return this.update(userEntity,
-                new QueryWrapper<SysUserEntity>().eq("user_id", userId).eq("password", password));
+        userEntity.setUserId(sysUserEntity.getUserId());
+        return this.updateById(userEntity);
     }
 
     @Override

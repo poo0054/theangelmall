@@ -8,8 +8,9 @@
 
 package io.renren.modules.sys.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.themall.model.constants.Constant;
 import com.themall.model.entity.SysRoleEntity;
@@ -21,7 +22,7 @@ import io.renren.modules.sys.service.SysRoleService;
 import io.renren.modules.sys.service.SysUserRoleService;
 import io.renren.utils.PageUtils;
 import io.renren.utils.Query;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,16 +59,15 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRoleEntity> i
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        String roleName = (String) params.get("roleName");
-        Long createUserId = (Long) params.get("createUserId");
-
+        Object roleName = params.get("roleName");
+        Object createUserId = params.get("createUserId");
+        LambdaQueryWrapper<SysRoleEntity> lambdaQueryWrapper = Wrappers.lambdaQuery(SysRoleEntity.class);
+        lambdaQueryWrapper.like(ObjectUtils.isNotEmpty(roleName), SysRoleEntity::getRoleName, roleName);
+        lambdaQueryWrapper.eq(ObjectUtils.isNotEmpty(createUserId), SysRoleEntity::getCreateUserId, createUserId);
         IPage<SysRoleEntity> page = this.page(
                 new Query<SysRoleEntity>().getPage(params),
-                new QueryWrapper<SysRoleEntity>()
-                        .like(StringUtils.isNotBlank(roleName), "role_name", roleName)
-                        .eq(createUserId != null, "create_user_id", createUserId)
+                lambdaQueryWrapper
         );
-
         return new PageUtils(page);
     }
 

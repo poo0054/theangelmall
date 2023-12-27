@@ -12,7 +12,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.renren.modules.sys.dao.SysLogDao;
-import io.renren.modules.sys.entity.SysLogEntity;
+import io.renren.modules.sys.entity.sysLog;
 import io.renren.modules.sys.service.SysLogService;
 import io.renren.utils.PageUtils;
 import io.renren.utils.Query;
@@ -23,15 +23,15 @@ import java.util.Map;
 
 
 @Service("sysLogService")
-public class SysLogServiceImpl extends ServiceImpl<SysLogDao, SysLogEntity> implements SysLogService {
+public class SysLogServiceImpl extends ServiceImpl<SysLogDao, sysLog> implements SysLogService {
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         String key = (String)params.get("key");
 
-        IPage<SysLogEntity> page = this.page(
-            new Query<SysLogEntity>().getPage(params),
-            new QueryWrapper<SysLogEntity>().like(StringUtils.isNotBlank(key),"username", key)
+        IPage<sysLog> page = this.page(
+                new Query<sysLog>().getPage(params),
+                new QueryWrapper<sysLog>().like(StringUtils.isNotBlank(key), "username", key)
         );
 
         return new PageUtils(page);

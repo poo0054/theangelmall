@@ -17,6 +17,7 @@ import lombok.Data;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -35,16 +36,18 @@ public class SysUserEntity implements Serializable {
      * 用户ID
      */
     @TableId
+    @NotNull(groups = {UpdateGroup.class})
     private Long userId;
 
     /**
      * 第三方登陆id
      */
     private String oauthId;
+
     /**
      * 用户名
      */
-    @NotBlank(message = "用户名不能为空", groups = {AddGroup.class, UpdateGroup.class})
+    @NotBlank(groups = {AddGroup.class, UpdateGroup.class})
     private String username;
 
     /**
@@ -55,7 +58,7 @@ public class SysUserEntity implements Serializable {
     /**
      * 密码
      */
-    @NotBlank(message = "密码不能为空", groups = AddGroup.class)
+    @NotBlank(groups = AddGroup.class)
     private String password;
 
     /**
@@ -66,7 +69,7 @@ public class SysUserEntity implements Serializable {
     /**
      * 邮箱
      */
-    @Email(message = "邮箱格式不正确", groups = {AddGroup.class, UpdateGroup.class})
+    @Email(groups = {AddGroup.class, UpdateGroup.class})
     private String email;
 
     /**

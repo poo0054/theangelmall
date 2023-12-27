@@ -10,7 +10,7 @@ package io.renren.modules.sys.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import io.renren.modules.sys.entity.SysLogEntity;
+import io.renren.modules.sys.entity.sysLog;
 import io.renren.utils.PageUtils;
 
 import java.util.Map;
@@ -21,7 +21,7 @@ import java.util.Map;
  *
  * @author Mark sunlightcs@gmail.com
  */
-public interface SysLogService extends IService<SysLogEntity> {
+public interface SysLogService extends IService<sysLog> {
 
     PageUtils queryPage(Map<String, Object> params);
 

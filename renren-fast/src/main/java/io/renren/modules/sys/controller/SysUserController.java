@@ -13,7 +13,6 @@ import com.themall.model.constants.HttpStatusEnum;
 import com.themall.model.entity.R;
 import com.themall.model.entity.SysUserEntity;
 import com.themall.model.validator.Assert;
-import com.themall.model.validator.ValidatorUtils;
 import com.themall.model.validator.group.AddGroup;
 import com.themall.model.validator.group.UpdateGroup;
 import io.renren.annotation.SysLog;
@@ -24,6 +23,7 @@ import io.renren.utils.PageUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,6 +38,7 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/sys/user")
 public class SysUserController extends AbstractController {
+
     private SysUserService sysUserService;
     private SysUserRoleService sysUserRoleService;
 
@@ -63,8 +64,7 @@ public class SysUserController extends AbstractController {
             params.put("createUserId", getUserId());
         }
         PageUtils page = sysUserService.queryPage(params);
-
-        return R.ok().put("page", page);
+        return R.ok().setData(page);
     }
 
     /**
@@ -80,14 +80,13 @@ public class SysUserController extends AbstractController {
      */
     @SysLog("修改密码")
     @PostMapping("/password")
-    public R password(@RequestBody PasswordForm form) {
+    public R password(@RequestBody @Validated PasswordForm form) {
         Assert.isBlank(form.getNewPassword(), "新密码不为能空");
         //更新密码
         boolean flag = sysUserService.updatePassword(getUserId(), form.getPassword(), form.getNewPassword());
         if (!flag) {
-            return R.error(HttpStatusEnum.USER_ERROR_A0130.getCode(), "原密码不正确");
+            return R.error(HttpStatusEnum.USER_ERROR_A0120);
         }
-
         return R.ok();
     }
 
@@ -103,7 +102,7 @@ public class SysUserController extends AbstractController {
         List<Long> roleIdList = sysUserRoleService.queryRoleIdList(userId);
         user.setRoleIdList(roleIdList);
 
-        return R.ok().put("user", user);
+        return R.ok().setData(user);
     }
 
     /**
@@ -112,9 +111,7 @@ public class SysUserController extends AbstractController {
     @SysLog("保存用户")
     @PostMapping("/save")
     @PreAuthorize("hasAuthority('sys:user:save')")
-    public R save(@RequestBody SysUserEntity user) {
-        ValidatorUtils.validateEntity(user, AddGroup.class);
-
+    public R save(@RequestBody @Validated(AddGroup.class) SysUserEntity user) {
         user.setCreateUserId(getUserId());
         sysUserService.saveUser(user);
 
@@ -127,8 +124,7 @@ public class SysUserController extends AbstractController {
     @SysLog("修改用户")
     @PostMapping("/update")
     @PreAuthorize("hasAuthority('sys:user:update')")
-    public R update(@RequestBody SysUserEntity user) {
-        ValidatorUtils.validateEntity(user, UpdateGroup.class);
+    public R update(@RequestBody @Validated(UpdateGroup.class) SysUserEntity user) {
         user.setCreateUserId(getUserId());
         sysUserService.update(user);
         return R.ok();
@@ -142,10 +138,10 @@ public class SysUserController extends AbstractController {
     @PreAuthorize("hasAuthority('sys:user:delete')")
     public R delete(@RequestBody Long[] userIds) {
         if (ArrayUtils.contains(userIds, 1L)) {
-            return R.error(HttpStatusEnum.USER_ERROR_A0440.getCode(), "系统管理员不能删除");
+            return R.error(HttpStatusEnum.USER_ERROR_A0440, "系统管理员不能删除");
         }
         if (ArrayUtils.contains(userIds, getUserId())) {
-            return R.error(HttpStatusEnum.USER_ERROR_A0440.getCode(), "当前用户不能删除");
+            return R.error(HttpStatusEnum.USER_ERROR_A0440, "当前用户不能删除");
         }
         sysUserService.deleteBatch(userIds);
         return R.ok();

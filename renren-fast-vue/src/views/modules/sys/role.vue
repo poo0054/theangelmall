@@ -29,14 +29,14 @@
           <el-button v-if="isAuth('sys:role:update')" size="small" type="text"
                      @click="addOrUpdateHandle(scope.row.roleId)">修改
           </el-button>
-          <el-button v-if="isAuth('sys:role:delete')" size="small" type="text"
-                     @click="deleteHandle(scope.row.roleId)">删除
+          <el-button v-if="isAuth('sys:role:delete')" size="small" type="text" @click="deleteHandle(scope.row.roleId)">
+            删除
           </el-button>
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination :current-page="pageIndex" :page-size="pageSize" :page-sizes="[10, 20, 50, 100]"
-                   :total="totalPage" @size-change="sizeChangeHandle" @current-change="currentChangeHandle"
+    <el-pagination :current-page="pageIndex" :page-size="pageSize" :page-sizes="[10, 20, 50, 100]" :total="totalPage"
+                   @size-change="sizeChangeHandle" @current-change="currentChangeHandle"
       layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
     <!-- 弹窗, 新增 / 修改 -->
@@ -82,8 +82,8 @@ export default {
         })
       }).then(({data}) => {
         if (data && data.code === '00000') {
-          this.dataList = data.page.list
-          this.totalPage = data.page.totalCount
+          this.dataList = data.data.list
+          this.totalPage = data.data.totalCount
         } else {
           this.dataList = []
           this.totalPage = 0
