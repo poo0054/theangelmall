@@ -46,15 +46,15 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>ch.qos.logback.contrib</groupId>
-            <artifactId>logback-json-classic</artifactId>
-        </dependency>
+        <!--  <dependency>
+              <groupId>ch.qos.logback.contrib</groupId>
+              <artifactId>logback-json-classic</artifactId>
+          </dependency>
 
-        <dependency>
-            <groupId>ch.qos.logback.contrib</groupId>
-            <artifactId>logback-jackson</artifactId>
-        </dependency>
+          <dependency>
+              <groupId>ch.qos.logback.contrib</groupId>
+              <artifactId>logback-jackson</artifactId>
+          </dependency>-->
 
         <dependency>
             <groupId>com.alibaba.fastjson2</groupId>

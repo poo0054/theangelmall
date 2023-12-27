@@ -6,15 +6,6 @@
     <logger name="org.springboot.sample" level="TRACE"/>
     <logger name="com.themall" level="INFO"/>
 
-    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">
-            <jsonFormatter
-                    class="ch.qos.logback.contrib.jackson.JacksonJsonFormatter">
-                <prettyPrint>true</prettyPrint>
-            </jsonFormatter>
-            <timestampFormat>yyyy-MM-dd' 'HH:mm:ss.SSS</timestampFormat>
-        </layout>
-    </appender>
 
     <!-- 开发、测试环境 -->
     <springProfile name="dev,test">
@@ -26,9 +17,7 @@
     <springProfile name="prod">
         <logger name="org.springboot" level="WARN"/>
         <logger name="org.springframework" level="WARN"/>
-        <root level="INFO">
-            <appender-ref ref="CONSOLE"/>
-        </root>
+
     </springProfile>
 
 </configuration>
