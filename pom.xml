@@ -37,7 +37,7 @@
         <jjwt.version>0.12.3</jjwt.version>
         <fastjson2.version>2.0.43</fastjson2.version>
         <logback-json.version>0.1.5</logback-json.version>
-
+        <datasource-proxy.version>1.10</datasource-proxy.version>
 
         <flatten-maven.version>1.1.0</flatten-maven.version>
         <maven-javadoc.version>2.9.1</maven-javadoc.version>
@@ -95,6 +95,12 @@
                 <groupId>com.alibaba.fastjson2</groupId>
                 <artifactId>fastjson2</artifactId>
                 <version>${fastjson2.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>net.ttddyy</groupId>
+                <artifactId>datasource-proxy</artifactId>
+                <version>${datasource-proxy.version}</version>
             </dependency>
 
             <dependency>
