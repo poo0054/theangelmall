@@ -36,6 +36,8 @@
         <alipay-sdk.version>4.9.28.ALL</alipay-sdk.version>
         <jjwt.version>0.12.3</jjwt.version>
         <fastjson2.version>2.0.43</fastjson2.version>
+        <logback-json.version>0.1.5</logback-json.version>
+
 
         <flatten-maven.version>1.1.0</flatten-maven.version>
         <maven-javadoc.version>2.9.1</maven-javadoc.version>
@@ -106,7 +108,17 @@
                 <artifactId>jjwt</artifactId>
                 <version>${jjwt.version}</version>
             </dependency>
+            <dependency>
+                <groupId>ch.qos.logback.contrib</groupId>
+                <artifactId>logback-json-classic</artifactId>
+                <version>${logback-json.version}</version>
+            </dependency>
 
+            <dependency>
+                <groupId>ch.qos.logback.contrib</groupId>
+                <artifactId>logback-jackson</artifactId>
+                <version>${logback-json.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.alipay.sdk</groupId>
                 <artifactId>alipay-sdk-java</artifactId>
