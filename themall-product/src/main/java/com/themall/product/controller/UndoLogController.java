@@ -12,14 +12,12 @@ import java.util.Map;
 
 
 /**
- *
- *
  * @author theangel
  * @email poo0054@outlook.com
  * @date 2021-06-09 20:47:29
  */
 @RestController
-@RequestMapping("/undolog")
+@RequestMapping("product/undolog")
 public class UndoLogController {
     @Autowired
     private UndoLogService undoLogService;
@@ -42,7 +40,7 @@ public class UndoLogController {
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("product:undolog:info")
     public R info(@PathVariable("id") Long id) {
-            UndoLogEntity undoLog = undoLogService.getById(id);
+        UndoLogEntity undoLog = undoLogService.getById(id);
 
         return R.httpStatus().put("undoLog", undoLog);
     }
@@ -53,7 +51,7 @@ public class UndoLogController {
     @RequestMapping("/save")
     //@RequiresPermissions("product:undolog:save")
     public R save(@RequestBody UndoLogEntity undoLog) {
-            undoLogService.save(undoLog);
+        undoLogService.save(undoLog);
 
         return R.httpStatus();
     }
@@ -64,7 +62,7 @@ public class UndoLogController {
     @RequestMapping("/update")
     //@RequiresPermissions("product:undolog:update")
     public R update(@RequestBody UndoLogEntity undoLog) {
-            undoLogService.updateById(undoLog);
+        undoLogService.updateById(undoLog);
 
         return R.httpStatus();
     }
@@ -75,7 +73,7 @@ public class UndoLogController {
     @RequestMapping("/delete")
     //@RequiresPermissions("product:undolog:delete")
     public R delete(@RequestBody Long[] ids) {
-            undoLogService.removeByIds(Arrays.asList(ids));
+        undoLogService.removeByIds(Arrays.asList(ids));
 
         return R.httpStatus();
     }

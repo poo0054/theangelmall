@@ -29,19 +29,32 @@ import java.util.Map;
  */
 @Slf4j
 @RestController
-@RequestMapping("attrgroup")
+@RequestMapping("product/attrgroup")
 public class AttrGroupController {
-    @Autowired
     private AttrGroupService attrGroupService;
-
-    @Autowired
     private CategoryService categoryService;
-    @Autowired
     private AttrService attrService;
-
-    @Autowired
     private AttrAttrgroupRelationService attrAttrgroupRelationService;
 
+    @Autowired
+    public void setAttrGroupService(AttrGroupService attrGroupService) {
+        this.attrGroupService = attrGroupService;
+    }
+
+    @Autowired
+    public void setCategoryService(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
+
+    @Autowired
+    public void setAttrService(AttrService attrService) {
+        this.attrService = attrService;
+    }
+
+    @Autowired
+    public void setAttrAttrgroupRelationService(AttrAttrgroupRelationService attrAttrgroupRelationService) {
+        this.attrAttrgroupRelationService = attrAttrgroupRelationService;
+    }
 
     /**
      * /product/attrgroup/{catelogId}/withattr

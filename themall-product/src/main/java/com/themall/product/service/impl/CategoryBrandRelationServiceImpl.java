@@ -15,6 +15,7 @@ import com.themall.product.entity.CategoryEntity;
 import com.themall.product.service.BrandService;
 import com.themall.product.service.CategoryBrandRelationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,24 +25,34 @@ import java.util.stream.Collectors;
 
 @Service("categoryBrandRelationService")
 public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandRelationDao, CategoryBrandRelationEntity> implements CategoryBrandRelationService {
-
-
-    @Autowired
     private BrandDao brandDao;
 
-    @Autowired
     private CategoryDao categoryDao;
 
+    private BrandService brandService;
+
     @Autowired
-    BrandService brandService;
+    public void setBrandDao(BrandDao brandDao) {
+        this.brandDao = brandDao;
+    }
+
+    @Autowired
+    public void setCategoryDao(CategoryDao categoryDao) {
+        this.categoryDao = categoryDao;
+    }
+
+    @Autowired
+    @Lazy
+    public void setBrandService(BrandService brandService) {
+        this.brandService = brandService;
+    }
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         IPage<CategoryBrandRelationEntity> page = this.page(
                 new Query<CategoryBrandRelationEntity>().getPage(params),
-                new QueryWrapper<CategoryBrandRelationEntity>()
+                new QueryWrapper<>()
         );
-
         return new PageUtils(page);
     }
 

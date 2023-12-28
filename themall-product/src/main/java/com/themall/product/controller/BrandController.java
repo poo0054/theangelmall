@@ -22,10 +22,15 @@ import java.util.Map;
  * @date 2021-06-09 20:47:30
  */
 @RestController
-@RequestMapping("/brand")
+@RequestMapping("product/brand")
 public class BrandController {
-    @Autowired
+
     private BrandService brandService;
+
+    @Autowired
+    public void setBrandService(BrandService brandService) {
+        this.brandService = brandService;
+    }
 
     /**
      * 根据品牌id查询所有品牌信息

@@ -9,11 +9,16 @@ import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class ThreadConfig {
 
-    @Autowired
+
     ThreadProperties threadPoolConfig;
+
+    @Autowired
+    public void setThreadPoolConfig(ThreadProperties threadPoolConfig) {
+        this.threadPoolConfig = threadPoolConfig;
+    }
 
     @Bean
     public ThreadPoolExecutor poolExecutor() {

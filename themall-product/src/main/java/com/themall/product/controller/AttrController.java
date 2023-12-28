@@ -23,13 +23,21 @@ import java.util.Map;
  * @date 2021-06-09 20:47:30
  */
 @RestController
-@RequestMapping("attr")
+@RequestMapping("product/attr")
 public class AttrController {
-    @Autowired
     private AttrService attrService;
-    @Autowired
+
     private ProductAttrValueService productAttrValueService;
 
+    @Autowired
+    public void setAttrService(AttrService attrService) {
+        this.attrService = attrService;
+    }
+
+    @Autowired
+    public void setProductAttrValueService(ProductAttrValueService productAttrValueService) {
+        this.productAttrValueService = productAttrValueService;
+    }
 
     /**
      * /product/attr/base/listforspu/{spuId}

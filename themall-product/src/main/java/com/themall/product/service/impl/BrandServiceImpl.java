@@ -21,8 +21,13 @@ import java.util.Map;
 
 @Service("brandService")
 public class BrandServiceImpl extends ServiceImpl<BrandDao, BrandEntity> implements BrandService {
-    @Autowired
+
     private CategoryBrandRelationService categoryBrandRelationService;
+
+    @Autowired
+    public void setCategoryBrandRelationService(CategoryBrandRelationService categoryBrandRelationService) {
+        this.categoryBrandRelationService = categoryBrandRelationService;
+    }
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {

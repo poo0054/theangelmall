@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  * @Author: theangel
  * @Date: 2021/10/13 21:58
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class SentinelConfig implements BlockExceptionHandler {
 
     /**

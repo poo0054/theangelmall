@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 //Spring boot方式
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @MapperScan("com.themall.product.dao")
 public class MybatisPlusConfig {
     /**

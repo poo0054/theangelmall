@@ -25,10 +25,13 @@ import java.util.stream.Collectors;
 @Service("attrGroupService")
 public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEntity> implements AttrGroupService {
 
-    @Autowired
+
     private AttrService attrService;
+
     @Autowired
-    private AttrGroupService attrGroupService;
+    public void setAttrService(AttrService attrService) {
+        this.attrService = attrService;
+    }
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
