@@ -21,8 +21,13 @@ import java.util.List;
 @RestController
 @RequestMapping("product/category")
 public class CategoryController {
-    @Autowired
+
     private CategoryService categoryService;
+
+    @Autowired
+    public void setCategoryService(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
 
     /**
      * 查出所有分类,以树形菜单展示
@@ -31,7 +36,7 @@ public class CategoryController {
     @PreAuthorize("hasAuthority('product:category:list')")
     public R list() {
         List<CategoryEntity> categoryEntityList = categoryService.listCategoryTree();
-        return R.httpStatus().put("data", categoryEntityList);
+        return R.httpStatus().setData(categoryEntityList);
     }
 
 
@@ -42,7 +47,7 @@ public class CategoryController {
     @PreAuthorize("hasAuthority('product:category:list')")
     public R info(@PathVariable("catId") Long catId) {
         CategoryEntity category = categoryService.getById(catId);
-        return R.httpStatus().put("data", category);
+        return R.httpStatus().setData(category);
     }
 
     /**

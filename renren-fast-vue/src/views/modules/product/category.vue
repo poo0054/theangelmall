@@ -3,46 +3,23 @@
     <el-switch v-model="draggable" active-text="开启拖拽" inactive-text="关闭拖拽"></el-switch>
     <el-button v-if="draggable" @click="batchSave">批量保存</el-button>
     <el-button type="danger" @click="batchDelete">批量删除</el-button>
-    <el-tree
-      :data="menus"
-      :props="defaultProps"
-      :expand-on-click-node="false"
-      show-checkbox
-      node-key="catId"
-      :default-expanded-keys="expandedKey"
-      :draggable="draggable"
-      :allow-drop="allowDrop"
-      @node-drop="handleDrop"
-      ref="menuTree"
-    >
+    <el-tree ref="menuTree" :allow-drop="allowDrop" :data="menus" :default-expanded-keys="expandedKey" :draggable="draggable"
+             :expand-on-click-node="false" :props="defaultProps" node-key="catId" show-checkbox
+             @node-drop="handleDrop">
       <span class="custom-tree-node" slot-scope="{ node, data }">
         <span>{{ node.label }}</span>
         <span>
-          <el-button
-            v-if="node.level <=2"
-            type="text"
-            size="mini"
-            @click="() => append(data)"
-          >添加</el-button>
+          <el-button v-if="node.level <= 2" size="mini" type="text" @click="() => append(data)">添加</el-button>
           <el-button type="text" size="mini" @click="edit(data)">
             修改
           </el-button>
-          <el-button
-            v-if="node.childNodes.length==0"
-            type="text"
-            size="mini"
-            @click="() => remove(node, data)"
-          >删除</el-button>
+          <el-button v-if="node.childNodes.length == 0" size="mini" type="text"
+                     @click="() => remove(node, data)">删除</el-button>
         </span>
       </span>
     </el-tree>
 
-    <el-dialog
-      :title="title"
-      :visible.sync="dialogVisible"
-      width="30%"
-      :close-on-click-modal="false"
-    >
+    <el-dialog :close-on-click-modal="false" :title="title" :visible.sync="dialogVisible" width="30%">
       <el-form :model="category">
         <el-form-item label="分类名称">
           <el-input v-model="category.name" autocomplete="off"></el-input>
@@ -391,5 +368,4 @@ export default {
   } //如果页面有keep-alive缓存功能，这个函数会触发
 };
 </script>
-<style scoped>
-</style>
+<style scoped></style>

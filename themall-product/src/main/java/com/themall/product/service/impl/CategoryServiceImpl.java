@@ -57,8 +57,8 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
     @Override
     public List<CategoryEntity> listCategoryTree() {
-        CopyOnWriteArrayList<CategoryEntity> categoryEntities = new CopyOnWriteArrayList<>(baseMapper.selectList(null));
-        List<CategoryEntity> collect = categoryEntities
+        CopyOnWriteArrayList<CategoryEntity> categoryEntities = new CopyOnWriteArrayList<>(this.list());
+        return categoryEntities
                 .parallelStream()
                 .filter(categoryEntity ->
                         categoryEntity.getParentCid().equals(0L)
@@ -67,9 +67,8 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
                     categoryEntity.setChildren(getChildren(categoryEntity, categoryEntities));
                     return categoryEntity;
                 })
-                .sorted((v1, v2) -> (v1.getSort() == null ? 0 : v1.getSort()) - (v2.getSort() == null ? 0 : v2.getSort()))
+                .sorted(Comparator.comparingInt(v -> (v.getSort() == null ? 0 : v.getSort())))
                 .collect(Collectors.toList());
-        return collect;
     }
 
     @Override
