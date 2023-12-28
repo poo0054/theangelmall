@@ -2,10 +2,10 @@ package com.themall.product.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.themall.common.utils.PageUtils;
-import com.themall.product.entity.AttrEntity;
-import com.themall.product.vo.AttrGroupRelationVo;
-import com.themall.product.vo.AttrResVo;
-import com.themall.product.vo.AttrVo;
+import com.themall.product.pojo.entity.AttrEntity;
+import com.themall.product.pojo.vo.AttrGroupRelationVo;
+import com.themall.product.pojo.vo.AttrResVo;
+import com.themall.product.pojo.vo.AttrVo;
 
 import java.util.List;
 import java.util.Map;

@@ -4,7 +4,7 @@
 <mapper namespace="com.themall.product.dao.SpuImagesDao">
 
 	<!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.themall.product.entity.SpuImagesEntity" id="spuImagesMap">
+    <resultMap type="com.themall.product.pojo.entity.SpuImagesEntity" id="spuImagesMap">
         <result property="id" column="id"/>
         <result property="spuId" column="spu_id"/>
         <result property="imgName" column="img_name"/>

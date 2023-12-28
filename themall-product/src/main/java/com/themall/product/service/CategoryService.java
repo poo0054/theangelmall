@@ -2,8 +2,8 @@ package com.themall.product.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.themall.common.utils.PageUtils;
-import com.themall.product.entity.CategoryEntity;
-import com.themall.product.vo.Catelog2Vo;
+import com.themall.product.pojo.entity.CategoryEntity;
+import com.themall.product.pojo.vo.Catelog2Vo;
 
 import java.util.List;
 import java.util.Map;

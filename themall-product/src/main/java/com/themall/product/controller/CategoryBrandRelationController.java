@@ -3,10 +3,10 @@ package com.themall.product.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.themall.common.utils.PageUtils;
 import com.themall.model.entity.R;
-import com.themall.product.entity.BrandEntity;
-import com.themall.product.entity.CategoryBrandRelationEntity;
+import com.themall.product.pojo.entity.BrandEntity;
+import com.themall.product.pojo.entity.CategoryBrandRelationEntity;
+import com.themall.product.pojo.vo.BrandVo;
 import com.themall.product.service.CategoryBrandRelationService;
-import com.themall.product.vo.BrandVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

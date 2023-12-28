@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.themall.common.utils.PageUtils;
 import com.themall.common.utils.Query;
 import com.themall.product.dao.SpuImagesDao;
-import com.themall.product.entity.SpuImagesEntity;
+import com.themall.product.pojo.entity.SpuImagesEntity;
 import com.themall.product.service.SpuImagesService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;

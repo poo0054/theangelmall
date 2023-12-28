@@ -2,9 +2,9 @@ package com.themall.product.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.themall.common.utils.PageUtils;
-import com.themall.product.entity.AttrGroupEntity;
-import com.themall.product.vo.AttrGroupWithAttrsVo;
-import com.themall.product.vo.SpuItemAttrGroupVo;
+import com.themall.product.pojo.entity.AttrGroupEntity;
+import com.themall.product.pojo.vo.AttrGroupWithAttrsVo;
+import com.themall.product.pojo.vo.SpuItemAttrGroupVo;
 
 import java.util.List;
 import java.util.Map;

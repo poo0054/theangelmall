@@ -2,7 +2,7 @@ package com.themall.product.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.themall.common.utils.PageUtils;
-import com.themall.product.entity.UndoLogEntity;
+import com.themall.product.pojo.entity.UndoLogEntity;
 
 import java.util.Map;
 

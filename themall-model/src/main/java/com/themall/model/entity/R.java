@@ -95,6 +95,10 @@ public class R extends HashMap<String, Object> {
         return new R();
     }
 
+    public static R httpStatus(boolean status) {
+        return status ? ok() : error();
+    }
+
     /**
      * 是否成功
      *

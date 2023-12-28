@@ -4,7 +4,7 @@
 <mapper namespace="com.themall.product.dao.UndoLogDao">
 
 	<!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.themall.product.entity.UndoLogEntity" id="undoLogMap">
+    <resultMap type="com.themall.product.pojo.entity.UndoLogEntity" id="undoLogMap">
         <result property="id" column="id"/>
         <result property="branchId" column="branch_id"/>
         <result property="xid" column="xid"/>

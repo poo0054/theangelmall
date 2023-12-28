@@ -1,7 +1,7 @@
 package com.themall.product.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.themall.product.entity.SpuInfoEntity;
+import com.themall.product.pojo.entity.SpuInfoEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

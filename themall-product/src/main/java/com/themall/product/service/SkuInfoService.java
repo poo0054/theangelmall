@@ -2,8 +2,8 @@ package com.themall.product.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.themall.common.utils.PageUtils;
-import com.themall.product.entity.SkuInfoEntity;
-import com.themall.product.vo.SkuItemVo;
+import com.themall.product.pojo.entity.SkuInfoEntity;
+import com.themall.product.pojo.vo.SkuItemVo;
 
 import java.math.BigDecimal;
 import java.util.List;

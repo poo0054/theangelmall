@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.themall.common.utils.PageUtils;
 import com.themall.common.utils.Query;
 import com.themall.product.dao.CommentReplayDao;
-import com.themall.product.entity.CommentReplayEntity;
+import com.themall.product.pojo.entity.CommentReplayEntity;
 import com.themall.product.service.CommentReplayService;
 import org.springframework.stereotype.Service;
 

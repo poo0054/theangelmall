@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.themall.common.utils.PageUtils;
 import com.themall.common.utils.Query;
 import com.themall.product.dao.UndoLogDao;
-import com.themall.product.entity.UndoLogEntity;
+import com.themall.product.pojo.entity.UndoLogEntity;
 import com.themall.product.service.UndoLogService;
 import org.springframework.stereotype.Service;
 

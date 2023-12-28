@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.themall.common.utils.PageUtils;
 import com.themall.common.utils.Query;
 import com.themall.product.dao.ProductAttrValueDao;
-import com.themall.product.entity.ProductAttrValueEntity;
+import com.themall.product.pojo.entity.ProductAttrValueEntity;
 import com.themall.product.service.ProductAttrValueService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

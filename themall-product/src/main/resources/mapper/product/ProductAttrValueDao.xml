@@ -4,7 +4,7 @@
 <mapper namespace="com.themall.product.dao.ProductAttrValueDao">
 
 	<!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.themall.product.entity.ProductAttrValueEntity" id="productAttrValueMap">
+    <resultMap type="com.themall.product.pojo.entity.ProductAttrValueEntity" id="productAttrValueMap">
         <result property="id" column="id"/>
         <result property="spuId" column="spu_id"/>
         <result property="attrId" column="attr_id"/>

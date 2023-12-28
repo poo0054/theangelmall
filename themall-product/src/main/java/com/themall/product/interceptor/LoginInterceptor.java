@@ -26,14 +26,14 @@ public class LoginInterceptor implements HandlerInterceptor {
     public static ThreadLocal<MemberVo> threadLocal = new ThreadLocal<>();
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String requestURI = request.getRequestURI();
         //order/order/status/{orderSn}
         AntPathMatcher antPathMatcher = new AntPathMatcher();
         //这个是远程调用之间的接口，可以不用登录
         boolean match = antPathMatcher.match("/order/order/status/**", requestURI);
         boolean match1 = antPathMatcher.match("/pay/notify/**", requestURI);
-        if (match | match1) {
+        if (match || match1) {
             System.out.println("地址" + requestURI + "不用登录！！！！！！！！！！");
             return true;
         }

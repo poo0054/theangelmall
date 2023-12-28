@@ -1,8 +1,8 @@
 package com.themall.product.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.themall.product.entity.AttrGroupEntity;
-import com.themall.product.vo.SpuItemAttrGroupVo;
+import com.themall.product.pojo.entity.AttrGroupEntity;
+import com.themall.product.pojo.vo.SpuItemAttrGroupVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

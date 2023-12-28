@@ -1,8 +1,8 @@
 package com.themall.product.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.themall.product.entity.SkuSaleAttrValueEntity;
-import com.themall.product.vo.SkuItemAttrVo;
+import com.themall.product.pojo.entity.SkuSaleAttrValueEntity;
+import com.themall.product.pojo.vo.SkuItemAttrVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

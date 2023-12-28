@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.themall.common.utils.PageUtils;
 import com.themall.common.utils.Query;
 import com.themall.product.dao.BrandDao;
-import com.themall.product.entity.BrandEntity;
+import com.themall.product.pojo.entity.BrandEntity;
 import com.themall.product.service.BrandService;
 import com.themall.product.service.CategoryBrandRelationService;
 import org.springframework.beans.factory.annotation.Autowired;

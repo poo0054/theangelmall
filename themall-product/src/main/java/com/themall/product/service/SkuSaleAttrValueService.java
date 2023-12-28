@@ -2,8 +2,8 @@ package com.themall.product.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.themall.common.utils.PageUtils;
-import com.themall.product.entity.SkuSaleAttrValueEntity;
-import com.themall.product.vo.SkuItemAttrVo;
+import com.themall.product.pojo.entity.SkuSaleAttrValueEntity;
+import com.themall.product.pojo.vo.SkuItemAttrVo;
 
 import java.util.List;
 import java.util.Map;

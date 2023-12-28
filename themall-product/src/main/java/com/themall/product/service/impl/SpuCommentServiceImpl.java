@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.themall.common.utils.PageUtils;
 import com.themall.common.utils.Query;
 import com.themall.product.dao.SpuCommentDao;
-import com.themall.product.entity.SpuCommentEntity;
+import com.themall.product.pojo.entity.SpuCommentEntity;
 import com.themall.product.service.SpuCommentService;
 import org.springframework.stereotype.Service;
 

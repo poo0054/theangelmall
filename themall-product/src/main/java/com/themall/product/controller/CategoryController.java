@@ -1,7 +1,7 @@
 package com.themall.product.controller;
 
 import com.themall.model.entity.R;
-import com.themall.product.entity.CategoryEntity;
+import com.themall.product.pojo.entity.CategoryEntity;
 import com.themall.product.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;

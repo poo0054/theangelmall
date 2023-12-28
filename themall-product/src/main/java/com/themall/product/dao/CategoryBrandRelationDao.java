@@ -1,7 +1,7 @@
 package com.themall.product.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.themall.product.entity.CategoryBrandRelationEntity;
+import com.themall.product.pojo.entity.CategoryBrandRelationEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

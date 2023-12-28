@@ -2,7 +2,7 @@ package com.themall.product.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.themall.common.utils.PageUtils;
-import com.themall.product.entity.SpuImagesEntity;
+import com.themall.product.pojo.entity.SpuImagesEntity;
 
 import java.util.List;
 import java.util.Map;

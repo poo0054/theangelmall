@@ -2,7 +2,7 @@ package com.themall.common.config;
 
 import com.themall.common.exception.DefaultAccessDeniedHandler;
 import com.themall.common.exception.DefaultAuthenticationEntryPoint;
-import com.themall.common.exception.RRExceptionHandler;
+import com.themall.common.exception.GlobalException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,8 +13,8 @@ import org.springframework.context.annotation.Configuration;
 public class ExceptionConfig {
 
     @Bean
-    public RRExceptionHandler rrExceptionHandler() {
-        return new RRExceptionHandler();
+    public GlobalException rrExceptionHandler() {
+        return new GlobalException();
     }
 
     @Bean

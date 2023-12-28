@@ -1,9 +1,9 @@
 package com.themall.product.web;
 
 import com.themall.common.utils.fileutils.UUIDUtils;
-import com.themall.product.entity.CategoryEntity;
+import com.themall.product.pojo.entity.CategoryEntity;
+import com.themall.product.pojo.vo.Catelog2Vo;
 import com.themall.product.service.CategoryService;
-import com.themall.product.vo.Catelog2Vo;
 import org.redisson.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;

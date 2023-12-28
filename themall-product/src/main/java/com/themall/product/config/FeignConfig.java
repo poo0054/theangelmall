@@ -1,6 +1,5 @@
 package com.themall.product.config;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,7 +13,6 @@ import org.springframework.context.annotation.Configuration;
  * @Author: theangel
  * @Date: 2021/9/6 21:48
  */
-@Slf4j
 @Configuration(proxyBeanMethods = false)
 @EnableFeignClients("com.themall.product.openfeign")
 public class FeignConfig {

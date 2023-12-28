@@ -6,9 +6,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.themall.common.utils.PageUtils;
 import com.themall.common.utils.Query;
 import com.themall.product.dao.SkuSaleAttrValueDao;
-import com.themall.product.entity.SkuSaleAttrValueEntity;
+import com.themall.product.pojo.entity.SkuSaleAttrValueEntity;
+import com.themall.product.pojo.vo.SkuItemAttrVo;
 import com.themall.product.service.SkuSaleAttrValueService;
-import com.themall.product.vo.SkuItemAttrVo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

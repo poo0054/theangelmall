@@ -2,11 +2,11 @@ package com.themall.product.controller;
 
 import com.themall.common.utils.PageUtils;
 import com.themall.model.entity.R;
-import com.themall.model.valid.addGro;
-import com.themall.model.valid.updateGro;
-import com.themall.product.entity.BrandEntity;
+import com.themall.model.validator.group.AddGroup;
+import com.themall.product.pojo.entity.BrandEntity;
 import com.themall.product.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,6 +39,7 @@ public class BrandController {
      * @return
      */
     @GetMapping("/infos")
+    @PreAuthorize("hasAuthority('product:brand:list')")
     public R infos(@RequestParam("brandIds") List<Long> brandIds) {
         List<BrandEntity> brandEntities = brandService.getBrandsById(brandIds);
         return R.httpStatus().setData(brandEntities);
@@ -48,7 +49,7 @@ public class BrandController {
      * 列表
      */
     @RequestMapping("/list")
-    //@RequiresPermissions("product:brand:list")
+    @PreAuthorize("hasAuthority('product:brand:list')")
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = brandService.queryPage(params);
         return R.httpStatus().put("page", page);
@@ -59,7 +60,7 @@ public class BrandController {
      * 信息
      */
     @RequestMapping("/info/{brandId}")
-    //@RequiresPermissions("product:brand:info")
+    @PreAuthorize("hasAuthority('product:brand:list')")
     public R info(@PathVariable("brandId") Long brandId) {
         BrandEntity brand = brandService.getById(brandId);
 
@@ -70,31 +71,17 @@ public class BrandController {
      * 保存
      */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    //@RequiresPermissions("product:brand:save")
-    public R save(@Validated({addGro.class}) @RequestBody BrandEntity brand/**, BindingResult result*/) {
-     /*   if (result.hasErrors()) {
-            LinkedHashMap<String, String> map = new LinkedHashMap<>();
-            List<FieldError> fieldErrors = result.getFieldErrors();
-            fieldErrors.forEach(k -> {
-                map.put(k.getField(), k.getDefaultMessage());
-            });
-            return R.error(HttpStatus.SC_BAD_REQUEST, "提交数据不合法").put("data", map);
-        } else {
-            brandService.save(brand);
-            return R.ok();
-        }*/
-        brandService.save(brand);
-        return R.httpStatus();
-
+    @PreAuthorize("hasAuthority('product:brand:save')")
+    public R save(@Validated({AddGroup.class}) @RequestBody BrandEntity brand) {
+        return R.httpStatus(brandService.save(brand));
     }
 
     /**
      * 修改
      */
     @RequestMapping("/update")
-    //@RequiresPermissions("product:brand:update")
-    public R update(@Validated({updateGro.class}) @RequestBody BrandEntity brand) {
-//        brandService.updateById(brand);
+    @PreAuthorize("hasAuthority('product:brand:update')")
+    public R update(@Validated @RequestBody BrandEntity brand) {
         brandService.updateDetail(brand);
         return R.httpStatus();
     }
@@ -103,7 +90,7 @@ public class BrandController {
      * 删除
      */
     @RequestMapping("/delete")
-    //@RequiresPermissions("product:brand:delete")
+    @PreAuthorize("hasAuthority('product:brand:delete')")
     public R delete(@RequestBody Long[] brandIds) {
         brandService.removeByIds(Arrays.asList(brandIds));
         return R.httpStatus();

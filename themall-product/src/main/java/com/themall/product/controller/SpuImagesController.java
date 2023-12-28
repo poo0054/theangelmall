@@ -2,7 +2,7 @@ package com.themall.product.controller;
 
 import com.themall.common.utils.PageUtils;
 import com.themall.model.entity.R;
-import com.themall.product.entity.SpuImagesEntity;
+import com.themall.product.pojo.entity.SpuImagesEntity;
 import com.themall.product.service.SpuImagesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

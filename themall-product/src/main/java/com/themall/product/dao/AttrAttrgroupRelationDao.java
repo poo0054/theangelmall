@@ -1,7 +1,7 @@
 package com.themall.product.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.themall.product.entity.AttrAttrgroupRelationEntity;
+import com.themall.product.pojo.entity.AttrAttrgroupRelationEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

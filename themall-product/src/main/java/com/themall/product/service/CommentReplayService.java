@@ -2,7 +2,7 @@ package com.themall.product.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.themall.common.utils.PageUtils;
-import com.themall.product.entity.CommentReplayEntity;
+import com.themall.product.pojo.entity.CommentReplayEntity;
 
 import java.util.Map;
 

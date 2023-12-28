@@ -2,11 +2,11 @@ package com.themall.product.controller;
 
 import com.themall.common.utils.PageUtils;
 import com.themall.model.entity.R;
-import com.themall.product.entity.ProductAttrValueEntity;
+import com.themall.product.pojo.entity.ProductAttrValueEntity;
+import com.themall.product.pojo.vo.AttrResVo;
+import com.themall.product.pojo.vo.AttrVo;
 import com.themall.product.service.AttrService;
 import com.themall.product.service.ProductAttrValueService;
-import com.themall.product.vo.AttrResVo;
-import com.themall.product.vo.AttrVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
