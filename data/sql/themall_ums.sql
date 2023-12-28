@@ -1,190 +1,390 @@
-drop table if exists ums_growth_change_history;
+-- MySQL dump 10.13  Distrib 8.0.35, for Linux (x86_64)
+--
+-- Host: 192.168.98.51    Database: themall_ums
+-- ------------------------------------------------------
+-- Server version	8.0.34
 
-drop table if exists ums_integration_change_history;
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT = @@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS = @@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION = @@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE = @@TIME_ZONE */;
+/*!40103 SET TIME_ZONE = '+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS = @@UNIQUE_CHECKS, UNIQUE_CHECKS = 0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS = @@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS = 0 */;
+/*!40101 SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES = @@SQL_NOTES, SQL_NOTES = 0 */;
 
-drop table if exists ums_member;
+--
+-- Current Database: `themall_ums`
+--
 
-drop table if exists ums_member_collect_spu;
+CREATE DATABASE /*!32312 IF NOT EXISTS */ `themall_ums` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */ /*!80016 DEFAULT ENCRYPTION = 'N' */;
 
-drop table if exists ums_member_collect_subject;
+USE `themall_ums`;
 
-drop table if exists ums_member_level;
+--
+-- Table structure for table `ums_growth_change_history`
+--
 
-drop table if exists ums_member_login_log;
-
-drop table if exists ums_member_receive_address;
-
-drop table if exists ums_member_statistics_info;
-
-/*==============================================================*/
-/* Table: ums_growth_change_history                             */
-/*==============================================================*/
-create table ums_growth_change_history
+DROP TABLE IF EXISTS `ums_growth_change_history`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ums_growth_change_history`
 (
-   id                   bigint not null auto_increment comment 'id',
-   member_id            bigint comment 'member_id',
-   create_time          datetime comment 'create_time',
-   change_count         int comment '¸Ä±äµÄÖµ£¨Õı¸º¼ÆÊı£©',
-   note                 varchar(0) comment '±¸×¢',
-   source_type          tinyint comment '»ı·ÖÀ´Ô´[0-¹ºÎï£¬1-¹ÜÀíÔ±ĞŞ¸Ä]',
-   primary key (id)
-);
+    `id`           bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `member_id`    bigint     DEFAULT NULL COMMENT 'member_id',
+    `create_time`  datetime   DEFAULT NULL COMMENT 'create_time',
+    `change_count` int        DEFAULT NULL COMMENT 'æ”¹å˜çš„å€¼ï¼ˆæ­£è´Ÿè®¡æ•°ï¼‰',
+    `note`         varchar(0) DEFAULT NULL COMMENT 'å¤‡æ³¨',
+    `source_type`  tinyint    DEFAULT NULL COMMENT 'ç§¯åˆ†æ¥æº[0-è´­ç‰©ï¼Œ1-ç®¡ç†å‘˜ä¿®æ”¹]',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='æˆé•¿å€¼å˜åŒ–å†å²è®°å½•';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-alter table ums_growth_change_history comment '³É³¤Öµ±ä»¯ÀúÊ·¼ÇÂ¼';
+--
+-- Dumping data for table `ums_growth_change_history`
+--
 
-/*==============================================================*/
-/* Table: ums_integration_change_history                        */
-/*==============================================================*/
-create table ums_integration_change_history
+LOCK TABLES `ums_growth_change_history` WRITE;
+/*!40000 ALTER TABLE `ums_growth_change_history`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `ums_growth_change_history`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ums_integration_change_history`
+--
+
+DROP TABLE IF EXISTS `ums_integration_change_history`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ums_integration_change_history`
 (
-   id                   bigint not null auto_increment comment 'id',
-   member_id            bigint comment 'member_id',
-   create_time          datetime comment 'create_time',
-   change_count         int comment '±ä»¯µÄÖµ',
-   note                 varchar(255) comment '±¸×¢',
-   source_tyoe          tinyint comment 'À´Ô´[0->¹ºÎï£»1->¹ÜÀíÔ±ĞŞ¸Ä;2->»î¶¯]',
-   primary key (id)
-);
+    `id`           bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `member_id`    bigint       DEFAULT NULL COMMENT 'member_id',
+    `create_time`  datetime     DEFAULT NULL COMMENT 'create_time',
+    `change_count` int          DEFAULT NULL COMMENT 'å˜åŒ–çš„å€¼',
+    `note`         varchar(255) DEFAULT NULL COMMENT 'å¤‡æ³¨',
+    `source_tyoe`  tinyint      DEFAULT NULL COMMENT 'æ¥æº[0->è´­ç‰©ï¼›1->ç®¡ç†å‘˜ä¿®æ”¹;2->æ´»åŠ¨]',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='ç§¯åˆ†å˜åŒ–å†å²è®°å½•';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-alter table ums_integration_change_history comment '»ı·Ö±ä»¯ÀúÊ·¼ÇÂ¼';
+--
+-- Dumping data for table `ums_integration_change_history`
+--
 
-/*==============================================================*/
-/* Table: ums_member                                            */
-/*==============================================================*/
-create table ums_member
+LOCK TABLES `ums_integration_change_history` WRITE;
+/*!40000 ALTER TABLE `ums_integration_change_history`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `ums_integration_change_history`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ums_member`
+--
+
+DROP TABLE IF EXISTS `ums_member`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ums_member`
 (
-   id                   bigint not null auto_increment comment 'id',
-   level_id             bigint comment '»áÔ±µÈ¼¶id',
-   username             char(64) comment 'ÓÃ»§Ãû',
-   password             varchar(64) comment 'ÃÜÂë',
-   nickname             varchar(64) comment 'êÇ³Æ',
-   mobile               varchar(20) comment 'ÊÖ»úºÅÂë',
-   email                varchar(64) comment 'ÓÊÏä',
-   header               varchar(500) comment 'Í·Ïñ',
-   gender               tinyint comment 'ĞÔ±ğ',
-   birth                date comment 'ÉúÈÕ',
-   city                 varchar(500) comment 'ËùÔÚ³ÇÊĞ',
-   job                  varchar(255) comment 'Ö°Òµ',
-   sign                 varchar(255) comment '¸öĞÔÇ©Ãû',
-   source_type          tinyint comment 'ÓÃ»§À´Ô´',
-   integration          int comment '»ı·Ö',
-   growth               int comment '³É³¤Öµ',
-   status               tinyint comment 'ÆôÓÃ×´Ì¬',
-   create_time          datetime comment '×¢²áÊ±¼ä',
-   primary key (id)
-);
+    `id`           bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `level_id`     bigint       DEFAULT NULL COMMENT 'ä¼šå‘˜ç­‰çº§id',
+    `username`     char(64)     DEFAULT NULL COMMENT 'ç”¨æˆ·å',
+    `password`     varchar(64)  DEFAULT NULL COMMENT 'å¯†ç ',
+    `nickname`     varchar(64)  DEFAULT NULL COMMENT 'æ˜µç§°',
+    `mobile`       varchar(20)  DEFAULT NULL COMMENT 'æ‰‹æœºå·ç ',
+    `email`        varchar(64)  DEFAULT NULL COMMENT 'é‚®ç®±',
+    `header`       varchar(500) DEFAULT NULL COMMENT 'å¤´åƒ',
+    `gender`       tinyint      DEFAULT NULL COMMENT 'æ€§åˆ«',
+    `birth`        date         DEFAULT NULL COMMENT 'ç”Ÿæ—¥',
+    `city`         varchar(500) DEFAULT NULL COMMENT 'æ‰€åœ¨åŸå¸‚',
+    `job`          varchar(255) DEFAULT NULL COMMENT 'èŒä¸š',
+    `sign`         varchar(255) DEFAULT NULL COMMENT 'ä¸ªæ€§ç­¾å',
+    `source_type`  tinyint      DEFAULT NULL COMMENT 'ç”¨æˆ·æ¥æº',
+    `integration`  int          DEFAULT NULL COMMENT 'ç§¯åˆ†',
+    `growth`       int          DEFAULT NULL COMMENT 'æˆé•¿å€¼',
+    `status`       tinyint      DEFAULT NULL COMMENT 'å¯ç”¨çŠ¶æ€',
+    `create_time`  datetime     DEFAULT NULL COMMENT 'æ³¨å†Œæ—¶é—´',
+    `social_uid`   varchar(255) DEFAULT NULL COMMENT 'ç¤¾äº¤ç”¨æˆ·çš„å”¯ä¸€id',
+    `access_token` varchar(255) DEFAULT NULL COMMENT 'è®¿é—®ä»¤ç‰Œ',
+    `expires_in`   varchar(255) DEFAULT NULL COMMENT 'è®¿é—®ä»¤ç‰Œçš„æ—¶é—´',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='ä¼šå‘˜';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-alter table ums_member comment '»áÔ±';
+--
+-- Dumping data for table `ums_member`
+--
 
-/*==============================================================*/
-/* Table: ums_member_collect_spu                                */
-/*==============================================================*/
-create table ums_member_collect_spu
+LOCK TABLES `ums_member` WRITE;
+/*!40000 ALTER TABLE `ums_member`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `ums_member`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ums_member_collect_spu`
+--
+
+DROP TABLE IF EXISTS `ums_member_collect_spu`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ums_member_collect_spu`
 (
-   id                   bigint not null comment 'id',
-   member_id            bigint comment '»áÔ±id',
-   spu_id               bigint comment 'spu_id',
-   spu_name             varchar(500) comment 'spu_name',
-   spu_img              varchar(500) comment 'spu_img',
-   create_time          datetime comment 'create_time',
-   primary key (id)
-);
+    `id`          bigint NOT NULL COMMENT 'id',
+    `member_id`   bigint       DEFAULT NULL COMMENT 'ä¼šå‘˜id',
+    `spu_id`      bigint       DEFAULT NULL COMMENT 'spu_id',
+    `spu_name`    varchar(500) DEFAULT NULL COMMENT 'spu_name',
+    `spu_img`     varchar(500) DEFAULT NULL COMMENT 'spu_img',
+    `create_time` datetime     DEFAULT NULL COMMENT 'create_time',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='ä¼šå‘˜æ”¶è—çš„å•†å“';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-alter table ums_member_collect_spu comment '»áÔ±ÊÕ²ØµÄÉÌÆ·';
+--
+-- Dumping data for table `ums_member_collect_spu`
+--
 
-/*==============================================================*/
-/* Table: ums_member_collect_subject                            */
-/*==============================================================*/
-create table ums_member_collect_subject
+LOCK TABLES `ums_member_collect_spu` WRITE;
+/*!40000 ALTER TABLE `ums_member_collect_spu`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `ums_member_collect_spu`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ums_member_collect_subject`
+--
+
+DROP TABLE IF EXISTS `ums_member_collect_subject`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ums_member_collect_subject`
 (
-   id                   bigint not null auto_increment comment 'id',
-   subject_id           bigint comment 'subject_id',
-   subject_name         varchar(255) comment 'subject_name',
-   subject_img          varchar(500) comment 'subject_img',
-   subject_urll         varchar(500) comment '»î¶¯url',
-   primary key (id)
-);
+    `id`           bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `subject_id`   bigint       DEFAULT NULL COMMENT 'subject_id',
+    `subject_name` varchar(255) DEFAULT NULL COMMENT 'subject_name',
+    `subject_img`  varchar(500) DEFAULT NULL COMMENT 'subject_img',
+    `subject_urll` varchar(500) DEFAULT NULL COMMENT 'æ´»åŠ¨url',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='ä¼šå‘˜æ”¶è—çš„ä¸“é¢˜æ´»åŠ¨';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-alter table ums_member_collect_subject comment '»áÔ±ÊÕ²ØµÄ×¨Ìâ»î¶¯';
+--
+-- Dumping data for table `ums_member_collect_subject`
+--
 
-/*==============================================================*/
-/* Table: ums_member_level                                      */
-/*==============================================================*/
-create table ums_member_level
+LOCK TABLES `ums_member_collect_subject` WRITE;
+/*!40000 ALTER TABLE `ums_member_collect_subject`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `ums_member_collect_subject`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ums_member_level`
+--
+
+DROP TABLE IF EXISTS `ums_member_level`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ums_member_level`
 (
-   id                   bigint not null auto_increment comment 'id',
-   name                 varchar(100) comment 'µÈ¼¶Ãû³Æ',
-   growth_point         int comment 'µÈ¼¶ĞèÒªµÄ³É³¤Öµ',
-   default_status       tinyint comment 'ÊÇ·ñÎªÄ¬ÈÏµÈ¼¶[0->²»ÊÇ£»1->ÊÇ]',
-   free_freight_point   decimal(18,4) comment 'ÃâÔË·Ñ±ê×¼',
-   comment_growth_point int comment 'Ã¿´ÎÆÀ¼Û»ñÈ¡µÄ³É³¤Öµ',
-   priviledge_free_freight tinyint comment 'ÊÇ·ñÓĞÃâÓÊÌØÈ¨',
-   priviledge_member_price tinyint comment 'ÊÇ·ñÓĞ»áÔ±¼Û¸ñÌØÈ¨',
-   priviledge_birthday  tinyint comment 'ÊÇ·ñÓĞÉúÈÕÌØÈ¨',
-   note                 varchar(255) comment '±¸×¢',
-   primary key (id)
-);
+    `id`                      bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `name`                    varchar(100)   DEFAULT NULL COMMENT 'ç­‰çº§åç§°',
+    `growth_point`            int            DEFAULT NULL COMMENT 'ç­‰çº§éœ€è¦çš„æˆé•¿å€¼',
+    `default_status`          tinyint        DEFAULT NULL COMMENT 'æ˜¯å¦ä¸ºé»˜è®¤ç­‰çº§[0->ä¸æ˜¯ï¼›1->æ˜¯]',
+    `free_freight_point`      decimal(18, 4) DEFAULT NULL COMMENT 'å…è¿è´¹æ ‡å‡†',
+    `comment_growth_point`    int            DEFAULT NULL COMMENT 'æ¯æ¬¡è¯„ä»·è·å–çš„æˆé•¿å€¼',
+    `priviledge_free_freight` tinyint        DEFAULT NULL COMMENT 'æ˜¯å¦æœ‰å…é‚®ç‰¹æƒ',
+    `priviledge_member_price` tinyint        DEFAULT NULL COMMENT 'æ˜¯å¦æœ‰ä¼šå‘˜ä»·æ ¼ç‰¹æƒ',
+    `priviledge_birthday`     tinyint        DEFAULT NULL COMMENT 'æ˜¯å¦æœ‰ç”Ÿæ—¥ç‰¹æƒ',
+    `note`                    varchar(255)   DEFAULT NULL COMMENT 'å¤‡æ³¨',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='ä¼šå‘˜ç­‰çº§';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-alter table ums_member_level comment '»áÔ±µÈ¼¶';
+--
+-- Dumping data for table `ums_member_level`
+--
 
-/*==============================================================*/
-/* Table: ums_member_login_log                                  */
-/*==============================================================*/
-create table ums_member_login_log
+LOCK TABLES `ums_member_level` WRITE;
+/*!40000 ALTER TABLE `ums_member_level`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `ums_member_level`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ums_member_login_log`
+--
+
+DROP TABLE IF EXISTS `ums_member_login_log`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ums_member_login_log`
 (
-   id                   bigint not null auto_increment comment 'id',
-   member_id            bigint comment 'member_id',
-   create_time          datetime comment '´´½¨Ê±¼ä',
-   ip                   varchar(64) comment 'ip',
-   city                 varchar(64) comment 'city',
-   login_type           tinyint(1) comment 'µÇÂ¼ÀàĞÍ[1-web£¬2-app]',
-   primary key (id)
-);
+    `id`          bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `member_id`   bigint      DEFAULT NULL COMMENT 'member_id',
+    `create_time` datetime    DEFAULT NULL COMMENT 'åˆ›å»ºæ—¶é—´',
+    `ip`          varchar(64) DEFAULT NULL COMMENT 'ip',
+    `city`        varchar(64) DEFAULT NULL COMMENT 'city',
+    `login_type`  tinyint(1)  DEFAULT NULL COMMENT 'ç™»å½•ç±»å‹[1-webï¼Œ2-app]',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='ä¼šå‘˜ç™»å½•è®°å½•';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-alter table ums_member_login_log comment '»áÔ±µÇÂ¼¼ÇÂ¼';
+--
+-- Dumping data for table `ums_member_login_log`
+--
 
-/*==============================================================*/
-/* Table: ums_member_receive_address                            */
-/*==============================================================*/
-create table ums_member_receive_address
+LOCK TABLES `ums_member_login_log` WRITE;
+/*!40000 ALTER TABLE `ums_member_login_log`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `ums_member_login_log`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ums_member_receive_address`
+--
+
+DROP TABLE IF EXISTS `ums_member_receive_address`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ums_member_receive_address`
 (
-   id                   bigint not null auto_increment comment 'id',
-   member_id            bigint comment 'member_id',
-   name                 varchar(255) comment 'ÊÕ»õÈËĞÕÃû',
-   phone                varchar(64) comment 'µç»°',
-   post_code            varchar(64) comment 'ÓÊÕş±àÂë',
-   province             varchar(100) comment 'Ê¡·İ/Ö±Ï½ÊĞ',
-   city                 varchar(100) comment '³ÇÊĞ',
-   region               varchar(100) comment 'Çø',
-   detail_address       varchar(255) comment 'ÏêÏ¸µØÖ·(½ÖµÀ)',
-   areacode             varchar(15) comment 'Ê¡ÊĞÇø´úÂë',
-   default_status       tinyint(1) comment 'ÊÇ·ñÄ¬ÈÏ',
-   primary key (id)
-);
+    `id`             bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `member_id`      bigint       DEFAULT NULL COMMENT 'member_id',
+    `name`           varchar(255) DEFAULT NULL COMMENT 'æ”¶è´§äººå§“å',
+    `phone`          varchar(64)  DEFAULT NULL COMMENT 'ç”µè¯',
+    `post_code`      varchar(64)  DEFAULT NULL COMMENT 'é‚®æ”¿ç¼–ç ',
+    `province`       varchar(100) DEFAULT NULL COMMENT 'çœä»½/ç›´è¾–å¸‚',
+    `city`           varchar(100) DEFAULT NULL COMMENT 'åŸå¸‚',
+    `region`         varchar(100) DEFAULT NULL COMMENT 'åŒº',
+    `detail_address` varchar(255) DEFAULT NULL COMMENT 'è¯¦ç»†åœ°å€(è¡—é“)',
+    `areacode`       varchar(15)  DEFAULT NULL COMMENT 'çœå¸‚åŒºä»£ç ',
+    `default_status` tinyint(1)   DEFAULT NULL COMMENT 'æ˜¯å¦é»˜è®¤',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='ä¼šå‘˜æ”¶è´§åœ°å€';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-alter table ums_member_receive_address comment '»áÔ±ÊÕ»õµØÖ·';
+--
+-- Dumping data for table `ums_member_receive_address`
+--
 
-/*==============================================================*/
-/* Table: ums_member_statistics_info                            */
-/*==============================================================*/
-create table ums_member_statistics_info
+LOCK TABLES `ums_member_receive_address` WRITE;
+/*!40000 ALTER TABLE `ums_member_receive_address`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `ums_member_receive_address`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ums_member_statistics_info`
+--
+
+DROP TABLE IF EXISTS `ums_member_statistics_info`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ums_member_statistics_info`
 (
-   id                   bigint not null auto_increment comment 'id',
-   member_id            bigint comment '»áÔ±id',
-   consume_amount       decimal(18,4) comment 'ÀÛ¼ÆÏû·Ñ½ğ¶î',
-   coupon_amount        decimal(18,4) comment 'ÀÛ¼ÆÓÅ»İ½ğ¶î',
-   order_count          int comment '¶©µ¥ÊıÁ¿',
-   coupon_count         int comment 'ÓÅ»İÈ¯ÊıÁ¿',
-   comment_count        int comment 'ÆÀ¼ÛÊı',
-   return_order_count   int comment 'ÍË»õÊıÁ¿',
-   login_count          int comment 'µÇÂ¼´ÎÊı',
-   attend_count         int comment '¹Ø×¢ÊıÁ¿',
-   fans_count           int comment '·ÛË¿ÊıÁ¿',
-   collect_product_count int comment 'ÊÕ²ØµÄÉÌÆ·ÊıÁ¿',
-   collect_subject_count int comment 'ÊÕ²ØµÄ×¨Ìâ»î¶¯ÊıÁ¿',
-   collect_comment_count int comment 'ÊÕ²ØµÄÆÀÂÛÊıÁ¿',
-   invite_friend_count  int comment 'ÑûÇëµÄÅóÓÑÊıÁ¿',
-   primary key (id)
-);
+    `id`                    bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `member_id`             bigint         DEFAULT NULL COMMENT 'ä¼šå‘˜id',
+    `consume_amount`        decimal(18, 4) DEFAULT NULL COMMENT 'ç´¯è®¡æ¶ˆè´¹é‡‘é¢',
+    `coupon_amount`         decimal(18, 4) DEFAULT NULL COMMENT 'ç´¯è®¡ä¼˜æƒ é‡‘é¢',
+    `order_count`           int            DEFAULT NULL COMMENT 'è®¢å•æ•°é‡',
+    `coupon_count`          int            DEFAULT NULL COMMENT 'ä¼˜æƒ åˆ¸æ•°é‡',
+    `comment_count`         int            DEFAULT NULL COMMENT 'è¯„ä»·æ•°',
+    `return_order_count`    int            DEFAULT NULL COMMENT 'é€€è´§æ•°é‡',
+    `login_count`           int            DEFAULT NULL COMMENT 'ç™»å½•æ¬¡æ•°',
+    `attend_count`          int            DEFAULT NULL COMMENT 'å…³æ³¨æ•°é‡',
+    `fans_count`            int            DEFAULT NULL COMMENT 'ç²‰ä¸æ•°é‡',
+    `collect_product_count` int            DEFAULT NULL COMMENT 'æ”¶è—çš„å•†å“æ•°é‡',
+    `collect_subject_count` int            DEFAULT NULL COMMENT 'æ”¶è—çš„ä¸“é¢˜æ´»åŠ¨æ•°é‡',
+    `collect_comment_count` int            DEFAULT NULL COMMENT 'æ”¶è—çš„è¯„è®ºæ•°é‡',
+    `invite_friend_count`   int            DEFAULT NULL COMMENT 'é‚€è¯·çš„æœ‹å‹æ•°é‡',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='ä¼šå‘˜ç»Ÿè®¡ä¿¡æ¯';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-alter table ums_member_statistics_info comment '»áÔ±Í³¼ÆĞÅÏ¢';
+--
+-- Dumping data for table `ums_member_statistics_info`
+--
+
+LOCK TABLES `ums_member_statistics_info` WRITE;
+/*!40000 ALTER TABLE `ums_member_statistics_info`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `ums_member_statistics_info`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `undo_log`
+--
+
+DROP TABLE IF EXISTS `undo_log`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `undo_log`
+(
+    `id`            bigint       NOT NULL AUTO_INCREMENT,
+    `branch_id`     bigint       NOT NULL,
+    `xid`           varchar(100) NOT NULL,
+    `context`       varchar(128) NOT NULL,
+    `rollback_info` longblob     NOT NULL,
+    `log_status`    int          NOT NULL,
+    `log_created`   datetime     NOT NULL,
+    `log_modified`  datetime     NOT NULL,
+    `ext`           varchar(100) DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `ux_undo_log` (`xid`, `branch_id`) USING BTREE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `undo_log`
+--
+
+LOCK TABLES `undo_log` WRITE;
+/*!40000 ALTER TABLE `undo_log`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `undo_log`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE = @OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE = @OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS = @OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT = @OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS = @OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
+
+-- Dump completed on 2023-12-28 10:22:28

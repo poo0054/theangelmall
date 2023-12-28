@@ -1,292 +1,573 @@
-drop table if exists sms_coupon;
+-- MySQL dump 10.13  Distrib 8.0.35, for Linux (x86_64)
+--
+-- Host: 192.168.98.51    Database: themall_sms
+-- ------------------------------------------------------
+-- Server version	8.0.34
 
-drop table if exists sms_coupon_history;
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT = @@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS = @@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION = @@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE = @@TIME_ZONE */;
+/*!40103 SET TIME_ZONE = '+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS = @@UNIQUE_CHECKS, UNIQUE_CHECKS = 0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS = @@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS = 0 */;
+/*!40101 SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES = @@SQL_NOTES, SQL_NOTES = 0 */;
 
-drop table if exists sms_coupon_spu_category_relation;
+--
+-- Current Database: `themall_sms`
+--
 
-drop table if exists sms_coupon_spu_relation;
+CREATE DATABASE /*!32312 IF NOT EXISTS */ `themall_sms` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */ /*!80016 DEFAULT ENCRYPTION = 'N' */;
 
-drop table if exists sms_home_adv;
+USE `themall_sms`;
 
-drop table if exists sms_home_subject;
+--
+-- Table structure for table `sms_coupon`
+--
 
-drop table if exists sms_home_subject_spu;
-
-drop table if exists sms_member_price;
-
-drop table if exists sms_seckill_promotion;
-
-drop table if exists sms_seckill_session;
-
-drop table if exists sms_seckill_sku_notice;
-
-drop table if exists sms_seckill_sku_relation;
-
-drop table if exists sms_sku_full_reduction;
-
-drop table if exists sms_sku_ladder;
-
-drop table if exists sms_spu_bounds;
-
-/*==============================================================*/
-/* Table: sms_coupon                                            */
-/*==============================================================*/
-create table sms_coupon
+DROP TABLE IF EXISTS `sms_coupon`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sms_coupon`
 (
-   id                   bigint not null auto_increment comment 'id',
-   coupon_type          tinyint(1) comment 'ÓÅ»İ¾íÀàĞÍ[0->È«³¡ÔùÈ¯£»1->»áÔ±ÔùÈ¯£»2->¹ºÎïÔùÈ¯£»3->×¢²áÔùÈ¯]',
-   coupon_img           varchar(2000) comment 'ÓÅ»İÈ¯Í¼Æ¬',
-   coupon_name          varchar(100) comment 'ÓÅ»İ¾íÃû×Ö',
-   num                  int comment 'ÊıÁ¿',
-   amount               decimal(18,4) comment '½ğ¶î',
-   per_limit            int comment 'Ã¿ÈËÏŞÁìÕÅÊı',
-   min_point            decimal(18,4) comment 'Ê¹ÓÃÃÅ¼÷',
-   start_time           datetime comment '¿ªÊ¼Ê±¼ä',
-   end_time             datetime comment '½áÊøÊ±¼ä',
-   use_type             tinyint(1) comment 'Ê¹ÓÃÀàĞÍ[0->È«³¡Í¨ÓÃ£»1->Ö¸¶¨·ÖÀà£»2->Ö¸¶¨ÉÌÆ·]',
-   note                 varchar(200) comment '±¸×¢',
-   publish_count        int(11) comment '·¢ĞĞÊıÁ¿',
-   use_count            int(11) comment 'ÒÑÊ¹ÓÃÊıÁ¿',
-   receive_count        int(11) comment 'ÁìÈ¡ÊıÁ¿',
-   enable_start_time    datetime comment '¿ÉÒÔÁìÈ¡µÄ¿ªÊ¼ÈÕÆÚ',
-   enable_end_time      datetime comment '¿ÉÒÔÁìÈ¡µÄ½áÊøÈÕÆÚ',
-   code                 varchar(64) comment 'ÓÅ»İÂë',
-   member_level         tinyint(1) comment '¿ÉÒÔÁìÈ¡µÄ»áÔ±µÈ¼¶[0->²»ÏŞµÈ¼¶£¬ÆäËû-¶ÔÓ¦µÈ¼¶]',
-   publish              tinyint(1) comment '·¢²¼×´Ì¬[0-Î´·¢²¼£¬1-ÒÑ·¢²¼]',
-   primary key (id)
-);
+    `id`                bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `coupon_type`       tinyint(1)     DEFAULT NULL COMMENT 'ä¼˜æƒ å·ç±»å‹[0->å…¨åœºèµ åˆ¸ï¼›1->ä¼šå‘˜èµ åˆ¸ï¼›2->è´­ç‰©èµ åˆ¸ï¼›3->æ³¨å†Œèµ åˆ¸]',
+    `coupon_img`        varchar(2000)  DEFAULT NULL COMMENT 'ä¼˜æƒ åˆ¸å›¾ç‰‡',
+    `coupon_name`       varchar(100)   DEFAULT NULL COMMENT 'ä¼˜æƒ å·åå­—',
+    `num`               int            DEFAULT NULL COMMENT 'æ•°é‡',
+    `amount`            decimal(18, 4) DEFAULT NULL COMMENT 'é‡‘é¢',
+    `per_limit`         int            DEFAULT NULL COMMENT 'æ¯äººé™é¢†å¼ æ•°',
+    `min_point`         decimal(18, 4) DEFAULT NULL COMMENT 'ä½¿ç”¨é—¨æ§›',
+    `start_time`        datetime       DEFAULT NULL COMMENT 'å¼€å§‹æ—¶é—´',
+    `end_time`          datetime       DEFAULT NULL COMMENT 'ç»“æŸæ—¶é—´',
+    `use_type`          tinyint(1)     DEFAULT NULL COMMENT 'ä½¿ç”¨ç±»å‹[0->å…¨åœºé€šç”¨ï¼›1->æŒ‡å®šåˆ†ç±»ï¼›2->æŒ‡å®šå•†å“]',
+    `note`              varchar(200)   DEFAULT NULL COMMENT 'å¤‡æ³¨',
+    `publish_count`     int            DEFAULT NULL COMMENT 'å‘è¡Œæ•°é‡',
+    `use_count`         int            DEFAULT NULL COMMENT 'å·²ä½¿ç”¨æ•°é‡',
+    `receive_count`     int            DEFAULT NULL COMMENT 'é¢†å–æ•°é‡',
+    `enable_start_time` datetime       DEFAULT NULL COMMENT 'å¯ä»¥é¢†å–çš„å¼€å§‹æ—¥æœŸ',
+    `enable_end_time`   datetime       DEFAULT NULL COMMENT 'å¯ä»¥é¢†å–çš„ç»“æŸæ—¥æœŸ',
+    `code`              varchar(64)    DEFAULT NULL COMMENT 'ä¼˜æƒ ç ',
+    `member_level`      tinyint(1)     DEFAULT NULL COMMENT 'å¯ä»¥é¢†å–çš„ä¼šå‘˜ç­‰çº§[0->ä¸é™ç­‰çº§ï¼Œå…¶ä»–-å¯¹åº”ç­‰çº§]',
+    `publish`           tinyint(1)     DEFAULT NULL COMMENT 'å‘å¸ƒçŠ¶æ€[0-æœªå‘å¸ƒï¼Œ1-å·²å‘å¸ƒ]',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='ä¼˜æƒ åˆ¸ä¿¡æ¯';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-alter table sms_coupon comment 'ÓÅ»İÈ¯ĞÅÏ¢';
+--
+-- Dumping data for table `sms_coupon`
+--
 
-/*==============================================================*/
-/* Table: sms_coupon_history                                    */
-/*==============================================================*/
-create table sms_coupon_history
+LOCK TABLES `sms_coupon` WRITE;
+/*!40000 ALTER TABLE `sms_coupon`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `sms_coupon`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sms_coupon_history`
+--
+
+DROP TABLE IF EXISTS `sms_coupon_history`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sms_coupon_history`
 (
-   id                   bigint not null auto_increment comment 'id',
-   coupon_id            bigint comment 'ÓÅ»İÈ¯id',
-   member_id            bigint comment '»áÔ±id',
-   member_nick_name     varchar(64) comment '»áÔ±Ãû×Ö',
-   get_type             tinyint(1) comment '»ñÈ¡·½Ê½[0->ºóÌ¨ÔùËÍ£»1->Ö÷¶¯ÁìÈ¡]',
-   create_time          datetime comment '´´½¨Ê±¼ä',
-   use_type             tinyint(1) comment 'Ê¹ÓÃ×´Ì¬[0->Î´Ê¹ÓÃ£»1->ÒÑÊ¹ÓÃ£»2->ÒÑ¹ıÆÚ]',
-   use_time             datetime comment 'Ê¹ÓÃÊ±¼ä',
-   order_id             bigint comment '¶©µ¥id',
-   order_sn             bigint comment '¶©µ¥ºÅ',
-   primary key (id)
-);
+    `id`               bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `coupon_id`        bigint      DEFAULT NULL COMMENT 'ä¼˜æƒ åˆ¸id',
+    `member_id`        bigint      DEFAULT NULL COMMENT 'ä¼šå‘˜id',
+    `member_nick_name` varchar(64) DEFAULT NULL COMMENT 'ä¼šå‘˜åå­—',
+    `get_type`         tinyint(1)  DEFAULT NULL COMMENT 'è·å–æ–¹å¼[0->åå°èµ é€ï¼›1->ä¸»åŠ¨é¢†å–]',
+    `create_time`      datetime    DEFAULT NULL COMMENT 'åˆ›å»ºæ—¶é—´',
+    `use_type`         tinyint(1)  DEFAULT NULL COMMENT 'ä½¿ç”¨çŠ¶æ€[0->æœªä½¿ç”¨ï¼›1->å·²ä½¿ç”¨ï¼›2->å·²è¿‡æœŸ]',
+    `use_time`         datetime    DEFAULT NULL COMMENT 'ä½¿ç”¨æ—¶é—´',
+    `order_id`         bigint      DEFAULT NULL COMMENT 'è®¢å•id',
+    `order_sn`         bigint      DEFAULT NULL COMMENT 'è®¢å•å·',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='ä¼˜æƒ åˆ¸é¢†å–å†å²è®°å½•';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-alter table sms_coupon_history comment 'ÓÅ»İÈ¯ÁìÈ¡ÀúÊ·¼ÇÂ¼';
+--
+-- Dumping data for table `sms_coupon_history`
+--
 
-/*==============================================================*/
-/* Table: sms_coupon_spu_category_relation                      */
-/*==============================================================*/
-create table sms_coupon_spu_category_relation
+LOCK TABLES `sms_coupon_history` WRITE;
+/*!40000 ALTER TABLE `sms_coupon_history`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `sms_coupon_history`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sms_coupon_spu_category_relation`
+--
+
+DROP TABLE IF EXISTS `sms_coupon_spu_category_relation`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sms_coupon_spu_category_relation`
 (
-   id                   bigint not null auto_increment comment 'id',
-   coupon_id            bigint comment 'ÓÅ»İÈ¯id',
-   category_id          bigint comment '²úÆ··ÖÀàid',
-   category_name        varchar(64) comment '²úÆ··ÖÀàÃû³Æ',
-   primary key (id)
-);
+    `id`            bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `coupon_id`     bigint      DEFAULT NULL COMMENT 'ä¼˜æƒ åˆ¸id',
+    `category_id`   bigint      DEFAULT NULL COMMENT 'äº§å“åˆ†ç±»id',
+    `category_name` varchar(64) DEFAULT NULL COMMENT 'äº§å“åˆ†ç±»åç§°',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='ä¼˜æƒ åˆ¸åˆ†ç±»å…³è”';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-alter table sms_coupon_spu_category_relation comment 'ÓÅ»İÈ¯·ÖÀà¹ØÁª';
+--
+-- Dumping data for table `sms_coupon_spu_category_relation`
+--
 
-/*==============================================================*/
-/* Table: sms_coupon_spu_relation                               */
-/*==============================================================*/
-create table sms_coupon_spu_relation
+LOCK TABLES `sms_coupon_spu_category_relation` WRITE;
+/*!40000 ALTER TABLE `sms_coupon_spu_category_relation`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `sms_coupon_spu_category_relation`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sms_coupon_spu_relation`
+--
+
+DROP TABLE IF EXISTS `sms_coupon_spu_relation`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sms_coupon_spu_relation`
 (
-   id                   bigint not null auto_increment comment 'id',
-   coupon_id            bigint comment 'ÓÅ»İÈ¯id',
-   spu_id               bigint comment 'spu_id',
-   spu_name             varchar(255) comment 'spu_name',
-   primary key (id)
-);
+    `id`        bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `coupon_id` bigint       DEFAULT NULL COMMENT 'ä¼˜æƒ åˆ¸id',
+    `spu_id`    bigint       DEFAULT NULL COMMENT 'spu_id',
+    `spu_name`  varchar(255) DEFAULT NULL COMMENT 'spu_name',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='ä¼˜æƒ åˆ¸ä¸äº§å“å…³è”';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-alter table sms_coupon_spu_relation comment 'ÓÅ»İÈ¯Óë²úÆ·¹ØÁª';
+--
+-- Dumping data for table `sms_coupon_spu_relation`
+--
 
-/*==============================================================*/
-/* Table: sms_home_adv                                          */
-/*==============================================================*/
-create table sms_home_adv
+LOCK TABLES `sms_coupon_spu_relation` WRITE;
+/*!40000 ALTER TABLE `sms_coupon_spu_relation`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `sms_coupon_spu_relation`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sms_home_adv`
+--
+
+DROP TABLE IF EXISTS `sms_home_adv`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sms_home_adv`
 (
-   id                   bigint not null auto_increment comment 'id',
-   name                 varchar(100) comment 'Ãû×Ö',
-   pic                  varchar(500) comment 'Í¼Æ¬µØÖ·',
-   start_time           datetime comment '¿ªÊ¼Ê±¼ä',
-   end_time             datetime comment '½áÊøÊ±¼ä',
-   status               tinyint(1) comment '×´Ì¬',
-   click_count          int comment 'µã»÷Êı',
-   url                  varchar(500) comment '¹ã¸æÏêÇéÁ¬½ÓµØÖ·',
-   note                 varchar(500) comment '±¸×¢',
-   sort                 int comment 'ÅÅĞò',
-   publisher_id         bigint comment '·¢²¼Õß',
-   auth_id              bigint comment 'ÉóºËÕß',
-   primary key (id)
-);
+    `id`           bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `name`         varchar(100) DEFAULT NULL COMMENT 'åå­—',
+    `pic`          varchar(500) DEFAULT NULL COMMENT 'å›¾ç‰‡åœ°å€',
+    `start_time`   datetime     DEFAULT NULL COMMENT 'å¼€å§‹æ—¶é—´',
+    `end_time`     datetime     DEFAULT NULL COMMENT 'ç»“æŸæ—¶é—´',
+    `status`       tinyint(1)   DEFAULT NULL COMMENT 'çŠ¶æ€',
+    `click_count`  int          DEFAULT NULL COMMENT 'ç‚¹å‡»æ•°',
+    `url`          varchar(500) DEFAULT NULL COMMENT 'å¹¿å‘Šè¯¦æƒ…è¿æ¥åœ°å€',
+    `note`         varchar(500) DEFAULT NULL COMMENT 'å¤‡æ³¨',
+    `sort`         int          DEFAULT NULL COMMENT 'æ’åº',
+    `publisher_id` bigint       DEFAULT NULL COMMENT 'å‘å¸ƒè€…',
+    `auth_id`      bigint       DEFAULT NULL COMMENT 'å®¡æ ¸è€…',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='é¦–é¡µè½®æ’­å¹¿å‘Š';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-alter table sms_home_adv comment 'Ê×Ò³ÂÖ²¥¹ã¸æ';
+--
+-- Dumping data for table `sms_home_adv`
+--
 
-/*==============================================================*/
-/* Table: sms_home_subject                                      */
-/*==============================================================*/
-create table sms_home_subject
+LOCK TABLES `sms_home_adv` WRITE;
+/*!40000 ALTER TABLE `sms_home_adv`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `sms_home_adv`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sms_home_subject`
+--
+
+DROP TABLE IF EXISTS `sms_home_subject`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sms_home_subject`
 (
-   id                   bigint not null auto_increment comment 'id',
-   name                 varchar(200) comment '×¨ÌâÃû×Ö',
-   title                varchar(255) comment '×¨Ìâ±êÌâ',
-   sub_title            varchar(255) comment '×¨Ìâ¸±±êÌâ',
-   status               tinyint(1) comment 'ÏÔÊ¾×´Ì¬',
-   url                  varchar(500) comment 'ÏêÇéÁ¬½Ó',
-   sort                 int comment 'ÅÅĞò',
-   img                  varchar(500) comment '×¨ÌâÍ¼Æ¬µØÖ·',
-   primary key (id)
-);
+    `id`        bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `name`      varchar(200) DEFAULT NULL COMMENT 'ä¸“é¢˜åå­—',
+    `title`     varchar(255) DEFAULT NULL COMMENT 'ä¸“é¢˜æ ‡é¢˜',
+    `sub_title` varchar(255) DEFAULT NULL COMMENT 'ä¸“é¢˜å‰¯æ ‡é¢˜',
+    `status`    tinyint(1)   DEFAULT NULL COMMENT 'æ˜¾ç¤ºçŠ¶æ€',
+    `url`       varchar(500) DEFAULT NULL COMMENT 'è¯¦æƒ…è¿æ¥',
+    `sort`      int          DEFAULT NULL COMMENT 'æ’åº',
+    `img`       varchar(500) DEFAULT NULL COMMENT 'ä¸“é¢˜å›¾ç‰‡åœ°å€',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='é¦–é¡µä¸“é¢˜è¡¨ã€jdé¦–é¡µä¸‹é¢å¾ˆå¤šä¸“é¢˜ï¼Œæ¯ä¸ªä¸“é¢˜é“¾æ¥æ–°çš„é¡µé¢ï¼Œå±•ç¤ºä¸“é¢˜å•†å“ä¿¡æ¯ã€‘';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-alter table sms_home_subject comment 'Ê×Ò³×¨Ìâ±í¡¾jdÊ×Ò³ÏÂÃæºÜ¶à×¨Ìâ£¬Ã¿¸ö×¨ÌâÁ´½ÓĞÂµÄÒ³Ãæ£¬Õ¹Ê¾×¨ÌâÉÌÆ·ĞÅÏ¢¡¿';
+--
+-- Dumping data for table `sms_home_subject`
+--
 
-/*==============================================================*/
-/* Table: sms_home_subject_spu                                  */
-/*==============================================================*/
-create table sms_home_subject_spu
+LOCK TABLES `sms_home_subject` WRITE;
+/*!40000 ALTER TABLE `sms_home_subject`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `sms_home_subject`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sms_home_subject_spu`
+--
+
+DROP TABLE IF EXISTS `sms_home_subject_spu`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sms_home_subject_spu`
 (
-   id                   bigint not null auto_increment comment 'id',
-   name                 varchar(200) comment '×¨ÌâÃû×Ö',
-   subject_id           bigint comment '×¨Ìâid',
-   spu_id               bigint comment 'spu_id',
-   sort                 int comment 'ÅÅĞò',
-   primary key (id)
-);
+    `id`         bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `name`       varchar(200) DEFAULT NULL COMMENT 'ä¸“é¢˜åå­—',
+    `subject_id` bigint       DEFAULT NULL COMMENT 'ä¸“é¢˜id',
+    `spu_id`     bigint       DEFAULT NULL COMMENT 'spu_id',
+    `sort`       int          DEFAULT NULL COMMENT 'æ’åº',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='ä¸“é¢˜å•†å“';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-alter table sms_home_subject_spu comment '×¨ÌâÉÌÆ·';
+--
+-- Dumping data for table `sms_home_subject_spu`
+--
 
-/*==============================================================*/
-/* Table: sms_member_price                                      */
-/*==============================================================*/
-create table sms_member_price
+LOCK TABLES `sms_home_subject_spu` WRITE;
+/*!40000 ALTER TABLE `sms_home_subject_spu`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `sms_home_subject_spu`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sms_member_price`
+--
+
+DROP TABLE IF EXISTS `sms_member_price`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sms_member_price`
 (
-   id                   bigint not null auto_increment comment 'id',
-   sku_id               bigint comment 'sku_id',
-   member_level_id      bigint comment '»áÔ±µÈ¼¶id',
-   member_level_name    varchar(100) comment '»áÔ±µÈ¼¶Ãû',
-   member_price         decimal(18,4) comment '»áÔ±¶ÔÓ¦¼Û¸ñ',
-   add_other            tinyint(1) comment '¿É·ñµş¼ÓÆäËûÓÅ»İ[0-²»¿Éµş¼ÓÓÅ»İ£¬1-¿Éµş¼Ó]',
-   primary key (id)
-);
+    `id`                bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `sku_id`            bigint         DEFAULT NULL COMMENT 'sku_id',
+    `member_level_id`   bigint         DEFAULT NULL COMMENT 'ä¼šå‘˜ç­‰çº§id',
+    `member_level_name` varchar(100)   DEFAULT NULL COMMENT 'ä¼šå‘˜ç­‰çº§å',
+    `member_price`      decimal(18, 4) DEFAULT NULL COMMENT 'ä¼šå‘˜å¯¹åº”ä»·æ ¼',
+    `add_other`         tinyint(1)     DEFAULT NULL COMMENT 'å¯å¦å åŠ å…¶ä»–ä¼˜æƒ [0-ä¸å¯å åŠ ä¼˜æƒ ï¼Œ1-å¯å åŠ ]',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='å•†å“ä¼šå‘˜ä»·æ ¼';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-alter table sms_member_price comment 'ÉÌÆ·»áÔ±¼Û¸ñ';
+--
+-- Dumping data for table `sms_member_price`
+--
 
-/*==============================================================*/
-/* Table: sms_seckill_promotion                                 */
-/*==============================================================*/
-create table sms_seckill_promotion
+LOCK TABLES `sms_member_price` WRITE;
+/*!40000 ALTER TABLE `sms_member_price`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `sms_member_price`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sms_seckill_promotion`
+--
+
+DROP TABLE IF EXISTS `sms_seckill_promotion`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sms_seckill_promotion`
 (
-   id                   bigint not null auto_increment comment 'id',
-   title                varchar(255) comment '»î¶¯±êÌâ',
-   start_time           datetime comment '¿ªÊ¼ÈÕÆÚ',
-   end_time             datetime comment '½áÊøÈÕÆÚ',
-   status               tinyint comment 'ÉÏÏÂÏß×´Ì¬',
-   create_time          datetime comment '´´½¨Ê±¼ä',
-   user_id              bigint comment '´´½¨ÈË',
-   primary key (id)
-);
+    `id`          bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `title`       varchar(255) DEFAULT NULL COMMENT 'æ´»åŠ¨æ ‡é¢˜',
+    `start_time`  datetime     DEFAULT NULL COMMENT 'å¼€å§‹æ—¥æœŸ',
+    `end_time`    datetime     DEFAULT NULL COMMENT 'ç»“æŸæ—¥æœŸ',
+    `status`      tinyint      DEFAULT NULL COMMENT 'ä¸Šä¸‹çº¿çŠ¶æ€',
+    `create_time` datetime     DEFAULT NULL COMMENT 'åˆ›å»ºæ—¶é—´',
+    `user_id`     bigint       DEFAULT NULL COMMENT 'åˆ›å»ºäºº',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='ç§’æ€æ´»åŠ¨';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-alter table sms_seckill_promotion comment 'ÃëÉ±»î¶¯';
+--
+-- Dumping data for table `sms_seckill_promotion`
+--
 
-/*==============================================================*/
-/* Table: sms_seckill_session                                   */
-/*==============================================================*/
-create table sms_seckill_session
+LOCK TABLES `sms_seckill_promotion` WRITE;
+/*!40000 ALTER TABLE `sms_seckill_promotion`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `sms_seckill_promotion`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sms_seckill_session`
+--
+
+DROP TABLE IF EXISTS `sms_seckill_session`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sms_seckill_session`
 (
-   id                   bigint not null auto_increment comment 'id',
-   name                 varchar(200) comment '³¡´ÎÃû³Æ',
-   start_time           datetime comment 'Ã¿ÈÕ¿ªÊ¼Ê±¼ä',
-   end_time             datetime comment 'Ã¿ÈÕ½áÊøÊ±¼ä',
-   status               tinyint(1) comment 'ÆôÓÃ×´Ì¬',
-   create_time          datetime comment '´´½¨Ê±¼ä',
-   primary key (id)
-);
+    `id`          bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `name`        varchar(200) DEFAULT NULL COMMENT 'åœºæ¬¡åç§°',
+    `start_time`  datetime     DEFAULT NULL COMMENT 'æ¯æ—¥å¼€å§‹æ—¶é—´',
+    `end_time`    datetime     DEFAULT NULL COMMENT 'æ¯æ—¥ç»“æŸæ—¶é—´',
+    `status`      tinyint(1)   DEFAULT NULL COMMENT 'å¯ç”¨çŠ¶æ€',
+    `create_time` datetime     DEFAULT NULL COMMENT 'åˆ›å»ºæ—¶é—´',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='ç§’æ€æ´»åŠ¨åœºæ¬¡';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-alter table sms_seckill_session comment 'ÃëÉ±»î¶¯³¡´Î';
+--
+-- Dumping data for table `sms_seckill_session`
+--
 
-/*==============================================================*/
-/* Table: sms_seckill_sku_notice                                */
-/*==============================================================*/
-create table sms_seckill_sku_notice
+LOCK TABLES `sms_seckill_session` WRITE;
+/*!40000 ALTER TABLE `sms_seckill_session`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `sms_seckill_session`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sms_seckill_sku_notice`
+--
+
+DROP TABLE IF EXISTS `sms_seckill_sku_notice`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sms_seckill_sku_notice`
 (
-   id                   bigint not null auto_increment comment 'id',
-   member_id            bigint comment 'member_id',
-   sku_id               bigint comment 'sku_id',
-   session_id           bigint comment '»î¶¯³¡´Îid',
-   subcribe_time        datetime comment '¶©ÔÄÊ±¼ä',
-   send_time            datetime comment '·¢ËÍÊ±¼ä',
-   notice_type          tinyint(1) comment 'Í¨Öª·½Ê½[0-¶ÌĞÅ£¬1-ÓÊ¼ş]',
-   primary key (id)
-);
+    `id`            bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `member_id`     bigint     DEFAULT NULL COMMENT 'member_id',
+    `sku_id`        bigint     DEFAULT NULL COMMENT 'sku_id',
+    `session_id`    bigint     DEFAULT NULL COMMENT 'æ´»åŠ¨åœºæ¬¡id',
+    `subcribe_time` datetime   DEFAULT NULL COMMENT 'è®¢é˜…æ—¶é—´',
+    `send_time`     datetime   DEFAULT NULL COMMENT 'å‘é€æ—¶é—´',
+    `notice_type`   tinyint(1) DEFAULT NULL COMMENT 'é€šçŸ¥æ–¹å¼[0-çŸ­ä¿¡ï¼Œ1-é‚®ä»¶]',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='ç§’æ€å•†å“é€šçŸ¥è®¢é˜…';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-alter table sms_seckill_sku_notice comment 'ÃëÉ±ÉÌÆ·Í¨Öª¶©ÔÄ';
+--
+-- Dumping data for table `sms_seckill_sku_notice`
+--
 
-/*==============================================================*/
-/* Table: sms_seckill_sku_relation                              */
-/*==============================================================*/
-create table sms_seckill_sku_relation
+LOCK TABLES `sms_seckill_sku_notice` WRITE;
+/*!40000 ALTER TABLE `sms_seckill_sku_notice`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `sms_seckill_sku_notice`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sms_seckill_sku_relation`
+--
+
+DROP TABLE IF EXISTS `sms_seckill_sku_relation`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sms_seckill_sku_relation`
 (
-   id                   bigint not null auto_increment comment 'id',
-   promotion_id         bigint comment '»î¶¯id',
-   promotion_session_id bigint comment '»î¶¯³¡´Îid',
-   sku_id               bigint comment 'ÉÌÆ·id',
-   seckill_price        decimal comment 'ÃëÉ±¼Û¸ñ',
-   seckill_count        decimal comment 'ÃëÉ±×ÜÁ¿',
-   seckill_limit        decimal comment 'Ã¿ÈËÏŞ¹ºÊıÁ¿',
-   seckill_sort         int comment 'ÅÅĞò',
-   primary key (id)
-);
+    `id`                   bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `promotion_id`         bigint         DEFAULT NULL COMMENT 'æ´»åŠ¨id',
+    `promotion_session_id` bigint         DEFAULT NULL COMMENT 'æ´»åŠ¨åœºæ¬¡id',
+    `sku_id`               bigint         DEFAULT NULL COMMENT 'å•†å“id',
+    `seckill_price`        decimal(10, 4) DEFAULT NULL COMMENT 'ç§’æ€ä»·æ ¼',
+    `seckill_count`        int            DEFAULT NULL COMMENT 'ç§’æ€æ€»é‡',
+    `seckill_limit`        int            DEFAULT NULL COMMENT 'æ¯äººé™è´­æ•°é‡',
+    `seckill_sort`         int            DEFAULT NULL COMMENT 'æ’åº',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='ç§’æ€æ´»åŠ¨å•†å“å…³è”';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-alter table sms_seckill_sku_relation comment 'ÃëÉ±»î¶¯ÉÌÆ·¹ØÁª';
+--
+-- Dumping data for table `sms_seckill_sku_relation`
+--
 
-/*==============================================================*/
-/* Table: sms_sku_full_reduction                                */
-/*==============================================================*/
-create table sms_sku_full_reduction
+LOCK TABLES `sms_seckill_sku_relation` WRITE;
+/*!40000 ALTER TABLE `sms_seckill_sku_relation`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `sms_seckill_sku_relation`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sms_sku_full_reduction`
+--
+
+DROP TABLE IF EXISTS `sms_sku_full_reduction`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sms_sku_full_reduction`
 (
-   id                   bigint not null auto_increment comment 'id',
-   sku_id               bigint comment 'spu_id',
-   full_price           decimal(18,4) comment 'Âú¶àÉÙ',
-   reduce_price         decimal(18,4) comment '¼õ¶àÉÙ',
-   add_other            tinyint(1) comment 'ÊÇ·ñ²ÎÓëÆäËûÓÅ»İ',
-   primary key (id)
-);
+    `id`           bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `sku_id`       bigint         DEFAULT NULL COMMENT 'spu_id',
+    `full_price`   decimal(18, 4) DEFAULT NULL COMMENT 'æ»¡å¤šå°‘',
+    `reduce_price` decimal(18, 4) DEFAULT NULL COMMENT 'å‡å¤šå°‘',
+    `add_other`    tinyint(1)     DEFAULT NULL COMMENT 'æ˜¯å¦å‚ä¸å…¶ä»–ä¼˜æƒ ',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='å•†å“æ»¡å‡ä¿¡æ¯';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-alter table sms_sku_full_reduction comment 'ÉÌÆ·Âú¼õĞÅÏ¢';
+--
+-- Dumping data for table `sms_sku_full_reduction`
+--
 
-/*==============================================================*/
-/* Table: sms_sku_ladder                                        */
-/*==============================================================*/
-create table sms_sku_ladder
+LOCK TABLES `sms_sku_full_reduction` WRITE;
+/*!40000 ALTER TABLE `sms_sku_full_reduction`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `sms_sku_full_reduction`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sms_sku_ladder`
+--
+
+DROP TABLE IF EXISTS `sms_sku_ladder`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sms_sku_ladder`
 (
-   id                   bigint not null auto_increment comment 'id',
-   sku_id               bigint comment 'spu_id',
-   full_count           int comment 'Âú¼¸¼ş',
-   discount             decimal(4,2) comment '´ò¼¸ÕÛ',
-   price                decimal(18,4) comment 'ÕÛºó¼Û',
-   add_other            tinyint(1) comment 'ÊÇ·ñµş¼ÓÆäËûÓÅ»İ[0-²»¿Éµş¼Ó£¬1-¿Éµş¼Ó]',
-   primary key (id)
-);
+    `id`         bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `sku_id`     bigint         DEFAULT NULL COMMENT 'spu_id',
+    `full_count` int            DEFAULT NULL COMMENT 'æ»¡å‡ ä»¶',
+    `discount`   decimal(4, 2)  DEFAULT NULL COMMENT 'æ‰“å‡ æŠ˜',
+    `price`      decimal(18, 4) DEFAULT NULL COMMENT 'æŠ˜åä»·',
+    `add_other`  tinyint(1)     DEFAULT NULL COMMENT 'æ˜¯å¦å åŠ å…¶ä»–ä¼˜æƒ [0-ä¸å¯å åŠ ï¼Œ1-å¯å åŠ ]',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='å•†å“é˜¶æ¢¯ä»·æ ¼';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-alter table sms_sku_ladder comment 'ÉÌÆ·½×Ìİ¼Û¸ñ';
+--
+-- Dumping data for table `sms_sku_ladder`
+--
 
-/*==============================================================*/
-/* Table: sms_spu_bounds                                        */
-/*==============================================================*/
-create table sms_spu_bounds
+LOCK TABLES `sms_sku_ladder` WRITE;
+/*!40000 ALTER TABLE `sms_sku_ladder`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `sms_sku_ladder`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sms_spu_bounds`
+--
+
+DROP TABLE IF EXISTS `sms_spu_bounds`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sms_spu_bounds`
 (
-   id                   bigint not null auto_increment comment 'id',
-   spu_id               bigint,
-   grow_bounds          decimal(18,4) comment '³É³¤»ı·Ö',
-   buy_bounds           decimal(18,4) comment '¹ºÎï»ı·Ö',
-   work                 tinyint(1) comment 'ÓÅ»İÉúĞ§Çé¿ö[1111£¨ËÄ¸ö×´Ì¬Î»£¬´ÓÓÒµ½×ó£©;0 - ÎŞÓÅ»İ£¬³É³¤»ı·ÖÊÇ·ñÔùËÍ;1 - ÎŞÓÅ»İ£¬¹ºÎï»ı·ÖÊÇ·ñÔùËÍ;2 - ÓĞÓÅ»İ£¬³É³¤»ı·ÖÊÇ·ñÔùËÍ;3 - ÓĞÓÅ»İ£¬¹ºÎï»ı·ÖÊÇ·ñÔùËÍ¡¾×´Ì¬Î»0£º²»ÔùËÍ£¬1£ºÔùËÍ¡¿]',
-   primary key (id)
-);
+    `id`          bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `spu_id`      bigint         DEFAULT NULL,
+    `grow_bounds` decimal(18, 4) DEFAULT NULL COMMENT 'æˆé•¿ç§¯åˆ†',
+    `buy_bounds`  decimal(18, 4) DEFAULT NULL COMMENT 'è´­ç‰©ç§¯åˆ†',
+    `work`        tinyint(1)     DEFAULT NULL COMMENT 'ä¼˜æƒ ç”Ÿæ•ˆæƒ…å†µ[1111ï¼ˆå››ä¸ªçŠ¶æ€ä½ï¼Œä»å³åˆ°å·¦ï¼‰;0 - æ— ä¼˜æƒ ï¼Œæˆé•¿ç§¯åˆ†æ˜¯å¦èµ é€;1 - æ— ä¼˜æƒ ï¼Œè´­ç‰©ç§¯åˆ†æ˜¯å¦èµ é€;2 - æœ‰ä¼˜æƒ ï¼Œæˆé•¿ç§¯åˆ†æ˜¯å¦èµ é€;3 - æœ‰ä¼˜æƒ ï¼Œè´­ç‰©ç§¯åˆ†æ˜¯å¦èµ é€ã€çŠ¶æ€ä½0ï¼šä¸èµ é€ï¼Œ1ï¼šèµ é€ã€‘]',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='å•†å“spuç§¯åˆ†è®¾ç½®';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-alter table sms_spu_bounds comment 'ÉÌÆ·spu»ı·ÖÉèÖÃ';
+--
+-- Dumping data for table `sms_spu_bounds`
+--
+
+LOCK TABLES `sms_spu_bounds` WRITE;
+/*!40000 ALTER TABLE `sms_spu_bounds`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `sms_spu_bounds`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `undo_log`
+--
+
+DROP TABLE IF EXISTS `undo_log`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `undo_log`
+(
+    `id`            bigint       NOT NULL AUTO_INCREMENT,
+    `branch_id`     bigint       NOT NULL,
+    `xid`           varchar(100) NOT NULL,
+    `context`       varchar(128) NOT NULL,
+    `rollback_info` longblob     NOT NULL,
+    `log_status`    int          NOT NULL,
+    `log_created`   datetime     NOT NULL,
+    `log_modified`  datetime     NOT NULL,
+    `ext`           varchar(100) DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `ux_undo_log` (`xid`, `branch_id`) USING BTREE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `undo_log`
+--
+
+LOCK TABLES `undo_log` WRITE;
+/*!40000 ALTER TABLE `undo_log`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `undo_log`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE = @OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE = @OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS = @OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT = @OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS = @OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
+
+-- Dump completed on 2023-12-28 10:22:21

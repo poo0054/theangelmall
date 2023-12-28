@@ -42,7 +42,6 @@ public class CategoryController {
     @PreAuthorize("hasAuthority('product:category:list')")
     public R info(@PathVariable("catId") Long catId) {
         CategoryEntity category = categoryService.getById(catId);
-
         return R.httpStatus().put("data", category);
     }
 
