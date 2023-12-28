@@ -1,16 +1,7 @@
 <template>
-  <el-dialog
-    :title="!dataForm.id ? '新增' : '修改'"
-    :close-on-click-modal="false"
-    :visible.sync="visible"
-  >
-    <el-form
-      :model="dataForm"
-      :rules="dataRule"
-      ref="dataForm"
-      @keyup.enter.native="dataFormSubmit()"
-      label-width="140px"
-    >
+  <el-dialog :close-on-click-modal="false" :title="!dataForm.id ? '新增' : '修改'" :visible.sync="visible">
+    <el-form ref="dataForm" :model="dataForm" :rules="dataRule" label-width="140px"
+             @keyup.enter.native="dataFormSubmit()">
       <el-form-item label="品牌名" prop="name">
         <el-input v-model="dataForm.name" placeholder="品牌名"></el-input>
       </el-form-item>
@@ -22,13 +13,8 @@
         <el-input v-model="dataForm.descript" placeholder="介绍"></el-input>
       </el-form-item>
       <el-form-item label="显示状态" prop="showStatus">
-        <el-switch
-          v-model="dataForm.showStatus"
-          active-color="#13ce66"
-          inactive-color="#ff4949"
-          :active-value="1"
-          :inactive-value="0"
-        ></el-switch>
+        <el-switch v-model="dataForm.showStatus" :active-value="1" :inactive-value="0" active-color="#13ce66"
+                   inactive-color="#ff4949"></el-switch>
       </el-form-item>
       <el-form-item label="检索首字母" prop="firstLetter">
         <el-input v-model="dataForm.firstLetter" placeholder="检索首字母"></el-input>
@@ -122,12 +108,12 @@ export default {
             params: this.$http.adornParams()
           }).then(({data}) => {
             if (data && data.code === '00000') {
-              this.dataForm.name = data.brand.name;
-              this.dataForm.logo = data.brand.logo;
-              this.dataForm.descript = data.brand.descript;
-              this.dataForm.showStatus = data.brand.showStatus;
-              this.dataForm.firstLetter = data.brand.firstLetter;
-              this.dataForm.sort = data.brand.sort;
+              this.dataForm.name = data.data.name;
+              this.dataForm.logo = data.data.logo;
+              this.dataForm.descript = data.data.descript;
+              this.dataForm.showStatus = data.data.showStatus;
+              this.dataForm.firstLetter = data.data.firstLetter;
+              this.dataForm.sort = data.data.sort;
             }
           });
         }

@@ -1,7 +1,8 @@
 package com.themall.product.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.themall.common.utils.PageUtils;
 import com.themall.common.utils.Query;
@@ -9,11 +10,12 @@ import com.themall.product.dao.BrandDao;
 import com.themall.product.pojo.entity.BrandEntity;
 import com.themall.product.service.BrandService;
 import com.themall.product.service.CategoryBrandRelationService;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -31,16 +33,14 @@ public class BrandServiceImpl extends ServiceImpl<BrandDao, BrandEntity> impleme
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        String key = (String) params.get("key");
-        QueryWrapper<BrandEntity> queryWrapper = new QueryWrapper<>();
-        if (!StringUtils.isEmpty(key)) {
-            queryWrapper.like("brand_id", key).
-                    or().like("name", key).
-                    or().like("descript", key);
+        Object key = params.get("key");
+        LambdaQueryWrapper<BrandEntity> queryWrapper = Wrappers.lambdaQuery(BrandEntity.class);
+        if (ObjectUtils.isNotEmpty(key)) {
+            queryWrapper.eq(BrandEntity::getBrandId, key).
+                    or().eq(BrandEntity::getName, key).
+                    or().eq(BrandEntity::getDescript, key);
         }
-
         IPage<BrandEntity> page = this.page(new Query<BrandEntity>().getPage(params), queryWrapper);
-
         return new PageUtils(page);
     }
 

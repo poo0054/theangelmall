@@ -52,7 +52,7 @@ public class BrandController {
     @PreAuthorize("hasAuthority('product:brand:list')")
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = brandService.queryPage(params);
-        return R.httpStatus().put("page", page);
+        return R.httpStatus().setData(page);
     }
 
 
@@ -63,8 +63,7 @@ public class BrandController {
     @PreAuthorize("hasAuthority('product:brand:list')")
     public R info(@PathVariable("brandId") Long brandId) {
         BrandEntity brand = brandService.getById(brandId);
-
-        return R.httpStatus().put("brand", brand);
+        return R.httpStatus().setData(brand);
     }
 
     /**

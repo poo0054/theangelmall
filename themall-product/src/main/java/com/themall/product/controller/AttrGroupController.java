@@ -31,6 +31,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("product/attrgroup")
 public class AttrGroupController {
+
     private AttrGroupService attrGroupService;
     private CategoryService categoryService;
     private AttrService attrService;
@@ -126,7 +127,6 @@ public class AttrGroupController {
     @RequestMapping(value = "/list/{cateLogId}", method = RequestMethod.GET)
     //@RequiresPermissions("product:attrgroup:list")
     public R list(@RequestParam Map<String, Object> params, @PathVariable("cateLogId") Long cateLogId) {
-//        PageUtils page = attrGroupService.queryPage(params);
         PageUtils page = attrGroupService.queryPage(params, cateLogId);
         return R.httpStatus().put("page", page);
     }

@@ -8,6 +8,7 @@ import com.themall.product.pojo.entity.CategoryBrandRelationEntity;
 import com.themall.product.pojo.vo.BrandVo;
 import com.themall.product.service.CategoryBrandRelationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -26,14 +27,19 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("product/categorybrandrelation")
 public class CategoryBrandRelationController {
-    @Autowired
+
     private CategoryBrandRelationService categoryBrandRelationService;
+
+    @Autowired
+    public void setCategoryBrandRelationService(CategoryBrandRelationService categoryBrandRelationService) {
+        this.categoryBrandRelationService = categoryBrandRelationService;
+    }
 
     /**
      * 列表
      */
     @RequestMapping("/list")
-    //@RequiresPermissions("product:categorybrandrelation:list")
+    @PreAuthorize("hasAuthority('product:brand:list')")
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = categoryBrandRelationService.queryPage(params);
         return R.httpStatus().put("page", page);
@@ -43,8 +49,8 @@ public class CategoryBrandRelationController {
      * /product/categorybrandrelation/brands/list
      */
     @GetMapping("/brands/list")
-    public R brandslist(@RequestParam(required = true, value = "catId") Long catId) {
-//        PageUtils page = categoryBrandRelationService.queryPage(params);
+    @PreAuthorize("hasAuthority('product:brand:list')")
+    public R brandslist(@RequestParam(value = "catId") Long catId) {
         List<BrandEntity> brand_id = categoryBrandRelationService.getBrandslis(catId);
 
         List<BrandVo> collect = brand_id.stream().map(brandEntity -> {
@@ -53,18 +59,17 @@ public class CategoryBrandRelationController {
             brandVo.setBrandName(brandEntity.getName());
             return brandVo;
         }).collect(Collectors.toList());
-        return R.httpStatus().put("data", collect);
+        return R.httpStatus().setData(collect);
     }
 
     /**
-     * 品牌关联分类
+     * 品牌查询所有分类
      */
     @GetMapping("/catelog/list")
-    //@RequiresPermissions("product:categorybrandrelation:list")
+    @PreAuthorize("hasAuthority('product:brand:list')")
     public R cateloglist(@RequestParam Long brandId) {
-//        PageUtils page = categoryBrandRelationService.queryPage(params);
         List<CategoryBrandRelationEntity> brand_id = categoryBrandRelationService.list(new QueryWrapper<CategoryBrandRelationEntity>().eq("brand_id", brandId));
-        return R.httpStatus().put("data", brand_id);
+        return R.httpStatus().setData(brand_id);
     }
 
 
@@ -72,10 +77,9 @@ public class CategoryBrandRelationController {
      * 信息
      */
     @RequestMapping("/info/{id}")
-    //@RequiresPermissions("product:categorybrandrelation:info")
+    @PreAuthorize("hasAuthority('product:brand:list')")
     public R info(@PathVariable("id") Long id) {
         CategoryBrandRelationEntity categoryBrandRelation = categoryBrandRelationService.getById(id);
-
         return R.httpStatus().put("categoryBrandRelation", categoryBrandRelation);
     }
 
@@ -83,7 +87,7 @@ public class CategoryBrandRelationController {
      * 保存
      */
     @RequestMapping("/save")
-    //@RequiresPermissions("product:categorybrandrelation:save")
+    @PreAuthorize("hasAuthority('product:brand:save')")
     public R save(@RequestBody CategoryBrandRelationEntity categoryBrandRelation) {
         categoryBrandRelationService.saveDatail(categoryBrandRelation);
 
@@ -94,7 +98,7 @@ public class CategoryBrandRelationController {
      * 修改
      */
     @RequestMapping("/update")
-    //@RequiresPermissions("product:categorybrandrelation:update")
+    @PreAuthorize("hasAuthority('product:brand:update')")
     public R update(@RequestBody CategoryBrandRelationEntity categoryBrandRelation) {
         categoryBrandRelationService.updateById(categoryBrandRelation);
 
@@ -105,7 +109,7 @@ public class CategoryBrandRelationController {
      * 删除
      */
     @RequestMapping("/delete")
-    //@RequiresPermissions("product:categorybrandrelation:delete")
+    @PreAuthorize("hasAuthority('product:brand:delete')")
     public R delete(@RequestBody Long[] ids) {
         categoryBrandRelationService.removeByIds(Arrays.asList(ids));
 

@@ -12,10 +12,10 @@ import com.themall.product.pojo.vo.AttrGroupWithAttrsVo;
 import com.themall.product.pojo.vo.SpuItemAttrGroupVo;
 import com.themall.product.service.AttrGroupService;
 import com.themall.product.service.AttrService;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -36,8 +36,7 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         IPage<AttrGroupEntity> page = this.page(
-                new Query<AttrGroupEntity>().getPage(params),
-                new QueryWrapper<AttrGroupEntity>()
+                new Query<AttrGroupEntity>().getPage(params)
         );
 
         return new PageUtils(page);
@@ -45,10 +44,10 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
 
     @Override
     public PageUtils queryPage(Map<String, Object> params, Long cateLogId) {
-        String key = (String) params.get("key");
+        Object key = params.get("key");
         QueryWrapper<AttrGroupEntity> wrapper = new QueryWrapper<>();
 
-        if (!StringUtils.isEmpty(key)) {
+        if (ObjectUtils.isNotEmpty(key)) {
             wrapper.and((obj) -> {
                 obj.like("attr_group_id", key).or().like("attr_group_name", key).or().like("descript", key);
             });

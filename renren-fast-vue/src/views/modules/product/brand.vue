@@ -6,51 +6,29 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-        <el-button
-          v-if="isAuth('product:brand:save')"
-          type="primary"
-          @click="addOrUpdateHandle()"
-        >新增
+        <el-button v-if="isAuth('product:brand:save')" type="primary" @click="addOrUpdateHandle()">新增
         </el-button>
-        <el-button
-          v-if="isAuth('product:brand:delete')"
-          type="danger"
-          @click="deleteHandle()"
-          :disabled="dataListSelections.length <= 0"
-        >批量删除
+        <el-button v-if="isAuth('product:brand:delete')" :disabled="dataListSelections.length <= 0" type="danger"
+                   @click="deleteHandle()">批量删除
         </el-button>
       </el-form-item>
     </el-form>
-    <el-table
-      :data="dataList"
-      border
-      v-loading="dataListLoading"
-      @selection-change="selectionChangeHandle"
-      style="width: 100%;"
-    >
+    <el-table v-loading="dataListLoading" :data="dataList" border style="width: 100%;"
+              @selection-change="selectionChangeHandle">
       <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
       <el-table-column prop="brandId" header-align="center" align="center" label="品牌id"></el-table-column>
       <el-table-column prop="name" header-align="center" align="center" label="品牌名"></el-table-column>
       <el-table-column prop="logo" header-align="center" align="center" label="品牌logo地址">
         <template slot-scope="scope">
-          <!-- <el-image
-              style="width: 100px; height: 80px"
-              :src="scope.row.logo"
-          fit="fill"></el-image>-->
+          <!-- <el-imael-image>-->
           <img :src="scope.row.logo" style="width: 100px; height: 80px"/>
         </template>
       </el-table-column>
       <el-table-column prop="descript" header-align="center" align="center" label="介绍"></el-table-column>
       <el-table-column prop="showStatus" header-align="center" align="center" label="显示状态">
         <template slot-scope="scope">
-          <el-switch
-            v-model="scope.row.showStatus"
-            active-color="#13ce66"
-            inactive-color="#ff4949"
-            :active-value="1"
-            :inactive-value="0"
-            @change="updateBrandStatus(scope.row)"
-          ></el-switch>
+          <el-switch v-model="scope.row.showStatus" :active-value="1" :inactive-value="0" active-color="#13ce66"
+                     inactive-color="#ff4949" @change="updateBrandStatus(scope.row)"></el-switch>
         </template>
       </el-table-column>
       <el-table-column prop="firstLetter" header-align="center" align="center" label="检索首字母"></el-table-column>
@@ -63,15 +41,9 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination
-      @size-change="sizeChangeHandle"
-      @current-change="currentChangeHandle"
-      :current-page="pageIndex"
-      :page-sizes="[10, 20, 50, 100]"
-      :page-size="pageSize"
-      :total="totalPage"
-      layout="total, sizes, prev, pager, next, jumper"
-    ></el-pagination>
+    <el-pagination :current-page="pageIndex" :page-size="pageSize" :page-sizes="[10, 20, 50, 100]"
+                   :total="totalPage" layout="total, sizes, prev, pager, next, jumper" @size-change="sizeChangeHandle"
+                   @current-change="currentChangeHandle"></el-pagination>
     <!-- 弹窗, 新增 / 修改 -->
     <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
 
@@ -90,11 +62,7 @@
         <el-table-column prop="catelogName" label="分类名"></el-table-column>
         <el-table-column fixed="right" header-align="center" align="center" label="操作">
           <template slot-scope="scope">
-            <el-button
-              type="text"
-              size="small"
-              @click="deleteCateRelationHandle(scope.row.id,scope.row.brandId)"
-            >移除
+            <el-button size="small" type="text" @click="deleteCateRelationHandle(scope.row.id, scope.row.brandId)">移除
             </el-button>
           </template>
         </el-table-column>
@@ -191,8 +159,8 @@ export default {
         })
       }).then(({data}) => {
         if (data && data.code === '00000') {
-          this.dataList = data.page.list;
-          this.totalPage = data.page.totalCount;
+          this.dataList = data.data.list;
+          this.totalPage = data.data.totalCount;
         } else {
           this.dataList = [];
           this.totalPage = 0;
