@@ -9,7 +9,7 @@
 package com.themall.oauthserver.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.themall.model.entity.SysUserRoleEntity;
+import com.themall.model.entity.SysUserRole;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.List;
  * @author Mark sunlightcs@gmail.com
  */
 @Mapper
-public interface SysUserRoleDao extends BaseMapper<SysUserRoleEntity> {
+public interface SysUserRoleDao extends BaseMapper<SysUserRole> {
 
     /**
      * 根据用户ID，获取角色ID列表

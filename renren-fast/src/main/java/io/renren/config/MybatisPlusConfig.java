@@ -9,6 +9,10 @@
 package io.renren.config;
 
 import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.autoconfigure.MybatisPlusProperties;
+import com.baomidou.mybatisplus.autoconfigure.MybatisPlusPropertiesCustomizer;
+import com.baomidou.mybatisplus.core.config.GlobalConfig;
+import com.baomidou.mybatisplus.core.handlers.MybatisEnumTypeHandler;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.themall.common.mybatisplus.MyMetaObjectHandler;
@@ -23,6 +27,17 @@ import org.springframework.context.annotation.Configuration;
 @Configuration(proxyBeanMethods = false)
 public class MybatisPlusConfig {
 
+    @Bean
+    public MybatisPlusPropertiesCustomizer mybatisPlusPropertiesCustomizer() {
+        return properties -> {
+            GlobalConfig globalConfig = properties.getGlobalConfig();
+            globalConfig.setBanner(false);
+
+            MybatisPlusProperties.CoreConfiguration configuration = new MybatisPlusProperties.CoreConfiguration();
+            configuration.setDefaultEnumTypeHandler(MybatisEnumTypeHandler.class);
+            properties.setConfiguration(configuration);
+        };
+    }
 
     /**
      * 添加分页插件

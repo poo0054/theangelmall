@@ -16,13 +16,13 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
         log.info("start insert fill ....");
-        if (metaObject.hasSetter("createTime")) {
+        if (metaObject.hasSetter("createDate")) {
             this.strictInsertFill(metaObject, "createTime", LocalDateTime.class, LocalDateTime.now()); // 起始版本 3.3.0(推荐使用)
         }
         if (metaObject.hasSetter("createBy")) {
             this.strictInsertFill(metaObject, "createBy", String.class, SecurityContextHolder.getContext().getAuthentication().getName());
         }
-        if (metaObject.hasSetter("updateTime")) {
+        if (metaObject.hasSetter("updateDate")) {
             this.strictInsertFill(metaObject, "updateTime", LocalDateTime.class, LocalDateTime.now()); // 起始版本 3.3.0(推荐使用)
         }
         if (metaObject.hasSetter("updateBy")) {
@@ -35,7 +35,7 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void updateFill(MetaObject metaObject) {
         log.info("start update fill ....");
-        if (metaObject.hasSetter("updateTime")) {
+        if (metaObject.hasSetter("updateDate")) {
             this.strictInsertFill(metaObject, "updateTime", LocalDateTime.class, LocalDateTime.now()); // 起始版本 3.3.0(推荐使用)
         }
         if (metaObject.hasSetter("updateBy")) {

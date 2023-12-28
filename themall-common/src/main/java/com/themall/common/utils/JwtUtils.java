@@ -8,7 +8,7 @@
 
 package com.themall.common.utils;
 
-import com.themall.model.entity.SysUserEntity;
+import com.themall.model.entity.SysUser;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -40,7 +40,7 @@ public class JwtUtils {
     /**
      * 生成jwt token
      */
-    public static String generateToken(String subject, SysUserEntity userName) {
+    public static String generateToken(String subject, SysUser userName) {
         Date nowDate = new Date();
         //过期时间
         Date expireDate = new Date(nowDate.getTime() + EXPIRE * 1000);

@@ -27,7 +27,7 @@
         <commons-io.version>2.15.1</commons-io.version>
         <commons-codec.version>1.16.0</commons-codec.version>
         <mysql-connector.version>8.0.25</mysql-connector.version>
-        <mybatis-plus.version>3.5.4.1</mybatis-plus.version>
+        <mybatis-plus.version>3.5.5</mybatis-plus.version>
         <lombok.version>1.18.10</lombok.version>
         <junit.version>4.13.2</junit.version>
         <qcloud.version>5.6.38</qcloud.version>

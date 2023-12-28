@@ -9,7 +9,7 @@
 package com.themall.oauthserver.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.themall.model.entity.SysUserEntity;
+import com.themall.model.entity.SysUser;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -18,7 +18,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @author Mark sunlightcs@gmail.com
  */
 @Mapper
-public interface SysUserDao extends BaseMapper<SysUserEntity> {
+public interface SysUserDao extends BaseMapper<SysUser> {
 
 
 }

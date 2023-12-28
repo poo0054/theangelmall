@@ -9,7 +9,7 @@
 package com.themall.oauthserver.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.themall.model.entity.SysRoleEntity;
+import com.themall.model.entity.SysRole;
 
 import java.util.List;
 
@@ -19,8 +19,8 @@ import java.util.List;
  *
  * @author Mark sunlightcs@gmail.com
  */
-public interface SysRoleService extends IService<SysRoleEntity> {
+public interface SysRoleService extends IService<SysRole> {
 
 
-    List<SysRoleEntity> listByUserId(Long userId);
+    List<SysRole> listByUserId(Long userId);
 }

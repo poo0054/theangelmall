@@ -9,7 +9,7 @@
 package com.themall.oauthserver.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.themall.model.entity.SysUserRoleEntity;
+import com.themall.model.entity.SysUserRole;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ import java.util.List;
  *
  * @author Mark sunlightcs@gmail.com
  */
-public interface SysUserRoleService extends IService<SysUserRoleEntity> {
+public interface SysUserRoleService extends IService<SysUserRole> {
 
 
     /**

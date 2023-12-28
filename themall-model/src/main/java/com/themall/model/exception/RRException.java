@@ -8,7 +8,7 @@
 
 package com.themall.model.exception;
 
-import com.themall.model.constants.HttpStatusEnum;
+import com.themall.model.enums.HttpStatusEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

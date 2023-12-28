@@ -9,7 +9,7 @@
 package com.themall.oauthserver.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.themall.model.entity.SysMenuEntity;
+import com.themall.model.entity.SysMenu;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -20,8 +20,7 @@ import java.util.List;
  * @author Mark sunlightcs@gmail.com
  */
 @Mapper
-public interface SysMenuDao extends BaseMapper<SysMenuEntity> {
-
+public interface SysMenuDao extends BaseMapper<SysMenu> {
 
     List<Long> queryAllMenuId(Long userId);
 }

@@ -11,9 +11,9 @@ package com.themall.oauthserver.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.themall.model.entity.SysMenuEntity;
-import com.themall.model.entity.SysRoleEntity;
-import com.themall.model.entity.SysUserEntity;
+import com.themall.model.entity.SysMenu;
+import com.themall.model.entity.SysRole;
+import com.themall.model.entity.SysUser;
 import com.themall.oauthserver.dao.SysUserDao;
 import com.themall.oauthserver.service.SysMenuService;
 import com.themall.oauthserver.service.SysRoleService;
@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
  * @author Mark sunlightcs@gmail.com
  */
 @Service("sysUserService")
-public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> implements SysUserService {
+public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUser> implements SysUserService {
 
 
     private SysRoleService sysRoleService;
@@ -61,7 +61,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         if (null == username) {
             return null;
         }
-        SysUserEntity sysUserEntity = this.getByUserName(username);
+        SysUser sysUserEntity = this.getByUserName(username);
         if (null == sysUserEntity) {
             return null;
         }
@@ -80,15 +80,15 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
     public Set<GrantedAuthority> getAuth(Long userId) {
         Set<String> auth = new HashSet<>();
         //权限
-        List<SysRoleEntity> roleServiceAll = sysRoleService.listByUserId(userId);
+        List<SysRole> roleServiceAll = sysRoleService.listByUserId(userId);
         if (ObjectUtils.isNotEmpty(roleServiceAll)) {
-            List<String> roles = roleServiceAll.stream().map(SysRoleEntity::getRoleName).collect(Collectors.toList());
+            List<String> roles = roleServiceAll.stream().map(SysRole::getRoleName).collect(Collectors.toList());
             auth.addAll(roles);
         }
         //菜单
-        List<SysMenuEntity> sysMenuEntities = sysMenuService.listByUserId(userId);
+        List<SysMenu> sysMenuEntities = sysMenuService.listByUserId(userId);
         if (ObjectUtils.isNotEmpty(sysMenuEntities)) {
-            auth.addAll(sysMenuEntities.stream().map(SysMenuEntity::getPerms).filter(ObjectUtils::isNotEmpty).collect(Collectors.toList()));
+            auth.addAll(sysMenuEntities.stream().map(SysMenu::getPerms).filter(ObjectUtils::isNotEmpty).collect(Collectors.toList()));
         }
         Set<GrantedAuthority> authorities = new HashSet<>();
         for (String s : auth) {
@@ -98,18 +98,18 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
     }
 
     @Override
-    public SysUserEntity getByUserName(String username) {
-        LambdaQueryWrapper<SysUserEntity> lambdaQuery = Wrappers.lambdaQuery(SysUserEntity.class);
-        lambdaQuery.eq(SysUserEntity::getUsername, username);
+    public SysUser getByUserName(String username) {
+        LambdaQueryWrapper<SysUser> lambdaQuery = Wrappers.lambdaQuery(SysUser.class);
+        lambdaQuery.eq(SysUser::getUsername, username);
         return getOne(lambdaQuery);
     }
 
     @Override
-    public SysUserEntity getByLoginName(String oauthId) {
-        LambdaQueryWrapper<SysUserEntity> lambdaQuery = Wrappers.lambdaQuery(SysUserEntity.class);
-        lambdaQuery.eq(SysUserEntity::getOauthId, oauthId)
+    public SysUser getByLoginName(String oauthId) {
+        LambdaQueryWrapper<SysUser> lambdaQuery = Wrappers.lambdaQuery(SysUser.class);
+        lambdaQuery.eq(SysUser::getOauthId, oauthId)
                 .or()
-                .eq(SysUserEntity::getUsername, oauthId);
+                .eq(SysUser::getUsername, oauthId);
         return getOne(lambdaQuery);
     }
 }

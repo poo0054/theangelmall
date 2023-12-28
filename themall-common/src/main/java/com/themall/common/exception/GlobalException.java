@@ -8,8 +8,8 @@
 
 package com.themall.common.exception;
 
-import com.themall.model.constants.HttpStatusEnum;
 import com.themall.model.entity.R;
+import com.themall.model.enums.HttpStatusEnum;
 import com.themall.model.exception.RRException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;

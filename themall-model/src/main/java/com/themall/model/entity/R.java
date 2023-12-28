@@ -11,7 +11,7 @@ package com.themall.model.entity;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.TypeReference;
-import com.themall.model.constants.HttpStatusEnum;
+import com.themall.model.enums.HttpStatusEnum;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,10 +59,14 @@ public class R extends HashMap<String, Object> {
         return r;
     }
 
+    public static R data(Object data) {
+        return new R().setData(data);
+    }
 
     public static R ok() {
         return new R();
     }
+
 
     public static R ok(String msg) {
         R r = new R();

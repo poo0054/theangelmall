@@ -10,7 +10,7 @@ package com.themall.oauthserver.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.themall.model.constants.Constant;
-import com.themall.model.entity.SysRoleEntity;
+import com.themall.model.entity.SysRole;
 import com.themall.oauthserver.dao.SysRoleDao;
 import com.themall.oauthserver.service.SysRoleService;
 import org.springframework.stereotype.Service;
@@ -24,10 +24,10 @@ import java.util.Objects;
  * @author Mark sunlightcs@gmail.com
  */
 @Service("sysRoleService")
-public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRoleEntity> implements SysRoleService {
+public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRole> implements SysRoleService {
 
     @Override
-    public List<SysRoleEntity> listByUserId(Long userId) {
+    public List<SysRole> listByUserId(Long userId) {
         if (Objects.equals(Constant.SUPER_ADMIN, userId)) {
             return this.list();
         }

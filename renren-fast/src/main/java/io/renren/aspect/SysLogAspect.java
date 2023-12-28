@@ -16,8 +16,8 @@ import com.alibaba.fastjson2.JSONWriter;
 import com.themall.common.utils.ServletUtils;
 import com.themall.model.constants.BusinessStatus;
 import io.renren.annotation.SysLog;
-import io.renren.modules.sys.entity.sysLog;
-import io.renren.modules.sys.service.SysLogService;
+import io.renren.pojo.entity.sysLog;
+import io.renren.service.SysLogService;
 import io.renren.utils.IPUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
@@ -104,7 +104,7 @@ public class SysLogAspect {
             // 获取当前的用户
 
             // *========数据库日志=========*//
-            io.renren.modules.sys.entity.sysLog operLog = new sysLog();
+            io.renren.pojo.entity.sysLog operLog = new sysLog();
             operLog.setStatus(BusinessStatus.SUCCESS.ordinal());
             // 请求的地址
             HttpServletRequest request = ServletUtils.getRequest();

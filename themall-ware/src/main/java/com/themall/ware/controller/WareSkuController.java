@@ -1,8 +1,8 @@
 package com.themall.ware.controller;
 
 import com.themall.common.utils.PageUtils;
-import com.themall.model.constants.HttpStatusEnum;
 import com.themall.model.entity.R;
+import com.themall.model.enums.HttpStatusEnum;
 import com.themall.model.exception.NoStockException;
 import com.themall.model.to.SkuHasStockVo;
 import com.themall.ware.entity.WareSkuEntity;

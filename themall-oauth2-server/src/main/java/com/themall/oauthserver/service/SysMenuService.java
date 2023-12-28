@@ -10,7 +10,7 @@ package com.themall.oauthserver.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.themall.model.entity.SysMenuEntity;
+import com.themall.model.entity.SysMenu;
 
 import java.util.List;
 
@@ -20,9 +20,9 @@ import java.util.List;
  *
  * @author Mark sunlightcs@gmail.com
  */
-public interface SysMenuService extends IService<SysMenuEntity> {
+public interface SysMenuService extends IService<SysMenu> {
 
-    List<SysMenuEntity> listByUserId(Long userId);
+    List<SysMenu> listByUserId(Long userId);
 
 
 }

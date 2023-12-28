@@ -15,8 +15,8 @@
  */
 package com.themall.oauthserver.security;
 
-import com.themall.model.entity.SysUserEntity;
-import com.themall.model.entity.SysUserRoleEntity;
+import com.themall.model.entity.SysUser;
+import com.themall.model.entity.SysUserRole;
 import com.themall.oauthserver.service.SysUserRoleService;
 import com.themall.oauthserver.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
@@ -58,7 +58,7 @@ public class UserRepositoryOAuth2UserHandler implements Consumer<OAuth2User> {
     @Transactional(rollbackFor = Exception.class)
     public void accept(OAuth2User user) {
         log.info("Saving user: name=" + user.getName() + ", claims=" + user.getAttributes() + ", authorities=" + user.getAuthorities());
-        SysUserEntity sysUserEntity = new SysUserEntity();
+        SysUser sysUserEntity = new SysUser();
         sysUserEntity.setEmail(user.getAttribute("email"));
         sysUserEntity.setOauthId(user.getName());
         String name = user.getAttribute("name");
@@ -68,12 +68,12 @@ public class UserRepositoryOAuth2UserHandler implements Consumer<OAuth2User> {
         }
         sysUserEntity.setOauthName(name);
         //分为谷歌和github
-        SysUserEntity userEntity = this.userService.getByLoginName(user.getName());
+        SysUser userEntity = this.userService.getByLoginName(user.getName());
         if (ObjectUtils.isEmpty(userEntity)) {
             sysUserEntity.setCreateUserId(1L);
             sysUserEntity.setCreateTime(new Date());
             this.userService.save(sysUserEntity);
-            SysUserRoleEntity sysUserRoleEntity = new SysUserRoleEntity();
+            SysUserRole sysUserRoleEntity = new SysUserRole();
             sysUserRoleEntity.setUserId(sysUserEntity.getUserId());
             //默认用户读取权限
             sysUserRoleEntity.setRoleId(1L);

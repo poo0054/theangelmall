@@ -1,7 +1,7 @@
 package com.themall.search.controller;
 
-import com.themall.model.constants.HttpStatusEnum;
 import com.themall.model.entity.R;
+import com.themall.model.enums.HttpStatusEnum;
 import com.themall.model.to.es.SkuEsModel;
 import com.themall.search.service.productSaveService;
 import lombok.extern.slf4j.Slf4j;

@@ -9,7 +9,7 @@
 package com.themall.oauthserver.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.themall.model.entity.SysUserRoleEntity;
+import com.themall.model.entity.SysUserRole;
 import com.themall.oauthserver.dao.SysUserRoleDao;
 import com.themall.oauthserver.service.SysUserRoleService;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ import java.util.List;
  * @author Mark sunlightcs@gmail.com
  */
 @Service("sysUserRoleService")
-public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleDao, SysUserRoleEntity> implements SysUserRoleService {
+public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleDao, SysUserRole> implements SysUserRoleService {
 
 
     @Override

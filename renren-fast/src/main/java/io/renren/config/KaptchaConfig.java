@@ -1,8 +1,8 @@
 /**
  * Copyright (c) 2016-2019 人人开源 All rights reserved.
- *
+ * <p>
  * https://www.renren.io
- *
+ * <p>
  * 版权所有，侵权必究！
  */
 
@@ -11,7 +11,6 @@ package io.renren.config;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.google.code.kaptcha.util.Config;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import java.util.Properties;
 
@@ -21,7 +20,7 @@ import java.util.Properties;
  *
  * @author Mark sunlightcs@gmail.com
  */
-@Configuration
+//@Configuration
 public class KaptchaConfig {
 
     @Bean

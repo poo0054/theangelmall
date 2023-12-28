@@ -2,8 +2,8 @@ package com.themall.common.exception;
 
 import cn.hutool.http.ContentType;
 import com.alibaba.fastjson2.JSON;
-import com.themall.model.constants.HttpStatusEnum;
 import com.themall.model.entity.R;
+import com.themall.model.enums.HttpStatusEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;

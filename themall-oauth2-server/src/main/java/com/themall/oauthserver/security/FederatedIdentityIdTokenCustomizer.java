@@ -15,7 +15,7 @@
  */
 package com.themall.oauthserver.security;
 
-import com.themall.model.entity.SysUserEntity;
+import com.themall.model.entity.SysUser;
 import com.themall.oauthserver.service.SysUserService;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -89,7 +89,7 @@ public final class FederatedIdentityIdTokenCustomizer implements OAuth2TokenCust
             if (ObjectUtils.isNotEmpty(context.getAuthorization())) {
                 if (context.getAuthorizedScopes().contains("themall")) {
                     //只有授权所有权限
-                    SysUserEntity sysUserEntity = userService.getByLoginName(context.getAuthorization().getPrincipalName());
+                    SysUser sysUserEntity = userService.getByLoginName(context.getAuthorization().getPrincipalName());
                     if (ObjectUtils.isNotEmpty(sysUserEntity)) {
                         Set<GrantedAuthority> auth = userService.getAuth(sysUserEntity.getUserId());
                         String username = sysUserEntity.getUsername();
