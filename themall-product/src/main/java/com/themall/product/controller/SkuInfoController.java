@@ -34,7 +34,7 @@ public class SkuInfoController {
     @GetMapping("/{skuid}/price")
     public R getPrice(@PathVariable("skuid") Long skuid) {
         BigDecimal bigDecimal = skuInfoService.getPrice(skuid);
-        return R.httpStatus().setData(bigDecimal);
+        return R.status().setData(bigDecimal);
     }
 
     /**
@@ -45,7 +45,7 @@ public class SkuInfoController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = skuInfoService.queryPageByCondition(params);
 
-        return R.httpStatus().put("page", page);
+        return R.status().put("page", page);
     }
 
 
@@ -55,7 +55,7 @@ public class SkuInfoController {
     @RequestMapping("/info/{skuId}")
     public R info(@PathVariable("skuId") Long skuId) {
         SkuInfoEntity skuInfo = skuInfoService.getById(skuId);
-        return R.httpStatus().put("skuInfo", skuInfo);
+        return R.status().put("skuInfo", skuInfo);
     }
 
     /**
@@ -66,7 +66,7 @@ public class SkuInfoController {
     public R save(@RequestBody SkuInfoEntity skuInfo) {
         skuInfoService.save(skuInfo);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -77,7 +77,7 @@ public class SkuInfoController {
     public R update(@RequestBody SkuInfoEntity skuInfo) {
         skuInfoService.updateById(skuInfo);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -88,7 +88,7 @@ public class SkuInfoController {
     public R delete(@RequestBody Long[] skuIds) {
         skuInfoService.removeByIds(Arrays.asList(skuIds));
 
-        return R.httpStatus();
+        return R.status();
     }
 
 }

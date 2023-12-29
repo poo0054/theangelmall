@@ -32,7 +32,7 @@ public class MemberCollectSpuController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = memberCollectSpuService.queryPage(params);
 
-        return R.httpStatus().put("page", page);
+        return R.status().put("page", page);
     }
 
 
@@ -44,7 +44,7 @@ public class MemberCollectSpuController {
     public R info(@PathVariable("id") Long id) {
             MemberCollectSpuEntity memberCollectSpu = memberCollectSpuService.getById(id);
 
-        return R.httpStatus().put("memberCollectSpu", memberCollectSpu);
+        return R.status().put("memberCollectSpu", memberCollectSpu);
     }
 
     /**
@@ -55,7 +55,7 @@ public class MemberCollectSpuController {
     public R save(@RequestBody MemberCollectSpuEntity memberCollectSpu) {
             memberCollectSpuService.save(memberCollectSpu);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -66,7 +66,7 @@ public class MemberCollectSpuController {
     public R update(@RequestBody MemberCollectSpuEntity memberCollectSpu) {
             memberCollectSpuService.updateById(memberCollectSpu);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -77,7 +77,7 @@ public class MemberCollectSpuController {
     public R delete(@RequestBody Long[] ids) {
             memberCollectSpuService.removeByIds(Arrays.asList(ids));
 
-        return R.httpStatus();
+        return R.status();
     }
 
 }

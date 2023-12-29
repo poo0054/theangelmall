@@ -128,7 +128,7 @@ public class AttrGroupController {
     //@RequiresPermissions("product:attrgroup:list")
     public R list(@RequestParam Map<String, Object> params, @PathVariable("cateLogId") Long cateLogId) {
         PageUtils page = attrGroupService.queryPage(params, cateLogId);
-        return R.httpStatus().put("page", page);
+        return R.status().put("page", page);
     }
 
 
@@ -140,7 +140,7 @@ public class AttrGroupController {
     public R info(@PathVariable("attrGroupId") Long attrGroupId) {
         AttrGroupEntity attrGroup = attrGroupService.getById(attrGroupId);
         attrGroup.setCatelogPath(categoryService.getCateLogPath(attrGroup.getCatelogId()));
-        return R.httpStatus().put("attrGroup", attrGroup);
+        return R.status().put("attrGroup", attrGroup);
     }
 
     /**
@@ -151,7 +151,7 @@ public class AttrGroupController {
     public R save(@RequestBody AttrGroupEntity attrGroup) {
         attrGroupService.save(attrGroup);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -162,7 +162,7 @@ public class AttrGroupController {
     public R update(@RequestBody AttrGroupEntity attrGroup) {
         attrGroupService.updateById(attrGroup);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -173,7 +173,7 @@ public class AttrGroupController {
     public R delete(@RequestBody Long[] attrGroupIds) {
         attrGroupService.removeByIds(Arrays.asList(attrGroupIds));
 
-        return R.httpStatus();
+        return R.status();
     }
 
 }

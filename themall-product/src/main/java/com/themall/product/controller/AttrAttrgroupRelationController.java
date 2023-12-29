@@ -33,7 +33,7 @@ public class AttrAttrgroupRelationController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = attrAttrgroupRelationService.queryPage(params);
 
-        return R.httpStatus().put("page", page);
+        return R.status().put("page", page);
     }
 
 
@@ -45,7 +45,7 @@ public class AttrAttrgroupRelationController {
     public R info(@PathVariable("id") Long id) {
         AttrAttrgroupRelationEntity attrAttrgroupRelation = attrAttrgroupRelationService.getById(id);
 
-        return R.httpStatus().put("attrAttrgroupRelation", attrAttrgroupRelation);
+        return R.status().put("attrAttrgroupRelation", attrAttrgroupRelation);
     }
 
     /**
@@ -56,7 +56,7 @@ public class AttrAttrgroupRelationController {
     public R save(@RequestBody AttrAttrgroupRelationEntity attrAttrgroupRelation) {
         attrAttrgroupRelationService.save(attrAttrgroupRelation);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -67,7 +67,7 @@ public class AttrAttrgroupRelationController {
     public R update(@RequestBody AttrAttrgroupRelationEntity attrAttrgroupRelation) {
         attrAttrgroupRelationService.updateById(attrAttrgroupRelation);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -78,7 +78,7 @@ public class AttrAttrgroupRelationController {
     public R delete(@RequestBody Long[] ids) {
         attrAttrgroupRelationService.removeByIds(Arrays.asList(ids));
 
-        return R.httpStatus();
+        return R.status();
     }
 
 }

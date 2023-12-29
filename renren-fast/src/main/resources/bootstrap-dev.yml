@@ -21,3 +21,18 @@ spring:
           - dataId: common.yaml
             group: ${spring.profiles.active}
             refresh: true
+
+
+
+
+  zipkin:
+    base-url: http://192.168.98.11:30941
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.98.51:3306/themall_admin?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
+    username: root
+    password: "005400"
+    type: com.zaxxer.hikari.HikariDataSource
+
+

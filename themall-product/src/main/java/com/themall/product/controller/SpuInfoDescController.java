@@ -32,7 +32,7 @@ public class SpuInfoDescController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = spuInfoDescService.queryPage(params);
 
-        return R.httpStatus().put("page", page);
+        return R.status().put("page", page);
     }
 
 
@@ -44,7 +44,7 @@ public class SpuInfoDescController {
     public R info(@PathVariable("spuId") Long spuId) {
             SpuInfoDescEntity spuInfoDesc = spuInfoDescService.getById(spuId);
 
-        return R.httpStatus().put("spuInfoDesc", spuInfoDesc);
+        return R.status().put("spuInfoDesc", spuInfoDesc);
     }
 
     /**
@@ -55,7 +55,7 @@ public class SpuInfoDescController {
     public R save(@RequestBody SpuInfoDescEntity spuInfoDesc) {
             spuInfoDescService.save(spuInfoDesc);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -66,7 +66,7 @@ public class SpuInfoDescController {
     public R update(@RequestBody SpuInfoDescEntity spuInfoDesc) {
             spuInfoDescService.updateById(spuInfoDesc);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -77,7 +77,7 @@ public class SpuInfoDescController {
     public R delete(@RequestBody Long[] spuIds) {
             spuInfoDescService.removeByIds(Arrays.asList(spuIds));
 
-        return R.httpStatus();
+        return R.status();
     }
 
 }

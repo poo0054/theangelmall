@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -80,12 +79,16 @@ public class GlobalException {
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public R validException(MethodArgumentNotValidException e) {
         BindingResult result = e.getBindingResult();
-        LinkedHashMap<String, String> map = new LinkedHashMap<>();
+        StringBuilder stringBuilder = new StringBuilder();
         List<FieldError> fieldErrors = result.getFieldErrors();
         fieldErrors.forEach(k -> {
-            map.put(k.getField(), k.getDefaultMessage());
+            stringBuilder.append(k.getField())
+                    .append(":")
+                    .append(k.getDefaultMessage())
+                    .append("\n")
+            ;
         });
-        return R.error(HttpStatusEnum.SERVICE_ERROR_C0134).setData(map);
+        return R.error(HttpStatusEnum.SERVICE_ERROR_C0134, stringBuilder);
     }
 
 }

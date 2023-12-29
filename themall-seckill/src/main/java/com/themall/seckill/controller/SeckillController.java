@@ -33,7 +33,7 @@ public class SeckillController {
     public R getCurrentSeckillSkus() {
         List<SeckillSkuRedisTo> list = seckillService.getCurrentSeckillSkus();
         System.out.println("当前时间可以参与秒杀的商品:" + JSON.toJSONString(list));
-        return R.httpStatus().setData(list);
+        return R.status().setData(list);
     }
 
     /**
@@ -44,7 +44,7 @@ public class SeckillController {
     @GetMapping("/sku/seckill/{skuId}")
     public R getSkuSeckillInfo(@PathVariable("skuId") Long skuId) {
         SeckillSkuRedisTo seckillSkuRedisTo = seckillService.getSkuSeckillInfo(skuId);
-        return R.httpStatus().setData(seckillSkuRedisTo);
+        return R.status().setData(seckillSkuRedisTo);
     }
 
 

@@ -42,7 +42,7 @@ public class CategoryBrandRelationController {
     @PreAuthorize("hasAuthority('product:brand:list')")
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = categoryBrandRelationService.queryPage(params);
-        return R.httpStatus().put("page", page);
+        return R.status().put("page", page);
     }
 
     /**
@@ -59,7 +59,7 @@ public class CategoryBrandRelationController {
             brandVo.setBrandName(brandEntity.getName());
             return brandVo;
         }).collect(Collectors.toList());
-        return R.httpStatus().setData(collect);
+        return R.status().setData(collect);
     }
 
     /**
@@ -69,7 +69,7 @@ public class CategoryBrandRelationController {
     @PreAuthorize("hasAuthority('product:brand:list')")
     public R cateloglist(@RequestParam Long brandId) {
         List<CategoryBrandRelationEntity> brand_id = categoryBrandRelationService.list(new QueryWrapper<CategoryBrandRelationEntity>().eq("brand_id", brandId));
-        return R.httpStatus().setData(brand_id);
+        return R.status().setData(brand_id);
     }
 
 
@@ -80,7 +80,7 @@ public class CategoryBrandRelationController {
     @PreAuthorize("hasAuthority('product:brand:list')")
     public R info(@PathVariable("id") Long id) {
         CategoryBrandRelationEntity categoryBrandRelation = categoryBrandRelationService.getById(id);
-        return R.httpStatus().put("categoryBrandRelation", categoryBrandRelation);
+        return R.status().put("categoryBrandRelation", categoryBrandRelation);
     }
 
     /**
@@ -91,7 +91,7 @@ public class CategoryBrandRelationController {
     public R save(@RequestBody CategoryBrandRelationEntity categoryBrandRelation) {
         categoryBrandRelationService.saveDatail(categoryBrandRelation);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -102,7 +102,7 @@ public class CategoryBrandRelationController {
     public R update(@RequestBody CategoryBrandRelationEntity categoryBrandRelation) {
         categoryBrandRelationService.updateById(categoryBrandRelation);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -113,7 +113,7 @@ public class CategoryBrandRelationController {
     public R delete(@RequestBody Long[] ids) {
         categoryBrandRelationService.removeByIds(Arrays.asList(ids));
 
-        return R.httpStatus();
+        return R.status();
     }
 
 }

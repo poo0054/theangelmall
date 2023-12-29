@@ -48,7 +48,7 @@ public class AttrController {
     @GetMapping("/base/listforspu/{spuId}")
     public R baseListForSpu(@PathVariable("spuId") Long spuId) {
         List<ProductAttrValueEntity> pageUtils = productAttrValueService.baseListForSpu(spuId);
-        return R.httpStatus().put("data", pageUtils);
+        return R.status().put("data", pageUtils);
     }
 
     /**
@@ -60,7 +60,7 @@ public class AttrController {
     @GetMapping("/{type}/list/{catelogId}")
     public R baseList(@RequestParam Map<String, Object> params, @PathVariable("catelogId") Long catelogId, @PathVariable("type") String type) {
         PageUtils pageUtils = attrService.queryBaseAttrPage(params, catelogId, type);
-        return R.httpStatus().put("page", pageUtils);
+        return R.status().put("page", pageUtils);
     }
 
     /**
@@ -70,7 +70,7 @@ public class AttrController {
     //@RequiresPermissions("product:attr:list")
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = attrService.queryPage(params);
-        return R.httpStatus().put("page", page);
+        return R.status().put("page", page);
     }
 
 
@@ -87,7 +87,7 @@ public class AttrController {
     public R info(@PathVariable("attrId") Long attrId) {
 //        AttrEntity attr = attrService.getById(attrId);
         AttrResVo attr = attrService.getAttrInfo(attrId);
-        return R.httpStatus().put("attr", attr);
+        return R.status().put("attr", attr);
     }
 
     /**
@@ -98,7 +98,7 @@ public class AttrController {
     public R save(@RequestBody AttrVo attr) {
 //        attrService.save(attr);
         attrService.saveAttr(attr);
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -110,7 +110,7 @@ public class AttrController {
 //        attrService.updateById(attr);
         attrService.updateAttr(attr);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -122,7 +122,7 @@ public class AttrController {
     public R updateAttr(@PathVariable("spuId") Long spuId, @RequestBody List<ProductAttrValueEntity> attr) {
 //        attrService.updateById(attr);
         productAttrValueService.updateAttr(spuId, attr);
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -133,7 +133,7 @@ public class AttrController {
     public R delete(@RequestBody Long[] attrIds) {
         attrService.removeByIds(Arrays.asList(attrIds));
 
-        return R.httpStatus();
+        return R.status();
     }
 
 }

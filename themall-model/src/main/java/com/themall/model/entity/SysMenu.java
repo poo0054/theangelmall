@@ -39,11 +39,11 @@ public class SysMenu implements Serializable {
     //标签
     private String tag;
     //整页路由
-    private Integer fullpage;
+    private Boolean fullpage;
     //隐藏菜单
-    private Integer hidden;
+    private Boolean hidden;
     //隐藏面包屑
-    private Integer hiddenbreadcrumb;
+    private Boolean hiddenbreadcrumb;
     //颜色
     private String color;
     //授权(多个用逗号分隔，如：user:list,user:create)

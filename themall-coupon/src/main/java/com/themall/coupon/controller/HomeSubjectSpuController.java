@@ -32,7 +32,7 @@ public class HomeSubjectSpuController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = homeSubjectSpuService.queryPage(params);
 
-        return R.httpStatus().put("page", page);
+        return R.status().put("page", page);
     }
 
 
@@ -44,7 +44,7 @@ public class HomeSubjectSpuController {
     public R info(@PathVariable("id") Long id) {
             HomeSubjectSpuEntity homeSubjectSpu = homeSubjectSpuService.getById(id);
 
-        return R.httpStatus().put("homeSubjectSpu", homeSubjectSpu);
+        return R.status().put("homeSubjectSpu", homeSubjectSpu);
     }
 
     /**
@@ -55,7 +55,7 @@ public class HomeSubjectSpuController {
     public R save(@RequestBody HomeSubjectSpuEntity homeSubjectSpu) {
             homeSubjectSpuService.save(homeSubjectSpu);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -66,7 +66,7 @@ public class HomeSubjectSpuController {
     public R update(@RequestBody HomeSubjectSpuEntity homeSubjectSpu) {
             homeSubjectSpuService.updateById(homeSubjectSpu);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -77,7 +77,7 @@ public class HomeSubjectSpuController {
     public R delete(@RequestBody Long[] ids) {
             homeSubjectSpuService.removeByIds(Arrays.asList(ids));
 
-        return R.httpStatus();
+        return R.status();
     }
 
 }

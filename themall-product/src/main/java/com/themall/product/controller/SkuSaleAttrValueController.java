@@ -34,7 +34,7 @@ public class SkuSaleAttrValueController {
     @GetMapping("/attrstrbyskuid/{skuid}")
     public R getAttrStrBySkuId(@PathVariable("skuid") Long skuId) {
         List<String> strings = skuSaleAttrValueService.getAttrStrBySkuId(skuId);
-        return R.httpStatus().setData(strings);
+        return R.status().setData(strings);
     }
 
     /**
@@ -45,7 +45,7 @@ public class SkuSaleAttrValueController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = skuSaleAttrValueService.queryPage(params);
 
-        return R.httpStatus().put("page", page);
+        return R.status().put("page", page);
     }
 
 
@@ -57,7 +57,7 @@ public class SkuSaleAttrValueController {
     public R info(@PathVariable("id") Long id) {
         SkuSaleAttrValueEntity skuSaleAttrValue = skuSaleAttrValueService.getById(id);
 
-        return R.httpStatus().put("skuSaleAttrValue", skuSaleAttrValue);
+        return R.status().put("skuSaleAttrValue", skuSaleAttrValue);
     }
 
     /**
@@ -68,7 +68,7 @@ public class SkuSaleAttrValueController {
     public R save(@RequestBody SkuSaleAttrValueEntity skuSaleAttrValue) {
         skuSaleAttrValueService.save(skuSaleAttrValue);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -79,7 +79,7 @@ public class SkuSaleAttrValueController {
     public R update(@RequestBody SkuSaleAttrValueEntity skuSaleAttrValue) {
         skuSaleAttrValueService.updateById(skuSaleAttrValue);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -90,7 +90,7 @@ public class SkuSaleAttrValueController {
     public R delete(@RequestBody Long[] ids) {
         skuSaleAttrValueService.removeByIds(Arrays.asList(ids));
 
-        return R.httpStatus();
+        return R.status();
     }
 
 }

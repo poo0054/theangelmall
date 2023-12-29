@@ -32,7 +32,7 @@ public class HomeAdvController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = homeAdvService.queryPage(params);
 
-        return R.httpStatus().put("page", page);
+        return R.status().put("page", page);
     }
 
 
@@ -44,7 +44,7 @@ public class HomeAdvController {
     public R info(@PathVariable("id") Long id) {
             HomeAdvEntity homeAdv = homeAdvService.getById(id);
 
-        return R.httpStatus().put("homeAdv", homeAdv);
+        return R.status().put("homeAdv", homeAdv);
     }
 
     /**
@@ -55,7 +55,7 @@ public class HomeAdvController {
     public R save(@RequestBody HomeAdvEntity homeAdv) {
             homeAdvService.save(homeAdv);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -66,7 +66,7 @@ public class HomeAdvController {
     public R update(@RequestBody HomeAdvEntity homeAdv) {
             homeAdvService.updateById(homeAdv);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -77,7 +77,7 @@ public class HomeAdvController {
     public R delete(@RequestBody Long[] ids) {
             homeAdvService.removeByIds(Arrays.asList(ids));
 
-        return R.httpStatus();
+        return R.status();
     }
 
 }

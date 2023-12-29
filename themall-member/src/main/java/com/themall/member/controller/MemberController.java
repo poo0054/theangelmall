@@ -42,7 +42,7 @@ public class MemberController {
     public R login(@RequestBody LoginUserVo loginUserVo) {
         try {
             MemberEntity login = memberService.login(loginUserVo);
-            return R.httpStatus().setData(login);
+            return R.status().setData(login);
         } catch (RRException e) {
             return R.error(HttpStatusEnum.USER_ERROR_A0120);
         }
@@ -60,7 +60,7 @@ public class MemberController {
         } catch (MemberExection e) {
             return R.error(HttpStatusEnum.USER_ERROR_A0120);
         }
-        return R.httpStatus();
+        return R.status();
     }
 
 
@@ -68,7 +68,7 @@ public class MemberController {
     public R getMemberCoupon() {
         MemberEntity memberEntity = new MemberEntity();
         memberEntity.setNickname("张三");
-        return R.httpStatus().put("member", memberEntity).put("coupon", couponOpenFeignService.memberList().get("coupons"));
+        return R.status().put("member", memberEntity).put("coupon", couponOpenFeignService.memberList().get("coupons"));
     }
 
     /**
@@ -78,7 +78,7 @@ public class MemberController {
     //@RequiresPermissions("member:member:list")
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = memberService.queryPage(params);
-        return R.httpStatus().put("page", page);
+        return R.status().put("page", page);
     }
 
 
@@ -89,7 +89,7 @@ public class MemberController {
     //@RequiresPermissions("member:member:info")
     public R info(@PathVariable("id") Long id) {
         MemberEntity member = memberService.getById(id);
-        return R.httpStatus().put("member", member);
+        return R.status().put("member", member);
     }
 
     /**
@@ -99,7 +99,7 @@ public class MemberController {
     //@RequiresPermissions("member:member:save")
     public R save(@RequestBody MemberEntity member) {
         memberService.save(member);
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -110,7 +110,7 @@ public class MemberController {
     public R update(@RequestBody MemberEntity member) {
         memberService.updateById(member);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -121,7 +121,7 @@ public class MemberController {
     public R delete(@RequestBody Long[] ids) {
         memberService.removeByIds(Arrays.asList(ids));
 
-        return R.httpStatus();
+        return R.status();
     }
 
 }

@@ -32,7 +32,7 @@ public class SpuBoundsController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = spuBoundsService.queryPage(params);
 
-        return R.httpStatus().put("page", page);
+        return R.status().put("page", page);
     }
 
 
@@ -44,7 +44,7 @@ public class SpuBoundsController {
     public R info(@PathVariable("id") Long id) {
         SpuBoundsEntity spuBounds = spuBoundsService.getById(id);
 
-        return R.httpStatus().put("spuBounds", spuBounds);
+        return R.status().put("spuBounds", spuBounds);
     }
 
     /**
@@ -55,7 +55,7 @@ public class SpuBoundsController {
     public R save(@RequestBody SpuBoundsEntity spuBounds) {
         spuBoundsService.save(spuBounds);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -66,7 +66,7 @@ public class SpuBoundsController {
     public R update(@RequestBody SpuBoundsEntity spuBounds) {
         spuBoundsService.updateById(spuBounds);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -77,7 +77,7 @@ public class SpuBoundsController {
     public R delete(@RequestBody Long[] ids) {
         spuBoundsService.removeByIds(Arrays.asList(ids));
 
-        return R.httpStatus();
+        return R.status();
     }
 
 }

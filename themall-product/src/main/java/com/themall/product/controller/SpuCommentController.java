@@ -32,7 +32,7 @@ public class SpuCommentController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = spuCommentService.queryPage(params);
 
-        return R.httpStatus().put("page", page);
+        return R.status().put("page", page);
     }
 
 
@@ -44,7 +44,7 @@ public class SpuCommentController {
     public R info(@PathVariable("id") Long id) {
             SpuCommentEntity spuComment = spuCommentService.getById(id);
 
-        return R.httpStatus().put("spuComment", spuComment);
+        return R.status().put("spuComment", spuComment);
     }
 
     /**
@@ -55,7 +55,7 @@ public class SpuCommentController {
     public R save(@RequestBody SpuCommentEntity spuComment) {
             spuCommentService.save(spuComment);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -66,7 +66,7 @@ public class SpuCommentController {
     public R update(@RequestBody SpuCommentEntity spuComment) {
             spuCommentService.updateById(spuComment);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -77,7 +77,7 @@ public class SpuCommentController {
     public R delete(@RequestBody Long[] ids) {
             spuCommentService.removeByIds(Arrays.asList(ids));
 
-        return R.httpStatus();
+        return R.status();
     }
 
 }

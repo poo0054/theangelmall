@@ -32,7 +32,7 @@ public class CouponHistoryController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = couponHistoryService.queryPage(params);
 
-        return R.httpStatus().put("page", page);
+        return R.status().put("page", page);
     }
 
 
@@ -44,7 +44,7 @@ public class CouponHistoryController {
     public R info(@PathVariable("id") Long id) {
             CouponHistoryEntity couponHistory = couponHistoryService.getById(id);
 
-        return R.httpStatus().put("couponHistory", couponHistory);
+        return R.status().put("couponHistory", couponHistory);
     }
 
     /**
@@ -55,7 +55,7 @@ public class CouponHistoryController {
     public R save(@RequestBody CouponHistoryEntity couponHistory) {
             couponHistoryService.save(couponHistory);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -66,7 +66,7 @@ public class CouponHistoryController {
     public R update(@RequestBody CouponHistoryEntity couponHistory) {
             couponHistoryService.updateById(couponHistory);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -77,7 +77,7 @@ public class CouponHistoryController {
     public R delete(@RequestBody Long[] ids) {
             couponHistoryService.removeByIds(Arrays.asList(ids));
 
-        return R.httpStatus();
+        return R.status();
     }
 
 }

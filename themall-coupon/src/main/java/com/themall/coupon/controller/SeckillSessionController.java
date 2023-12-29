@@ -32,7 +32,7 @@ public class SeckillSessionController {
     @GetMapping("/lates3DaySession")
     public R getLates3DaySession() {
         List<SeckillSessionEntity> list = seckillSessionService.getLates3DaySession();
-        return R.httpStatus().setData(list);
+        return R.status().setData(list);
     }
 
     /**
@@ -43,7 +43,7 @@ public class SeckillSessionController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = seckillSessionService.queryPage(params);
 
-        return R.httpStatus().put("page", page);
+        return R.status().put("page", page);
     }
 
 
@@ -55,7 +55,7 @@ public class SeckillSessionController {
     public R info(@PathVariable("id") Long id) {
         SeckillSessionEntity seckillSession = seckillSessionService.getById(id);
 
-        return R.httpStatus().put("seckillSession", seckillSession);
+        return R.status().put("seckillSession", seckillSession);
     }
 
     /**
@@ -66,7 +66,7 @@ public class SeckillSessionController {
     public R save(@RequestBody SeckillSessionEntity seckillSession) {
         seckillSessionService.save(seckillSession);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -77,7 +77,7 @@ public class SeckillSessionController {
     public R update(@RequestBody SeckillSessionEntity seckillSession) {
         seckillSessionService.updateById(seckillSession);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -88,7 +88,7 @@ public class SeckillSessionController {
     public R delete(@RequestBody Long[] ids) {
         seckillSessionService.removeByIds(Arrays.asList(ids));
 
-        return R.httpStatus();
+        return R.status();
     }
 
 }

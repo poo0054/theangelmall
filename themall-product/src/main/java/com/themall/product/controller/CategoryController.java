@@ -36,7 +36,7 @@ public class CategoryController {
     @PreAuthorize("hasAuthority('product:category:list')")
     public R list() {
         List<CategoryEntity> categoryEntityList = categoryService.listCategoryTree();
-        return R.httpStatus().setData(categoryEntityList);
+        return R.status().setData(categoryEntityList);
     }
 
 
@@ -47,7 +47,7 @@ public class CategoryController {
     @PreAuthorize("hasAuthority('product:category:list')")
     public R info(@PathVariable("catId") Long catId) {
         CategoryEntity category = categoryService.getById(catId);
-        return R.httpStatus().setData(category);
+        return R.status().setData(category);
     }
 
     /**
@@ -57,7 +57,7 @@ public class CategoryController {
     @PreAuthorize("hasAuthority('product:category:save')")
     public R save(@RequestBody CategoryEntity category) {
         categoryService.addCategory(category);
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -67,7 +67,7 @@ public class CategoryController {
     @PreAuthorize("hasAuthority('product:category:update')")
     public R update(@RequestBody CategoryEntity category) {
         categoryService.updateDetail(category);
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -77,7 +77,7 @@ public class CategoryController {
     @PreAuthorize("hasAuthority('product:category:update')")
     public R updateList(@RequestBody List<CategoryEntity> category) {
         categoryService.updateBatchById(category);
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -87,7 +87,7 @@ public class CategoryController {
     @PreAuthorize("hasAuthority('product:category:delete')")
     public R delete(@RequestBody Long[] catIds) {
         categoryService.removeMenuById(Arrays.asList(catIds));
-        return R.httpStatus();
+        return R.status();
     }
 
 }

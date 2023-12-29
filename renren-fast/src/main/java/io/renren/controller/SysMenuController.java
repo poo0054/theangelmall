@@ -1,15 +1,15 @@
 package io.renren.controller;
 
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.themall.model.entity.R;
-import com.themall.model.entity.SysMenu;
+import com.themall.model.validator.group.UpdateGroup;
 import io.renren.pojo.vo.MenuVo;
 import io.renren.service.SysMenuService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -41,7 +41,7 @@ public class SysMenuController extends AbstractController {
     public R getMenu() {
         List<MenuVo> menuList = sysMenuService.getUserMenuList(getUserId());
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return R.ok().put("menuList", menuList).put("permissions", AuthorityUtils.authorityListToSet(authentication.getAuthorities()));
+        return R.ok().put("menu", menuList).put("permissions", AuthorityUtils.authorityListToSet(authentication.getAuthorities()));
     }
 
     /**
@@ -52,8 +52,9 @@ public class SysMenuController extends AbstractController {
      * @return 所有数据
      */
     @GetMapping
-    public R selectAll(Page<SysMenu> page, SysMenu sysMenu) {
-        return R.data(this.sysMenuService.page(page, new QueryWrapper<>(sysMenu)));
+    @PreAuthorize("hasAuthority('sys:menu:list')")
+    public R getList() {
+        return R.data(sysMenuService.getList());
     }
 
     /**
@@ -63,6 +64,7 @@ public class SysMenuController extends AbstractController {
      * @return 单条数据
      */
     @GetMapping("{id}")
+    @PreAuthorize("hasAuthority('sys:menu:list')")
     public R selectOne(@PathVariable Serializable id) {
         return R.data(this.sysMenuService.getById(id));
     }
@@ -70,12 +72,13 @@ public class SysMenuController extends AbstractController {
     /**
      * 新增数据
      *
-     * @param sysMenu 实体对象
+     * @param menuVo 实体对象
      * @return 新增结果
      */
     @PostMapping
-    public R insert(@RequestBody SysMenu sysMenu) {
-        return R.data(this.sysMenuService.save(sysMenu));
+    @PreAuthorize("hasAuthority('sys:menu:save')")
+    public R insert(@RequestBody @Validated MenuVo menuVo) {
+        return R.status(this.sysMenuService.saveMenuVo(menuVo));
     }
 
     /**
@@ -85,8 +88,9 @@ public class SysMenuController extends AbstractController {
      * @return 修改结果
      */
     @PutMapping
-    public R update(@RequestBody SysMenu sysMenu) {
-        return R.data(this.sysMenuService.updateById(sysMenu));
+    @PreAuthorize("hasAuthority('sys:menu:update')")
+    public R update(@RequestBody @Validated(UpdateGroup.class) MenuVo sysMenu) {
+        return R.status(this.sysMenuService.updateMenuVo(sysMenu));
     }
 
     /**
@@ -96,6 +100,7 @@ public class SysMenuController extends AbstractController {
      * @return 删除结果
      */
     @DeleteMapping
+    @PreAuthorize("hasAuthority('sys:menu:delete')")
     public R delete(@RequestParam("idList") List<Long> idList) {
         return R.data(this.sysMenuService.removeByIds(idList));
     }

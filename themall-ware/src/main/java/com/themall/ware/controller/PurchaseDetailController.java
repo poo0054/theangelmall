@@ -32,7 +32,7 @@ public class PurchaseDetailController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = purchaseDetailService.queryPage(params);
 
-        return R.httpStatus().put("page", page);
+        return R.status().put("page", page);
     }
 
 
@@ -44,7 +44,7 @@ public class PurchaseDetailController {
     public R info(@PathVariable("id") Long id) {
             PurchaseDetailEntity purchaseDetail = purchaseDetailService.getById(id);
 
-        return R.httpStatus().put("purchaseDetail", purchaseDetail);
+        return R.status().put("purchaseDetail", purchaseDetail);
     }
 
     /**
@@ -55,7 +55,7 @@ public class PurchaseDetailController {
     public R save(@RequestBody PurchaseDetailEntity purchaseDetail) {
             purchaseDetailService.save(purchaseDetail);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -66,7 +66,7 @@ public class PurchaseDetailController {
     public R update(@RequestBody PurchaseDetailEntity purchaseDetail) {
             purchaseDetailService.updateById(purchaseDetail);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -77,7 +77,7 @@ public class PurchaseDetailController {
     public R delete(@RequestBody Long[] ids) {
             purchaseDetailService.removeByIds(Arrays.asList(ids));
 
-        return R.httpStatus();
+        return R.status();
     }
 
 }

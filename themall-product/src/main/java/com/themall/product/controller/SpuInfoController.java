@@ -36,7 +36,7 @@ public class SpuInfoController {
     public R getSpuInfo(@PathVariable("id") Long skuId) {
 //        PageUtils page = spuInfoService.queryPage(params);
         SpuInfoEntity spuInfoEntity = spuInfoService.getSpuInfo(skuId);
-        return R.httpStatus().setData(spuInfoEntity);
+        return R.status().setData(spuInfoEntity);
     }
 
     /**
@@ -49,7 +49,7 @@ public class SpuInfoController {
 //        PageUtils page = spuInfoService.queryPage(params);
         spuInfoService.up(spuId);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -61,7 +61,7 @@ public class SpuInfoController {
 //        PageUtils page = spuInfoService.queryPage(params);
         PageUtils page = spuInfoService.queryPageByCondition(params);
 
-        return R.httpStatus().put("page", page);
+        return R.status().put("page", page);
     }
 
 
@@ -73,7 +73,7 @@ public class SpuInfoController {
     public R info(@PathVariable("id") Long id) {
         SpuInfoEntity spuInfo = spuInfoService.getById(id);
 
-        return R.httpStatus().put("spuInfo", spuInfo);
+        return R.status().put("spuInfo", spuInfo);
     }
 
     /**
@@ -88,7 +88,7 @@ public class SpuInfoController {
     public R save(@RequestBody SpuSaveVo spuInfo) {
 //        spuInfoService.save(spuInfo);
         spuInfoService.saveSpuInfo(spuInfo);
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -99,7 +99,7 @@ public class SpuInfoController {
     public R update(@RequestBody SpuInfoEntity spuInfo) {
         spuInfoService.updateById(spuInfo);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -110,7 +110,7 @@ public class SpuInfoController {
     public R delete(@RequestBody Long[] ids) {
         spuInfoService.removeByIds(Arrays.asList(ids));
 
-        return R.httpStatus();
+        return R.status();
     }
 
 }

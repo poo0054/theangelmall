@@ -36,7 +36,7 @@ public class PurchaseController {
     //@RequiresPermissions("ware:purchase:list")
     public R done(@RequestBody PurchaseDoneVo doneVo) {
         purchaseService.saveDone(doneVo);
-        return R.httpStatus();
+        return R.status();
     }
     /**
      * /ware/purchase/received
@@ -46,7 +46,7 @@ public class PurchaseController {
     //@RequiresPermissions("ware:purchase:list")
     public R received(@RequestBody List<Long> id) {
         purchaseService.saveReceived(id);
-        return R.httpStatus();
+        return R.status();
     }
 
 
@@ -58,7 +58,7 @@ public class PurchaseController {
     //@RequiresPermissions("ware:purchase:list")
     public R merge(@RequestBody MergeVo merge) {
         purchaseService.saveMerge(merge);
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -69,7 +69,7 @@ public class PurchaseController {
     //@RequiresPermissions("ware:purchase:list")
     public R unreceive(@RequestParam Map<String, Object> params) {
         PageUtils page = purchaseService.queryPageUnreceive(params);
-        return R.httpStatus().put("page", page);
+        return R.status().put("page", page);
     }
 
     /**
@@ -80,7 +80,7 @@ public class PurchaseController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = purchaseService.queryPage(params);
 
-        return R.httpStatus().put("page", page);
+        return R.status().put("page", page);
     }
 
 
@@ -92,7 +92,7 @@ public class PurchaseController {
     public R info(@PathVariable("id") Long id) {
         PurchaseEntity purchase = purchaseService.getById(id);
 
-        return R.httpStatus().put("purchase", purchase);
+        return R.status().put("purchase", purchase);
     }
 
     /**
@@ -104,7 +104,7 @@ public class PurchaseController {
         purchase.setCreateTime(new Date());
         purchase.setUpdateTime(new Date());
         purchaseService.save(purchase);
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -115,7 +115,7 @@ public class PurchaseController {
     public R update(@RequestBody PurchaseEntity purchase) {
         purchaseService.updateById(purchase);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -126,7 +126,7 @@ public class PurchaseController {
     public R delete(@RequestBody Long[] ids) {
         purchaseService.removeByIds(Arrays.asList(ids));
 
-        return R.httpStatus();
+        return R.status();
     }
 
 }

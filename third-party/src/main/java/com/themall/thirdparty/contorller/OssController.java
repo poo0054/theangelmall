@@ -63,7 +63,7 @@ public class OssController {
             // Assert.fail(e.getMessage());
             System.out.println(e.getMessage());
         }
-        R ok = R.httpStatus();
+        R ok = R.status();
         ok.put("data", respMap);
         return ok;
     }

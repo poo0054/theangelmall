@@ -34,5 +34,8 @@ public enum MenuTypeEnum implements IEnum<String> {
         this.value = value;
     }
 
-
+    @Override
+    public String toString() {
+        return value;
+    }
 }

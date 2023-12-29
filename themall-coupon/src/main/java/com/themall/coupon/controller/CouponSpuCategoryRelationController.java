@@ -32,7 +32,7 @@ public class CouponSpuCategoryRelationController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = couponSpuCategoryRelationService.queryPage(params);
 
-        return R.httpStatus().put("page", page);
+        return R.status().put("page", page);
     }
 
 
@@ -44,7 +44,7 @@ public class CouponSpuCategoryRelationController {
     public R info(@PathVariable("id") Long id) {
             CouponSpuCategoryRelationEntity couponSpuCategoryRelation = couponSpuCategoryRelationService.getById(id);
 
-        return R.httpStatus().put("couponSpuCategoryRelation", couponSpuCategoryRelation);
+        return R.status().put("couponSpuCategoryRelation", couponSpuCategoryRelation);
     }
 
     /**
@@ -55,7 +55,7 @@ public class CouponSpuCategoryRelationController {
     public R save(@RequestBody CouponSpuCategoryRelationEntity couponSpuCategoryRelation) {
             couponSpuCategoryRelationService.save(couponSpuCategoryRelation);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -66,7 +66,7 @@ public class CouponSpuCategoryRelationController {
     public R update(@RequestBody CouponSpuCategoryRelationEntity couponSpuCategoryRelation) {
             couponSpuCategoryRelationService.updateById(couponSpuCategoryRelation);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -77,7 +77,7 @@ public class CouponSpuCategoryRelationController {
     public R delete(@RequestBody Long[] ids) {
             couponSpuCategoryRelationService.removeByIds(Arrays.asList(ids));
 
-        return R.httpStatus();
+        return R.status();
     }
 
 }

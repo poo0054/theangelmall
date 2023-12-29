@@ -27,7 +27,7 @@ public class R extends HashMap<String, Object> {
     private static final long serialVersionUID = 1L;
 
     public static final String CODE_NAME = "code";
-    public static final String MSG_NAME = "msg";
+    public static final String MSG_NAME = "message";
     public static final String DATA_NAME = "data";
 
 
@@ -38,21 +38,21 @@ public class R extends HashMap<String, Object> {
     }
 
     public static R error() {
-        return httpStatus(HttpStatusEnum.SYSTEM_ERROR_B0001);
+        return status(HttpStatusEnum.SYSTEM_ERROR_B0001);
     }
 
     public static R error(HttpStatusEnum httpStatusEnum) {
         return error(httpStatusEnum.getCode(), httpStatusEnum.getMsg());
     }
 
-    public static R error(String code, String msg) {
+    public static R error(String code, Object msg) {
         R r = new R();
         r.put(CODE_NAME, code);
         r.put(MSG_NAME, msg);
         return r;
     }
 
-    public static R error(HttpStatusEnum statusEnum, String msg) {
+    public static R error(HttpStatusEnum statusEnum, Object msg) {
         R r = new R();
         r.put(CODE_NAME, statusEnum.getCode());
         r.put(MSG_NAME, msg);
@@ -74,32 +74,32 @@ public class R extends HashMap<String, Object> {
         return r;
     }
 
-    public static R httpStatus(HttpStatusEnum httpStatusEnum) {
+    public static R status(HttpStatusEnum httpStatusEnum) {
         R r = new R();
-        r.put(MSG_NAME, httpStatusEnum.getCode());
-        r.put(CODE_NAME, httpStatusEnum.getMsg());
+        r.put(CODE_NAME, httpStatusEnum.getCode());
+        r.put(MSG_NAME, httpStatusEnum.getMsg());
         return r;
     }
 
-    public static R httpStatus(HttpStatusEnum httpStatusEnum, Object data) {
+    public static R status(HttpStatusEnum httpStatusEnum, Object data) {
         R r = new R();
-        r.put(MSG_NAME, httpStatusEnum.getCode());
-        r.put(CODE_NAME, httpStatusEnum.getMsg());
+        r.put(CODE_NAME, httpStatusEnum.getCode());
+        r.put(MSG_NAME, httpStatusEnum.getMsg());
         r.put(DATA_NAME, data);
         return r;
     }
 
-    public static R httpStatus(Map<String, Object> map) {
+    public static R status(Map<String, Object> map) {
         R r = new R();
         r.putAll(map);
         return r;
     }
 
-    public static R httpStatus() {
+    public static R status() {
         return new R();
     }
 
-    public static R httpStatus(boolean status) {
+    public static R status(boolean status) {
         return status ? ok() : error();
     }
 

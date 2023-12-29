@@ -20,5 +20,16 @@ public interface SysMenuService extends IService<SysMenu> {
     List<MenuVo> getUserMenuList(Long userId);
 
     List<Long> queryAllMenuId(Long createUserId);
+
+    /**
+     * 获取所有菜单
+     *
+     * @return 菜单返回
+     */
+    List<MenuVo> getList();
+
+    boolean saveMenuVo(MenuVo menuVo);
+
+    boolean updateMenuVo(MenuVo sysMenu);
 }
 

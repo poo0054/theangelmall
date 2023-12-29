@@ -36,7 +36,7 @@ public class WareSkuController {
     public R OrderLock(@RequestBody WareSkuLockTo skuLockTo) {
         try {
             wareSkuService.OrderLock(skuLockTo);
-            return R.httpStatus();
+            return R.status();
         } catch (NoStockException e) {
             e.printStackTrace();
             return R.error(HttpStatusEnum.SYSTEM_WARE_B1000.getCode(), e.getMessage());
@@ -49,7 +49,7 @@ public class WareSkuController {
     @PostMapping("/hasstock")
     public R getHasStock(@RequestBody List<Long> skuIds) {
         List<SkuHasStockVo> skuHasStockVos = wareSkuService.getHasStock(skuIds);
-        R ok = R.httpStatus();
+        R ok = R.status();
         return ok.setData(skuHasStockVos);
     }
 
@@ -62,7 +62,7 @@ public class WareSkuController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = wareSkuService.queryPage(params);
 
-        return R.httpStatus().put("page", page);
+        return R.status().put("page", page);
     }
 
 
@@ -74,7 +74,7 @@ public class WareSkuController {
     public R info(@PathVariable("id") Long id) {
         WareSkuEntity wareSku = wareSkuService.getById(id);
 
-        return R.httpStatus().put("wareSku", wareSku);
+        return R.status().put("wareSku", wareSku);
     }
 
     /**
@@ -85,7 +85,7 @@ public class WareSkuController {
     public R save(@RequestBody WareSkuEntity wareSku) {
         wareSkuService.save(wareSku);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -96,7 +96,7 @@ public class WareSkuController {
     public R update(@RequestBody WareSkuEntity wareSku) {
         wareSkuService.updateById(wareSku);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -107,7 +107,7 @@ public class WareSkuController {
     public R delete(@RequestBody Long[] ids) {
         wareSkuService.removeByIds(Arrays.asList(ids));
 
-        return R.httpStatus();
+        return R.status();
     }
 
 }

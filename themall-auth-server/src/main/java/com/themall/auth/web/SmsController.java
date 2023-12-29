@@ -53,7 +53,7 @@ public class SmsController {
                     stringRedisTemplate.opsForValue()
                             .set(AuthServerConstant.SMS_CODE_PREFIX + phone, code + "_" + System.currentTimeMillis(), 5,
                                     TimeUnit.MINUTES);
-                    return R.httpStatus();
+                    return R.status();
                 }
             }
         } else {
@@ -65,7 +65,7 @@ public class SmsController {
                 stringRedisTemplate.opsForValue()
                         .set(AuthServerConstant.SMS_CODE_PREFIX + phone, code + "_" + System.currentTimeMillis(), 5,
                                 TimeUnit.MINUTES);
-                return R.httpStatus();
+                return R.status();
             }
         }
         return R.error(HttpStatusEnum.USER_ERROR_A0501);

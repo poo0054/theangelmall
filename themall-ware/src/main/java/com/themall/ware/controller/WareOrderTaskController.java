@@ -32,7 +32,7 @@ public class WareOrderTaskController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = wareOrderTaskService.queryPage(params);
 
-        return R.httpStatus().put("page", page);
+        return R.status().put("page", page);
     }
 
 
@@ -44,7 +44,7 @@ public class WareOrderTaskController {
     public R info(@PathVariable("id") Long id) {
             WareOrderTaskEntity wareOrderTask = wareOrderTaskService.getById(id);
 
-        return R.httpStatus().put("wareOrderTask", wareOrderTask);
+        return R.status().put("wareOrderTask", wareOrderTask);
     }
 
     /**
@@ -55,7 +55,7 @@ public class WareOrderTaskController {
     public R save(@RequestBody WareOrderTaskEntity wareOrderTask) {
             wareOrderTaskService.save(wareOrderTask);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -66,7 +66,7 @@ public class WareOrderTaskController {
     public R update(@RequestBody WareOrderTaskEntity wareOrderTask) {
             wareOrderTaskService.updateById(wareOrderTask);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -77,7 +77,7 @@ public class WareOrderTaskController {
     public R delete(@RequestBody Long[] ids) {
             wareOrderTaskService.removeByIds(Arrays.asList(ids));
 
-        return R.httpStatus();
+        return R.status();
     }
 
 }

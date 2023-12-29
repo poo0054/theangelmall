@@ -32,7 +32,7 @@ public class OrderItemController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = orderItemService.queryPage(params);
 
-        return R.httpStatus().put("page", page);
+        return R.status().put("page", page);
     }
 
 
@@ -44,7 +44,7 @@ public class OrderItemController {
     public R info(@PathVariable("id") Long id) {
             OrderItemEntity orderItem = orderItemService.getById(id);
 
-        return R.httpStatus().put("orderItem", orderItem);
+        return R.status().put("orderItem", orderItem);
     }
 
     /**
@@ -55,7 +55,7 @@ public class OrderItemController {
     public R save(@RequestBody OrderItemEntity orderItem) {
             orderItemService.save(orderItem);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -66,7 +66,7 @@ public class OrderItemController {
     public R update(@RequestBody OrderItemEntity orderItem) {
             orderItemService.updateById(orderItem);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -77,7 +77,7 @@ public class OrderItemController {
     public R delete(@RequestBody Long[] ids) {
             orderItemService.removeByIds(Arrays.asList(ids));
 
-        return R.httpStatus();
+        return R.status();
     }
 
 }

@@ -30,7 +30,7 @@ public class ElasticSearchSaveController {
         try {
             boolean b = productSaveService.productStatusUp(skuEsModels);
             if (b) {
-                return R.httpStatus();
+                return R.status();
             } else {
                 return R.error(HttpStatusEnum.SYSTEM_ERROR_B0100);
             }

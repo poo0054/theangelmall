@@ -42,7 +42,7 @@ public class BrandController {
     @PreAuthorize("hasAuthority('product:brand:list')")
     public R infos(@RequestParam("brandIds") List<Long> brandIds) {
         List<BrandEntity> brandEntities = brandService.getBrandsById(brandIds);
-        return R.httpStatus().setData(brandEntities);
+        return R.status().setData(brandEntities);
     }
 
     /**
@@ -52,7 +52,7 @@ public class BrandController {
     @PreAuthorize("hasAuthority('product:brand:list')")
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = brandService.queryPage(params);
-        return R.httpStatus().setData(page);
+        return R.status().setData(page);
     }
 
 
@@ -63,7 +63,7 @@ public class BrandController {
     @PreAuthorize("hasAuthority('product:brand:list')")
     public R info(@PathVariable("brandId") Long brandId) {
         BrandEntity brand = brandService.getById(brandId);
-        return R.httpStatus().setData(brand);
+        return R.status().setData(brand);
     }
 
     /**
@@ -72,7 +72,7 @@ public class BrandController {
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     @PreAuthorize("hasAuthority('product:brand:save')")
     public R save(@Validated({AddGroup.class}) @RequestBody BrandEntity brand) {
-        return R.httpStatus(brandService.save(brand));
+        return R.status(brandService.save(brand));
     }
 
     /**
@@ -82,7 +82,7 @@ public class BrandController {
     @PreAuthorize("hasAuthority('product:brand:update')")
     public R update(@Validated @RequestBody BrandEntity brand) {
         brandService.updateDetail(brand);
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -92,7 +92,7 @@ public class BrandController {
     @PreAuthorize("hasAuthority('product:brand:delete')")
     public R delete(@RequestBody Long[] brandIds) {
         brandService.removeByIds(Arrays.asList(brandIds));
-        return R.httpStatus();
+        return R.status();
     }
 
 }

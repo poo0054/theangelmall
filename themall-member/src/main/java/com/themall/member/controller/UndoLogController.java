@@ -32,7 +32,7 @@ public class UndoLogController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = undoLogService.queryPage(params);
 
-        return R.httpStatus().put("page", page);
+        return R.status().put("page", page);
     }
 
 
@@ -44,7 +44,7 @@ public class UndoLogController {
     public R info(@PathVariable("id") Long id) {
             UndoLogEntity undoLog = undoLogService.getById(id);
 
-        return R.httpStatus().put("undoLog", undoLog);
+        return R.status().put("undoLog", undoLog);
     }
 
     /**
@@ -55,7 +55,7 @@ public class UndoLogController {
     public R save(@RequestBody UndoLogEntity undoLog) {
             undoLogService.save(undoLog);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -66,7 +66,7 @@ public class UndoLogController {
     public R update(@RequestBody UndoLogEntity undoLog) {
             undoLogService.updateById(undoLog);
 
-        return R.httpStatus();
+        return R.status();
     }
 
     /**
@@ -77,7 +77,7 @@ public class UndoLogController {
     public R delete(@RequestBody Long[] ids) {
             undoLogService.removeByIds(Arrays.asList(ids));
 
-        return R.httpStatus();
+        return R.status();
     }
 
 }
