@@ -116,7 +116,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenu> impleme
         SysMenu afterNode = this.getById(dropMenuVo.getAfterNodeId());
         SysMenu node = this.getById(dropMenuVo.getNodeId());
         List<SysMenu> sysMenu = buildSysMenu(node, dropMenuVo.getDropType(), afterNode);
-        return this.saveBatch(sysMenu);
+        return this.updateBatchById(sysMenu);
     }
 
 
