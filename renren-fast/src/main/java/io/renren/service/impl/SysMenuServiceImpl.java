@@ -10,6 +10,7 @@ package io.renren.service.impl;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
@@ -123,18 +124,22 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenu> impleme
     private List<SysMenu> buildSysMenu(SysMenu node, DropType dropType, SysMenu afterNode) {
         Integer orderNum = afterNode.getOrderNum();
         LambdaQueryWrapper<SysMenu> queryWrapper = Wrappers.lambdaQuery(SysMenu.class);
-        queryWrapper.eq(SysMenu::getParentId, afterNode.getParentId());
+        queryWrapper.eq(ObjectUtils.isNotEmpty(afterNode.getParentId()), SysMenu::getParentId, afterNode.getParentId());
+        queryWrapper.isNull(ObjectUtils.isEmpty(afterNode.getParentId()), SysMenu::getParentId);
         switch (dropType) {
             case BEFORE:
                 //前面
+                node.setParentId(afterNode.getParentId());
                 queryWrapper.ge(SysMenu::getOrderNum, orderNum);
                 break;
             case AFTER:
                 //后面
+                node.setParentId(afterNode.getParentId());
                 orderNum = orderNum + 1;
                 queryWrapper.ge(SysMenu::getOrderNum, orderNum);
                 break;
             case INNER:
+                //里面
                 node.setParentId(afterNode.getId());
                 node.setOrderNum(0);
                 break;
@@ -142,6 +147,13 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenu> impleme
                 break;
         }
         List<SysMenu> list = this.list(queryWrapper);
+        //TODO 解决为空的问题
+        if (ObjectUtils.isEmpty(node.getParentId())) {
+            LambdaUpdateWrapper<SysMenu> lambdaUpdateWrapper = Wrappers.lambdaUpdate(SysMenu.class);
+            lambdaUpdateWrapper.set(SysMenu::getParentId, null);
+            lambdaUpdateWrapper.eq(SysMenu::getId, node.getId());
+            this.update(lambdaUpdateWrapper);
+        }
         if (ObjectUtils.isEmpty(list)) {
             return Lists.newArrayList(node);
         }
@@ -153,7 +165,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenu> impleme
         List<SysMenu> sysMenus = sysMenu.stream().sorted(Comparator.comparing(SysMenu::getOrderNum))
                 .collect(Collectors.toList());
         //当前第一个
-        sysMenus.set(0, node);
+        sysMenus.add(0, node);
         for (int i = 0; i < sysMenus.size(); i++) {
             SysMenu sysMenu1 = sysMenus.get(i);
             sysMenu1.setOrderNum(orderNum + i);
