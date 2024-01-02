@@ -168,7 +168,7 @@ export default {
 			this.loading = true
 			var res = this.form.id ? await this.$API.system.menu.update.put(this.form) : await this.$API.system.menu.save.post(this.form)
 			this.loading = false
-			if (res.code == '00000') {
+			if (res.code === '00000') {
 				this.$message.success("保存成功")
 			} else {
 				this.$message.warning(res.message)

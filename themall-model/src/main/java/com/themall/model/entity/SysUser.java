@@ -48,7 +48,7 @@ public class SysUser implements Serializable {
      * 用户名
      */
     @NotBlank(groups = {AddGroup.class, UpdateGroup.class})
-    private String username;
+    private String userName;
 
     /**
      * 第三方用户名

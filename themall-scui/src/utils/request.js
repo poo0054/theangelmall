@@ -15,6 +15,7 @@ axios.interceptors.request.use(
 		if (token) {
 			config.headers[sysConfig.TOKEN_NAME] = sysConfig.TOKEN_PREFIX + token
 		}
+		console.log(config)
 		if (!sysConfig.REQUEST_CACHE && config.method == 'get') {
 			config.params = config.params || {};
 			config.params['_'] = new Date().getTime();
@@ -33,7 +34,7 @@ let MessageBox_401_show = false
 // HTTP response 拦截器
 axios.interceptors.response.use(
 	(response) => {
-		if (response.data.code == 'A0300') {
+		if (response.data.code === 'A0300') {
 			if (!MessageBox_401_show) {
 				MessageBox_401_show = true
 				ElMessageBox.confirm('当前用户已被登出或无权限访问当前资源，请尝试重新登录后再操作。', '无权限访问', {
@@ -51,6 +52,18 @@ axios.interceptors.response.use(
 				})
 			}
 		}
+
+		if (response.data.code === '00000') {
+			ElNotification(response.data.message)
+		}
+
+		if (response.data.code !== '00000') {
+			ElNotification.error({
+				title: '请求错误',
+				message: response.data.message
+			});
+		}
+
 		return response;
 	},
 	(error) => {
@@ -181,10 +194,12 @@ var http = {
 		})
 	},
 
-	/** delete 请求
-	 * @param  {string} url 接口地址
-	 * @param  {object} data 请求参数
-	 * @param  {object} config 参数
+
+	/**
+	 * delete 请求
+	 * @param url 接口地址
+	 * @param data body
+	 * @param config 参数
 	 */
 	delete: function (url, data = {}, config = {}) {
 		return new Promise((resolve, reject) => {

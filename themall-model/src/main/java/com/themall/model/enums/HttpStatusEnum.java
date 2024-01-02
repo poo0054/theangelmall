@@ -12,7 +12,7 @@ public enum HttpStatusEnum {
     /**
      * 成功
      */
-    SUCCESS("00000", "成功"),
+    SUCCESS("00000", "请求成功"),
 
     /**
      * 一级宏观错误码
@@ -442,18 +442,11 @@ public enum HttpStatusEnum {
 
     private final String code;
 
-    private final String msg;
+    private final String message;
 
-    HttpStatusEnum(String code, String msg) {
+    HttpStatusEnum(String code, String message) {
         this.code = code;
-        this.msg = msg;
+        this.message = message;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
 }

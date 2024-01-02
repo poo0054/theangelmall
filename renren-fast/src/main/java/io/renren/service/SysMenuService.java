@@ -2,6 +2,7 @@ package io.renren.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.themall.model.entity.SysMenu;
+import io.renren.pojo.form.NodeDropMenuVo;
 import io.renren.pojo.vo.MenuVo;
 
 import java.util.List;
@@ -28,8 +29,12 @@ public interface SysMenuService extends IService<SysMenu> {
      */
     List<MenuVo> getList();
 
-    boolean saveMenuVo(MenuVo menuVo);
+    String saveMenuVo(MenuVo menuVo);
 
     boolean updateMenuVo(MenuVo sysMenu);
+
+    boolean delete(List<String> idList);
+
+    boolean nodeDrop(NodeDropMenuVo dropMenuVo);
 }
 

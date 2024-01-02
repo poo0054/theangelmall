@@ -72,7 +72,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUser> impleme
         Object username = params.get("username");
         Object createUserId = params.get("createUserId");
         LambdaQueryWrapper<SysUser> lambdaQueryWrapper = Wrappers.lambdaQuery(SysUser.class);
-        lambdaQueryWrapper.like(ObjectUtils.isNotEmpty(username), SysUser::getUsername, username);
+        lambdaQueryWrapper.like(ObjectUtils.isNotEmpty(username), SysUser::getUserName, username);
         lambdaQueryWrapper.eq(ObjectUtils.isNotEmpty(createUserId), SysUser::getCreateUserId, createUserId);
         IPage<SysUser> page = this.page(
                 new Query<SysUser>().getPage(params),
@@ -154,7 +154,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUser> impleme
     @Override
     public SysUser getByUserName(String username) {
         LambdaQueryWrapper<SysUser> queryWrapper = Wrappers.lambdaQuery(SysUser.class);
-        queryWrapper.eq(SysUser::getUsername, username);
+        queryWrapper.eq(SysUser::getUserName, username);
         return this.getOne(queryWrapper);
     }
 

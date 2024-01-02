@@ -41,6 +41,7 @@
         <fastjson2.version>2.0.43</fastjson2.version>
         <logback-json.version>0.1.5</logback-json.version>
         <datasource-proxy.version>1.10</datasource-proxy.version>
+        <google.guava.version>33.0.0-jre</google.guava.version>
 
         <flatten-maven.version>1.1.0</flatten-maven.version>
         <maven-javadoc.version>2.9.1</maven-javadoc.version>
@@ -98,6 +99,13 @@
                 <groupId>com.alibaba.fastjson2</groupId>
                 <artifactId>fastjson2</artifactId>
                 <version>${fastjson2.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${google.guava.version}</version>
+                <!-- or, for Android: -->
             </dependency>
 
             <dependency>

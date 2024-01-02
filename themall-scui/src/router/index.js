@@ -75,13 +75,12 @@ router.beforeEach(async (to, from, next) => {
 		let menu = [...userMenu, ...apiMenu]
 		var menuRouter = filterAsyncRouter(menu)
 		menuRouter = flatAsyncRoutes(menuRouter)
-		console.log(menuRouter)
 		menuRouter.forEach(item => {
 			router.addRoute("layout", item)
 		})
 		routes_404_r = router.addRoute(routes_404)
 		if (to.matched.length === 0) {
-			await router.push(to.fullPath);
+			router.push(to.fullPath);
 		}
 		isGetRouter = true;
 	}

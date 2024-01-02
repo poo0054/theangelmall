@@ -6,7 +6,8 @@
 					<el-input v-model="menuFilterText" clearable placeholder="输入关键字进行过滤"></el-input>
 				</el-header>
 				<el-main class="nopadding">
-					<el-tree ref="menu" :data="menuList" :expand-on-click-node="false" :filter-node-method="menuFilterNode" :props="menuProps" check-strictly
+					<el-tree ref="menu" :data="menuList" :expand-on-click-node="false"
+							 :filter-node-method="menuFilterNode" :props="menuProps" check-strictly
 							 class="menu" draggable highlight-current node-key="id"
 							 show-checkbox @node-click="menuClick" @node-drop="nodeDrop">
 
@@ -87,9 +88,18 @@ export default {
 			return targetText.indexOf(value) !== -1;
 		},
 		//树拖拽
-		nodeDrop(draggingNode, dropNode, dropType) {
+		nodeDrop(node, after, dropType) {
+			console.log(node.data, after.data, dropType)
 			this.$refs.save.setData({})
-			this.$message(`拖拽对象：${draggingNode.data.meta.title}, 释放对象：${dropNode.data.meta.title}, 释放对象的位置：${dropType}`)
+			this.$message(`拖拽对象：${node.data.meta.title}, 释放对象：${after.data.meta.title}, 释放对象的位置：${dropType}`)
+			this.menuloading = true
+			var newMenuData = {
+				nodeId: node.data.id,
+				afterNodeId: after.data.id,
+				dropType: dropType.toLowerCase()
+			}
+			this.$API.system.menu.nodeDrop.put(newMenuData)
+			this.menuloading = false
 		},
 		//增加
 		async add(node, data) {
@@ -97,7 +107,7 @@ export default {
 			var newMenuData = {
 				parentId: data ? data.id : "",
 				name: newMenuName,
-				path: "",
+				path: "/" + newMenuName,
 				component: "",
 				meta: {
 					title: newMenuName,
@@ -105,19 +115,20 @@ export default {
 				}
 			}
 			this.menuloading = true
-			var res = await this.$API.demo.post.post(newMenuData)
+			var res = await this.$API.system.menu.save.post(newMenuData)
+			if (res.code === '00000') {
+				newMenuData.id = res.data
+				this.$refs.menu.append(newMenuData, node)
+				this.$refs.menu.setCurrentKey(newMenuData.id)
+				var pid = node ? node.data.id : ""
+				this.$refs.save.setData(newMenuData, pid)
+			}
 			this.menuloading = false
-			newMenuData.id = res.data
-
-			this.$refs.menu.append(newMenuData, node)
-			this.$refs.menu.setCurrentKey(newMenuData.id)
-			var pid = node ? node.data.id : ""
-			this.$refs.save.setData(newMenuData, pid)
 		},
 		//删除菜单
 		async delMenu() {
 			var CheckedNodes = this.$refs.menu.getCheckedNodes()
-			if (CheckedNodes.length == 0) {
+			if (CheckedNodes.length === 0) {
 				this.$message.warning("请选择需要删除的项")
 				return false;
 			}
@@ -133,13 +144,11 @@ export default {
 			}
 
 			this.menuloading = true
-			var reqData = {
-				ids: CheckedNodes.map(item => item.id)
-			}
-			var res = await this.$API.demo.post.post(reqData)
+
+			var res = await this.$API.system.menu.delete.delete(CheckedNodes.map(item => item.id))
 			this.menuloading = false
 
-			if (res.code == 200) {
+			if (res.code === '00000') {
 				CheckedNodes.forEach(item => {
 					var node = this.$refs.menu.getNode(item)
 					if (node.isCurrent) {
@@ -147,8 +156,6 @@ export default {
 					}
 					this.$refs.menu.remove(item)
 				})
-			} else {
-				this.$message.warning(res.message)
 			}
 		}
 	}

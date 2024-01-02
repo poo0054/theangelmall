@@ -3,16 +3,32 @@
 
 <mapper namespace="io.renren.dao.SysMenuDao">
 
+    <update id="orderNumPlusOne">
+        update sys_menu
+        set order_num = order_num + 1
+        where
+        <if test="parentId = null">
+            parent_id is null
+        </if>
+        <if test="parentId != null">
+            parent_id = #{parentId}
+        </if>
+        and order_num >= #{orderNum}
+    </update>
+
     <select id="queryListParentId" resultType="com.themall.model.entity.SysMenu">
         select *
         from sys_menu
         where parent_id is null
         order by order_num asc
-	</select>
+    </select>
 
     <select id="queryNotButtonList" resultType="com.themall.model.entity.SysMenu">
-		select * from sys_menu where type != 2 order by order_num asc
-	</select>
+        select *
+        from sys_menu
+        where type != 2
+        order by order_num asc
+    </select>
 
     <select id="queryAllMenuId" resultType="java.lang.Long">
         select distinct rm.menu_id

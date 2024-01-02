@@ -19,7 +19,8 @@
 					<el-row :gutter="15">
 						<el-col v-for="(item, index) in grid.layout" v-bind:key="index" :md="item" :xs="24">
 							<draggable v-model="grid.copmsList[index]" animation="200" class="draggable-box"
-									   dragClass="aaaaa" fallbackOnBody force-fallback group="people" handle=".customize-overlay"
+									   dragClass="aaaaa" fallbackOnBody force-fallback group="people"
+									   handle=".customize-overlay"
 									   item-key="com">
 								<template #item="{ element }">
 									<div class="widgets-item">

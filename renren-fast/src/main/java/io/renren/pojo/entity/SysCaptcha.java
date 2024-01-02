@@ -1,14 +1,13 @@
 /**
  * Copyright (c) 2016-2019 人人开源 All rights reserved.
- *
+ * <p>
  * https://www.renren.io
- *
+ * <p>
  * 版权所有，侵权必究！
  */
 
 package io.renren.pojo.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -23,7 +22,7 @@ import java.util.Date;
 @Data
 @TableName("sys_captcha")
 public class SysCaptcha {
-    @TableId(type = IdType.INPUT)
+    @TableId
     private String uuid;
     /**
      * 验证码

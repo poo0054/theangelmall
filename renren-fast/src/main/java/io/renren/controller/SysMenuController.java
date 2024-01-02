@@ -3,6 +3,7 @@ package io.renren.controller;
 
 import com.themall.model.entity.R;
 import com.themall.model.validator.group.UpdateGroup;
+import io.renren.pojo.form.NodeDropMenuVo;
 import io.renren.pojo.vo.MenuVo;
 import io.renren.service.SysMenuService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -78,7 +79,7 @@ public class SysMenuController extends AbstractController {
     @PostMapping
     @PreAuthorize("hasAuthority('sys:menu:save')")
     public R insert(@RequestBody @Validated MenuVo menuVo) {
-        return R.status(this.sysMenuService.saveMenuVo(menuVo));
+        return R.data(this.sysMenuService.saveMenuVo(menuVo));
     }
 
     /**
@@ -101,8 +102,14 @@ public class SysMenuController extends AbstractController {
      */
     @DeleteMapping
     @PreAuthorize("hasAuthority('sys:menu:delete')")
-    public R delete(@RequestParam("idList") List<Long> idList) {
-        return R.data(this.sysMenuService.removeByIds(idList));
+    public R delete(@RequestBody List<String> ids) {
+        return R.data(this.sysMenuService.delete(ids));
+    }
+
+    @PutMapping("nodeDrop")
+    @PreAuthorize("hasAuthority('sys:menu:update')")
+    public R nodeDrop(@RequestBody @Validated(UpdateGroup.class) NodeDropMenuVo dropMenuVo) {
+        return R.status(this.sysMenuService.nodeDrop(dropMenuVo));
     }
 }
 

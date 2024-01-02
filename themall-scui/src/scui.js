@@ -30,6 +30,7 @@ import role from './directives/role'
 import time from './directives/time'
 import copy from './directives/copy'
 import errorHandler from './utils/errorHandler'
+import qs from 'qs'
 
 import * as elIcons from '@element-plus/icons-vue'
 import * as scIcons from './assets/icons'
@@ -43,6 +44,7 @@ export default {
 		app.config.globalProperties.$API = api;
 		app.config.globalProperties.$AUTH = permission;
 		app.config.globalProperties.$ROLE = rolePermission;
+		app.config.globalProperties.$qs = qs;
 
 		//注册全局组件
 		app.component('scTable', scTable);

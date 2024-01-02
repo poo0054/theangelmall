@@ -22,40 +22,31 @@ import lombok.EqualsAndHashCode;
 public class RRException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
-    private String msg;
+    private String message;
 
-    private int code = 500;
+    private String code = HttpStatusEnum.SYSTEM_ERROR_B0001.getCode();
 
     public RRException(HttpStatusEnum httpStatusEnum) {
-        super(httpStatusEnum.getCode());
-        this.msg = httpStatusEnum.getMsg();
+        super(httpStatusEnum.getMessage());
+        this.code = httpStatusEnum.getCode();
+        this.message = httpStatusEnum.getMessage();
     }
 
     public RRException(HttpStatusEnum httpStatusEnum, Throwable e) {
-        super(httpStatusEnum.getCode(), e);
-        this.msg = httpStatusEnum.getMsg();
+        super(httpStatusEnum.getMessage(), e);
+        this.code = httpStatusEnum.getCode();
+        this.message = httpStatusEnum.getMessage();
     }
 
-    public RRException(String msg) {
-        super(msg);
-        this.msg = msg;
+    public RRException(HttpStatusEnum httpStatusEnum, String message) {
+        super(message);
+        this.code = httpStatusEnum.getCode();
+        this.message = message;
     }
 
-    public RRException(String msg, Throwable e) {
-        super(msg, e);
-        this.msg = msg;
-    }
-
-    public RRException(String msg, int code) {
-        super(msg);
-        this.msg = msg;
-        this.code = code;
-    }
-
-    public RRException(String msg, int code, Throwable e) {
-        super(msg, e);
-        this.msg = msg;
-        this.code = code;
+    public RRException(String message) {
+        super(message);
+        this.message = message;
     }
 
 

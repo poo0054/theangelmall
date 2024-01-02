@@ -5,7 +5,7 @@ export default {
 	menu: {
 		getMenu: {
 			url: `${config.API_URL}/sys/menu/getMenu`,
-			name: "获取菜单",
+			name: "获取登陆人菜单",
 			get: async function () {
 				return await http.get(this.url);
 			}
@@ -19,16 +19,30 @@ export default {
 		},
 		update: {
 			url: `${config.API_URL}/sys/menu`,
-			name: "获取菜单",
+			name: "修改",
 			put: async function (data) {
 				return await http.put(this.url, data);
 			}
 		},
 		save: {
 			url: `${config.API_URL}/sys/menu`,
-			name: "获取菜单",
+			name: "新增",
 			post: async function (data) {
-				return await http.get(this.url, data);
+				return await http.post(this.url, data);
+			}
+		},
+		delete: {
+			url: `${config.API_URL}/sys/menu`,
+			name: "删除",
+			delete: async function (data) {
+				return await http.delete(this.url, data);
+			}
+		},
+		nodeDrop: {
+			url: `${config.API_URL}/sys/menu/nodeDrop`,
+			name: "修改",
+			put: async function (data) {
+				return await http.put(this.url, data);
 			}
 		}
 	},

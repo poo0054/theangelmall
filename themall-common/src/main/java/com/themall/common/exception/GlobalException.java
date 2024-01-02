@@ -39,11 +39,7 @@ public class GlobalException {
     @ExceptionHandler(RRException.class)
     public R handleRRException(RRException e) {
         log.error(e.getMessage(), e);
-        R r = new R();
-        r.put("code", e.getCode());
-        r.put("msg", e.getMessage());
-        log.error(e.getMessage(), e);
-        return r;
+        return R.error(e.getCode(), e.getMessage());
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)
@@ -78,6 +74,7 @@ public class GlobalException {
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public R validException(MethodArgumentNotValidException e) {
+        log.error(e.getMessage(), e);
         BindingResult result = e.getBindingResult();
         StringBuilder stringBuilder = new StringBuilder();
         List<FieldError> fieldErrors = result.getFieldErrors();

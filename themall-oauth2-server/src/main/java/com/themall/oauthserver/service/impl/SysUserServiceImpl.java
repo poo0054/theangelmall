@@ -66,7 +66,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUser> impleme
             return null;
         }
         User.UserBuilder builder = User.builder();
-        builder.username(sysUserEntity.getUsername());
+        builder.username(sysUserEntity.getUserName());
         if (null != sysUserEntity.getPassword()) {
             builder.password(sysUserEntity.getPassword());
         }
@@ -100,7 +100,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUser> impleme
     @Override
     public SysUser getByUserName(String username) {
         LambdaQueryWrapper<SysUser> lambdaQuery = Wrappers.lambdaQuery(SysUser.class);
-        lambdaQuery.eq(SysUser::getUsername, username);
+        lambdaQuery.eq(SysUser::getUserName, username);
         return getOne(lambdaQuery);
     }
 
@@ -109,7 +109,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUser> impleme
         LambdaQueryWrapper<SysUser> lambdaQuery = Wrappers.lambdaQuery(SysUser.class);
         lambdaQuery.eq(SysUser::getOauthId, oauthId)
                 .or()
-                .eq(SysUser::getUsername, oauthId);
+                .eq(SysUser::getUserName, oauthId);
         return getOne(lambdaQuery);
     }
 }

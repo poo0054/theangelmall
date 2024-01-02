@@ -3,6 +3,7 @@ package io.renren.dao;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.themall.model.entity.SysMenu;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -27,5 +28,7 @@ public interface SysMenuDao extends BaseMapper<SysMenu> {
     List<SysMenu> queryNotButtonList();
 
     List<Long> queryAllMenuId(Long userId);
+
+    boolean orderNumPlusOne(@Param("parentId") Long parentId, @Param("orderNum") Integer orderNum);
 }
 

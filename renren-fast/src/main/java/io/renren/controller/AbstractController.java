@@ -29,7 +29,7 @@ public abstract class AbstractController {
         if (context.getAuthentication().getPrincipal() instanceof Jwt) {
             Jwt principal = (Jwt) context.getAuthentication().getPrincipal();
             sysUserEntity.setUserId(Long.valueOf(principal.getId()));
-            sysUserEntity.setUsername(principal.getClaims().get("name").toString());
+            sysUserEntity.setUserName(principal.getClaims().get("name").toString());
             sysUserEntity.setOauthId(principal.getSubject());
             //邮件不放出去
             //            sysUserEntity.setEmail(claims.get("email").toString());

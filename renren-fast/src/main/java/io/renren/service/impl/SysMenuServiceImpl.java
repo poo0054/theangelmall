@@ -12,19 +12,26 @@ package io.renren.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.google.common.collect.Lists;
 import com.themall.common.utils.JsonUtils;
 import com.themall.model.constants.Constant;
 import com.themall.model.entity.SysMenu;
+import com.themall.model.enums.HttpStatusEnum;
 import com.themall.model.enums.MenuTypeEnum;
+import com.themall.model.exception.RRException;
 import io.renren.dao.SysMenuDao;
+import io.renren.enums.DropType;
+import io.renren.pojo.form.NodeDropMenuVo;
 import io.renren.pojo.vo.MenuVo;
 import io.renren.service.SysMenuService;
 import org.apache.commons.lang3.ObjectUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -79,9 +86,10 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenu> impleme
     }
 
     @Override
-    public boolean saveMenuVo(MenuVo menuVo) {
+    public String saveMenuVo(MenuVo menuVo) {
         SysMenu sysMenu = toSysMenu(menuVo);
-        return this.save(sysMenu);
+        this.save(sysMenu);
+        return sysMenu.getId().toString();
     }
 
     @Override
@@ -90,14 +98,81 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenu> impleme
         return this.updateById(sysMenu);
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean delete(List<String> idList) {
+        LambdaQueryWrapper<SysMenu> query = Wrappers.lambdaQuery(SysMenu.class);
+        query.in(SysMenu::getParentId, idList);
+        List<SysMenu> list = this.list(query);
+        if (ObjectUtils.isNotEmpty(list)) {
+            throw new RRException(HttpStatusEnum.USER_ERROR_A0400, "需要先删除下级目录");
+        }
+        return removeByIds(idList);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean nodeDrop(NodeDropMenuVo dropMenuVo) {
+        SysMenu afterNode = this.getById(dropMenuVo.getAfterNodeId());
+        SysMenu node = this.getById(dropMenuVo.getNodeId());
+        List<SysMenu> sysMenu = buildSysMenu(node, dropMenuVo.getDropType(), afterNode);
+        return this.saveBatch(sysMenu);
+    }
+
+
+    private List<SysMenu> buildSysMenu(SysMenu node, DropType dropType, SysMenu afterNode) {
+        Integer orderNum = afterNode.getOrderNum();
+        LambdaQueryWrapper<SysMenu> queryWrapper = Wrappers.lambdaQuery(SysMenu.class);
+        queryWrapper.eq(SysMenu::getParentId, afterNode.getParentId());
+        switch (dropType) {
+            case BEFORE:
+                //前面
+                queryWrapper.ge(SysMenu::getOrderNum, orderNum);
+                break;
+            case AFTER:
+                //后面
+                orderNum = orderNum + 1;
+                queryWrapper.ge(SysMenu::getOrderNum, orderNum);
+                break;
+            case INNER:
+                node.setParentId(afterNode.getId());
+                node.setOrderNum(0);
+                break;
+            default:
+                break;
+        }
+        List<SysMenu> list = this.list(queryWrapper);
+        if (ObjectUtils.isEmpty(list)) {
+            return Lists.newArrayList(node);
+        }
+        return tree(node, list, orderNum);
+    }
+
+    private List<SysMenu> tree(SysMenu node, List<SysMenu> sysMenu, Integer orderNum) {
+        //首先根据orderNum排序
+        List<SysMenu> sysMenus = sysMenu.stream().sorted(Comparator.comparing(SysMenu::getOrderNum))
+                .collect(Collectors.toList());
+        //当前第一个
+        sysMenus.set(0, node);
+        for (int i = 0; i < sysMenus.size(); i++) {
+            SysMenu sysMenu1 = sysMenus.get(i);
+            sysMenu1.setOrderNum(orderNum + i);
+        }
+        return sysMenus;
+    }
+
     @NotNull
     private List<MenuVo> toMenuVos(List<SysMenu> list) {
         return list.stream()
                 .filter(sysMenuEntity -> ObjectUtils.isEmpty(sysMenuEntity.getParentId()))
                 .filter(sysMenu -> !Objects.equals(sysMenu.getType(), MenuTypeEnum.BUTTON))
+                .sorted(Comparator.comparing(SysMenu::getOrderNum))
                 .map(sysMenuEntity -> {
                     MenuVo convert = toMenuVo(sysMenuEntity);
-                    convert.setChildren(children(sysMenuEntity.getId(), list));
+                    List<MenuVo> children = children(sysMenuEntity.getId(), list);
+                    if (ObjectUtils.isNotEmpty(children)) {
+                        convert.setChildren(children);
+                    }
                     return convert;
                 }).collect(Collectors.toList());
     }
@@ -107,7 +182,10 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenu> impleme
                 .filter(sysMenuEntity -> Objects.equals(sysMenuEntity.getParentId(), id))
                 .map(sysMenuEntity -> {
                     MenuVo convert = toMenuVo(sysMenuEntity);
-                    convert.setChildren(children(sysMenuEntity.getId(), list));
+                    List<MenuVo> children = children(sysMenuEntity.getId(), list);
+                    if (ObjectUtils.isNotEmpty(children)) {
+                        convert.setChildren(children);
+                    }
                     return convert;
                 })
                 .collect(Collectors.toList());

@@ -1,5 +1,6 @@
 package com.themall.model.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.themall.model.enums.MenuTypeEnum;
 import lombok.Data;
 
@@ -17,6 +18,7 @@ public class SysMenu implements Serializable {
 
     private static final long serialVersionUID = 8584431895726211493L;
 
+    @TableId
     private Long id;
 
     //父菜单ID

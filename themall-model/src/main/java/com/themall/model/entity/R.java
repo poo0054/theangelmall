@@ -34,7 +34,7 @@ public class R extends HashMap<String, Object> {
     public R() {
         HttpStatusEnum success = HttpStatusEnum.SUCCESS;
         put(CODE_NAME, success.getCode());
-        put(MSG_NAME, success.getMsg());
+        put(MSG_NAME, success.getMessage());
     }
 
     public static R error() {
@@ -42,7 +42,7 @@ public class R extends HashMap<String, Object> {
     }
 
     public static R error(HttpStatusEnum httpStatusEnum) {
-        return error(httpStatusEnum.getCode(), httpStatusEnum.getMsg());
+        return error(httpStatusEnum.getCode(), httpStatusEnum.getMessage());
     }
 
     public static R error(String code, Object msg) {
@@ -77,14 +77,14 @@ public class R extends HashMap<String, Object> {
     public static R status(HttpStatusEnum httpStatusEnum) {
         R r = new R();
         r.put(CODE_NAME, httpStatusEnum.getCode());
-        r.put(MSG_NAME, httpStatusEnum.getMsg());
+        r.put(MSG_NAME, httpStatusEnum.getMessage());
         return r;
     }
 
     public static R status(HttpStatusEnum httpStatusEnum, Object data) {
         R r = new R();
         r.put(CODE_NAME, httpStatusEnum.getCode());
-        r.put(MSG_NAME, httpStatusEnum.getMsg());
+        r.put(MSG_NAME, httpStatusEnum.getMessage());
         r.put(DATA_NAME, data);
         return r;
     }

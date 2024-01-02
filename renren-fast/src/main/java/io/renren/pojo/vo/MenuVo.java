@@ -1,5 +1,7 @@
 package io.renren.pojo.vo;
 
+import com.alibaba.fastjson2.annotation.JSONType;
+import com.themall.common.fastjson.NullPropertyFilter;
 import com.themall.model.enums.MenuTypeEnum;
 import com.themall.model.validator.group.UpdateGroup;
 import lombok.AllArgsConstructor;
@@ -20,6 +22,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@JSONType(serializeFilters = NullPropertyFilter.class)
 public class MenuVo implements Serializable {
     private static final long serialVersionUID = -1344769927086411429L;
 
@@ -60,6 +63,7 @@ public class MenuVo implements Serializable {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
+    @JSONType(serializeFilters = NullPropertyFilter.class)
     public static class Meta implements Serializable {
         private static final long serialVersionUID = 3287758168176072884L;
         //菜单图标

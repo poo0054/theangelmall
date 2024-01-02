@@ -92,7 +92,7 @@ public final class FederatedIdentityIdTokenCustomizer implements OAuth2TokenCust
                     SysUser sysUserEntity = userService.getByLoginName(context.getAuthorization().getPrincipalName());
                     if (ObjectUtils.isNotEmpty(sysUserEntity)) {
                         Set<GrantedAuthority> auth = userService.getAuth(sysUserEntity.getUserId());
-                        String username = sysUserEntity.getUsername();
+                        String username = sysUserEntity.getUserName();
                         if (StringUtils.isBlank(username)) {
                             //使用第三方登陆用户
                             username = sysUserEntity.getOauthName();

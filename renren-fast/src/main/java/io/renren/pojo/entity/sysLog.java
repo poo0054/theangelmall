@@ -8,7 +8,6 @@
 
 package io.renren.pojo.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
@@ -29,7 +28,7 @@ public class sysLog implements Serializable {
     /**
      * 主键, 必填
      */
-    @TableId(value = "id", type = IdType.ASSIGN_ID)
+    @TableId
     private String id;
 
     /**
