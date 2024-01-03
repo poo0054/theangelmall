@@ -10,13 +10,16 @@
 <template>
 	<div ref="scTableMain" v-loading="loading" :style="{'height':_height}" class="scTable">
 		<div :style="{'height':_table_height}" class="scTable-table">
-			<el-table :key="toggleIndex" ref="scTable" :border="config.border" :data="tableData" :height="height=='auto'?null:'100%'"
+			<el-table :key="toggleIndex" ref="scTable" :border="config.border" :data="tableData"
+					  :height="height=='auto'?null:'100%'"
 					  :row-key="rowKey" :size="config.size" :stripe="config.stripe"
 					  :summary-method="remoteSummary?remoteSummaryMethod:summaryMethod" v-bind="$attrs"
 					  @sort-change="sortChange" @filter-change="filterChange">
 				<slot></slot>
 				<template v-for="(item, index) in userColumn" :key="index">
-					<el-table-column v-if="!item.hide" :column-key="item.prop" :filter-method="remoteFilter||!item.filters?null:filterHandler" :filters="item.filters"
+					<el-table-column v-if="!item.hide" :column-key="item.prop"
+									 :filter-method="remoteFilter||!item.filters?null:filterHandler"
+									 :filters="item.filters"
 									 :fixed="item.fixed" :label="item.label" :prop="item.prop"
 									 :show-overflow-tooltip="item.showOverflowTooltip"
 									 :sortable="item.sortable"
@@ -36,7 +39,8 @@
 		</div>
 		<div v-if="!hidePagination || !hideDo" class="scTable-page">
 			<div class="scTable-pagination">
-				<el-pagination v-if="!hidePagination" v-model:currentPage="currentPage" :layout="paginationLayout" :page-size="scPageSize" :page-sizes="pageSizes"
+				<el-pagination v-if="!hidePagination" v-model:currentPage="currentPage" :layout="paginationLayout"
+							   :page-size="scPageSize" :page-sizes="pageSizes"
 							   :small="true" :total="total" background
 							   @current-change="paginationChange" @update:page-size="pageSizeChange"></el-pagination>
 			</div>
@@ -321,6 +325,7 @@ export default {
 		filterChange(filters) {
 			if (!this.remoteFilter) {
 				return false
+
 			}
 			Object.keys(filters).forEach(key => {
 				filters[key] = filters[key].join(',')

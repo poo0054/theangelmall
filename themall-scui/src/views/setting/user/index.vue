@@ -6,7 +6,8 @@
 					<el-input v-model="groupFilterText" clearable placeholder="输入关键字进行过滤"></el-input>
 				</el-header>
 				<el-main class="nopadding">
-					<el-tree ref="group" :current-node-key="''" :data="group" :expand-on-click-node="false" :filter-node-method="groupFilterNode"
+					<el-tree ref="group" :current-node-key="''" :data="group" :expand-on-click-node="false"
+							 :filter-node-method="groupFilterNode"
 							 :highlight-current="true" class="menu"
 							 node-key="id" @node-click="groupClick"></el-tree>
 				</el-main>
@@ -33,13 +34,15 @@
 						 @selection-change="selectionChange">
 					<el-table-column type="selection" width="50"></el-table-column>
 					<el-table-column label="ID" prop="id" sortable='custom' width="80"></el-table-column>
-					<el-table-column :filters="[{text: '已上传', value: '1'}, {text: '未上传', value: '0'}]" column-key="filterAvatar" label="头像"
+					<el-table-column :filters="[{text: '已上传', value: '1'}, {text: '未上传', value: '0'}]"
+									 column-key="filterAvatar" label="头像"
 									 width="80">
 						<template #default="scope">
 							<el-avatar :src="scope.row.avatar" size="small"></el-avatar>
 						</template>
 					</el-table-column>
-					<el-table-column :filters="[{text: '系统账号', value: '1'}, {text: '普通账号', value: '0'}]" column-key="filterUserName" label="登录账号" prop="userName"
+					<el-table-column :filters="[{text: '系统账号', value: '1'}, {text: '普通账号', value: '0'}]"
+									 column-key="filterUserName" label="登录账号" prop="userName"
 									 sortable='custom'
 									 width="150"></el-table-column>
 					<el-table-column label="姓名" prop="name" sortable='custom' width="150"></el-table-column>

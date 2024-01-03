@@ -111,8 +111,8 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRole> impleme
 
 
     @Override
-    public List<Long> queryRoleIdList(Long createUserId) {
-        return baseMapper.queryRoleIdList(createUserId);
+    public List<Long> queryRoleIdList(String createBy) {
+        return baseMapper.queryRoleIdList(createBy);
     }
 
 

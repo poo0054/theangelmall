@@ -34,7 +34,7 @@ public interface SysRoleService extends IService<SysRole> {
     /**
      * 查询用户创建的角色ID列表
      */
-    List<Long> queryRoleIdList(Long createUserId);
+    List<Long> queryRoleIdList(String createBy);
 
 
     List<SysRole> listByUserId(Long userId);

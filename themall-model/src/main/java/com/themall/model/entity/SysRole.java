@@ -10,13 +10,12 @@ package com.themall.model.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.themall.model.validator.group.UpdateGroup;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -25,9 +24,10 @@ import java.util.List;
  *
  * @author Mark sunlightcs@gmail.com
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
-@TableName("sys_role")
-public class SysRole implements Serializable {
+public class SysRole extends AbstractEntity<SysRole> {
+
     private static final long serialVersionUID = 1L;
 
     /**

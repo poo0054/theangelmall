@@ -8,6 +8,8 @@
 
 package com.themall.admin.controller;
 
+import com.themall.model.constants.Page;
+import com.themall.model.entity.R;
 import com.themall.model.entity.SysUser;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
@@ -44,5 +46,13 @@ public abstract class AbstractController {
             return null;
         }
         return user.getUserId();
+    }
+
+    public <T> R success(Page<T> page) {
+        return R.data(page);
+    }
+
+    public R success(Object object) {
+        return R.data(object);
     }
 }

@@ -9,19 +9,18 @@
 package com.themall.model.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-
-import java.io.Serializable;
+import lombok.EqualsAndHashCode;
 
 /**
  * 用户与角色对应关系
  *
  * @author Mark sunlightcs@gmail.com
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
-@TableName("sys_user_role")
-public class SysUserRole implements Serializable {
+public class SysUserRole extends AbstractEntity {
+
     private static final long serialVersionUID = 1L;
 
     @TableId

@@ -70,7 +70,7 @@ public class UserRepositoryOAuth2UserHandler implements Consumer<OAuth2User> {
         //分为谷歌和github
         SysUser userEntity = this.userService.getByLoginName(user.getName());
         if (ObjectUtils.isEmpty(userEntity)) {
-            sysUserEntity.setCreateUserId(1L);
+            sysUserEntity.setCreateBy("admin");
             sysUserEntity.setCreateTime(new Date());
             this.userService.save(sysUserEntity);
             SysUserRole sysUserRoleEntity = new SysUserRole();

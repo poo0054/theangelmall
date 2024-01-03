@@ -73,7 +73,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUser> impleme
         Object createUserId = params.get("createUserId");
         LambdaQueryWrapper<SysUser> lambdaQueryWrapper = Wrappers.lambdaQuery(SysUser.class);
         lambdaQueryWrapper.like(ObjectUtils.isNotEmpty(username), SysUser::getUserName, username);
-        lambdaQueryWrapper.eq(ObjectUtils.isNotEmpty(createUserId), SysUser::getCreateUserId, createUserId);
+        lambdaQueryWrapper.eq(ObjectUtils.isNotEmpty(createUserId), SysUser::getCreateBy, createUserId);
         IPage<SysUser> page = this.page(
                 new Query<SysUser>().getPage(params),
                 lambdaQueryWrapper
@@ -168,12 +168,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUser> impleme
         }
 
         //如果不是超级管理员，则需要判断用户的角色是否自己创建
-        if (Objects.equals(Constant.SUPER_ADMIN, user.getCreateUserId())) {
+        if (Objects.equals(Constant.SUPER_ADMIN, user.getCreateBy())) {
             return;
         }
 
         //查询用户创建的角色列表
-        List<Long> roleIdList = sysRoleService.queryRoleIdList(user.getCreateUserId());
+        List<Long> roleIdList = sysRoleService.queryRoleIdList(user.getCreateBy());
 
         //判断是否越权
         if (!roleIdList.containsAll(user.getRoleIdList())) {

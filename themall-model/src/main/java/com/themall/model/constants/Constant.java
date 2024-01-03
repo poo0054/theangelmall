@@ -19,6 +19,11 @@ public class Constant {
      */
     public static final long SUPER_ADMIN = 1;
     /**
+     * 超级管理员
+     */
+    public static final String ADMIN = "admin";
+
+    /**
      * 当前页码
      */
     public static final String PAGE = "page";

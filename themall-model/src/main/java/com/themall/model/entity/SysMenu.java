@@ -3,8 +3,7 @@ package com.themall.model.entity;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.themall.model.enums.MenuTypeEnum;
 import lombok.Data;
-
-import java.io.Serializable;
+import lombok.EqualsAndHashCode;
 
 /**
  * 菜单管理(SysMenu)表实体类
@@ -13,8 +12,9 @@ import java.io.Serializable;
  * @since 2023-12-28 16:36:28
  */
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class SysMenu implements Serializable {
+public class SysMenu extends AbstractEntity<SysMenu> {
 
     private static final long serialVersionUID = 8584431895726211493L;
 
@@ -26,7 +26,7 @@ public class SysMenu implements Serializable {
 
     //菜单URL
     private String path;
-
+    //别名
     private String name;
     //视图
     private String component;
@@ -52,7 +52,6 @@ public class SysMenu implements Serializable {
     private String perms;
     //排序
     private Integer orderNum;
-
 
 }
 

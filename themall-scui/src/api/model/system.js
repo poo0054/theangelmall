@@ -80,7 +80,7 @@ export default {
 	},
 	dept: {
 		list: {
-			url: `${config.API_URL}/system/dept/list`,
+			url: `${config.API_URL}/sys/dept/list`,
 			name: "获取部门列表",
 			get: async function (params) {
 				return await http.get(this.url, params);

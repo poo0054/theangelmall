@@ -1,6 +1,6 @@
 <template>
 	<el-dialog v-model="visible" :title="titleMap[mode]" :width="500" destroy-on-close @closed="$emit('closed')">
-		<el-form ref="dialogForm" :disabled="mode=='show'" :model="form" :rules="rules" label-position="left"
+		<el-form ref="dialogForm" :disabled="mode==='show'" :model="form" :rules="rules" label-position="left"
 				 label-width="100px">
 			<el-form-item label="头像" prop="avatar">
 				<sc-upload v-model="form.avatar" title="上传头像"></sc-upload>
@@ -11,7 +11,7 @@
 			<el-form-item label="姓名" prop="name">
 				<el-input v-model="form.name" clearable placeholder="请输入完整的真实姓名"></el-input>
 			</el-form-item>
-			<template v-if="mode=='add'">
+			<template v-if="mode==='add'">
 				<el-form-item label="登录密码" prop="password">
 					<el-input v-model="form.password" clearable show-password type="password"></el-input>
 				</el-form-item>

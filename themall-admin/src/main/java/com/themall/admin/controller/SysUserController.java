@@ -20,7 +20,7 @@ import com.themall.model.enums.HttpStatusEnum;
 import com.themall.model.validator.Assert;
 import com.themall.model.validator.group.AddGroup;
 import com.themall.model.validator.group.UpdateGroup;
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -112,7 +112,6 @@ public class SysUserController extends AbstractController {
     @PostMapping("/save")
     @PreAuthorize("hasAuthority('sys:user:save')")
     public R save(@RequestBody @Validated(AddGroup.class) SysUser user) {
-        user.setCreateUserId(getUserId());
         sysUserService.saveUser(user);
 
         return R.ok();
@@ -125,7 +124,6 @@ public class SysUserController extends AbstractController {
     @PostMapping("/update")
     @PreAuthorize("hasAuthority('sys:user:update')")
     public R update(@RequestBody @Validated(UpdateGroup.class) SysUser user) {
-        user.setCreateUserId(getUserId());
         sysUserService.update(user);
         return R.ok();
     }

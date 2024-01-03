@@ -16,7 +16,7 @@ import com.themall.admin.pojo.entity.sysLog;
 import com.themall.admin.service.SysLogService;
 import com.themall.admin.utils.PageUtils;
 import com.themall.admin.utils.Query;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;

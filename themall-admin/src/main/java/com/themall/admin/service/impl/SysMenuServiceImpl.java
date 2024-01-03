@@ -26,7 +26,6 @@ import com.themall.model.enums.HttpStatusEnum;
 import com.themall.model.enums.MenuTypeEnum;
 import com.themall.model.exception.RRException;
 import org.apache.commons.lang3.ObjectUtils;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,20 +40,6 @@ import java.util.stream.Collectors;
 @Service("sysMenuService")
 public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenu> implements SysMenuService {
 
-    @NotNull
-    private static MenuVo toMenuVo(SysMenu sysMenuEntity) {
-        MenuVo convert = JsonUtils.convert(sysMenuEntity, MenuVo.class);
-        MenuVo.Meta meta = JsonUtils.convert(sysMenuEntity, MenuVo.Meta.class);
-        convert.setMeta(meta);
-        return convert;
-    }
-
-    @NotNull
-    private static SysMenu toSysMenu(MenuVo menuVo) {
-        SysMenu sysMenu = JsonUtils.convert(menuVo, SysMenu.class);
-        BeanUtils.copyProperties(menuVo.getMeta(), sysMenu);
-        return sysMenu;
-    }
 
     @Override
     public List<MenuVo> getUserMenuList(Long userId) {
@@ -121,6 +106,18 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenu> impleme
         return this.updateBatchById(sysMenu);
     }
 
+    private static MenuVo toMenuVo(SysMenu sysMenuEntity) {
+        MenuVo convert = JsonUtils.convert(sysMenuEntity, MenuVo.class);
+        MenuVo.Meta meta = JsonUtils.convert(sysMenuEntity, MenuVo.Meta.class);
+        convert.setMeta(meta);
+        return convert;
+    }
+
+    private static SysMenu toSysMenu(MenuVo menuVo) {
+        SysMenu sysMenu = JsonUtils.convert(menuVo, SysMenu.class);
+        BeanUtils.copyProperties(menuVo.getMeta(), sysMenu);
+        return sysMenu;
+    }
 
     private List<SysMenu> buildSysMenu(SysMenu node, DropType dropType, SysMenu afterNode) {
         Integer orderNum = afterNode.getOrderNum();
@@ -178,7 +175,6 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenu> impleme
         return sysMenus;
     }
 
-    @NotNull
     private List<MenuVo> toMenuVos(List<SysMenu> list) {
         return list.stream()
                 .filter(sysMenuEntity -> ObjectUtils.isEmpty(sysMenuEntity.getParentId()))

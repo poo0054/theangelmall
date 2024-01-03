@@ -99,11 +99,8 @@ export default {
 		async table_del(row) {
 			var reqData = {id: row.id}
 			var res = await this.$API.demo.post.post(reqData);
-			if (res.code == 200) {
+			if (res.code === '00000') {
 				this.$refs.table.refresh()
-				this.$message.success("删除成功")
-			} else {
-				this.$alert(res.message, "提示", {type: 'error'})
 			}
 		},
 		//批量删除
