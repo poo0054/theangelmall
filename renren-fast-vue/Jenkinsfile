@@ -37,7 +37,7 @@ pipeline {
     stage('install') {
       steps {
         container('nodejs') {
-          sh 'cd renren-fast-vue && npm install'
+          sh 'cd themall-admin-vue && npm install'
         }
       }
     }
@@ -47,7 +47,7 @@ pipeline {
 //                git(credentialsId: 'gitee', url: 'https://github.com/poo0054/theangelmall.git', branch: 'master', changelog: true, poll: false)
         echo "echo 正在构建 themall-vue 版本号 $TAG_NAME"
         container('nodejs') {
-          sh 'cd renren-fast-vue && npm run build'
+          sh 'cd themall-admin-vue && npm run build'
         }
       }
     }
@@ -55,7 +55,7 @@ pipeline {
     stage('构建镜像') {
       steps {
         container('nodejs') {
-          sh "cd renren-fast-vue && podman build -f Dockerfile -t $REGISTRY/$DOCKER_NAME/themall-vue:$TAG_NAME ."
+          sh "cd themall-admin-vue && podman build -f Dockerfile -t $REGISTRY/$DOCKER_NAME/themall-vue:$TAG_NAME ."
           sh 'podman images'
         }
       }
@@ -82,7 +82,7 @@ pipeline {
               variable: 'KUBECONFIG')
           ]) {
             //新版KubeSphere用法
-            sh 'envsubst < renren-fast-vue/deploy/themall-vue.yaml | kubectl apply -f -'
+            sh 'envsubst < themall-admin-vue/deploy/themall-vue.yaml | kubectl apply -f -'
           }
         }
       }

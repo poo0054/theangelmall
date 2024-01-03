@@ -166,13 +166,8 @@ export default {
 		//保存
 		async save() {
 			this.loading = true
-			var res = this.form.id ? await this.$API.system.menu.update.put(this.form) : await this.$API.system.menu.save.post(this.form)
+			this.form.id ? await this.$API.system.menu.update.put(this.form) : await this.$API.system.menu.save.post(this.form)
 			this.loading = false
-			if (res.code === '00000') {
-				this.$message.success("保存成功")
-			} else {
-				this.$message.warning(res.message)
-			}
 		},
 		//表单注入数据
 		setData(data, pid) {

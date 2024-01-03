@@ -297,7 +297,7 @@
         <module>themall-order</module>
         <module>themall-product</module>
         <module>themall-ware</module>
-        <module>renren-fast</module>
+        <module>themall-admin</module>
         <module>third-party</module>
         <module>themall-search</module>
         <module>themall-auth-server</module>

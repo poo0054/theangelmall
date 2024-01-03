@@ -80,12 +80,12 @@ spring:
             - RewritePath=/api/?(?<the>.*), /$\{the}
 
         #
-        - id: renren-fast
-          uri: lb://renren-fast
+        - id: themall-admin
+          uri: lb://themall-admin
           predicates:
-            - Path=/api/**,/renren-fast/**
+            - Path=/api/**,/themall-admin/**
           filters:
-            - RewritePath=/api/?(?<the>.*), /renren-fast/$\{the}
+            - RewritePath=/api/?(?<the>.*), /themall-admin/$\{the}
 
         # 页面
 

@@ -1,4 +1,4 @@
-//def projects = ['renren-fast', 'themall-auth-server', 'themall-cart', 'themall-coupon', 'themall-gatway',
+//def projects = ['themall-admin', 'themall-auth-server', 'themall-cart', 'themall-coupon', 'themall-gatway',
 //                'themall-member', 'themall-order', 'themall-product', 'themall-search', 'themall-seckill',
 //                'themall-ware']
 //, 'third-party'
@@ -15,7 +15,7 @@ pipeline {
         choice(
                 description: '选择模块进行构建',
                 name: 'PROJECT',
-                choices: ['renren-fast', 'themall-cart', 'themall-coupon', 'themall-gatway',
+                choices: ['themall-admin', 'themall-cart', 'themall-coupon', 'themall-gatway',
                           'themall-member', 'themall-order', 'themall-product', 'themall-search', 'themall-seckill',
                           'themall-ware', 'themall-oauth2-server']
 //                , 'third-party' 'themall-auth-server',

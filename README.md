@@ -26,7 +26,7 @@ mysql使用日志主从同步，MyCat搭建集群（也试过shadingshpere，最
 elasticSearch集群，elasticSearch天然就是分布式，直接加入节点。采用master和data分离
 rabbitmq采用镜像集群
 
-renren-fast-vue：后台前端模块，采用开源代码renrenfast，整个商城项目的后台管理
+themall-admin-vue：后台前端模块，采用开源代码renrenfast，整个商城项目的后台管理
 
 renrenfast：后台后端模块
 
