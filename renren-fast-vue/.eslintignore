@@ -1,8 +1,0 @@
-/build/
-/config/
-/dist/
-/*.js
-/test/unit/coverage/
-/src/icons/iconfont.js
-
-*.vue
