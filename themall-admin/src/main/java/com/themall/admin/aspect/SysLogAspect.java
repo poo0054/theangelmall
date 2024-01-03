@@ -139,7 +139,7 @@ public class SysLogAspect {
             operLog.setCreateBy(name);
             operLog.setUpdateBy(name);
             Date createDate = new Date();
-            operLog.setCreateDate(createDate);
+            operLog.setCreateTime(createDate);
             operLog.setUpdateDate(createDate);
             //  保存数据库
             sysLogService.save(operLog);

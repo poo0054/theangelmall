@@ -9,9 +9,10 @@
 package com.themall.admin.pojo.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.themall.model.entity.AbstractEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
 import java.util.Date;
 
 
@@ -20,8 +21,9 @@ import java.util.Date;
  *
  * @author Mark sunlightcs@gmail.com
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class sysLog implements Serializable {
+public class sysLog extends AbstractEntity<sysLog> {
 
     private static final long serialVersionUID = 4964999135222662800L;
 
@@ -121,23 +123,4 @@ public class sysLog implements Serializable {
      */
     private String remarks;
 
-    /**
-     * 创建人
-     */
-    private String createBy;
-
-    /**
-     * 创建时间
-     */
-    private Date createDate;
-
-    /**
-     * 更新人
-     */
-    private String updateBy;
-
-    /**
-     * 更新时间
-     */
-    private Date updateDate;
 }
