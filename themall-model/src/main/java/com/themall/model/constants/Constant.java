@@ -17,11 +17,7 @@ public class Constant {
     /**
      * 超级管理员ID
      */
-    public static final long SUPER_ADMIN = 1;
-    /**
-     * 超级管理员
-     */
-    public static final String ADMIN = "admin";
+    public static final long ADMIN_ID = 1;
 
     /**
      * 当前页码

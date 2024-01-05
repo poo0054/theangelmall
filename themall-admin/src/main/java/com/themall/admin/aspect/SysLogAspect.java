@@ -18,6 +18,7 @@ import com.themall.admin.pojo.entity.sysLog;
 import com.themall.admin.service.SysLogService;
 import com.themall.admin.utils.IPUtils;
 import com.themall.common.utils.ServletUtils;
+import com.themall.common.utils.UserUtils;
 import com.themall.model.constants.BusinessStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
@@ -30,7 +31,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.NamedThreadLocal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
@@ -113,8 +113,7 @@ public class SysLogAspect {
             operLog.setOperIp(IPUtils.getIpAddr(ServletUtils.getRequest()));
             operLog.setOperUrl(StringUtils.substring(request.getRequestURI(), 0, 255));
 
-            String name = SecurityContextHolder.getContext().getAuthentication().getName();
-            operLog.setOperName(name);
+            operLog.setOperName(UserUtils.getUserName());
 
             if (e != null) {
                 operLog.setStatus(BusinessStatus.FAIL.ordinal());
@@ -136,13 +135,13 @@ public class SysLogAspect {
             // 设置消耗时间
             operLog.setCostTime(System.currentTimeMillis() - TIME_THREADLOCAL.get());
             operLog.setOperTime(new Date(TIME_THREADLOCAL.get()));
-            operLog.setCreateBy(name);
-            operLog.setUpdateBy(name);
+            operLog.setCreateBy(UserUtils.getUserId());
+            operLog.setUpdateBy(UserUtils.getUserId());
             Date createDate = new Date();
             operLog.setCreateTime(createDate);
             operLog.setUpdateDate(createDate);
             //  保存数据库
-            sysLogService.save(operLog);
+            sysLogService.asyncSave(operLog);
         } catch (Exception exp) {
             // 记录本地异常日志
             log.error("异常信息: ", exp);

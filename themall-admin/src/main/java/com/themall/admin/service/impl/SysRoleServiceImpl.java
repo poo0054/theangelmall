@@ -63,7 +63,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRole> impleme
         Object createUserId = params.get("createUserId");
         LambdaQueryWrapper<SysRole> lambdaQueryWrapper = Wrappers.lambdaQuery(SysRole.class);
         lambdaQueryWrapper.like(ObjectUtils.isNotEmpty(roleName), SysRole::getRoleName, roleName);
-        lambdaQueryWrapper.eq(ObjectUtils.isNotEmpty(createUserId), SysRole::getCreateUserId, createUserId);
+        lambdaQueryWrapper.eq(ObjectUtils.isNotEmpty(createUserId), SysRole::getCreateBy, createUserId);
         IPage<SysRole> page = this.page(
                 new Query<SysRole>().getPage(params),
                 lambdaQueryWrapper
@@ -111,14 +111,14 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRole> impleme
 
 
     @Override
-    public List<Long> queryRoleIdList(String createBy) {
+    public List<Long> queryRoleIdList(Long createBy) {
         return baseMapper.queryRoleIdList(createBy);
     }
 
 
     @Override
     public List<SysRole> listByUserId(Long userId) {
-        if (Objects.equals(Constant.SUPER_ADMIN, userId)) {
+        if (Objects.equals(Constant.ADMIN_ID, userId)) {
             return this.list();
         }
         return baseMapper.listByUserId(userId);
@@ -129,12 +129,12 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRole> impleme
      */
     private void checkPrems(SysRole role) {
         //如果不是超级管理员，则需要判断角色的权限是否超过自己的权限
-        if (Objects.equals(Constant.SUPER_ADMIN, role.getCreateUserId())) {
+        if (Objects.equals(Constant.ADMIN_ID, role.getCreateBy())) {
             return;
         }
 
         //查询用户所拥有的菜单列表
-        List<Long> menuIdList = sysMenuService.queryAllMenuId(role.getCreateUserId());
+        List<Long> menuIdList = sysMenuService.queryAllMenuId(Long.valueOf(role.getCreateBy()));
 
         //判断是否越权
         if (!menuIdList.containsAll(role.getMenuIdList())) {

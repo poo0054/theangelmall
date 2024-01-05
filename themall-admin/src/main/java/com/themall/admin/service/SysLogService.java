@@ -25,4 +25,5 @@ public interface SysLogService extends IService<sysLog> {
 
     PageUtils queryPage(Map<String, Object> params);
 
+    void asyncSave(sysLog operLog);
 }

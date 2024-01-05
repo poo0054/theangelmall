@@ -44,7 +44,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenu> impleme
     @Override
     public List<MenuVo> getUserMenuList(Long userId) {
         //系统管理员，获取所有权限
-        if (Objects.equals(Constant.SUPER_ADMIN, userId)) {
+        if (Objects.equals(Constant.ADMIN_ID, userId)) {
             LambdaQueryWrapper<SysMenu> queryWrapper = Wrappers.lambdaQuery(SysMenu.class);
             queryWrapper.ne(SysMenu::getType, MenuTypeEnum.BUTTON);
             List<SysMenu> list = this.list(queryWrapper);

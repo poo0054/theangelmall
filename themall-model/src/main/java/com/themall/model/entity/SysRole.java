@@ -16,7 +16,6 @@ import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -48,18 +47,9 @@ public class SysRole extends AbstractEntity<SysRole> {
      */
     private String remark;
 
-    /**
-     * 创建者ID
-     */
-    private Long createUserId;
 
     @TableField(exist = false)
     private List<Long> menuIdList;
-
-    /**
-     * 创建时间
-     */
-    private Date createTime;
 
 
 }

@@ -27,7 +27,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenu> impleme
 
     @Override
     public List<SysMenu> listByUserId(Long userId) {
-        if (Objects.equals(userId, Constant.SUPER_ADMIN)) {
+        if (Objects.equals(userId, Constant.ADMIN_ID)) {
             return this.list();
         }
         //用户菜单列表

@@ -15,6 +15,7 @@
  */
 package com.themall.oauthserver.security;
 
+import com.themall.model.constants.Constant;
 import com.themall.model.entity.SysUser;
 import com.themall.model.entity.SysUserRole;
 import com.themall.oauthserver.service.SysUserRoleService;
@@ -70,7 +71,7 @@ public class UserRepositoryOAuth2UserHandler implements Consumer<OAuth2User> {
         //分为谷歌和github
         SysUser userEntity = this.userService.getByLoginName(user.getName());
         if (ObjectUtils.isEmpty(userEntity)) {
-            sysUserEntity.setCreateBy("admin");
+            sysUserEntity.setCreateBy(Constant.ADMIN_ID);
             sysUserEntity.setCreateTime(new Date());
             this.userService.save(sysUserEntity);
             SysUserRole sysUserRoleEntity = new SysUserRole();

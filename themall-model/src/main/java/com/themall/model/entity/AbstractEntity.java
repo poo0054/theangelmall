@@ -28,7 +28,7 @@ public abstract class AbstractEntity<T extends Model<?>> extends Model<T> {
      * 创建人
      */
     @TableField(fill = FieldFill.INSERT)
-    private String createBy;
+    private Long createBy;
 
     /**
      * 创建时间
@@ -40,7 +40,7 @@ public abstract class AbstractEntity<T extends Model<?>> extends Model<T> {
      * 修改人
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
-    private String updateBy;
+    private Long updateBy;
 
     /**
      * 修改时间

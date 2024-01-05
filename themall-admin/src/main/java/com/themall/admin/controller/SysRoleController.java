@@ -57,7 +57,7 @@ public class SysRoleController extends AbstractController {
     @PreAuthorize("hasAuthority('sys:role:list')")
     public R list(@RequestParam Map<String, Object> params) {
         //如果不是超级管理员，则只查询自己创建的角色列表
-        if (Objects.equals(Constant.SUPER_ADMIN, getUserId())) {
+        if (Objects.equals(Constant.ADMIN_ID, getUserId())) {
             params.put("createUserId", getUserId());
         }
         PageUtils page = sysRoleService.queryPage(params);
@@ -73,8 +73,8 @@ public class SysRoleController extends AbstractController {
         Map<String, Object> map = new HashMap<>();
 
         //如果不是超级管理员，则只查询自己所拥有的角色列表
-        if (Objects.equals(Constant.SUPER_ADMIN, getUserId())) {
-            map.put("create_user_id", getUserId());
+        if (Objects.equals(Constant.ADMIN_ID, getUserId())) {
+            map.put("create_by", getUserId());
         }
         List<SysRole> list = sysRoleService.listByMap(map);
 
@@ -101,7 +101,7 @@ public class SysRoleController extends AbstractController {
     @PostMapping("/save")
     @PreAuthorize("hasAuthority('sys:role:inset')")
     public R save(@RequestBody @Validated(AddGroup.class) SysRole role) {
-        role.setCreateUserId(getUserId());
+        role.setCreateBy(getUserId());
         sysRoleService.saveRole(role);
         return R.ok();
     }
@@ -114,7 +114,7 @@ public class SysRoleController extends AbstractController {
     @PreAuthorize("hasAuthority('sys:role:update')")
     public R update(@RequestBody @Validated(UpdateGroup.class) SysRole role) {
         ValidatorUtils.validateEntity(role);
-        role.setCreateUserId(getUserId());
+        role.setCreateBy(getUserId());
         sysRoleService.update(role);
         return R.ok();
     }

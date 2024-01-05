@@ -17,6 +17,7 @@ import com.themall.admin.service.SysLogService;
 import com.themall.admin.utils.PageUtils;
 import com.themall.admin.utils.Query;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -35,5 +36,12 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogDao, sysLog> implements
         );
 
         return new PageUtils(page);
+    }
+
+
+    @Override
+    @Async
+    public void asyncSave(sysLog operLog) {
+        this.save(operLog);
     }
 }

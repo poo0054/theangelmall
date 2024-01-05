@@ -8,14 +8,12 @@
 
 package com.themall.admin.controller;
 
+import com.themall.common.utils.UserUtils;
 import com.themall.model.constants.Page;
 import com.themall.model.entity.R;
 import com.themall.model.entity.SysUser;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.jwt.Jwt;
 
 /**
  * Controller公共组件
@@ -26,18 +24,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 public abstract class AbstractController {
 
     protected SysUser getUser() {
-        SysUser sysUserEntity = new SysUser();
-        SecurityContext context = SecurityContextHolder.getContext();
-        if (context.getAuthentication().getPrincipal() instanceof Jwt) {
-            Jwt principal = (Jwt) context.getAuthentication().getPrincipal();
-            sysUserEntity.setUserId(Long.valueOf(principal.getId()));
-            sysUserEntity.setUserName(principal.getClaims().get("name").toString());
-            sysUserEntity.setOauthId(principal.getSubject());
-            //邮件不放出去
-            //            sysUserEntity.setEmail(claims.get("email").toString());
-            return sysUserEntity;
-        }
-        return null;
+        return UserUtils.getUser();
     }
 
     protected Long getUserId() {
@@ -47,6 +34,7 @@ public abstract class AbstractController {
         }
         return user.getUserId();
     }
+
 
     public <T> R success(Page<T> page) {
         return R.data(page);

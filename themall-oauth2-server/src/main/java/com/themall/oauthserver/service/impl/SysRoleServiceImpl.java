@@ -28,7 +28,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRole> impleme
 
     @Override
     public List<SysRole> listByUserId(Long userId) {
-        if (Objects.equals(Constant.SUPER_ADMIN, userId)) {
+        if (Objects.equals(Constant.ADMIN_ID, userId)) {
             return this.list();
         }
         return baseMapper.listByUserId(userId);

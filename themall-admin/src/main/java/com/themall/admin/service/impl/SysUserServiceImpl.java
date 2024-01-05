@@ -168,7 +168,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUser> impleme
         }
 
         //如果不是超级管理员，则需要判断用户的角色是否自己创建
-        if (Objects.equals(Constant.SUPER_ADMIN, user.getCreateBy())) {
+        if (Objects.equals(Constant.ADMIN_ID, user.getCreateBy())) {
             return;
         }
 
