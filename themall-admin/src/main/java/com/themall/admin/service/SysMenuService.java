@@ -33,7 +33,7 @@ public interface SysMenuService extends IService<SysMenu> {
 
     boolean updateMenuVo(MenuVo sysMenu);
 
-    boolean delete(List<String> idList);
+    boolean delete(List<Long> idList);
 
     boolean nodeDrop(NodeDropMenuVo dropMenuVo);
 }

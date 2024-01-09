@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -102,8 +103,8 @@ public class SysMenuController extends AbstractController {
      */
     @DeleteMapping
     @PreAuthorize("hasAuthority('sys:menu:delete')")
-    public R delete(@RequestBody List<String> ids) {
-        return R.data(this.sysMenuService.delete(ids));
+    public R delete(@RequestParam Long[] ids) {
+        return R.data(this.sysMenuService.delete(Arrays.asList(ids)));
     }
 
     @PutMapping("nodeDrop")

@@ -34,8 +34,8 @@ export default {
 		delete: {
 			url: `${config.API_URL}/sys/menu`,
 			name: "删除",
-			delete: async function (data) {
-				return await http.delete(this.url, data);
+			delete: async function (params) {
+				return await http.delete(this.url, params);
 			}
 		},
 		nodeDrop: {

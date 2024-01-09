@@ -86,7 +86,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenu> impleme
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean delete(List<String> idList) {
+    public boolean delete(List<Long> idList) {
         LambdaQueryWrapper<SysMenu> query = Wrappers.lambdaQuery(SysMenu.class);
         query.in(SysMenu::getParentId, idList);
         List<SysMenu> list = this.list(query);

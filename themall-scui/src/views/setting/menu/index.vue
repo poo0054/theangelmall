@@ -125,27 +125,33 @@ export default {
 			}
 			this.menuloading = false
 		},
+
 		//删除菜单
 		async delMenu() {
-			var CheckedNodes = this.$refs.menu.getCheckedNodes()
+			const CheckedNodes = this.$refs.menu.getCheckedNodes()
 			if (CheckedNodes.length === 0) {
 				this.$message.warning("请选择需要删除的项")
 				return false;
 			}
 
-			var confirm = await this.$confirm('确认删除已选择的菜单吗？', '提示', {
+			const confirm = await this.$confirm('确认删除已选择的菜单吗？', '提示', {
 				type: 'warning',
 				confirmButtonText: '删除',
 				confirmButtonClass: 'el-button--danger'
 			}).catch(() => {
-			})
-			if (confirm != 'confirm') {
+			});
+
+			if (confirm !== 'confirm') {
 				return false
 			}
 
 			this.menuloading = true
-
-			var res = await this.$API.system.menu.delete.delete(CheckedNodes.map(item => item.id))
+			const params = {
+				"ids": CheckedNodes.map(item => item.id).join(",")
+			}
+			console.log(params)
+			console.log(CheckedNodes.map(item => item.id))
+			const res = await this.$API.system.menu.delete.delete(params)
 			this.menuloading = false
 
 			if (res.code === '00000') {

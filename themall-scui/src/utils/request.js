@@ -15,8 +15,7 @@ axios.interceptors.request.use(
 		if (token) {
 			config.headers[sysConfig.TOKEN_NAME] = sysConfig.TOKEN_PREFIX + token
 		}
-		console.log(config)
-		if (!sysConfig.REQUEST_CACHE && config.method == 'get') {
+		if (!sysConfig.REQUEST_CACHE && config.method === 'get') {
 			config.params = config.params || {};
 			config.params['_'] = new Date().getTime();
 		}
@@ -201,12 +200,12 @@ var http = {
 	 * @param data body
 	 * @param config 参数
 	 */
-	delete: function (url, data = {}, config = {}) {
+	delete: function (url, params = {}, config = {}) {
 		return new Promise((resolve, reject) => {
 			axios({
 				method: 'delete',
 				url: url,
-				data: data,
+				params: params,
 				...config
 			}).then((response) => {
 				resolve(response.data);
